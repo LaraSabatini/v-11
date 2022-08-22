@@ -1,8 +1,16 @@
-import type { NextPage } from 'next'
+import Login from "components/Login"
 
-const Home: NextPage = () => {
+function Home() {
   return (
-    <div>hola</div>
+    <>
+      <style jsx global>{`
+        body {
+          margin: 0px;
+          padding: 0px;
+        }
+      `}</style>
+      <Login />
+    </>
   )
 }
 
