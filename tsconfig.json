@@ -1,12 +1,24 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "allowSyntheticDefaultImports": true,
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": false,
     "forceConsistentCasingInFileNames": true,
+    "paths": {
+      "@packages/": ["packages/"],
+      "@components/": ["components/"],
+      "@contexts/": ["contexts/"],
+      "@hooks/": ["hooks/"],
+      "@interfaces/": ["interfaces/"],
+      "@pages/": ["pages/"],
+      "@services/": ["services/"],
+      "@theme/": ["theme/"]
+    },
     "noEmit": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "node",
