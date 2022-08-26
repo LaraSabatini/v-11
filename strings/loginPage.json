@@ -2,5 +2,6 @@
     "title": "Bienvenido",
     "userLabel": "Usuario",
     "passwordLabel": "Contraseña",
-    "button": "INICIAR SESION"
+    "button": "INICIAR SESION",
+    "errorMessage": "El usuario y/o contraseña son incorrectos"
 }

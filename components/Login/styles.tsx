@@ -49,4 +49,8 @@ const LoginButton = styled.button`
   cursor: pointer;
 `
 
-export { FormContainer, MainContainer, InputContainer, LoginButton }
+const EmptyDiv = styled.div`
+  height: 11px;
+`
+
+export { FormContainer, MainContainer, InputContainer, LoginButton, EmptyDiv }

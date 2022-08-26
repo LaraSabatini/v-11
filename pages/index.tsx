@@ -1,6 +1,15 @@
+import React, { useEffect, useState } from "react"
 import Login from "components/Login"
+import Partners from "components/Partners"
 
 function Home() {
+  const [isLoggedIn, setIsLoggedIn] = useState<any>()
+
+  useEffect(() => {
+    const user = localStorage.getItem("user")
+    setIsLoggedIn(user)
+  }, [isLoggedIn])
+
   return (
     <>
       <style jsx global>{`
@@ -9,7 +18,7 @@ function Home() {
           padding: 0px;
         }
       `}</style>
-      <Login />
+      {isLoggedIn === null ? <Login /> : <Partners />}
     </>
   )
 }
