@@ -1,7 +1,7 @@
 import React from "react"
 import Header from "components/UI/Header"
 
-function PartnersView() {
+function StoreView() {
   return (
     <div>
       <Header />
@@ -9,4 +9,4 @@ function PartnersView() {
   )
 }
 
-export default PartnersView
+export default StoreView
