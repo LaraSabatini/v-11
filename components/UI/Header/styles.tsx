@@ -6,6 +6,7 @@ const HeaderContainer = styled.div`
   height: 30px;
   padding: 20px 0;
   background-color: ${theme.colors.primary};
+  position: relative;
 `
 
 const HeaderContent = styled.div`

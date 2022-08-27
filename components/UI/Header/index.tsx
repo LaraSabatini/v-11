@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import texts from "strings/general.json"
 import Tooltip from "components/UI/Tooltip"
+import LogOut from "./LogOut"
 import {
   HeaderContainer,
   ProfilePicture,
@@ -13,6 +14,8 @@ import {
 function Header() {
   const router = useRouter()
   const [currentUser, setCurrentUser] = useState<string>("")
+
+  const [openLogOut, setOpenLogOut] = useState<boolean>(false)
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("user"))
@@ -48,11 +51,12 @@ function Header() {
           </SectionTitle>
         </Sections>
         <Tooltip title={currentUser} placement="bottom-end">
-          <ProfilePicture>
+          <ProfilePicture onClick={() => setOpenLogOut(!openLogOut)}>
             {currentUser.length && currentUser.substring(0, 1).toUpperCase()}
           </ProfilePicture>
         </Tooltip>
       </HeaderContent>
+      {openLogOut && <LogOut currentUser={currentUser} />}
     </HeaderContainer>
   )
 }
