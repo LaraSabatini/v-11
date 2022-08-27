@@ -4,5 +4,19 @@
     "student": "Alumno",
     "free_pass": "Pase Libre",
     "active_payment": "Pago activo",
-    "expired_payment": "Pago vencido"
+    "expired_payment": "Pago vencido",
+    "details": "Detalles",
+    "partner_number": "N° de socio:",
+    "full_name": "Nombre completo:",
+    "email": "Email:",
+    "identification": "N° de documento:",
+    "member_since": "Miembro desde:",
+    "member_expire": "Vencimiento de membresia:",
+    "paid_time": "Tiempo abonado:",
+    "payment_is_active": "El pago esta activo:",
+    "created_by": "Creado por:",
+    "trainer": "Profesor:",
+    "not_trainer": "No tiene",
+    "yes": "Si",
+    "no": "No"
 }

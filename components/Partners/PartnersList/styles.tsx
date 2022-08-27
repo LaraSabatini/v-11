@@ -3,18 +3,20 @@ import theme from "theme/index"
 
 const Container = styled.div`
   height: 80%;
-  margin-top: 50px;
-  width: 60%;
+  width: 750px;
 `
 
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding: 10px;
 `
 
 const ListItem = styled.div`
-  border: 1px solid red;
+  box-shadow: 0px 0px 28px -5px rgba(83, 45, 117, 0.29);
+  -webkit-box-shadow: 0px 0px 28px -5px rgba(83, 45, 117, 0.29);
+  -moz-box-shadow: 0px 0px 28px -5px rgba(83, 45, 117, 0.29);
   border-radius: 10px;
   background-color: ${theme.colors.white};
   padding: 0 15px;

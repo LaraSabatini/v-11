@@ -6,7 +6,7 @@ const Container = styled.div``
 const Content = styled.div`
   width: 90vw;
   margin: 0 auto;
-  padding-top: 80px;
+  padding-top: 50px;
   height: 80vh;
   position: relative;
 `
@@ -67,8 +67,15 @@ const AddPartner = styled.button`
 
 const MainButton = styled.div`
   position: absolute;
-  right: 0;
+  right: -20px;
   bottom: 0;
+`
+
+const ListAndDetailContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 50px;
+  gap: 20px;
 `
 
 export {
@@ -80,4 +87,5 @@ export {
   HeadContent,
   AddPartner,
   MainButton,
+  ListAndDetailContainer,
 }

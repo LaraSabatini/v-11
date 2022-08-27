@@ -6,6 +6,7 @@ import Tooptip from "components/UI/Tooltip"
 import theme from "theme/index"
 import Header from "components/UI/Header"
 import PartnersList from "./PartnersList"
+import PartnerDetails from "./PartnerDetails"
 import {
   Container,
   Title,
@@ -15,10 +16,11 @@ import {
   HeadContent,
   AddPartner,
   MainButton,
+  ListAndDetailContainer,
 } from "./styles"
 
 function PartnersView() {
-  const { filterSelected, setFilterSelected, filters } =
+  const { filterSelected, setFilterSelected, filters, partnerSelected } =
     useContext(PartnersContext)
 
   const selectFilter = (type: string) => {
@@ -49,7 +51,10 @@ function PartnersView() {
               })}
           </FiltersContainer>
         </HeadContent>
-        <PartnersList />
+        <ListAndDetailContainer>
+          <PartnersList />
+          {partnerSelected !== null && <PartnerDetails />}
+        </ListAndDetailContainer>
         <MainButton>
           <Tooptip title={texts.mainButton}>
             <AddPartner>

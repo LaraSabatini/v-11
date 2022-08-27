@@ -32,7 +32,7 @@ const PartnersList = () => {
 
   return (
     <Container>
-      <ScrollView height={600}>
+      <ScrollView height={500}>
         <ListContainer>
           {partners &&
             partners.map((partner: PartnerInterface) => {

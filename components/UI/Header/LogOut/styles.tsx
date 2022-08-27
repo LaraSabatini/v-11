@@ -30,6 +30,7 @@ const LogOutButton = styled.button`
   background-color: ${theme.colors.primary};
   color: ${theme.colors.white};
   cursor: pointer;
+  z-index: 100;
 `
 
 export { Container, Title, LogOutButton }
