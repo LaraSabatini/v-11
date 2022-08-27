@@ -1,21 +1,16 @@
-import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Login from "components/Login"
+import useStorage from "hooks/useStorage"
 
 function Home() {
+  const { getItem } = useStorage()
+  const logged = getItem("isLoggedIn")
+
   const router = useRouter()
 
-  const [isLoggedIn, setIsLoggedIn] = useState<any>()
-
-  useEffect(() => {
-    const user = localStorage.getItem("user")
-    setIsLoggedIn(user)
-
-    if (user !== null) {
-      router.push("home")
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoggedIn])
+  if (logged === "true") {
+    router.replace("/home")
+  }
 
   return (
     <>
@@ -25,7 +20,7 @@ function Home() {
           padding: 0px;
         }
       `}</style>
-      {isLoggedIn === null && <Login />}
+      {!logged && <Login />}
     </>
   )
 }

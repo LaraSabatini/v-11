@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/router"
 import validateUser from "services/ValidateUser.service"
 import theme from "theme/index"
@@ -22,6 +22,7 @@ import {
 
 function Login() {
   const router = useRouter()
+  const [logged, setLogged] = useState(false)
 
   const [userName, setUserName] = useState<string>("")
   const [password, setPassword] = useState<string>("")
@@ -61,6 +62,7 @@ function Login() {
         setSuccess(true)
         localStorage.setItem("user", res.data[0].name)
         localStorage.setItem("id", res.data[0].id)
+        localStorage.setItem("isLoggedIn", "true")
         router.push("home")
       } else {
         setSuccess(false)
@@ -68,70 +70,83 @@ function Login() {
     }
   }
 
+  useEffect(() => {
+    if (localStorage.getItem("isLoggedIn")) {
+      setLogged(true)
+    } else {
+      setLogged(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath])
+
   return (
     <>
-      <Shapes>
-        <div className="shape-1">
-          <ShapeOne color={theme.colors.secondary} />
-        </div>
-        <div className="shape-2">
-          <ShapeTwo color={theme.colors.primary} />
-        </div>
-        <div className="shape-3">
-          <ShapeThree color={theme.colors.primary} />
-        </div>
-        <div className="shape-4">
-          <ShapeFour color={theme.colors.green} />
-        </div>
-        <div className="shape-5">
-          <ShapeFive color={theme.colors.green} />
-        </div>
-        <div className="shape-6">
-          <ShapeSix color={theme.colors.black} />
-        </div>
-        <div className="shape-7">
-          <ShapeOne color={theme.colors.secondary} />
-        </div>
-        <div className="shape-8">
-          <ShapeSix color={theme.colors.black} />
-        </div>
-        <div className="shape-9">
-          <ShapeTwo color={theme.colors.primary} />
-        </div>
-      </Shapes>
-      <MainContainer>
-        <FormContainer>
-          <h2>{texts.title}</h2>
-          <InputContainer>
-            <TextField
-              label={texts.userLabel}
-              required
-              width={290}
-              type="text"
-              value={userName}
-              onChange={e => handleUserName(e)}
-              reference={userNameRef}
-            />
-            <TextField
-              label={texts.passwordLabel}
-              required
-              width={290}
-              type="password"
-              value={password}
-              onChange={e => handlePassword(e)}
-              reference={passwordRef}
-            />
-            {!success && success !== null ? (
-              <ErrorMessage message={texts.errorMessage} />
-            ) : (
-              <EmptyDiv />
-            )}
-            <LoginButton ref={submitRef} onClick={submitLogin}>
-              {texts.button}
-            </LoginButton>
-          </InputContainer>
-        </FormContainer>
-      </MainContainer>
+      {!logged && (
+        <>
+          <Shapes>
+            <div className="shape-1">
+              <ShapeOne color={theme.colors.secondary} />
+            </div>
+            <div className="shape-2">
+              <ShapeTwo color={theme.colors.primary} />
+            </div>
+            <div className="shape-3">
+              <ShapeThree color={theme.colors.primary} />
+            </div>
+            <div className="shape-4">
+              <ShapeFour color={theme.colors.green} />
+            </div>
+            <div className="shape-5">
+              <ShapeFive color={theme.colors.green} />
+            </div>
+            <div className="shape-6">
+              <ShapeSix color={theme.colors.black} />
+            </div>
+            <div className="shape-7">
+              <ShapeOne color={theme.colors.secondary} />
+            </div>
+            <div className="shape-8">
+              <ShapeSix color={theme.colors.black} />
+            </div>
+            <div className="shape-9">
+              <ShapeTwo color={theme.colors.primary} />
+            </div>
+          </Shapes>
+          <MainContainer>
+            <FormContainer>
+              <h2>{texts.title}</h2>
+              <InputContainer>
+                <TextField
+                  label={texts.userLabel}
+                  required
+                  width={290}
+                  type="text"
+                  value={userName}
+                  onChange={e => handleUserName(e)}
+                  reference={userNameRef}
+                />
+                <TextField
+                  label={texts.passwordLabel}
+                  required
+                  width={290}
+                  type="password"
+                  value={password}
+                  onChange={e => handlePassword(e)}
+                  reference={passwordRef}
+                />
+                {!success && success !== null ? (
+                  <ErrorMessage message={texts.errorMessage} />
+                ) : (
+                  <EmptyDiv />
+                )}
+                <LoginButton ref={submitRef} onClick={submitLogin}>
+                  {texts.button}
+                </LoginButton>
+              </InputContainer>
+            </FormContainer>
+          </MainContainer>
+        </>
+      )}
     </>
   )
 }
