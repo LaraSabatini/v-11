@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import PartnersView from "components/Partners"
+import PartnersProvider from "contexts/Partners"
 
 function Home() {
   const router = useRouter()
@@ -25,7 +26,11 @@ function Home() {
           padding: 0px;
         }
       `}</style>
-      {isLoggedIn !== null && <PartnersView />}
+      {isLoggedIn !== null && (
+        <PartnersProvider>
+          <PartnersView />
+        </PartnersProvider>
+      )}
     </>
   )
 }
