@@ -1,4 +1,4 @@
-export default interface UserInterface {
+export default interface PartnerInterface {
   id: number
   name: string
   last_name: string
@@ -10,5 +10,6 @@ export default interface UserInterface {
   payment_expire_date: string
   payment_is_active: boolean
   created_by: number
-  trainer_id: number
+  trainer_id: number | null
+  free_pass: boolean
 }

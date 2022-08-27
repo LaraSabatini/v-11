@@ -1,7 +1,11 @@
 import React, { useContext } from "react"
 import texts from "strings/partners.json"
 import { PartnersContext } from "contexts/Partners"
+import Icon from "components/UI/Assets/Icon"
+import Tooptip from "components/UI/Tooltip"
+import theme from "theme/index"
 import Header from "components/UI/Header"
+import PartnersList from "./PartnersList"
 import {
   Container,
   Title,
@@ -9,6 +13,8 @@ import {
   FiltersContainer,
   Filter,
   HeadContent,
+  AddPartner,
+  MainButton,
 } from "./styles"
 
 function PartnersView() {
@@ -19,7 +25,7 @@ function PartnersView() {
     if (filterSelected === null || filterSelected !== type) {
       setFilterSelected(type)
     } else if (filterSelected === type) {
-      setFilterSelected(null)
+      setFilterSelected("all")
     }
   }
 
@@ -43,6 +49,14 @@ function PartnersView() {
               })}
           </FiltersContainer>
         </HeadContent>
+        <PartnersList />
+        <MainButton>
+          <Tooptip title={texts.mainButton}>
+            <AddPartner>
+              <Icon color={theme.colors.white} icon="IconAdd" />
+            </AddPartner>
+          </Tooptip>
+        </MainButton>
       </Content>
     </Container>
   )

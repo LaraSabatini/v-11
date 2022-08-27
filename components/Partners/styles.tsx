@@ -7,6 +7,8 @@ const Content = styled.div`
   width: 90vw;
   margin: 0 auto;
   padding-top: 80px;
+  height: 80vh;
+  position: relative;
 `
 
 const Title = styled.h4`
@@ -48,4 +50,34 @@ const Filter = styled.button<{ selected: boolean }>`
     `};
 `
 
-export { Container, Title, Content, FiltersContainer, Filter, HeadContent }
+const AddPartner = styled.button`
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${theme.colors.primary};
+  cursor: pointer;
+  box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
+  -webkit-box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
+  -moz-box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
+`
+
+const MainButton = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+`
+
+export {
+  Container,
+  Title,
+  Content,
+  FiltersContainer,
+  Filter,
+  HeadContent,
+  AddPartner,
+  MainButton,
+}
