@@ -5,7 +5,7 @@ const HeaderContainer = styled.div`
   width: 100vw;
   height: 30px;
   padding: 20px 0;
-  background-color: pink;
+  background-color: ${theme.colors.primary};
 `
 
 const HeaderContent = styled.div`
@@ -19,20 +19,23 @@ const HeaderContent = styled.div`
 const Sections = styled.div`
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 20px;
 `
 
-const SectionTitle = styled.p<{ bold: boolean }>`
+const SectionTitle = styled.a<{ bold: boolean }>`
   margin: 0;
   font-family: ${theme.fonts.primary};
   cursor: pointer;
-  font-weight: ${theme.fontWeights.regular};
+  font-weight: ${theme.fontWeights.light};
+  color: ${theme.colors.white};
+  text-decoration: none;
 
   ${props =>
     props.bold &&
     css`
       font-weight: ${theme.fontWeights.medium};
-    `}
+      text-decoration: underline;
+    `};
 `
 
 const ProfilePicture = styled.button`
@@ -47,6 +50,9 @@ const ProfilePicture = styled.button`
   font-size: 16px;
   cursor: pointer;
   font-family: ${theme.fonts.primary};
+  font-weight: ${theme.fontWeights.regular};
+  background-color: ${theme.colors.green};
+  color: ${theme.colors.white};
 `
 
 export {

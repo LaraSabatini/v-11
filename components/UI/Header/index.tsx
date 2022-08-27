@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import texts from "strings/general.json"
 import Tooltip from "components/UI/Tooltip"
@@ -12,29 +12,44 @@ import {
 
 function Header() {
   const router = useRouter()
+  const [currentUser, setCurrentUser] = useState<string>("")
 
-  const currentUser = localStorage.getItem("user")
+  useEffect(() => {
+    setCurrentUser(localStorage.getItem("user"))
+  }, [])
 
   return (
     <HeaderContainer>
       <HeaderContent>
         <Sections>
-          <SectionTitle bold={router.asPath.substring(1, 10) === "home"}>
+          <SectionTitle
+            href="/home"
+            bold={router.asPath.substring(1, 10) === "home"}
+          >
             {texts.sections.home}
           </SectionTitle>
-          <SectionTitle bold={router.asPath.substring(1, 10) === "trainers"}>
+          <SectionTitle
+            href="/trainers"
+            bold={router.asPath.substring(1, 10) === "trainers"}
+          >
             {texts.sections.trainers}
           </SectionTitle>
-          <SectionTitle bold={router.asPath.substring(1, 10) === "store"}>
+          <SectionTitle
+            href="/store"
+            bold={router.asPath.substring(1, 10) === "store"}
+          >
             {texts.sections.store}
           </SectionTitle>
-          <SectionTitle bold={router.asPath.substring(1, 10) === "finances"}>
+          <SectionTitle
+            href="/finances"
+            bold={router.asPath.substring(1, 10) === "finances"}
+          >
             {texts.sections.finances}
           </SectionTitle>
         </Sections>
         <Tooltip title={currentUser} placement="bottom-end">
           <ProfilePicture>
-            {currentUser.substring(0, 1).toUpperCase()}
+            {currentUser.length && currentUser.substring(0, 1).toUpperCase()}
           </ProfilePicture>
         </Tooltip>
       </HeaderContent>
