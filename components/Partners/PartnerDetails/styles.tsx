@@ -14,10 +14,11 @@ const Container = styled.div`
 const Title = styled.h4`
   margin: 0;
   font-size: 20px;
-  /* padding-bottom: 10px; */
   display: flex;
   align-items: center;
+  width: 400px;
   justify-content: space-between;
+  position: relative;
 
   span {
     display: flex;
@@ -55,4 +56,21 @@ const HorizontalSection = styled.div`
   justify-content: space-between;
 `
 
-export { Container, Title, Divider, PartnerData, Details, HorizontalSection }
+const IconContainer = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  margin-left: 20px;
+  position: absolute;
+  right: -50px;
+`
+
+export {
+  Container,
+  Title,
+  Divider,
+  PartnerData,
+  Details,
+  HorizontalSection,
+  IconContainer,
+}

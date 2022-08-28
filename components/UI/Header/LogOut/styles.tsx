@@ -14,6 +14,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  z-index: 100;
 `
 
 const Title = styled.h5`
@@ -30,7 +31,6 @@ const LogOutButton = styled.button`
   background-color: ${theme.colors.primary};
   color: ${theme.colors.white};
   cursor: pointer;
-  z-index: 100;
 `
 
 export { Container, Title, LogOutButton }

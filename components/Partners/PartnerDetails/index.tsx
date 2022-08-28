@@ -1,9 +1,18 @@
 import React, { useContext, useState, useEffect } from "react"
 import { PartnersContext } from "contexts/Partners"
 import getUsers from "services/GetUsers.service"
+import Icon from "components/UI/Assets/Icon"
+import theme from "theme/index"
 import texts from "strings/partners.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import { Container, Title, Divider, PartnerData, Details } from "./styles"
+import {
+  Container,
+  Title,
+  Divider,
+  PartnerData,
+  Details,
+  IconContainer,
+} from "./styles"
 
 const PartnerDetails = () => {
   const { partnerSelected, partners } = useContext(PartnersContext)
@@ -34,6 +43,9 @@ const PartnerDetails = () => {
           <p>{texts.partner_number}</p>
           {partnerInfo?.id}
         </span>
+        <IconContainer>
+          <Icon icon="IconEdit" color={theme.colors.black} />
+        </IconContainer>
       </Title>
       <Divider />
       <Details>
