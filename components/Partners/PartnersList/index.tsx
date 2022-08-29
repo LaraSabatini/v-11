@@ -1,7 +1,9 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { PartnersContext } from "contexts/Partners"
+import getPartners from "services/GetPartnerts.service"
 import texts from "strings/partners.json"
 import ScrollView from "components/UI/ScrollView"
+import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import theme from "theme"
@@ -16,12 +18,20 @@ import {
   Student,
   FreePass,
   IconContainer,
+  Paginator,
+  Navigate,
+  NoPartnersView,
 } from "./styles"
 
 const PartnersList = () => {
-  const { partners, partnerSelected, setPartnerSelected } = useContext(
-    PartnersContext,
-  )
+  const {
+    partners,
+    setPartners,
+    partnerSelected,
+    setPartnerSelected,
+  } = useContext(PartnersContext)
+
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const selectPartner = (partner: number) => {
     if (partnerSelected === null || partnerSelected !== partner) {
@@ -31,11 +41,33 @@ const PartnersList = () => {
     }
   }
 
+  const getData = async () => {
+    const partnersList = await getPartners(currentPage)
+    setPartners(partnersList.data)
+  }
+
+  useEffect(() => {
+    getData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage])
+
+  const goPrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  const goNext = () => {
+    if (partners.length > 0) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
   return (
     <Container>
       <ScrollView height={500}>
         <ListContainer>
-          {partners &&
+          {partners.length > 0 ? (
             partners.map((partner: PartnerInterface) => {
               return (
                 <ListItem onClick={() => selectPartner(partner.id)}>
@@ -44,10 +76,10 @@ const PartnersList = () => {
                   </Name>
                   <PartnerNumber>N°: {partner.id}</PartnerNumber>
                   <Tags>
-                    {partner.trainer_id !== null && (
+                    {partner.trainer_id !== 0 && (
                       <Student>{texts.student}</Student>
                     )}
-                    {partner.free_pass !== null && (
+                    {partner.free_pass !== 0 && (
                       <FreePass>{texts.free_pass}</FreePass>
                     )}
                   </Tags>
@@ -61,9 +93,25 @@ const PartnersList = () => {
                   </IconContainer>
                 </ListItem>
               )
-            })}
+            })
+          ) : (
+            <NoPartnersView>{texts.no_more}</NoPartnersView>
+          )}
         </ListContainer>
       </ScrollView>
+      <Paginator>
+        <Navigate onClick={goPrev}>
+          <Tooltip title={texts.prev}>
+            <Icon icon="IconArrowLeft" />
+          </Tooltip>
+        </Navigate>
+        {currentPage}
+        <Navigate onClick={goNext}>
+          <Tooltip title={texts.next} placement="top-start">
+            <Icon icon="IconArrowRight" />
+          </Tooltip>
+        </Navigate>
+      </Paginator>
     </Container>
   )
 }

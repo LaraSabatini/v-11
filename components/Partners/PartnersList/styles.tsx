@@ -78,6 +78,29 @@ const IconContainer = styled.div<{ active: boolean }>`
     `};
 `
 
+const Paginator = styled.div`
+  font-family: ${theme.fonts.primary};
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: flex-end;
+  padding-right: 10px;
+`
+
+const Navigate = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+`
+
+const NoPartnersView = styled.h1`
+  font-family: ${theme.fonts.primary};
+  text-transform: uppercase;
+  color: ${theme.colors.primary_light};
+  text-align: center;
+  margin-top: 100px;
+`
+
 export {
   ListContainer,
   ListItem,
@@ -89,4 +112,7 @@ export {
   Student,
   FreePass,
   IconContainer,
+  Paginator,
+  Navigate,
+  NoPartnersView,
 }

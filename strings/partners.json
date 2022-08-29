@@ -19,6 +19,9 @@
     "not_trainer": "No tiene",
     "yes": "Si",
     "no": "No",
+    "next": "Siguiente pagina",
+    "prev": "Pagina previa",
+    "no_more": "No hay mas socios en la lista",
     "create": {
         "title": "Crear partner",
         "cancel_button": "Cancelar",
