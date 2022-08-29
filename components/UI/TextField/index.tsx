@@ -53,15 +53,11 @@ function TextField({
     setInputOnFocus(true)
   }
 
-  const alphanumericReg =
-    /(^$)|[a-zA-ZÀ-ÿ-00f100d10-9\s]+(\s*[a-zA-ZÀ-ÿ-00f100d10-9\s]*)*[a-zA-ZÀ-ÿ-00f100d10-9\s]+$/
-  const alphabeticReg =
-    /(^$)|^[a-zA-ZÀ-ÿ00f100d1]+(\s*[a-zA-ZÀ-ÿ00f100d1]*)*[a-zA-ZÀ-ÿ00f100d1]+$/
+  const alphanumericReg = /(^$)|[a-zA-ZÀ-ÿ-00f100d10-9\s]+(\s*[a-zA-ZÀ-ÿ-00f100d10-9\s]*)*[a-zA-ZÀ-ÿ-00f100d10-9\s]+$/
+  const alphabeticReg = /(^$)|^[a-zA-ZÀ-ÿ00f100d1]+(\s*[a-zA-ZÀ-ÿ00f100d1]*)*[a-zA-ZÀ-ÿ00f100d1]+$/
   const numericReg = /(^$)|(^[0-9]+$)/
-  const specialCharactersReg =
-    /(^$)|[a-zA-ZÀ-ÿ-00f100d10-9$&+,:;=?@#_|"'´°<>.^*()%¡¿!/-{}\s]+$/
-  const emailReg =
-    /(^$)|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  const specialCharactersReg = /(^$)|[a-zA-ZÀ-ÿ-00f100d10-9$&+,:;=?@#_|"'´°<>.^*()%¡¿!/-{}\s]+$/
+  const emailReg = /(^$)|^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
   const checkInputs = (currentValue: string) => {
     if (required === true && currentValue.trim() === "") {

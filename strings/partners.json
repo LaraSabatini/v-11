@@ -18,5 +18,19 @@
     "trainer": "Profesor:",
     "not_trainer": "No tiene",
     "yes": "Si",
-    "no": "No"
+    "no": "No",
+    "create": {
+        "title": "Crear partner",
+        "cancel_button": "Cancelar",
+        "submit_button": "Crear",
+        "name": "Nombre",
+        "last_name": "Apellido",
+        "identification": "N° de documento",
+        "birth_date": "Fecha de nacimiento",
+        "email": "Email",
+        "paid_time": "Tiempo",
+        "trainer": "Profesor",
+        "free_pass": "Pase libre",
+        "unit": "Unidad"
+    }
 }

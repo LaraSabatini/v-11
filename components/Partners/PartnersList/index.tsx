@@ -19,8 +19,9 @@ import {
 } from "./styles"
 
 const PartnersList = () => {
-  const { partners, partnerSelected, setPartnerSelected } =
-    useContext(PartnersContext)
+  const { partners, partnerSelected, setPartnerSelected } = useContext(
+    PartnersContext,
+  )
 
   const selectPartner = (partner: number) => {
     if (partnerSelected === null || partnerSelected !== partner) {

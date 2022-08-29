@@ -1,9 +1,9 @@
 export default interface PartnerInterface {
-  id: number
+  id?: number
   name: string
   last_name: string
   identification_number: string
-  bith_date: string
+  birth_date: string
   email: string
   membership_start_date: string
   membership_time_paid: string

@@ -9,6 +9,7 @@ export const PartnersContext = createContext({
   setPartners: null,
   partnerSelected: null,
   setPartnerSelected: null,
+  timeUnits: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -34,7 +35,7 @@ const PartnersProvider = ({ children }) => {
       name: "Juan",
       last_name: "Perez",
       identification_number: "42302327",
-      bith_date: "1990-09-22",
+      birth_date: "1990-09-22",
       email: "juanperez@gmail.com",
       membership_start_date: "2022-08-01",
       membership_time_paid: "8 meses",
@@ -49,7 +50,7 @@ const PartnersProvider = ({ children }) => {
       name: "Marta",
       last_name: "Juanes",
       identification_number: "42302327",
-      bith_date: "1990-09-22",
+      birth_date: "1990-09-22",
       email: "martajuanes@gmail.com",
       membership_start_date: "2022-08-01",
       membership_time_paid: "1 mes",
@@ -63,6 +64,21 @@ const PartnersProvider = ({ children }) => {
 
   const [partnerSelected, setPartnerSelected] = useState<number>(null)
 
+  const timeUnits = [
+    {
+      id: 1,
+      display_name: "Dia/s",
+    },
+    {
+      id: 2,
+      display_name: "Mes/es",
+    },
+    {
+      id: 3,
+      display_name: "Año/s",
+    },
+  ]
+
   return (
     <PartnersContext.Provider
       value={{
@@ -73,6 +89,7 @@ const PartnersProvider = ({ children }) => {
         setPartners,
         partnerSelected,
         setPartnerSelected,
+        timeUnits,
       }}
     >
       {children}
