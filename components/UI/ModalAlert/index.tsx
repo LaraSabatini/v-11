@@ -30,7 +30,7 @@ interface ModalResponseInterface {
   singleButtonContent?: string
   mainButtonContent?: string
   secondButtonContent?: string
-  closeModal: (arg?: any) => void
+  closeModal?: (arg?: any) => void
   closeRefresh?: (arg?: any) => void
   mainAction?: (arg?: any) => void
 }

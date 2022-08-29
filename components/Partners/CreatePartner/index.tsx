@@ -1,6 +1,6 @@
-/* eslint-disable no-console */
-import React, { useContext, useState, useRef } from "react"
+import React, { useContext, useState } from "react"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import createPartner from "services/CreatePartner.service"
 import { PartnersContext } from "contexts/Partners"
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
@@ -20,7 +20,19 @@ interface CreateInterface {
 }
 
 const CreatePartner = ({ cancelCreate }: CreateInterface) => {
-  const { timeUnits } = useContext(PartnersContext)
+  const {
+    timeUnits,
+    nameRef,
+    lastNameRef,
+    identificationRef,
+    birthDateRef,
+    emailRef,
+    paidTimeRef,
+    paidTimeUnitRef,
+    trainertRef,
+    setModalSuccess,
+    setModalError,
+  } = useContext(PartnersContext)
 
   const [newPartnerData, setNewPartnerData] = useState<PartnerInterface>({
     name: "",
@@ -34,38 +46,22 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     payment_is_active: false,
     created_by: null,
     trainer_id: null,
-    free_pass: false,
+    free_pass: 0,
   })
 
   const [paidTime, setPaidTime] = useState<number>(0)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [paidTimeUnit, setPaidTimeUnit] = useState<{
     id: number
     display_name: string
   }>()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [trainerSelected, setTrainerSelected] = useState<{
-    id: number
-    display_name: string
-  }>()
-
-  const nameRef = useRef(null)
-  const lastNameRef = useRef(null)
-  const identificationRef = useRef(null)
-  const birthDateRef = useRef(null)
-  const emailRef = useRef(null)
-  const paidTimeRef = useRef(null)
-  const paidTimeUnitRef = useRef(null)
-  const trainertRef = useRef(null)
 
   const today = new Date()
   const day = today.getDate()
   const month = today.getMonth()
   const year = today.getFullYear()
 
-  const addMonths = (numOfMonths, date = new Date()) => {
+  const addMonths = (numOfMonths: number, date = new Date()) => {
     date.setMonth(date.getMonth() + numOfMonths)
-
     return date
   }
 
@@ -105,19 +101,39 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         expireDate.setFullYear(expireDate.getFullYear() + paidTime)
       }
 
-      setNewPartnerData({
+      const body = {
         ...newPartnerData,
+        id: 0,
+        birth_date:
+          newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
         membership_start_date: `${day}/${month + 1}/${year}`,
         payment_expire_date: `${expireDate.getDate()}/${
           expireDate.getMonth() + 1
         }/${expireDate.getFullYear()}`,
         membership_time_paid: `${paidTime} ${paidTimeUnit.display_name}`,
-        payment_is_active: true,
+        payment_is_active: 1,
         created_by: parseInt(localStorage.getItem("id"), 10),
-      })
-      // enviar a api
+      }
+
+      const apiValidation = await createPartner(body)
+      if (apiValidation.message === "partner created successfully") {
+        setModalSuccess({
+          status: "success",
+          icon: "IconCheckModal",
+          title: "Excelente!",
+          content: "El partner ha sido creado exitosamente",
+        })
+        cancelCreate()
+      } else {
+        setModalError({
+          status: "alert",
+          icon: "IconExclamation",
+          title: "UPS!",
+          content:
+            "Hubo un error al crear el partner, por favor intentalo nuevamente o comunicate con el admin",
+        })
+      }
     }
-    // validar back => success => modal + actualizar listado de socios
   }
 
   return (
@@ -234,7 +250,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             onChange={e =>
               setNewPartnerData({
                 ...newPartnerData,
-                free_pass: e.target.checked,
+                free_pass: e.target.checked === true ? 1 : 0,
               })
             }
             idParam="free-pass"

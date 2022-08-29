@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useState, useRef } from "react"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 
 export const PartnersContext = createContext({
@@ -10,6 +10,18 @@ export const PartnersContext = createContext({
   partnerSelected: null,
   setPartnerSelected: null,
   timeUnits: null,
+  nameRef: null,
+  lastNameRef: null,
+  identificationRef: null,
+  birthDateRef: null,
+  emailRef: null,
+  paidTimeRef: null,
+  paidTimeUnitRef: null,
+  trainertRef: null,
+  modalSuccess: null,
+  setModalSuccess: null,
+  modalError: null,
+  setModalError: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -43,7 +55,7 @@ const PartnersProvider = ({ children }) => {
       payment_is_active: true,
       created_by: 1,
       trainer_id: null,
-      free_pass: true,
+      free_pass: 1,
     },
     {
       id: 2,
@@ -58,12 +70,13 @@ const PartnersProvider = ({ children }) => {
       payment_is_active: false,
       created_by: 2,
       trainer_id: 4,
-      free_pass: true,
+      free_pass: 1,
     },
   ])
 
   const [partnerSelected, setPartnerSelected] = useState<number>(null)
 
+  // CREATE
   const timeUnits = [
     {
       id: 1,
@@ -79,6 +92,29 @@ const PartnersProvider = ({ children }) => {
     },
   ]
 
+  const nameRef = useRef(null)
+  const lastNameRef = useRef(null)
+  const identificationRef = useRef(null)
+  const birthDateRef = useRef(null)
+  const emailRef = useRef(null)
+  const paidTimeRef = useRef(null)
+  const paidTimeUnitRef = useRef(null)
+  const trainertRef = useRef(null)
+
+  const [modalSuccess, setModalSuccess] = useState<{
+    status: string
+    icon: string
+    title: string
+    content: string
+  } | null>(null)
+
+  const [modalError, setModalError] = useState<{
+    status: string
+    icon: string
+    title: string
+    content: string
+  } | null>(null)
+
   return (
     <PartnersContext.Provider
       value={{
@@ -90,6 +126,18 @@ const PartnersProvider = ({ children }) => {
         partnerSelected,
         setPartnerSelected,
         timeUnits,
+        nameRef,
+        lastNameRef,
+        identificationRef,
+        birthDateRef,
+        emailRef,
+        paidTimeRef,
+        paidTimeUnitRef,
+        trainertRef,
+        modalSuccess,
+        setModalSuccess,
+        modalError,
+        setModalError,
       }}
     >
       {children}

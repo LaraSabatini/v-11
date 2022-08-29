@@ -11,5 +11,5 @@ export default interface PartnerInterface {
   payment_is_active: boolean
   created_by: number
   trainer_id: number | null
-  free_pass: boolean
+  free_pass: 0 | 1
 }

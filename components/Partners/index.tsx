@@ -5,6 +5,7 @@ import Icon from "components/UI/Assets/Icon"
 import Tooptip from "components/UI/Tooltip"
 import theme from "theme/index"
 import Header from "components/UI/Header"
+import ModalAlert from "components/UI/ModalAlert"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
@@ -26,6 +27,10 @@ function PartnersView() {
     setFilterSelected,
     filters,
     partnerSelected,
+    modalSuccess,
+    setModalSuccess,
+    modalError,
+    setModalError,
   } = useContext(PartnersContext)
 
   const [createModal, setCreateModal] = useState<boolean>(false)
@@ -40,6 +45,25 @@ function PartnersView() {
 
   return (
     <Container>
+      {modalSuccess !== null && (
+        <ModalAlert
+          success
+          message={modalSuccess}
+          closeRefresh={() => {
+            setModalSuccess(null)
+            // actualizar lista de partners
+          }}
+        />
+      )}
+      {modalError !== null && (
+        <ModalAlert
+          success={false}
+          message={modalError}
+          closeRefresh={() => {
+            setModalError(null)
+          }}
+        />
+      )}
       <Header />
       <Content>
         <HeadContent>
