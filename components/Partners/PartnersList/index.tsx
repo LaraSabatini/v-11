@@ -47,8 +47,8 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
     const booleanArr = []
     const today = new Date()
 
-    data.map((expirement, index) => {
-      const str = data[index].payment_expire_date
+    data.map(expirement => {
+      const str = expirement.payment_expire_date
       const [day, month, year] = str.split("/")
       const date = new Date(+year, parseInt(month, 10) - 1, +day)
 
