@@ -34,6 +34,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     setModalError,
   } = useContext(PartnersContext)
 
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+
   const [newPartnerData, setNewPartnerData] = useState<PartnerInterface>({
     name: "",
     last_name: "",
@@ -121,6 +123,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         membership_time_paid: `${paidTime} ${paidTimeUnit.display_name}`,
         payment_is_active: 1,
         created_by: parseInt(localStorage.getItem("id"), 10),
+        free_pass:
+          paidTimeUnit.id !== 1 || newPartnerData.trainer_id !== null ? 1 : 0,
       }
 
       const apiValidation = await createPartner(body)
@@ -128,17 +132,16 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",
-          title: "Excelente!",
-          content: "El partner ha sido creado exitosamente",
+          title: `${texts.create.success.title}`,
+          content: `${texts.create.success.content}`,
         })
         cancelCreate()
       } else {
         setModalError({
           status: "alert",
           icon: "IconExclamation",
-          title: "UPS!",
-          content:
-            "Hubo un error al crear el partner, por favor intentalo nuevamente o comunicate con el admin",
+          title: `${texts.create.error.title}`,
+          content: `${texts.create.error.content}`,
         })
       }
     }
@@ -233,9 +236,14 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               width={115}
               options={timeUnits}
               ref={paidTimeUnitRef}
-              onChangeProps={(e: { id: number; display_name: string }) =>
+              onChangeProps={(e: { id: number; display_name: string }) => {
                 setPaidTimeUnit(e)
-              }
+                if (e.id !== 1) {
+                  setIsChecked(true)
+                } else {
+                  setIsChecked(false)
+                }
+              }}
             />
           </SubContainer>
         </HorizontalGroup>
@@ -255,12 +263,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         </HorizontalGroup>
         <CheckboxContainer>
           <Checkbox
-            onChange={e =>
-              setNewPartnerData({
-                ...newPartnerData,
-                free_pass: e.target.checked === true ? 1 : 0,
-              })
-            }
+            checked={isChecked || newPartnerData.trainer_id !== null}
+            isDisabled
             idParam="free-pass"
           />
           <p>{texts.create.free_pass}</p>

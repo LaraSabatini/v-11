@@ -34,6 +34,14 @@
         "paid_time": "Tiempo",
         "trainer": "Profesor",
         "free_pass": "Pase libre",
-        "unit": "Unidad"
+        "unit": "Unidad",
+        "success": {
+            "title": "Excelente!",
+            "content": "El partner ha sido creado exitosamente."
+        },
+        "error": {
+            "title": "UPS!",
+            "content": "Hubo un error al crear el partner, por favor intentalo nuevamente o comunicate con el admin."
+        }
     }
 }

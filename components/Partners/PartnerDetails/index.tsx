@@ -80,7 +80,7 @@ const PartnerDetails = () => {
         </PartnerData>
         <PartnerData>
           <p>{texts.trainer}</p>
-          {partnerInfo?.trainer_id !== null
+          {partnerInfo?.trainer_id !== null && partnerInfo?.trainer_id !== 0
             ? `${partnerInfo?.trainer_id}`
             : `${texts.not_trainer}`}
         </PartnerData>
