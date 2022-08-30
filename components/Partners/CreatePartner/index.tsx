@@ -101,15 +101,23 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         expireDate.setFullYear(expireDate.getFullYear() + paidTime)
       }
 
+      const finalExpireDay =
+        expireDate.getDate() > 9
+          ? expireDate.getDate()
+          : `0${expireDate.getDate()}`
+
+      const finalExpireMonth =
+        expireDate.getMonth() + 1 > 9
+          ? expireDate.getMonth() + 1
+          : `0${expireDate.getMonth() + 1}`
+
       const body = {
         ...newPartnerData,
         id: 0,
         birth_date:
           newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
         membership_start_date: `${day}/${month + 1}/${year}`,
-        payment_expire_date: `${expireDate.getDate()}/${
-          expireDate.getMonth() + 1
-        }/${expireDate.getFullYear()}`,
+        payment_expire_date: `${finalExpireDay}/${finalExpireMonth}/${expireDate.getFullYear()}`,
         membership_time_paid: `${paidTime} ${paidTimeUnit.display_name}`,
         payment_is_active: 1,
         created_by: parseInt(localStorage.getItem("id"), 10),
