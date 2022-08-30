@@ -1,7 +1,12 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import texts from "strings/partners.json"
+import getFreePassPartners from "services/GetFreePass.service"
+import searchPartner from "services/SearchPartner.service"
+import getStudents from "services/GetStudents.service"
+import getPartners from "services/GetPartnerts.service"
 import { PartnersContext } from "contexts/Partners"
 import Icon from "components/UI/Assets/Icon"
+import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import theme from "theme/index"
 import Header from "components/UI/Header"
@@ -19,6 +24,7 @@ import {
   AddPartner,
   MainButton,
   ListAndDetailContainer,
+  SearchBarContainer,
 } from "./styles"
 
 function PartnersView() {
@@ -31,17 +37,71 @@ function PartnersView() {
     setModalSuccess,
     modalError,
     setModalError,
+    setPartners,
+    currentPage,
+    setCurrentPage,
+    partners,
   } = useContext(PartnersContext)
 
   const [createModal, setCreateModal] = useState<boolean>(false)
+  const [searchValue, setSearchValue] = useState<string>("")
 
   const selectFilter = (type: string) => {
-    if (filterSelected === null || filterSelected !== type) {
+    if (filterSelected === "all" || filterSelected !== type) {
       setFilterSelected(type)
     } else if (filterSelected === type) {
       setFilterSelected("all")
     }
   }
+
+  const setPartnerList = async () => {
+    if (searchValue.length === 0) {
+      if (filterSelected === "all") {
+        const data = await getPartners(currentPage)
+        setPartners(data.data)
+      } else if (filterSelected === "students") {
+        const data = await getStudents(currentPage)
+        setPartners(data.data)
+      } else {
+        const data = await getFreePassPartners(currentPage)
+        setPartners(data.data)
+      }
+    }
+  }
+
+  const goPrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  const goNext = () => {
+    if (partners.length > 0) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const searchPartnerInDB = async () => {
+    setFilterSelected("all")
+
+    if (searchValue.length > 2) {
+      const executeSearch = await searchPartner(searchValue, 1)
+      setPartners(executeSearch.data)
+    } else if (searchValue.length === 0) {
+      const data = await getPartners(1)
+      setPartners(data.data)
+    }
+  }
+
+  useEffect(() => {
+    searchPartnerInDB()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue])
+
+  useEffect(() => {
+    setPartnerList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterSelected, currentPage, searchValue])
 
   return (
     <Container>
@@ -51,7 +111,7 @@ function PartnersView() {
           message={modalSuccess}
           closeRefresh={() => {
             setModalSuccess(null)
-            // actualizar lista de partners
+            setPartnerList()
           }}
         />
       )}
@@ -82,8 +142,15 @@ function PartnersView() {
               })}
           </FiltersContainer>
         </HeadContent>
+        <SearchBarContainer>
+          <SearchBar
+            searchValue={searchValue}
+            onChangeSearch={e => setSearchValue(e.target.value)}
+            width={250}
+          />
+        </SearchBarContainer>
         <ListAndDetailContainer>
-          <PartnersList />
+          <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
           {partnerSelected !== null && <PartnerDetails />}
         </ListAndDetailContainer>
         <MainButton>

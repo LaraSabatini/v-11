@@ -74,8 +74,12 @@ const MainButton = styled.div`
 const ListAndDetailContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 20px;
   gap: 20px;
+`
+
+const SearchBarContainer = styled.div`
+  margin-top: 30px;
 `
 
 export {
@@ -88,4 +92,5 @@ export {
   AddPartner,
   MainButton,
   ListAndDetailContainer,
+  SearchBarContainer,
 }

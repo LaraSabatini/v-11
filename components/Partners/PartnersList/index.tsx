@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
-import getPartners from "services/GetPartnerts.service"
 import texts from "strings/partners.json"
 import ScrollView from "components/UI/ScrollView"
 import Tooltip from "components/UI/Tooltip"
@@ -23,15 +22,16 @@ import {
   NoPartnersView,
 } from "./styles"
 
-const PartnersList = () => {
-  const {
-    partners,
-    setPartners,
-    partnerSelected,
-    setPartnerSelected,
-  } = useContext(PartnersContext)
+interface PartnerListInterface {
+  data: PartnerInterface[]
+  goPrev: () => void
+  goNext: () => void
+}
 
-  const [currentPage, setCurrentPage] = useState<number>(1)
+const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
+  const { partnerSelected, setPartnerSelected, currentPage } = useContext(
+    PartnersContext,
+  )
 
   const selectPartner = (partner: number) => {
     if (partnerSelected === null || partnerSelected !== partner) {
@@ -41,34 +41,12 @@ const PartnersList = () => {
     }
   }
 
-  const getData = async () => {
-    const partnersList = await getPartners(currentPage)
-    setPartners(partnersList.data)
-  }
-
-  useEffect(() => {
-    getData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
-
-  const goPrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-  }
-
-  const goNext = () => {
-    if (partners.length > 0) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
   return (
     <Container>
       <ScrollView height={500}>
         <ListContainer>
-          {partners.length > 0 ? (
-            partners.map((partner: PartnerInterface) => {
+          {data.length > 0 ? (
+            data.map((partner: PartnerInterface) => {
               return (
                 <ListItem onClick={() => selectPartner(partner.id)}>
                   <Name>

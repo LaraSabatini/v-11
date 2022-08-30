@@ -22,6 +22,8 @@ export const PartnersContext = createContext({
   setModalSuccess: null,
   modalError: null,
   setModalError: null,
+  currentPage: null,
+  setCurrentPage: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -45,7 +47,9 @@ const PartnersProvider = ({ children }) => {
 
   const [partnerSelected, setPartnerSelected] = useState<number>(null)
 
-  // CREATE
+  const [currentPage, setCurrentPage] = useState<number>(1)
+
+  // CREATE *************************************************************
   const timeUnits = [
     {
       id: 1,
@@ -107,6 +111,8 @@ const PartnersProvider = ({ children }) => {
         setModalSuccess,
         modalError,
         setModalError,
+        currentPage,
+        setCurrentPage,
       }}
     >
       {children}
