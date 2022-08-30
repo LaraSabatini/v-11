@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { PartnersContext } from "contexts/Partners"
 import texts from "strings/partners.json"
 import ScrollView from "components/UI/ScrollView"
@@ -33,6 +33,8 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
     PartnersContext,
   )
 
+  const [paymentIsActive, setPaymentIsActive] = useState<boolean[]>([])
+
   const selectPartner = (partner: number) => {
     if (partnerSelected === null || partnerSelected !== partner) {
       setPartnerSelected(partner)
@@ -41,12 +43,32 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
     }
   }
 
+  const checkPaymentActiveness = () => {
+    const booleanArr = []
+    const today = new Date()
+
+    data.map((expirement, index) => {
+      const str = data[index].payment_expire_date
+      const [day, month, year] = str.split("/")
+      const date = new Date(+year, parseInt(month, 10) - 1, +day)
+
+      return booleanArr.push(date > today)
+    })
+
+    setPaymentIsActive(booleanArr)
+  }
+
+  useEffect(() => {
+    checkPaymentActiveness()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
+
   return (
     <Container>
       <ScrollView height={500}>
         <ListContainer>
           {data.length > 0 ? (
-            data.map((partner: PartnerInterface) => {
+            data.map((partner: PartnerInterface, index: number) => {
               return (
                 <ListItem onClick={() => selectPartner(partner.id)}>
                   <Name>
@@ -61,8 +83,8 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
                       <FreePass>{texts.free_pass}</FreePass>
                     )}
                   </Tags>
-                  <PaymentActive active={partner.payment_is_active}>
-                    {partner.payment_is_active
+                  <PaymentActive active={paymentIsActive[index]}>
+                    {paymentIsActive[index]
                       ? `${texts.active_payment}`
                       : `${texts.expired_payment}`}
                   </PaymentActive>

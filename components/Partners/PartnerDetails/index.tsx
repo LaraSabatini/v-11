@@ -76,15 +76,11 @@ const PartnerDetails = () => {
           {partnerInfo?.membership_time_paid}
         </PartnerData>
         <PartnerData>
-          <p>{texts.payment_is_active}</p>
-          {partnerInfo?.payment_is_active ? `${texts.yes}` : `${texts.no}`}
-        </PartnerData>
-        <PartnerData>
           <p>{texts.created_by}</p>@{createdBy}
         </PartnerData>
         <PartnerData>
           <p>{texts.trainer}</p>
-          {partnerInfo?.trainer_id !== 0
+          {partnerInfo?.trainer_id !== null
             ? `${partnerInfo?.trainer_id}`
             : `${texts.not_trainer}`}
         </PartnerData>
