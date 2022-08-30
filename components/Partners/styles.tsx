@@ -6,7 +6,7 @@ const Container = styled.div``
 const Content = styled.div`
   width: 90vw;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 30px;
   height: 80vh;
   position: relative;
 `

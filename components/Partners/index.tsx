@@ -45,6 +45,7 @@ function PartnersView() {
 
   const [createModal, setCreateModal] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>("")
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
 
   const selectFilter = (type: string) => {
     if (filterSelected === "all" || filterSelected !== type) {
@@ -101,7 +102,7 @@ function PartnersView() {
   useEffect(() => {
     setPartnerList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterSelected, currentPage, searchValue])
+  }, [filterSelected, currentPage, searchValue, triggerListUpdate])
 
   return (
     <Container>
@@ -110,8 +111,8 @@ function PartnersView() {
           success
           message={modalSuccess}
           closeRefresh={() => {
+            setTriggerListUpdate(triggerListUpdate + 1)
             setModalSuccess(null)
-            setPartnerList()
           }}
         />
       )}
