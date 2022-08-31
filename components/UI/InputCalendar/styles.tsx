@@ -62,7 +62,6 @@ const FieldContainer = styled.div<Width>`
 const Label = styled.label<LabelStyles>`
   font-weight: ${theme.fontWeights.regular};
   font-size: ${theme.fontSizes.xs};
-  margin-left: 13px;
   margin-bottom: 2px;
   color: ${theme.colors.grey};
   ${props =>
