@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
+import getTrainers from "services/GetTrainers.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import createPartner from "services/CreatePartner.service"
 import { PartnersContext } from "contexts/Partners"
@@ -8,6 +9,7 @@ import Checkbox from "components/UI/Checkbox"
 import texts from "strings/partners.json"
 import InputCalendar from "components/UI/InputCalendar"
 import Autocomplete from "components/UI/Autocomplete"
+
 import {
   Form,
   HorizontalGroup,
@@ -50,6 +52,10 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     trainer_id: null,
     free_pass: 0,
   })
+
+  const [trainers, setTrainers] = useState<
+    { id: number; display_name: string }[]
+  >([])
 
   const [paidTime, setPaidTime] = useState<number>(0)
   const [paidTimeUnit, setPaidTimeUnit] = useState<{
@@ -146,6 +152,24 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
       }
     }
   }
+
+  const fillTrainersData = async () => {
+    const data = await getTrainers()
+    const arrayTrainers = []
+    data.data.map(trainer =>
+      arrayTrainers.push({
+        id: trainer.id,
+        display_name: `${trainer.name} ${trainer.last_name}`,
+      }),
+    )
+
+    setTrainers(arrayTrainers)
+  }
+
+  useEffect(() => {
+    fillTrainersData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <ModalForm
@@ -251,7 +275,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           <Autocomplete
             label={texts.create.trainer}
             width={180}
-            options={timeUnits}
+            options={trainers}
             ref={trainertRef}
             onChangeProps={(e: { id: number; display_name: string }) =>
               setNewPartnerData({
