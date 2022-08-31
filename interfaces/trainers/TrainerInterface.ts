@@ -1,4 +1,4 @@
-export default interface UserInterface {
+export default interface TrainerInterface {
   id: number
   name: string
   last_name: string
