@@ -1,0 +1,66 @@
+{
+    "title": "Partners",
+    "mainButton": "Crear partner",
+    "student": "Alumno",
+    "free_pass": "Pase Libre",
+    "active_payment": "Pago activo",
+    "expired_payment": "Pago vencido",
+    "details": "Detalles",
+    "partner_number": "N° de socio:",
+    "full_name": "Nombre completo:",
+    "email": "Email:",
+    "identification": "N° de documento:",
+    "member_since": "Miembro desde:",
+    "member_expire": "Vencimiento de membresia:",
+    "paid_time": "Tiempo abonado:",
+    "payment_is_active": "El pago esta activo:",
+    "created_by": "Creado por:",
+    "trainer": "Profesor:",
+    "not_trainer": "No tiene",
+    "yes": "Si",
+    "no": "No",
+    "next": "Siguiente pagina",
+    "prev": "Pagina previa",
+    "no_more": "No hay mas socios en la lista",
+    "modal_changes": {
+        "title": "¿Deseas descartar los cambios realizados?",
+        "content": "Si descartas los cambios no se guardara tu progreso",
+        "main_button": "Descartar cambios",
+        "cancel_button": "Cancelar"
+    },
+    "create": {
+        "title": "Crear partner",
+        "cancel_button": "Cancelar",
+        "submit_button": "Crear",
+        "name": "Nombre",
+        "last_name": "Apellido",
+        "identification": "N° de documento",
+        "birth_date": "Fecha de nacimiento",
+        "email": "Email",
+        "paid_time": "Tiempo",
+        "trainer": "Profesor",
+        "free_pass": "Pase libre",
+        "unit": "Unidad",
+        "success": {
+            "title": "Excelente!",
+            "content": "El partner ha sido creado exitosamente."
+        },
+        "error": {
+            "title": "UPS!",
+            "content": "Hubo un error al crear el partner, por favor intentalo nuevamente o comunicate con el admin."
+        }
+    }, 
+    "edit": {
+        "member_since": "Miembro desde",
+        "save": "Guardar",
+        "cancel": "Cancelar",
+        "success": {
+            "title": "Excelente!",
+            "content": "El partner ha sido editado exitosamente."
+        },
+        "error": {
+            "title": "UPS!",
+            "content": "Hubo un error al editar el partner, por favor intentalo nuevamente o comunicate con el admin."
+        }
+    }
+}

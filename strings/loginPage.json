@@ -1,0 +1,8 @@
+{
+    "title": "Bienvenido",
+    "userLabel": "Usuario",
+    "passwordLabel": "Contraseña",
+    "button": "INICIAR SESION",
+    "errorMessage": "El usuario y/o contraseña son incorrectos",
+    "logout": "Cerrar sesion"
+}

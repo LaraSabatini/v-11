@@ -1,8 +1,27 @@
-import type { NextPage } from 'next'
+import { useRouter } from "next/router"
+import Login from "components/Login"
+import useStorage from "hooks/useStorage"
 
-const Home: NextPage = () => {
+function Home() {
+  const { getItem } = useStorage()
+  const logged = getItem("isLoggedIn")
+
+  const router = useRouter()
+
+  if (logged === "true") {
+    router.replace("/home")
+  }
+
   return (
-    <div>hola</div>
+    <>
+      <style jsx global>{`
+        body {
+          margin: 0px;
+          padding: 0px;
+        }
+      `}</style>
+      {!logged && <Login />}
+    </>
   )
 }
 
