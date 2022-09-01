@@ -40,6 +40,7 @@ function TextField({
   backErrorMessage,
   forceValidations,
   placeholder,
+  keyDown,
 }: TextFieldInterface) {
   const [error, setError] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
@@ -97,6 +98,7 @@ function TextField({
     if (e.key === "Enter") {
       e.preventDefault()
       checkInputs(e.currentTarget.value)
+      keyDown()
     }
   }
 

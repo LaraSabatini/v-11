@@ -23,6 +23,7 @@ export default interface TextFieldInterface {
   validations?: ["required" | "maxLength" | "minLength" | "pattern"]
   onChange?: (arg: any) => void
   onBlur?: (arg?: any) => void
+  keyDown?: (arg?: any) => void
   patternMessage?: string
   forceValidations?: boolean
   placeholder?: string
