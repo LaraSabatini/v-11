@@ -5,17 +5,14 @@ import Icon from "components/UI/Assets/Icon"
 import theme from "theme/index"
 import texts from "strings/partners.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import {
-  Container,
-  Title,
-  Divider,
-  PartnerData,
-  Details,
-  IconContainer,
-} from "./styles"
+import DetailsView from "./DetailsView"
+import DetailsEdition from "./DetailsEdition"
+import { Container, Title, Divider, IconContainer } from "./styles"
 
 const PartnerDetails = () => {
-  const { partnerSelected, partners } = useContext(PartnersContext)
+  const { partnerSelected, partners, detailState, setDetailState } = useContext(
+    PartnersContext,
+  )
   const [createdBy, setCreatedBy] = useState<string>("")
   const [partnerInfo, setPartnerInfo] = useState<PartnerInterface>()
 
@@ -43,48 +40,24 @@ const PartnerDetails = () => {
           <p>{texts.partner_number}</p>
           {partnerInfo?.id}
         </span>
-        <IconContainer>
+        <IconContainer
+          onClick={() => {
+            if (detailState === "view") {
+              setDetailState("edit")
+            } else {
+              setDetailState("view")
+            }
+          }}
+        >
           <Icon icon="IconEdit" color={theme.colors.black} />
         </IconContainer>
       </Title>
       <Divider />
-      <Details>
-        <PartnerData>
-          <p>{texts.full_name}</p>
-          {partnerInfo?.name} {partnerInfo?.last_name}
-        </PartnerData>
-
-        <PartnerData>
-          <p>{texts.email}</p>
-          {partnerInfo?.email}
-        </PartnerData>
-
-        <PartnerData>
-          <p>{texts.identification}</p>
-          {partnerInfo?.identification_number}
-        </PartnerData>
-        <PartnerData>
-          <p>{texts.member_since}</p>
-          {partnerInfo?.membership_start_date}
-        </PartnerData>
-        <PartnerData>
-          <p>{texts.member_expire}</p>
-          {partnerInfo?.payment_expire_date}
-        </PartnerData>
-        <PartnerData>
-          <p>{texts.paid_time}</p>
-          {partnerInfo?.membership_time_paid}
-        </PartnerData>
-        <PartnerData>
-          <p>{texts.created_by}</p>@{createdBy}
-        </PartnerData>
-        <PartnerData>
-          <p>{texts.trainer}</p>
-          {partnerInfo?.trainer_id !== null && partnerInfo?.trainer_id !== 0
-            ? `${partnerInfo?.trainer_id}`
-            : `${texts.not_trainer}`}
-        </PartnerData>
-      </Details>
+      {detailState === "view" ? (
+        <DetailsView partnerInfo={partnerInfo} createdBy={createdBy} />
+      ) : (
+        <DetailsEdition partnerInfo={partnerInfo} createdBy={createdBy} />
+      )}
     </Container>
   )
 }

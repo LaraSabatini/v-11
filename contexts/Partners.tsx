@@ -1,5 +1,6 @@
 import { createContext, useState, useRef } from "react"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import TrainerInterface from "interfaces/trainers/TrainerInterface"
 
 export const PartnersContext = createContext({
   filterSelected: null,
@@ -24,6 +25,10 @@ export const PartnersContext = createContext({
   setModalError: null,
   currentPage: null,
   setCurrentPage: null,
+  detailState: null,
+  setDetailState: null,
+  trainersList: null,
+  setTrainersList: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -49,6 +54,8 @@ const PartnersProvider = ({ children }) => {
 
   const [currentPage, setCurrentPage] = useState<number>(1)
 
+  const [detailState, setDetailState] = useState<"view" | "edit">("view")
+
   // CREATE *************************************************************
   const timeUnits = [
     {
@@ -64,6 +71,8 @@ const PartnersProvider = ({ children }) => {
       display_name: "Año/s",
     },
   ]
+
+  const [trainersList, setTrainersList] = useState<TrainerInterface[]>([])
 
   const nameRef = useRef(null)
   const lastNameRef = useRef(null)
@@ -113,6 +122,10 @@ const PartnersProvider = ({ children }) => {
         setModalError,
         currentPage,
         setCurrentPage,
+        detailState,
+        setDetailState,
+        trainersList,
+        setTrainersList,
       }}
     >
       {children}
