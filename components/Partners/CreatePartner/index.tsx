@@ -200,8 +200,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             type="text"
             reference={nameRef}
             onChange={e => {
-              // const input = e.target.value.toLowerCase()
-              // const name = input.charAt(0).toUpperCase() + input.slice(1)
               setNewPartnerData({ ...newPartnerData, name: e.target.value })
             }}
           />
@@ -212,8 +210,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             type="text"
             reference={lastNameRef}
             onChange={e => {
-              // const input = e.target.value.toLowerCase()
-              // const lastName = input.charAt(0).toUpperCase() + input.slice(1)
               setNewPartnerData({
                 ...newPartnerData,
                 last_name: e.target.value,
