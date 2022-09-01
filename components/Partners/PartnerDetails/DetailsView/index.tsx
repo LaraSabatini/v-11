@@ -54,17 +54,10 @@ const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
         {partnerInfo?.payment_expire_date}
       </PartnerData>
       <PartnerData>
-        <p>{texts.paid_time}</p>
-        {partnerInfo?.membership_time_paid}
-      </PartnerData>
-      <PartnerData>
         <p>{texts.created_by}</p>@{createdBy}
       </PartnerData>
       <PartnerData>
         <p>{texts.trainer}</p>
-        {/* {partnerInfo?.trainer_id !== null && partnerInfo?.trainer_id !== 0
-          ? `${partnerInfo?.trainer_id}`
-          : `${texts.not_trainer}`} */}
         {trainer === "" ? `${texts.not_trainer}` : trainer}
       </PartnerData>
     </Details>

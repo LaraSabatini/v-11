@@ -22,6 +22,12 @@
     "next": "Siguiente pagina",
     "prev": "Pagina previa",
     "no_more": "No hay mas socios en la lista",
+    "modal_changes": {
+        "title": "¿Deseas descartar los cambios realizados?",
+        "content": "Si descartas los cambios no se guardara tu progreso",
+        "main_button": "Descartar cambios",
+        "cancel_button": "Cancelar"
+    },
     "create": {
         "title": "Crear partner",
         "cancel_button": "Cancelar",
@@ -43,5 +49,10 @@
             "title": "UPS!",
             "content": "Hubo un error al crear el partner, por favor intentalo nuevamente o comunicate con el admin."
         }
+    }, 
+    "edit": {
+        "member_since": "Miembro desde",
+        "save": "Guardar",
+        "cancel": "Cancelar"
     }
 }
