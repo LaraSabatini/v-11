@@ -53,6 +53,14 @@
     "edit": {
         "member_since": "Miembro desde",
         "save": "Guardar",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "success": {
+            "title": "Excelente!",
+            "content": "El partner ha sido editado exitosamente."
+        },
+        "error": {
+            "title": "UPS!",
+            "content": "Hubo un error al editar el partner, por favor intentalo nuevamente o comunicate con el admin."
+        }
     }
 }

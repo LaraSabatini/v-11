@@ -39,6 +39,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
   const [isChecked, setIsChecked] = useState<boolean>(false)
 
   const [newPartnerData, setNewPartnerData] = useState<PartnerInterface>({
+    id: 0,
     name: "",
     last_name: "",
     identification_number: "",
@@ -47,7 +48,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     membership_start_date: "",
     membership_time_paid: "",
     payment_expire_date: "",
-    payment_is_active: false,
+    payment_is_active: 0,
     created_by: null,
     trainer_id: null,
     free_pass: 0,

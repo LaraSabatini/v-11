@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React, { useRef, useEffect, useState, useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
-// import editPartner from "services/EditPartner.service"
+import editPartner from "services/EditPartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import getTrainers from "services/GetTrainers.service"
 import texts from "strings/partners.json"
@@ -28,6 +28,8 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
     identificationRef,
     emailRef,
     trainertRef,
+    setModalSuccess,
+    setModalError,
   } = useContext(PartnersContext)
 
   const [trainers, setTrainers] = useState<
@@ -81,19 +83,15 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
   }
 
   const cancelDiscard = () => {
-    console.log(cancelDiscard)
     setModalHasChanges(false)
   }
 
   const discardChanges = () => {
-    console.log("discardChanges")
     setModalHasChanges(false)
     setNewData(partnerInfo)
     setHasChanges(false)
     setDetailState("view")
   }
-
-  console.log(partnerInfo)
 
   const saveChanges = async e => {
     e.preventDefault()
@@ -136,10 +134,26 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         free_pass: freePass,
       }
 
-      console.log(body)
+      const apiValidation = await editPartner(body)
 
-      // const apiValidation = await editPartner(body)
-      // console.log(apiValidation)
+      if (apiValidation.message === "partner updated successfully") {
+        setModalSuccess({
+          status: "success",
+          icon: "IconCheckModal",
+          title: `${texts.edit.success.title}`,
+          content: `${texts.edit.success.content}`,
+        })
+        setDetailState("view")
+        setHasChanges(false)
+      } else {
+        setModalError({
+          status: "alert",
+          icon: "IconExclamation",
+          title: `${texts.edit.error.title}`,
+          content: `${texts.edit.error.content}`,
+        })
+        setHasChanges(false)
+      }
     }
   }
 
