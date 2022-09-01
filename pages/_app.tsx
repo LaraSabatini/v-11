@@ -1,15 +1,9 @@
-// import type { AppProps } from "next/app"
+import type { AppProps } from "next/app"
 import { useEffect } from "react"
 import { useRouter } from "next/router"
-import { NextComponentType, NextPageContext } from "next"
 import useStorage from "../hooks/useStorage"
 
-interface PageInterface {
-  Component: NextComponentType<NextPageContext, any, {}> | any
-  pageProps: any
-}
-
-function MyApp({ Component, pageProps }: PageInterface) {
+function MyApp({ Component, pageProps }: AppProps) {
   const { getItem } = useStorage()
   const logged = getItem("isLoggedIn")
   const router = useRouter()
