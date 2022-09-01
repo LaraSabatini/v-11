@@ -64,9 +64,12 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
   }>()
 
   const today = new Date()
-  const day = today.getDate()
-  const month = today.getMonth()
+  const getDay = today.getDate()
+  const getMonth = today.getMonth()
   const year = today.getFullYear()
+
+  const day = getDay > 9 ? getDay : `0${getDay}`
+  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
 
   const addMonths = (numOfMonths: number, date = new Date()) => {
     date.setMonth(date.getMonth() + numOfMonths)
@@ -119,12 +122,21 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           ? expireDate.getMonth() + 1
           : `0${expireDate.getMonth() + 1}`
 
+      const inputName = newPartnerData.name.toLowerCase()
+      const name = inputName.charAt(0).toUpperCase() + inputName.slice(1)
+
+      const inputLastName = newPartnerData.last_name.toLowerCase()
+      const lastName =
+        inputLastName.charAt(0).toUpperCase() + inputLastName.slice(1)
+
       const body = {
         ...newPartnerData,
         id: 0,
+        name,
+        last_name: lastName,
         birth_date:
           newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
-        membership_start_date: `${day}/${month + 1}/${year}`,
+        membership_start_date: `${day}/${month}/${year}`,
         payment_expire_date: `${finalExpireDay}/${finalExpireMonth}/${expireDate.getFullYear()}`,
         membership_time_paid: `${paidTime} ${paidTimeUnit.display_name}`,
         payment_is_active: 1,
@@ -187,9 +199,11 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             label={texts.create.name}
             type="text"
             reference={nameRef}
-            onChange={e =>
+            onChange={e => {
+              // const input = e.target.value.toLowerCase()
+              // const name = input.charAt(0).toUpperCase() + input.slice(1)
               setNewPartnerData({ ...newPartnerData, name: e.target.value })
-            }
+            }}
           />
           <TextField
             required
@@ -197,12 +211,14 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             label={texts.create.last_name}
             type="text"
             reference={lastNameRef}
-            onChange={e =>
+            onChange={e => {
+              // const input = e.target.value.toLowerCase()
+              // const lastName = input.charAt(0).toUpperCase() + input.slice(1)
               setNewPartnerData({
                 ...newPartnerData,
                 last_name: e.target.value,
               })
-            }
+            }}
           />
         </HorizontalGroup>
         <HorizontalGroup>
