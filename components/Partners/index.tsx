@@ -41,6 +41,9 @@ function PartnersView() {
     currentPage,
     setCurrentPage,
     partners,
+    hasChanges,
+    setModalHasChanges,
+    setDetailState,
   } = useContext(PartnersContext)
 
   const [createModal, setCreateModal] = useState<boolean>(false)
@@ -134,8 +137,15 @@ function PartnersView() {
               filters.map((filter: { value: string; text: string }) => {
                 return (
                   <Filter
-                    onClick={() => selectFilter(filter.value)}
                     selected={filterSelected === filter.value}
+                    onClick={() => {
+                      if (hasChanges) {
+                        setModalHasChanges(true)
+                      } else {
+                        setDetailState("view")
+                        selectFilter(filter.value)
+                      }
+                    }}
                   >
                     {filter.text}
                   </Filter>
@@ -143,7 +153,15 @@ function PartnersView() {
               })}
           </FiltersContainer>
         </HeadContent>
-        <SearchBarContainer>
+        <SearchBarContainer
+          onClick={() => {
+            if (hasChanges) {
+              setModalHasChanges(true)
+            } else {
+              setDetailState("view")
+            }
+          }}
+        >
           <SearchBar
             searchValue={searchValue}
             onChangeSearch={e => setSearchValue(e.target.value)}
@@ -156,7 +174,16 @@ function PartnersView() {
         </ListAndDetailContainer>
         <MainButton>
           <Tooptip title={texts.mainButton}>
-            <AddPartner onClick={() => setCreateModal(true)}>
+            <AddPartner
+              onClick={() => {
+                if (hasChanges) {
+                  setModalHasChanges(true)
+                } else {
+                  setDetailState("view")
+                  setCreateModal(true)
+                }
+              }}
+            >
               <Icon color={theme.colors.white} icon="IconAdd" />
             </AddPartner>
           </Tooptip>

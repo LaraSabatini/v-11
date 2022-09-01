@@ -29,6 +29,10 @@ export const PartnersContext = createContext({
   setDetailState: null,
   trainersList: null,
   setTrainersList: null,
+  hasChanges: null,
+  setHasChanges: null,
+  modalHasChanges: null,
+  setModalHasChanges: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -97,6 +101,11 @@ const PartnersProvider = ({ children }) => {
     content: string
   } | null>(null)
 
+  // EDIT *************************************************************
+
+  const [hasChanges, setHasChanges] = useState<boolean>(false)
+  const [modalHasChanges, setModalHasChanges] = useState<boolean>(false)
+
   return (
     <PartnersContext.Provider
       value={{
@@ -126,6 +135,10 @@ const PartnersProvider = ({ children }) => {
         setDetailState,
         trainersList,
         setTrainersList,
+        hasChanges,
+        setHasChanges,
+        modalHasChanges,
+        setModalHasChanges,
       }}
     >
       {children}

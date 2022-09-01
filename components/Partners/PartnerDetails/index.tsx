@@ -10,9 +10,14 @@ import DetailsEdition from "./DetailsEdition"
 import { Container, Title, Divider, IconContainer } from "./styles"
 
 const PartnerDetails = () => {
-  const { partnerSelected, partners, detailState, setDetailState } = useContext(
-    PartnersContext,
-  )
+  const {
+    partnerSelected,
+    partners,
+    detailState,
+    setDetailState,
+    hasChanges,
+    setModalHasChanges,
+  } = useContext(PartnersContext)
   const [createdBy, setCreatedBy] = useState<string>("")
   const [partnerInfo, setPartnerInfo] = useState<PartnerInterface>()
 
@@ -42,7 +47,9 @@ const PartnerDetails = () => {
         </span>
         <IconContainer
           onClick={() => {
-            if (detailState === "view") {
+            if (hasChanges) {
+              setModalHasChanges(true)
+            } else if (detailState === "view" && !hasChanges) {
               setDetailState("edit")
             } else {
               setDetailState("view")

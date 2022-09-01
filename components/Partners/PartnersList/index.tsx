@@ -29,9 +29,14 @@ interface PartnerListInterface {
 }
 
 const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
-  const { partnerSelected, setPartnerSelected, currentPage } = useContext(
-    PartnersContext,
-  )
+  const {
+    partnerSelected,
+    setPartnerSelected,
+    currentPage,
+    hasChanges,
+    setModalHasChanges,
+    setDetailState,
+  } = useContext(PartnersContext)
 
   const [paymentIsActive, setPaymentIsActive] = useState<boolean[]>([])
 
@@ -70,7 +75,16 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
           {data.length > 0 ? (
             data.map((partner: PartnerInterface, index: number) => {
               return (
-                <ListItem onClick={() => selectPartner(partner.id)}>
+                <ListItem
+                  onClick={() => {
+                    if (hasChanges) {
+                      setModalHasChanges(true)
+                    } else {
+                      selectPartner(partner.id)
+                      setDetailState("view")
+                    }
+                  }}
+                >
                   <Name>
                     {partner.name} {partner.last_name}
                   </Name>
@@ -100,13 +114,31 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
         </ListContainer>
       </ScrollView>
       <Paginator>
-        <Navigate onClick={goPrev}>
+        <Navigate
+          onClick={() => {
+            if (hasChanges) {
+              setModalHasChanges(true)
+            } else {
+              goPrev()
+              setDetailState("view")
+            }
+          }}
+        >
           <Tooltip title={texts.prev}>
             <Icon icon="IconArrowLeft" />
           </Tooltip>
         </Navigate>
         {currentPage}
-        <Navigate onClick={goNext}>
+        <Navigate
+          onClick={() => {
+            if (hasChanges) {
+              setModalHasChanges(true)
+            } else {
+              goNext()
+              setDetailState("view")
+            }
+          }}
+        >
           <Tooltip title={texts.next} placement="top-start">
             <Icon icon="IconArrowRight" />
           </Tooltip>

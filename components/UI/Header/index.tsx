@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import { PartnersContext } from "contexts/Partners"
 import texts from "strings/general.json"
 import Tooltip from "components/UI/Tooltip"
 import LogOut from "./LogOut"
@@ -13,6 +14,9 @@ import {
 
 function Header() {
   const router = useRouter()
+  const { hasChanges, setModalHasChanges, setDetailState } = useContext(
+    PartnersContext,
+  )
   const [currentUser, setCurrentUser] = useState<string>("")
 
   const [openLogOut, setOpenLogOut] = useState<boolean>(false)
@@ -22,7 +26,15 @@ function Header() {
   }, [])
 
   return (
-    <HeaderContainer>
+    <HeaderContainer
+      onClick={() => {
+        if (hasChanges) {
+          setModalHasChanges(true)
+        } else {
+          setDetailState("view")
+        }
+      }}
+    >
       <HeaderContent>
         <Sections>
           <SectionTitle
