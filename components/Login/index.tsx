@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/router"
-import validateUser from "services/ValidateUser.service"
+import validateUser from "services/Users/ValidateUser.service"
 import theme from "theme/index"
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"

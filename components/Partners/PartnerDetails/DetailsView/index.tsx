@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
-import getTrainers from "services/GetTrainers.service"
+import getTrainers from "services/Trainers/GetTrainers.service"
 import texts from "strings/partners.json"
 import { PartnerData, Details } from "./styles"
 
