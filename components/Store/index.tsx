@@ -1,8 +1,16 @@
-import React, { useState } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import getProducts from "services/Store/getProducts.service"
+import getCategories from "services/Store/getCategories.service"
+import getBrands from "services/Store/getBrands.service"
+import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
+import theme from "theme/index"
+import ModalAlert from "components/UI/ModalAlert"
+import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
 // import Product from "./Product"
+import CreateProductForm from "./CreateProductForm"
 import {
   Container,
   Content,
@@ -15,10 +23,29 @@ import {
   IconContainer,
   SectionsButtons,
   Section,
-  // ProductsContainer,
+  ProductsContainer,
+  CreateProduct,
+  MainButton,
 } from "./styles"
 
 function StoreView() {
+  const {
+    setCategories,
+    setBrands,
+    categories,
+    brands,
+    modalSuccess,
+    setModalSuccess,
+    modalError,
+    setModalError,
+    productsList,
+    setProductsList,
+    currentPage,
+    // setCurrentPage,
+  } = useContext(StoreContext)
+  const [createModal, setCreateModal] = useState<boolean>(false)
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
+
   const [openTypeMenu, setOpenTypeMenu] = useState<boolean>(false)
   const [openBrandMenu, setOpenBrandMenu] = useState<boolean>(false)
 
@@ -30,8 +57,52 @@ function StoreView() {
     id: 1,
   })
 
+  const setData = async () => {
+    const categoriesList = await getCategories()
+    setCategories(categoriesList.data)
+
+    const brandsList = await getBrands()
+    setBrands(brandsList.data)
+  }
+
+  useEffect(() => {
+    setData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // use effect con triggerListUpdate
+
+  const getListOfProducts = async () => {
+    const data = await getProducts(currentPage)
+    setProductsList(data.data)
+  }
+
+  useEffect(() => {
+    getListOfProducts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerListUpdate, currentPage])
+
   return (
     <Container>
+      {modalSuccess !== null && (
+        <ModalAlert
+          success
+          message={modalSuccess}
+          closeRefresh={() => {
+            setTriggerListUpdate(triggerListUpdate + 1)
+            setModalSuccess(null)
+          }}
+        />
+      )}
+      {modalError !== null && (
+        <ModalAlert
+          success={false}
+          message={modalError}
+          closeRefresh={() => {
+            setModalError(null)
+          }}
+        />
+      )}
       <Header />
       <Content>
         <SectionsButtons>
@@ -80,10 +151,12 @@ function StoreView() {
                 </p>
                 {openTypeMenu && (
                   <Selector>
-                    <Option>Bebidas</Option>
-                    <Option>Magnesio</Option>
-                    <Option>Zapatillas</Option>
-                    <Option>Merch</Option>
+                    {categories.length &&
+                      categories.map(
+                        (category: { id: number; name: string }) => (
+                          <Option key={category.id}>{category.name}</Option>
+                        ),
+                      )}
                   </Selector>
                 )}
               </Select>
@@ -101,14 +174,31 @@ function StoreView() {
                 </p>
                 {openBrandMenu && (
                   <Selector>
-                    <Option>Depende del tipo seleccionado</Option>
+                    {brands.length &&
+                      brands.map((brand: { id: number; name: string }) => (
+                        <Option key={brand.id}>{brand.name}</Option>
+                      ))}
                   </Selector>
                 )}
               </Select>
             </FiltersContainer>
           )}
         </HeadContent>
+        <ProductsContainer>
+          {/* <Product /> */}
+          {productsList && productsList.map(product => <p>{product.name}</p>)}
+        </ProductsContainer>
+        <MainButton>
+          <Tooptip title="Crear producto">
+            <CreateProduct onClick={() => setCreateModal(true)}>
+              <Icon color={theme.colors.white} icon="IconAdd" />
+            </CreateProduct>
+          </Tooptip>
+        </MainButton>
       </Content>
+      {createModal && (
+        <CreateProductForm cancelCreate={() => setCreateModal(false)} />
+      )}
     </Container>
   )
 }

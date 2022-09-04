@@ -4,20 +4,20 @@ import theme from "theme/index"
 const ProductCard = styled.div`
   font-family: ${theme.fonts.primary};
   width: 200px;
-  /* height: 200px; */
   padding: 15px;
   border-radius: 10px;
   display: flex;
   justify-content: space-around;
-  /* flex-direction: column; */
   box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
   -webkit-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
   -moz-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
+
+  img {
+    width: 90px;
+  }
 `
 
-const ProductName = styled.p`
-  /* margin-left: 10px; */
-`
+const ProductName = styled.p``
 
 const Description = styled.div`
   display: flex;

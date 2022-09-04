@@ -4,5 +4,9 @@
     "brand": "Marca",
     "sells": "Ventas",
     "purchases": "Compras",
-    "stock": "Stock"
+    "stock": "Stock",
+    "create": {
+        "title": "Crear producto",
+        "cancel": "Cancelar"
+    }
 }

@@ -1,5 +1,5 @@
 import React from "react"
-import Image from "next/image"
+// import Image from "next/image"
 import Icon from "components/UI/Assets/Icon"
 import {
   ProductCard,
@@ -13,7 +13,8 @@ import {
 const Product = () => {
   return (
     <ProductCard>
-      <Image src="/corona.png" alt="alo" width={50} height={155} />
+      {/* <Image src="/beer.png" alt="alo" width={50} height={155} /> */}
+      <img src="/beer.png" alt="beer" />
       <Description>
         <ProductName>Corona 750ml</ProductName>
         <ProductPrice>$ 500</ProductPrice>

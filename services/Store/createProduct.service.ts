@@ -1,6 +1,7 @@
 import axios from "axios"
 
 const createProduct = async (body: {
+  id: number
   name: string
   brand_id: number
   stock: number
@@ -9,7 +10,6 @@ const createProduct = async (body: {
   cost: number
   sales_contact_name: string
   sales_contact_information: string
-  image: string
   category_id: number
 }) => {
   const axiosHeader = {
