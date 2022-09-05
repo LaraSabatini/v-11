@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
+import { productByCategory } from "services/Store/searchProduct.service"
 import getProducts from "services/Store/getProducts.service"
 import getCategories from "services/Store/getCategories.service"
 import getBrands from "services/Store/getBrands.service"
@@ -43,6 +44,8 @@ function StoreView() {
     setProductsList,
     currentPage,
     setCurrentPage,
+    setFilterSelected,
+    filterSelected,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
@@ -72,8 +75,13 @@ function StoreView() {
   }, [])
 
   const getListOfProducts = async () => {
-    const data = await getProducts(currentPage)
-    setProductsList(data.data)
+    if (filterSelected === null) {
+      const data = await getProducts(currentPage)
+      setProductsList(data.data)
+    } else {
+      const data = await productByCategory(filterSelected, 1)
+      setProductsList(data.data)
+    }
   }
 
   const goPrev = () => {
@@ -91,7 +99,11 @@ function StoreView() {
   useEffect(() => {
     getListOfProducts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerListUpdate, currentPage])
+  }, [triggerListUpdate, currentPage, filterSelected])
+
+  const selectFilter = (category_id: number) => {
+    setFilterSelected(category_id)
+  }
 
   return (
     <Container>
@@ -165,9 +177,15 @@ function StoreView() {
                     {categories.length &&
                       categories.map(
                         (category: { id: number; name: string }) => (
-                          <Option key={category.id}>{category.name}</Option>
+                          <Option
+                            key={category.id}
+                            onClick={() => selectFilter(category.id)}
+                          >
+                            {category.name}
+                          </Option>
                         ),
                       )}
+                    <Option onClick={() => selectFilter(null)}>Todos</Option>
                   </Selector>
                 )}
               </Select>

@@ -26,6 +26,8 @@ export const StoreContext = createContext({
   setPurchaseChange: null,
   executeCleanPurchase: null,
   setExecuteCleanPurchase: null,
+  filterSelected: null,
+  setFilterSelected: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -46,6 +48,8 @@ const StoreProvider = ({ children }) => {
   >([])
 
   const [currentPage, setCurrentPage] = useState<number>(1)
+
+  const [filterSelected, setFilterSelected] = useState<number | null>(null)
 
   // BUY *************************************
   const [purchase, setPurchase] = useState<
@@ -110,6 +114,8 @@ const StoreProvider = ({ children }) => {
         setPurchaseChange,
         executeCleanPurchase,
         setExecuteCleanPurchase,
+        filterSelected,
+        setFilterSelected,
       }}
     >
       {children}

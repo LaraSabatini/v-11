@@ -20,7 +20,7 @@ export const productByCategory = async (category_id: string, page: number) => {
     },
   }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/products/${category_id}?page=${page}`,
+    `https://v-11-backend.vercel.app/products/category/${category_id}?page=${page}`,
     axiosHeader,
   )
   return res.data
