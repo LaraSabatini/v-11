@@ -42,7 +42,14 @@ const IconContainer = styled.div`
   margin-top: 25px;
   border-radius: 5px;
   padding: 5px;
-  cursor: pointer;
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 `
 
 const Amount = styled.p`

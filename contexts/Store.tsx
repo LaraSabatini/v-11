@@ -20,6 +20,12 @@ export const StoreContext = createContext({
   stockRef: null,
   currentPage: null,
   setCurrentPage: null,
+  purchase: null,
+  setPurchase: null,
+  purchaseChange: null,
+  setPurchaseChange: null,
+  executeCleanPurchase: null,
+  setExecuteCleanPurchase: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -40,6 +46,19 @@ const StoreProvider = ({ children }) => {
   >([])
 
   const [currentPage, setCurrentPage] = useState<number>(1)
+
+  // BUY *************************************
+  const [purchase, setPurchase] = useState<
+    {
+      product_id: number
+      product_name: string
+      product_amount: number
+      final_price: number
+    }[]
+  >([])
+
+  const [purchaseChange, setPurchaseChange] = useState<number>(1)
+  const [executeCleanPurchase, setExecuteCleanPurchase] = useState<number>(1)
 
   // CREATE *************************************
 
@@ -85,6 +104,12 @@ const StoreProvider = ({ children }) => {
         stockRef,
         currentPage,
         setCurrentPage,
+        purchase,
+        setPurchase,
+        purchaseChange,
+        setPurchaseChange,
+        executeCleanPurchase,
+        setExecuteCleanPurchase,
       }}
     >
       {children}

@@ -23,7 +23,7 @@ const ProductsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   /* width: 60%; */
-  width: 1000px;
+  width: 900px;
   gap: 15px;
 `
 

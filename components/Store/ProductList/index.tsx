@@ -27,6 +27,7 @@ const ProductsView = ({ data, goPrev, goNext }: ProductListInterface) => {
                 name={product.name}
                 category_id={product.category_id}
                 price={product.price}
+                id={product.id}
               />
             ))}
         </ProductsContainer>
