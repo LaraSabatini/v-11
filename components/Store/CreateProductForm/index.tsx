@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { StoreContext } from "contexts/Store"
+import texts from "strings/store.json"
 import createProduct from "services/Store/createProduct.service"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextField from "components/UI/TextField"
@@ -89,17 +90,16 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",
-          title: "Excelente!",
-          content: "El producto ha sido creado exitosamente.",
+          title: `${texts.create.success.title}`,
+          content: `${texts.create.success.title}`,
         })
         cancelCreate()
       } else {
         setModalError({
           status: "alert",
           icon: "IconExclamation",
-          title: "Ups!",
-          content:
-            "Hubo un error al crear el socio, por favor intentalo nuevamente o comunicate con el admin.",
+          title: `${texts.create.error.title}`,
+          content: `${texts.create.error.title}`,
         })
       }
     }
@@ -127,9 +127,9 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
 
   return (
     <ModalForm
-      title="Crear producto"
-      cancelButtonContent="Cancelar"
-      submitButtonContent="Crear"
+      title={texts.create.title}
+      cancelButtonContent={texts.create.cancel}
+      submitButtonContent={texts.create.submit}
       submit={handleCreate}
       cancelFunction={cancelCreate}
     >
@@ -137,7 +137,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         <HorizontalGroup>
           <TextField
             required
-            label="Nombre"
+            label={texts.create.name}
             width={180}
             type="text"
             reference={nameRef}
@@ -147,7 +147,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           />
           <Autocomplete
             required
-            label="Marca"
+            label={texts.brand}
             width={180}
             options={autoCompleteBrandsValues}
             ref={brandsRef}
@@ -160,7 +160,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         <HorizontalGroup>
           <TextField
             required
-            label="Costo"
+            label={texts.create.cost}
             width={118}
             type="number"
             reference={costRef}
@@ -170,7 +170,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           />
           <TextField
             required
-            label="Margen"
+            label={texts.create.margin}
             type="number"
             width={118}
             reference={marginRef}
@@ -182,7 +182,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
             disabled
             disabledAutocompleted
             width={115}
-            label="Precio"
+            label={texts.create.price}
             type="number"
             value={
               // eslint-disable-next-line no-restricted-globals
@@ -193,7 +193,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         <HorizontalGroup>
           <Autocomplete
             required
-            label="Caterogria"
+            label={texts.create.category}
             width={200}
             options={autoCompleteCategoriesValues}
             ref={categoriesRef}
@@ -203,7 +203,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           />
           <TextField
             required
-            label="Stock"
+            label={texts.stock}
             type="number"
             width={160}
             reference={stockRef}
@@ -217,7 +217,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         </HorizontalGroup>
         <HorizontalGroup>
           <TextField
-            label="Vendedor"
+            label={texts.create.seller}
             type="text"
             width={180}
             onChange={e =>
@@ -228,7 +228,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
             }
           />
           <TextField
-            label="Contacto vendedor"
+            label={texts.create.sellerContact}
             type="text"
             width={180}
             onChange={e =>

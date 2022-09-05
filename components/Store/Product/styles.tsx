@@ -3,7 +3,7 @@ import theme from "theme/index"
 
 const ProductCard = styled.div`
   font-family: ${theme.fonts.primary};
-  width: 200px;
+  width: 260px;
   padding: 15px;
   border-radius: 10px;
   display: flex;
@@ -24,6 +24,8 @@ const Description = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 150px;
+  margin-left: 10px;
+  width: 150px;
 `
 
 const ProductPrice = styled.p`
@@ -47,6 +49,10 @@ const Amount = styled.p`
   font-size: 25px;
 `
 
+const ComponentContainer = styled.div`
+  margin-top: 10px;
+`
+
 export {
   ProductCard,
   ProductName,
@@ -54,4 +60,5 @@ export {
   ProductPrice,
   IconContainer,
   Amount,
+  ComponentContainer,
 }

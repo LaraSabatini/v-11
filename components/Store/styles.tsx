@@ -83,12 +83,6 @@ const IconContainer = styled.div`
   transform: rotate(270deg);
 `
 
-const ProductsContainer = styled.div`
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-`
-
 const SectionsButtons = styled.div`
   display: flex;
   gap: 10px;
@@ -131,6 +125,11 @@ const MainButton = styled.div`
   bottom: 0;
 `
 
+const ProductsAndReceiptContainer = styled.div`
+  display: flex;
+  gap: 20px;
+`
+
 export {
   Container,
   Content,
@@ -141,9 +140,9 @@ export {
   Selector,
   Option,
   IconContainer,
-  ProductsContainer,
   SectionsButtons,
   Section,
   MainButton,
   CreateProduct,
+  ProductsAndReceiptContainer,
 }

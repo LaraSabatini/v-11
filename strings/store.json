@@ -5,8 +5,25 @@
     "sells": "Ventas",
     "purchases": "Compras",
     "stock": "Stock",
+    "mainButton": "Crear producto",
     "create": {
         "title": "Crear producto",
-        "cancel": "Cancelar"
+        "cancel": "Cancelar",
+        "submit": "Crear",
+        "name": "Nombre",
+        "cost": "Costo",
+        "margin": "Margen",
+        "price": "Precio",
+        "category": "Categoria",
+        "seller": "Vendedor",
+        "sellerContact": "Contacto vendedor",
+        "success": {
+            "title": "Excelente!",
+            "content":"El producto ha sido creado exitosamente."
+        },
+        "error": {
+            "title": "UPS!",
+            "content": "Hubo un error al crear el socio, por favor intentalo nuevamente o comunicate con el admin."
+        }
     }
 }

@@ -9,7 +9,8 @@ import ModalAlert from "components/UI/ModalAlert"
 import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
-// import Product from "./Product"
+import ProductsView from "./ProductList"
+import Receipt from "./Receipt"
 import CreateProductForm from "./CreateProductForm"
 import {
   Container,
@@ -23,9 +24,9 @@ import {
   IconContainer,
   SectionsButtons,
   Section,
-  ProductsContainer,
   CreateProduct,
   MainButton,
+  ProductsAndReceiptContainer,
 } from "./styles"
 
 function StoreView() {
@@ -41,7 +42,7 @@ function StoreView() {
     productsList,
     setProductsList,
     currentPage,
-    // setCurrentPage,
+    setCurrentPage,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
@@ -70,11 +71,21 @@ function StoreView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // use effect con triggerListUpdate
-
   const getListOfProducts = async () => {
     const data = await getProducts(currentPage)
     setProductsList(data.data)
+  }
+
+  const goPrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  const goNext = () => {
+    if (productsList.length > 0) {
+      setCurrentPage(currentPage + 1)
+    }
   }
 
   useEffect(() => {
@@ -184,12 +195,12 @@ function StoreView() {
             </FiltersContainer>
           )}
         </HeadContent>
-        <ProductsContainer>
-          {/* <Product /> */}
-          {productsList && productsList.map(product => <p>{product.name}</p>)}
-        </ProductsContainer>
+        <ProductsAndReceiptContainer>
+          <ProductsView goNext={goNext} goPrev={goPrev} data={productsList} />
+          <Receipt />
+        </ProductsAndReceiptContainer>
         <MainButton>
-          <Tooptip title="Crear producto">
+          <Tooptip title={texts.mainButton}>
             <CreateProduct onClick={() => setCreateModal(true)}>
               <Icon color={theme.colors.white} icon="IconAdd" />
             </CreateProduct>
