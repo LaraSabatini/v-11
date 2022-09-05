@@ -25,7 +25,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
     marginRef,
     stockRef,
   } = useContext(StoreContext)
-
+  const [brandSelected, setBrandSelected] = useState<string>("")
   const [newProductData, setNewProductData] = useState<ProductInterface>({
     id: 0,
     name: "",
@@ -83,7 +83,10 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
       costRef.current.attributes.getNamedItem("data-error").value === "false" &&
       marginRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
-      const body = newProductData
+      const body = {
+        ...newProductData,
+        name: `${newProductData.name} ${brandSelected}`,
+      }
       const data = await createProduct(body)
 
       if (data.message === "Product created successfully") {
@@ -91,7 +94,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           status: "success",
           icon: "IconCheckModal",
           title: `${texts.create.success.title}`,
-          content: `${texts.create.success.title}`,
+          content: `${texts.create.success.content}`,
         })
         cancelCreate()
       } else {
@@ -99,7 +102,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           status: "alert",
           icon: "IconExclamation",
           title: `${texts.create.error.title}`,
-          content: `${texts.create.error.title}`,
+          content: `${texts.create.error.content}`,
         })
       }
     }
@@ -151,9 +154,10 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
             width={180}
             options={autoCompleteBrandsValues}
             ref={brandsRef}
-            onChangeProps={(e: { id: number; display_name: string }) =>
+            onChangeProps={(e: { id: number; display_name: string }) => {
               setNewProductData({ ...newProductData, brand_id: e.id })
-            }
+              setBrandSelected(e.display_name)
+            }}
           />
         </HorizontalGroup>
 
