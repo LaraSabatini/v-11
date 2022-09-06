@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/router"
-import validateUser from "services/ValidateUser.service"
+import validateUser from "services/Users/ValidateUser.service"
 import theme from "theme/index"
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"
@@ -45,7 +45,7 @@ function Login() {
   }
 
   const submitLogin = async e => {
-    e.preventDefault()
+    e?.preventDefault()
     await userNameRef.current?.focus()
     await passwordRef.current?.focus()
     await submitRef.current?.focus()
@@ -132,6 +132,7 @@ function Login() {
                   type="password"
                   value={password}
                   onChange={e => handlePassword(e)}
+                  keyDown={submitLogin}
                   reference={passwordRef}
                 />
                 {!success && success !== null ? (

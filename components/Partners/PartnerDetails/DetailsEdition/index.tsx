@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
 import React, { useRef, useEffect, useState, useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
-import editPartner from "services/EditPartner.service"
+import editPartner from "services/Partners/EditPartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import getTrainers from "services/GetTrainers.service"
+import getTrainers from "services/Trainers/GetTrainers.service"
 import texts from "strings/partners.json"
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"

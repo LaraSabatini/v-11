@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import StoreView from "components/Store"
+import StoreProvider from "contexts/Store"
 import { useRouter } from "next/router"
 
 function Store() {
@@ -25,7 +26,11 @@ function Store() {
           padding: 0px;
         }
       `}</style>
-      {isLoggedIn !== null && <StoreView />}
+      {isLoggedIn !== null && (
+        <StoreProvider>
+          <StoreView />
+        </StoreProvider>
+      )}
     </>
   )
 }

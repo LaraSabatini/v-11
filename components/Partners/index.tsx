@@ -1,25 +1,24 @@
 import React, { useContext, useState, useEffect } from "react"
 import texts from "strings/partners.json"
-import getFreePassPartners from "services/GetFreePass.service"
-import searchPartner from "services/SearchPartner.service"
-import getStudents from "services/GetStudents.service"
-import getPartners from "services/GetPartnerts.service"
+import getFreePassPartners from "services/Partners/GetFreePass.service"
+import searchPartner from "services/Partners/SearchPartner.service"
+import getStudents from "services/Partners/GetStudents.service"
+import getPartners from "services/Partners/GetPartners.service"
 import { PartnersContext } from "contexts/Partners"
 import Icon from "components/UI/Assets/Icon"
 import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import theme from "theme/index"
 import Header from "components/UI/Header"
-import ModalAlert from "components/UI/ModalAlert"
+import Modals from "./Modals"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
+import Filters from "./Filters"
 import {
   Container,
   Title,
   Content,
-  FiltersContainer,
-  Filter,
   HeadContent,
   AddPartner,
   MainButton,
@@ -31,12 +30,7 @@ function PartnersView() {
   const {
     filterSelected,
     setFilterSelected,
-    filters,
     partnerSelected,
-    modalSuccess,
-    setModalSuccess,
-    modalError,
-    setModalError,
     setPartners,
     currentPage,
     setCurrentPage,
@@ -44,19 +38,11 @@ function PartnersView() {
     hasChanges,
     setModalHasChanges,
     setDetailState,
+    triggerListUpdate,
   } = useContext(PartnersContext)
 
   const [createModal, setCreateModal] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>("")
-  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
-
-  const selectFilter = (type: string) => {
-    if (filterSelected === "all" || filterSelected !== type) {
-      setFilterSelected(type)
-    } else if (filterSelected === type) {
-      setFilterSelected("all")
-    }
-  }
 
   const setPartnerList = async () => {
     if (searchValue.length === 0) {
@@ -109,49 +95,12 @@ function PartnersView() {
 
   return (
     <Container>
-      {modalSuccess !== null && (
-        <ModalAlert
-          success
-          message={modalSuccess}
-          closeRefresh={() => {
-            setTriggerListUpdate(triggerListUpdate + 1)
-            setModalSuccess(null)
-          }}
-        />
-      )}
-      {modalError !== null && (
-        <ModalAlert
-          success={false}
-          message={modalError}
-          closeRefresh={() => {
-            setModalError(null)
-          }}
-        />
-      )}
+      <Modals />
       <Header />
       <Content>
         <HeadContent>
           <Title>{texts.title}</Title>
-          <FiltersContainer>
-            {filters &&
-              filters.map((filter: { value: string; text: string }) => {
-                return (
-                  <Filter
-                    selected={filterSelected === filter.value}
-                    onClick={() => {
-                      if (hasChanges) {
-                        setModalHasChanges(true)
-                      } else {
-                        setDetailState("view")
-                        selectFilter(filter.value)
-                      }
-                    }}
-                  >
-                    {filter.text}
-                  </Filter>
-                )
-              })}
-          </FiltersContainer>
+          <Filters />
         </HeadContent>
         <SearchBarContainer
           onClick={() => {

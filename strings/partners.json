@@ -1,5 +1,5 @@
 {
-    "title": "Partners",
+    "title": "Clientes",
     "mainButton": "Crear partner",
     "student": "Alumno",
     "free_pass": "Pase Libre",
@@ -29,7 +29,7 @@
         "cancel_button": "Cancelar"
     },
     "create": {
-        "title": "Crear partner",
+        "title": "Crear socio",
         "cancel_button": "Cancelar",
         "submit_button": "Crear",
         "name": "Nombre",
@@ -43,11 +43,11 @@
         "unit": "Unidad",
         "success": {
             "title": "Excelente!",
-            "content": "El partner ha sido creado exitosamente."
+            "content": "El socio ha sido creado exitosamente."
         },
         "error": {
             "title": "UPS!",
-            "content": "Hubo un error al crear el partner, por favor intentalo nuevamente o comunicate con el admin."
+            "content": "Hubo un error al crear el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
     }, 
     "edit": {
@@ -56,11 +56,11 @@
         "cancel": "Cancelar",
         "success": {
             "title": "Excelente!",
-            "content": "El partner ha sido editado exitosamente."
+            "content": "El socio ha sido editado exitosamente."
         },
         "error": {
             "title": "UPS!",
-            "content": "Hubo un error al editar el partner, por favor intentalo nuevamente o comunicate con el admin."
+            "content": "Hubo un error al editar el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
     }
 }

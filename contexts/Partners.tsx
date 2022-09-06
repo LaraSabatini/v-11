@@ -33,6 +33,8 @@ export const PartnersContext = createContext({
   setHasChanges: null,
   modalHasChanges: null,
   setModalHasChanges: null,
+  triggerListUpdate: null,
+  setTriggerListUpdate: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -59,6 +61,8 @@ const PartnersProvider = ({ children }) => {
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const [detailState, setDetailState] = useState<"view" | "edit">("view")
+
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
 
   // CREATE *************************************************************
   const timeUnits = [
@@ -139,6 +143,8 @@ const PartnersProvider = ({ children }) => {
         setHasChanges,
         modalHasChanges,
         setModalHasChanges,
+        triggerListUpdate,
+        setTriggerListUpdate,
       }}
     >
       {children}

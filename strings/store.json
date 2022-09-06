@@ -1,0 +1,47 @@
+{
+    "title": "Tienda",
+    "type": "Tipo",
+    "brand": "Marca",
+    "sells": "Ventas",
+    "purchases": "Compras",
+    "stock": "Stock",
+    "mainButton": "Crear producto",
+    "all": "Todos",
+    "next": "Siguiente pagina",
+    "prev": "Pagina previa",
+    "create": {
+        "title": "Crear producto",
+        "cancel": "Cancelar",
+        "submit": "Crear",
+        "name": "Nombre",
+        "cost": "Costo",
+        "margin": "Margen",
+        "price": "Precio",
+        "category": "Categoria",
+        "seller": "Vendedor",
+        "sellerContact": "Contacto vendedor",
+        
+        "success": {
+            "title": "Excelente!",
+            "content":"El producto ha sido creado exitosamente."
+        },
+        "error": {
+            "title": "UPS!",
+            "content": "Hubo un error al crear el socio, por favor intentalo nuevamente o comunicate con el admin."
+        }
+    },
+    "purchase": {
+        "receipt": "Recibo",
+        "total": "Total:",
+        "execute": "Realizar",
+        "cancel": "Cancelar",
+        "success": {
+            "title": "Excelente!",
+            "content":"La compra se realizo con exito."
+        },
+        "error": {
+            "title": "UPS!",
+            "content": "Hubo un error al realizar la compra, por favor intenta nuevamente o contactate con el admin."
+        }
+    }
+}

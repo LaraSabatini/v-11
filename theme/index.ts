@@ -53,9 +53,3 @@ export default {
     xl: "100%",
   },
 }
-
-// 532D75 => purple
-// C66948 => orange
-// 48ABA2 => green
-// 2D363D => black
-// FFFFFE => white

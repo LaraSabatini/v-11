@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { PartnersContext } from "contexts/Partners"
-import getUsers from "services/GetUsers.service"
+import getUsers from "services/Users/GetUsers.service"
 import Icon from "components/UI/Assets/Icon"
 import theme from "theme/index"
 import texts from "strings/partners.json"
