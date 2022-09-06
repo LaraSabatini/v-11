@@ -28,6 +28,13 @@ export const StoreContext = createContext({
   setExecuteCleanPurchase: null,
   filterSelected: null,
   setFilterSelected: null,
+  triggerListUpdate: null,
+  setTriggerListUpdate: null,
+  openTypeMenu: null,
+  setOpenTypeMenu: null,
+  openBrandMenu: null,
+  setOpenBrandMenu: null,
+  selectFilter: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -51,6 +58,11 @@ const StoreProvider = ({ children }) => {
 
   const [filterSelected, setFilterSelected] = useState<number | null>(null)
 
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
+
+  const [openTypeMenu, setOpenTypeMenu] = useState<boolean>(false)
+  const [openBrandMenu, setOpenBrandMenu] = useState<boolean>(false)
+
   // BUY *************************************
   const [purchase, setPurchase] = useState<
     {
@@ -63,6 +75,10 @@ const StoreProvider = ({ children }) => {
 
   const [purchaseChange, setPurchaseChange] = useState<number>(1)
   const [executeCleanPurchase, setExecuteCleanPurchase] = useState<number>(1)
+
+  const selectFilter = (category_id: number) => {
+    setFilterSelected(category_id)
+  }
 
   // CREATE *************************************
 
@@ -116,6 +132,13 @@ const StoreProvider = ({ children }) => {
         setExecuteCleanPurchase,
         filterSelected,
         setFilterSelected,
+        triggerListUpdate,
+        setTriggerListUpdate,
+        openTypeMenu,
+        setOpenTypeMenu,
+        openBrandMenu,
+        setOpenBrandMenu,
+        selectFilter,
       }}
     >
       {children}

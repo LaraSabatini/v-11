@@ -6,23 +6,19 @@ import getBrands from "services/Store/getBrands.service"
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
 import theme from "theme/index"
-import ModalAlert from "components/UI/ModalAlert"
 import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
+import Modals from "./Modals"
 import ProductsView from "./ProductList"
 import Receipt from "./Receipt"
 import CreateProductForm from "./CreateProductForm"
+import Filters from "./Filters"
 import {
   Container,
   Content,
   Title,
   HeadContent,
-  FiltersContainer,
-  Select,
-  Selector,
-  Option,
-  IconContainer,
   SectionsButtons,
   Section,
   CreateProduct,
@@ -34,27 +30,14 @@ function StoreView() {
   const {
     setCategories,
     setBrands,
-    categories,
-    brands,
-    modalSuccess,
-    setModalSuccess,
-    modalError,
-    setModalError,
     productsList,
     setProductsList,
     currentPage,
     setCurrentPage,
-    setFilterSelected,
     filterSelected,
-    setPurchase,
-    executeCleanPurchase,
-    setExecuteCleanPurchase,
+    triggerListUpdate,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
-  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
-
-  const [openTypeMenu, setOpenTypeMenu] = useState<boolean>(false)
-  const [openBrandMenu, setOpenBrandMenu] = useState<boolean>(false)
 
   const [sectionSelected, setSectionSelected] = useState<{
     section: string
@@ -104,35 +87,9 @@ function StoreView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerListUpdate, currentPage, filterSelected])
 
-  const selectFilter = (category_id: number) => {
-    setFilterSelected(category_id)
-  }
-
   return (
     <Container>
-      {modalSuccess !== null && (
-        <ModalAlert
-          success
-          message={modalSuccess}
-          closeRefresh={() => {
-            setTriggerListUpdate(triggerListUpdate + 1)
-            setModalSuccess(null)
-            setPurchase([])
-            setExecuteCleanPurchase(executeCleanPurchase + 1)
-          }}
-        />
-      )}
-      {modalError !== null && (
-        <ModalAlert
-          success={false}
-          message={modalError}
-          closeRefresh={() => {
-            setModalError(null)
-            setPurchase([])
-            setExecuteCleanPurchase(executeCleanPurchase + 1)
-          }}
-        />
-      )}
+      <Modals />
       <Header />
       <Content>
         <SectionsButtons>
@@ -165,67 +122,14 @@ function StoreView() {
           <Title>
             {texts.title} <span> / {sectionSelected.section}</span>
           </Title>
-          {sectionSelected.id === 1 && (
-            <FiltersContainer>
-              <Select
-                onClick={() => {
-                  setOpenTypeMenu(!openTypeMenu)
-                  setOpenBrandMenu(false)
-                }}
-              >
-                <p>
-                  {texts.type}
-                  <IconContainer>
-                    <Icon icon="IconArrowLeft" />
-                  </IconContainer>
-                </p>
-                {openTypeMenu && (
-                  <Selector>
-                    {categories.length &&
-                      categories.map(
-                        (category: { id: number; name: string }) => (
-                          <Option
-                            key={category.id}
-                            onClick={() => selectFilter(category.id)}
-                          >
-                            {category.name}
-                          </Option>
-                        ),
-                      )}
-                    <Option onClick={() => selectFilter(null)}>
-                      {texts.all}
-                    </Option>
-                  </Selector>
-                )}
-              </Select>
-              <Select
-                onClick={() => {
-                  setOpenBrandMenu(!openBrandMenu)
-                  setOpenTypeMenu(false)
-                }}
-              >
-                <p>
-                  {texts.brand}
-                  <IconContainer>
-                    <Icon icon="IconArrowLeft" />
-                  </IconContainer>
-                </p>
-                {openBrandMenu && (
-                  <Selector>
-                    {brands.length &&
-                      brands.map((brand: { id: number; name: string }) => (
-                        <Option key={brand.id}>{brand.name}</Option>
-                      ))}
-                  </Selector>
-                )}
-              </Select>
-            </FiltersContainer>
-          )}
+          {sectionSelected.id === 1 && <Filters />}
         </HeadContent>
-        <ProductsAndReceiptContainer>
-          <ProductsView goNext={goNext} goPrev={goPrev} data={productsList} />
-          <Receipt />
-        </ProductsAndReceiptContainer>
+        {sectionSelected.id === 1 && (
+          <ProductsAndReceiptContainer>
+            <ProductsView goNext={goNext} goPrev={goPrev} data={productsList} />
+            <Receipt />
+          </ProductsAndReceiptContainer>
+        )}
         <MainButton>
           <Tooptip title={texts.mainButton}>
             <CreateProduct onClick={() => setCreateModal(true)}>
