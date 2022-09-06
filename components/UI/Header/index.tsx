@@ -25,12 +25,15 @@ function Header() {
     setCurrentUser(localStorage.getItem("user"))
   }, [])
 
+  // eslint-disable-next-line no-console
+  console.log(router.asPath)
+
   return (
     <HeaderContainer
       onClick={() => {
         if (hasChanges) {
           setModalHasChanges(true)
-        } else {
+        } else if (router.asPath === "/home") {
           setDetailState("view")
         }
       }}

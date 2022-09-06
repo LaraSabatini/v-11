@@ -55,56 +55,6 @@ const EmptyDiv = styled.div`
 
 const Shapes = styled.div`
   position: absolute;
-  div {
-    position: absolute;
-  }
-
-  .shape-1 {
-    top: 100px;
-    left: 50px;
-  }
-
-  .shape-2 {
-    left: 500px;
-    top: 20px;
-  }
-
-  .shape-3 {
-    left: 1000px;
-    top: 500px;
-  }
-
-  .shape-4 {
-    left: 100px;
-    top: 600px;
-  }
-
-  .shape-5 {
-    left: 1100px;
-    top: 150px;
-  }
-
-  .shape-6 {
-    left: 250px;
-    top: 300px;
-  }
-
-  .shape-7 {
-    left: 1150px;
-    top: 700px;
-  }
-
-  .shape-8 {
-    left: 800px;
-    top: 50px;
-    transform: rotate(180deg);
-  }
-
-  .shape-9 {
-    left: 650px;
-    top: 700px;
-    transform: rotate(90deg);
-  }
 `
 
 export {

@@ -1,16 +1,17 @@
 import React, { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/router"
 import validateUser from "services/Users/ValidateUser.service"
-import theme from "theme/index"
+// import theme from "theme/index"
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"
 import texts from "strings/loginPage.json"
-import ShapeOne from "components/UI/Assets/images/ShapeOne"
-import ShapeSix from "components/UI/Assets/images/ShapeSix"
-import ShapeFive from "components/UI/Assets/images/ShapeFive"
-import ShapeThree from "components/UI/Assets/images/ShapeThree"
-import ShapeTwo from "components/UI/Assets/images/ShapeTwo"
-import ShapeFour from "components/UI/Assets/images/ShapeFour"
+import Background from "components/UI/Assets/background"
+// import ShapeOne from "components/UI/Assets/images/ShapeOne"
+// import ShapeSix from "components/UI/Assets/images/ShapeSix"
+// import ShapeFive from "components/UI/Assets/images/ShapeFive"
+// import ShapeThree from "components/UI/Assets/images/ShapeThree"
+// import ShapeTwo from "components/UI/Assets/images/ShapeTwo"
+// import ShapeFour from "components/UI/Assets/images/ShapeFour"
 import {
   MainContainer,
   FormContainer,
@@ -84,33 +85,7 @@ function Login() {
       {!logged && (
         <>
           <Shapes>
-            <div className="shape-1">
-              <ShapeOne color={theme.colors.secondary} />
-            </div>
-            <div className="shape-2">
-              <ShapeTwo color={theme.colors.primary} />
-            </div>
-            <div className="shape-3">
-              <ShapeThree color={theme.colors.primary} />
-            </div>
-            <div className="shape-4">
-              <ShapeFour color={theme.colors.green} />
-            </div>
-            <div className="shape-5">
-              <ShapeFive color={theme.colors.green} />
-            </div>
-            <div className="shape-6">
-              <ShapeSix color={theme.colors.black} />
-            </div>
-            <div className="shape-7">
-              <ShapeOne color={theme.colors.secondary} />
-            </div>
-            <div className="shape-8">
-              <ShapeSix color={theme.colors.black} />
-            </div>
-            <div className="shape-9">
-              <ShapeTwo color={theme.colors.primary} />
-            </div>
+            <Background />
           </Shapes>
           <MainContainer>
             <FormContainer>
