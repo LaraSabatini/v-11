@@ -46,6 +46,9 @@ function StoreView() {
     setCurrentPage,
     setFilterSelected,
     filterSelected,
+    setPurchase,
+    executeCleanPurchase,
+    setExecuteCleanPurchase,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
@@ -114,6 +117,8 @@ function StoreView() {
           closeRefresh={() => {
             setTriggerListUpdate(triggerListUpdate + 1)
             setModalSuccess(null)
+            setPurchase([])
+            setExecuteCleanPurchase(executeCleanPurchase + 1)
           }}
         />
       )}
@@ -123,6 +128,8 @@ function StoreView() {
           message={modalError}
           closeRefresh={() => {
             setModalError(null)
+            setPurchase([])
+            setExecuteCleanPurchase(executeCleanPurchase + 1)
           }}
         />
       )}
@@ -185,7 +192,9 @@ function StoreView() {
                           </Option>
                         ),
                       )}
-                    <Option onClick={() => selectFilter(null)}>Todos</Option>
+                    <Option onClick={() => selectFilter(null)}>
+                      {texts.all}
+                    </Option>
                   </Selector>
                 )}
               </Select>

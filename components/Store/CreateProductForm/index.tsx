@@ -110,8 +110,10 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
 
   // calculate price by cost & margin
   const calculatePrice = () => {
-    const margin = parseInt(newProductData.margin, 10)
-    const cost = parseInt(newProductData.cost, 10)
+    const stringMargin = `${newProductData.margin}`
+    const stringCost = `${newProductData.cost}`
+    const margin = parseInt(stringMargin, 10)
+    const cost = parseInt(stringCost, 10)
     const porcentaje = (margin * cost) / 100
     const total = cost + porcentaje
 

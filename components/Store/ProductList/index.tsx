@@ -1,4 +1,5 @@
 import React, { useContext } from "react"
+import texts from "strings/store.json"
 import ProductInterface from "interfaces/store/ProductInterface"
 import { StoreContext } from "contexts/Store"
 import Tooltip from "components/UI/Tooltip"
@@ -28,6 +29,8 @@ const ProductsView = ({ data, goPrev, goNext }: ProductListInterface) => {
                 category_id={product.category_id}
                 price={product.price}
                 id={product.id}
+                margin={product.margin}
+                cost={product.cost}
               />
             ))}
         </ProductsContainer>
@@ -35,13 +38,13 @@ const ProductsView = ({ data, goPrev, goNext }: ProductListInterface) => {
 
       <Paginator>
         <Navigate onClick={() => goPrev()}>
-          <Tooltip title="Prev">
+          <Tooltip title={texts.prev}>
             <Icon icon="IconArrowLeft" />
           </Tooltip>
         </Navigate>
         {currentPage}
         <Navigate onClick={() => goNext()}>
-          <Tooltip title="next" placement="top-start">
+          <Tooltip title={texts.next} placement="top-start">
             <Icon icon="IconArrowRight" />
           </Tooltip>
         </Navigate>

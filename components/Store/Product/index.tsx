@@ -17,9 +17,18 @@ interface ProductCardInterface {
   category_id: number
   price: number
   id: number
+  cost: number
+  margin: number
 }
 
-const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
+const Product = ({
+  name,
+  category_id,
+  price,
+  id,
+  cost,
+  margin,
+}: ProductCardInterface) => {
   const {
     setPurchase,
     purchase,
@@ -33,11 +42,15 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
     product_name: string
     product_amount: number
     final_price: number
+    cost: number
+    margin: number
   }>({
     product_id: 0,
     product_name: "",
     product_amount: 0,
     final_price: 0,
+    cost: 0,
+    margin: 0,
   })
 
   const removeProduct = () => {
@@ -47,6 +60,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
         product_name: string
         product_amount: number
         final_price: number
+        cost: number
+        margin: number
       }) => pur.product_id === id,
     )
     if (checkPurchase.length === 0) {
@@ -58,6 +73,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
         product_name: name,
         product_amount: purchaseProducts.product_amount - 1,
         final_price: price * (purchaseProducts.product_amount - 1),
+        cost,
+        margin,
       })
 
       const index = purchase.indexOf(checkPurchase[0])
@@ -68,6 +85,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
         product_name: name,
         product_amount: purchaseProducts.product_amount - 1,
         final_price: price * (purchaseProducts.product_amount - 1),
+        cost,
+        margin,
       }
       if (newPurchase[index].product_amount === 0) {
         const finalPurchase = newPurchase.slice(index + 1, newPurchase.length)
@@ -86,6 +105,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
       product_name: name,
       product_amount: purchaseProducts.product_amount + 1,
       final_price: price * (purchaseProducts.product_amount + 1),
+      cost,
+      margin,
     })
 
     const checkPurchase = purchase.filter(
@@ -94,6 +115,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
         product_name: string
         product_amount: number
         final_price: number
+        cost: number
+        margin: number
       }) => pur.product_id === id,
     )
     if (checkPurchase.length === 0) {
@@ -104,6 +127,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
           product_name: name,
           product_amount: purchaseProducts.product_amount + 1,
           final_price: price * (purchaseProducts.product_amount + 1),
+          cost,
+          margin,
         },
       ])
       setPurchaseChange(purchaseChange + 1)
@@ -116,6 +141,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
         product_name: name,
         product_amount: purchaseProducts.product_amount + 1,
         final_price: price * (purchaseProducts.product_amount + 1),
+        cost,
+        margin,
       }
       setPurchase(newPurchase)
       setPurchaseChange(purchaseChange + 1)
@@ -129,6 +156,8 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
         product_name: "",
         product_amount: 0,
         final_price: 0,
+        cost: 0,
+        margin: 0,
       })
     }
   }, [executeCleanPurchase])
@@ -142,7 +171,6 @@ const Product = ({ name, category_id, price, id }: ProductCardInterface) => {
         </ComponentContainer>
       )}
       {/* merch */}
-
       <Description>
         <ProductName>{name}</ProductName>
         <ProductPrice>$ {price}</ProductPrice>
