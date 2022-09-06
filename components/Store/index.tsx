@@ -9,11 +9,14 @@ import theme from "theme/index"
 import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
+import SearchBar from "components/UI/SearchBar"
 import Modals from "./Modals"
 import ProductsView from "./ProductList"
 import Receipt from "./Receipt"
 import CreateProductForm from "./CreateProductForm"
 import Filters from "./Filters"
+import Purchases from "./Purchases"
+import Stock from "./Stock"
 import {
   Container,
   Content,
@@ -38,6 +41,7 @@ function StoreView() {
     triggerListUpdate,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
+  const [searchValueForStock, setSearchValueForStock] = useState<string>("")
 
   const [sectionSelected, setSectionSelected] = useState<{
     section: string
@@ -123,6 +127,13 @@ function StoreView() {
             {texts.title} <span> / {sectionSelected.section}</span>
           </Title>
           {sectionSelected.id === 1 && <Filters />}
+          {sectionSelected.id === 3 && (
+            <SearchBar
+              searchValue={searchValueForStock}
+              onChangeSearch={e => setSearchValueForStock(e.target.value)}
+              width={250}
+            />
+          )}
         </HeadContent>
         {sectionSelected.id === 1 && (
           <ProductsAndReceiptContainer>
@@ -130,7 +141,9 @@ function StoreView() {
             <Receipt />
           </ProductsAndReceiptContainer>
         )}
-        <MainButton>
+        {sectionSelected.id === 2 && <Purchases />}
+        {sectionSelected.id === 3 && <Stock />}
+        <MainButton page={sectionSelected.id}>
           <Tooptip title={texts.mainButton}>
             <CreateProduct onClick={() => setCreateModal(true)}>
               <Icon color={theme.colors.white} icon="IconAdd" />
