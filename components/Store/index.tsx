@@ -39,9 +39,10 @@ function StoreView() {
     setCurrentPage,
     filterSelected,
     triggerListUpdate,
+    searchValueForStock,
+    setSearchValueForStock,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
-  const [searchValueForStock, setSearchValueForStock] = useState<string>("")
 
   const [sectionSelected, setSectionSelected] = useState<{
     section: string
@@ -143,7 +144,7 @@ function StoreView() {
         )}
         {sectionSelected.id === 2 && <Purchases />}
         {sectionSelected.id === 3 && <Stock />}
-        <MainButton page={sectionSelected.id}>
+        <MainButton>
           <Tooptip title={texts.mainButton}>
             <CreateProduct onClick={() => setCreateModal(true)}>
               <Icon color={theme.colors.white} icon="IconAdd" />

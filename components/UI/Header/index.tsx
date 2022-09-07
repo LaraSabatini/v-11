@@ -25,9 +25,6 @@ function Header() {
     setCurrentUser(localStorage.getItem("user"))
   }, [])
 
-  // eslint-disable-next-line no-console
-  console.log(router.asPath)
-
   return (
     <HeaderContainer
       onClick={() => {

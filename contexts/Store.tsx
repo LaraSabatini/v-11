@@ -35,6 +35,8 @@ export const StoreContext = createContext({
   openBrandMenu: null,
   setOpenBrandMenu: null,
   selectFilter: null,
+  searchValueForStock: null,
+  setSearchValueForStock: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -62,6 +64,9 @@ const StoreProvider = ({ children }) => {
 
   const [openTypeMenu, setOpenTypeMenu] = useState<boolean>(false)
   const [openBrandMenu, setOpenBrandMenu] = useState<boolean>(false)
+
+  // STOCK ***********************************
+  const [searchValueForStock, setSearchValueForStock] = useState<string>("")
 
   // BUY *************************************
   const [purchase, setPurchase] = useState<
@@ -139,6 +144,8 @@ const StoreProvider = ({ children }) => {
         openBrandMenu,
         setOpenBrandMenu,
         selectFilter,
+        searchValueForStock,
+        setSearchValueForStock,
       }}
     >
       {children}

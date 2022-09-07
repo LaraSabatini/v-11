@@ -119,22 +119,10 @@ const CreateProduct = styled.button`
   -moz-box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
 `
 
-const MainButton = styled.div<{ page: number }>`
+const MainButton = styled.div`
   position: absolute;
-
-  ${props =>
-    props.page === 1 &&
-    css`
-      right: -20px;
-      bottom: 0;
-    `};
-
-  ${props =>
-    props.page === 3 &&
-    css`
-      right: 300px;
-      top: 85px;
-    `};
+  right: 0;
+  bottom: -10px;
 `
 
 const ProductsAndReceiptContainer = styled.div`
