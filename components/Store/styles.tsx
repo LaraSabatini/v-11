@@ -39,7 +39,7 @@ const FiltersContainer = styled.div`
 `
 
 const Select = styled.div`
-  p {
+  .select {
     margin: 0;
     padding: 10px 15px;
     display: flex;
@@ -49,6 +49,10 @@ const Select = styled.div`
     box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
     -webkit-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
     -moz-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
+  }
+
+  p {
+    margin: 0;
   }
   cursor: pointer;
   position: relative;
@@ -79,7 +83,7 @@ const Option = styled.div`
   }
 `
 
-const IconContainer = styled.div`
+const IconContainer = styled.p`
   transform: rotate(270deg);
 `
 

@@ -129,7 +129,7 @@ const Receipt = () => {
               product_amount: number
               final_price: number
             }) => (
-              <Item>
+              <Item key={pur.product_id}>
                 <p>{pur.product_name}</p>
                 <p>x {pur.product_amount}</p>
               </Item>

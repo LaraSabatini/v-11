@@ -26,6 +26,7 @@ const Filters = () => {
         filters.map((filter: { value: string; text: string }) => {
           return (
             <Filter
+              key={filter.value}
               selected={filterSelected === filter.value}
               onClick={() => {
                 if (hasChanges) {

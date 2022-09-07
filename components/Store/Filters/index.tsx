@@ -13,10 +13,10 @@ import {
 const Filters = () => {
   const {
     categories,
-    brands,
+    // brands,
     openTypeMenu,
     setOpenTypeMenu,
-    openBrandMenu,
+    // openBrandMenu,
     setOpenBrandMenu,
     selectFilter,
   } = useContext(StoreContext)
@@ -29,12 +29,12 @@ const Filters = () => {
           setOpenBrandMenu(false)
         }}
       >
-        <p>
-          {texts.type}
+        <div className="select">
+          <p>{texts.type}</p>
           <IconContainer>
             <Icon icon="IconArrowLeft" />
           </IconContainer>
-        </p>
+        </div>
         {openTypeMenu && (
           <Selector>
             {categories.length &&
@@ -50,18 +50,18 @@ const Filters = () => {
           </Selector>
         )}
       </Select>
-      <Select
+      {/* <Select
         onClick={() => {
           setOpenBrandMenu(!openBrandMenu)
           setOpenTypeMenu(false)
         }}
       >
-        <p>
-          {texts.brand}
+        <div>
+          <p>{texts.brand}</p>
           <IconContainer>
             <Icon icon="IconArrowLeft" />
           </IconContainer>
-        </p>
+        </div>
         {openBrandMenu && (
           <Selector>
             {brands.length &&
@@ -70,7 +70,7 @@ const Filters = () => {
               ))}
           </Selector>
         )}
-      </Select>
+      </Select> */}
     </FiltersContainer>
   )
 }

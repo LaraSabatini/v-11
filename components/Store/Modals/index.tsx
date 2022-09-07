@@ -33,7 +33,7 @@ const Modals = () => {
         <ModalAlert
           success={false}
           message={modalError}
-          closeRefresh={() => {
+          closeModal={() => {
             setPurchase([])
             setExecuteCleanPurchase(executeCleanPurchase + 1)
             setModalError(null)
