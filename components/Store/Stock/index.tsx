@@ -5,7 +5,7 @@ import { searchProducts } from "services/Store/searchProduct.service"
 import TextButton from "components/UI/TextButton"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
-import Input from "../Input"
+import Input from "../UI/Input"
 import {
   Container,
   ButtonsContainer,

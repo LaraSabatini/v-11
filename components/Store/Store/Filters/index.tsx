@@ -8,7 +8,7 @@ import {
   IconContainer,
   Selector,
   Option,
-} from "../styles"
+} from "../../styles"
 
 const Filters = () => {
   const {

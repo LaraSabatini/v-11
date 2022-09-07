@@ -2,7 +2,6 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const ReceiptContainer = styled.div`
-  /* border: 1px solid red; */
   border-radius: 10px;
   display: flex;
   flex-direction: column;
