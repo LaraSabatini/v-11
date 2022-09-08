@@ -300,8 +300,6 @@ const Stock = () => {
     fillRows()
   }
   const saveChanges = async () => {
-    // put
-    // sacar vista edicion
     const body = {
       id: newValues.id,
       name: newValues.name,
@@ -326,18 +324,11 @@ const Stock = () => {
       setValidationError(false)
       const executeEdition = await editProduct(body)
       if (executeEdition.message === "product updated successfully") {
-        // setStockChanges(false)
-        // setNewValues(null)
-        // setActiveEdition(false)
-        // fillRows()
         discardChanges()
       }
     } else {
       setValidationError(true)
     }
-
-    // VALIDACION DE INPUTS
-    // EJECUTAR EDICION
   }
 
   useEffect(() => {
