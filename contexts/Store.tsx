@@ -35,6 +35,16 @@ export const StoreContext = createContext({
   openBrandMenu: null,
   setOpenBrandMenu: null,
   selectFilter: null,
+  searchValueForStock: null,
+  setSearchValueForStock: null,
+  autoCompleteCategoriesValues: null,
+  setAutoCompleteCategoriesValues: null,
+  autoCompleteBrandsValues: null,
+  setAutoCompleteBrandsValues: null,
+  stockChanges: null,
+  setStockChanges: null,
+  modalStockHasChanges: null,
+  setModalStockHasChanges: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -62,6 +72,22 @@ const StoreProvider = ({ children }) => {
 
   const [openTypeMenu, setOpenTypeMenu] = useState<boolean>(false)
   const [openBrandMenu, setOpenBrandMenu] = useState<boolean>(false)
+
+  const [
+    autoCompleteCategoriesValues,
+    setAutoCompleteCategoriesValues,
+  ] = useState<{ id: number; display_name: string }[]>()
+  const [autoCompleteBrandsValues, setAutoCompleteBrandsValues] = useState<
+    { id: number; display_name: string }[]
+  >()
+
+  // STOCK ***********************************
+  const [searchValueForStock, setSearchValueForStock] = useState<string>("")
+
+  const [stockChanges, setStockChanges] = useState<boolean>(false)
+  const [modalStockHasChanges, setModalStockHasChanges] = useState<boolean>(
+    false,
+  )
 
   // BUY *************************************
   const [purchase, setPurchase] = useState<
@@ -139,6 +165,16 @@ const StoreProvider = ({ children }) => {
         openBrandMenu,
         setOpenBrandMenu,
         selectFilter,
+        searchValueForStock,
+        setSearchValueForStock,
+        autoCompleteCategoriesValues,
+        setAutoCompleteCategoriesValues,
+        autoCompleteBrandsValues,
+        setAutoCompleteBrandsValues,
+        stockChanges,
+        setStockChanges,
+        modalStockHasChanges,
+        setModalStockHasChanges,
       }}
     >
       {children}

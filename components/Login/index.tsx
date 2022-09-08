@@ -1,17 +1,10 @@
 import React, { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/router"
 import validateUser from "services/Users/ValidateUser.service"
-// import theme from "theme/index"
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"
 import texts from "strings/loginPage.json"
 import Background from "components/UI/Assets/background"
-// import ShapeOne from "components/UI/Assets/images/ShapeOne"
-// import ShapeSix from "components/UI/Assets/images/ShapeSix"
-// import ShapeFive from "components/UI/Assets/images/ShapeFive"
-// import ShapeThree from "components/UI/Assets/images/ShapeThree"
-// import ShapeTwo from "components/UI/Assets/images/ShapeTwo"
-// import ShapeFour from "components/UI/Assets/images/ShapeFour"
 import {
   MainContainer,
   FormContainer,

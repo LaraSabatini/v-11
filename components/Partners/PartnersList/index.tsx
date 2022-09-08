@@ -76,6 +76,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
             data.map((partner: PartnerInterface, index: number) => {
               return (
                 <ListItem
+                  key={partner.id}
                   onClick={() => {
                     if (hasChanges) {
                       setModalHasChanges(true)

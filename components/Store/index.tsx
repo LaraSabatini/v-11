@@ -9,11 +9,14 @@ import theme from "theme/index"
 import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
-import Modals from "./Modals"
-import ProductsView from "./ProductList"
-import Receipt from "./Receipt"
+import SearchBar from "components/UI/SearchBar"
+import Modals from "./UI/Modals"
+import ProductsView from "./Store/ProductList"
+import Receipt from "./Store/Receipt"
 import CreateProductForm from "./CreateProductForm"
-import Filters from "./Filters"
+import Filters from "./Store/Filters"
+import Purchases from "./Purchases"
+import Stock from "./Stock"
 import {
   Container,
   Content,
@@ -36,6 +39,10 @@ function StoreView() {
     setCurrentPage,
     filterSelected,
     triggerListUpdate,
+    searchValueForStock,
+    setSearchValueForStock,
+    setModalStockHasChanges,
+    stockChanges,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
 
@@ -94,25 +101,37 @@ function StoreView() {
       <Content>
         <SectionsButtons>
           <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.sells}`, id: 1 })
-            }
+            onClick={() => {
+              if (stockChanges) {
+                setModalStockHasChanges(true)
+              } else {
+                setSectionSelected({ section: `${texts.sells}`, id: 1 })
+              }
+            }}
             selected={sectionSelected.id === 1}
           >
             {texts.sells}
           </Section>
           <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.purchases}`, id: 2 })
-            }
+            onClick={() => {
+              if (stockChanges) {
+                setModalStockHasChanges(true)
+              } else {
+                setSectionSelected({ section: `${texts.sells}`, id: 2 })
+              }
+            }}
             selected={sectionSelected.id === 2}
           >
             {texts.purchases}
           </Section>
           <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.stock}`, id: 3 })
-            }
+            onClick={() => {
+              if (stockChanges) {
+                setModalStockHasChanges(true)
+              } else {
+                setSectionSelected({ section: `${texts.sells}`, id: 3 })
+              }
+            }}
             selected={sectionSelected.id === 3}
           >
             {texts.stock}
@@ -123,6 +142,23 @@ function StoreView() {
             {texts.title} <span> / {sectionSelected.section}</span>
           </Title>
           {sectionSelected.id === 1 && <Filters />}
+          {sectionSelected.id === 3 && (
+            <button
+              className="btn-search"
+              type="button"
+              onClick={() => {
+                if (stockChanges) {
+                  setModalStockHasChanges(true)
+                }
+              }}
+            >
+              <SearchBar
+                searchValue={searchValueForStock}
+                onChangeSearch={e => setSearchValueForStock(e.target.value)}
+                width={250}
+              />
+            </button>
+          )}
         </HeadContent>
         {sectionSelected.id === 1 && (
           <ProductsAndReceiptContainer>
@@ -130,9 +166,19 @@ function StoreView() {
             <Receipt />
           </ProductsAndReceiptContainer>
         )}
+        {sectionSelected.id === 2 && <Purchases />}
+        {sectionSelected.id === 3 && <Stock />}
         <MainButton>
           <Tooptip title={texts.mainButton}>
-            <CreateProduct onClick={() => setCreateModal(true)}>
+            <CreateProduct
+              onClick={() => {
+                if (stockChanges) {
+                  setModalStockHasChanges(true)
+                } else {
+                  setCreateModal(true)
+                }
+              }}
+            >
               <Icon color={theme.colors.white} icon="IconAdd" />
             </CreateProduct>
           </Tooptip>
