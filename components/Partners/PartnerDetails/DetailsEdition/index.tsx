@@ -1,9 +1,9 @@
-/* eslint-disable no-console */
 import React, { useRef, useEffect, useState, useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
 import editPartner from "services/Partners/EditPartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import getTrainers from "services/Trainers/GetTrainers.service"
+import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import texts from "strings/partners.json"
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
@@ -43,7 +43,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
   const fillTrainersData = async () => {
     const data = await getTrainers()
     const arrayTrainers = []
-    data.data.map(trainer =>
+    data.data.map((trainer: TrainerInterface) =>
       arrayTrainers.push({
         id: trainer.id,
         display_name: `${trainer.name} ${trainer.last_name}`,

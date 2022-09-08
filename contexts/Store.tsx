@@ -37,6 +37,10 @@ export const StoreContext = createContext({
   selectFilter: null,
   searchValueForStock: null,
   setSearchValueForStock: null,
+  autoCompleteCategoriesValues: null,
+  setAutoCompleteCategoriesValues: null,
+  autoCompleteBrandsValues: null,
+  setAutoCompleteBrandsValues: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -64,6 +68,14 @@ const StoreProvider = ({ children }) => {
 
   const [openTypeMenu, setOpenTypeMenu] = useState<boolean>(false)
   const [openBrandMenu, setOpenBrandMenu] = useState<boolean>(false)
+
+  const [
+    autoCompleteCategoriesValues,
+    setAutoCompleteCategoriesValues,
+  ] = useState<{ id: number; display_name: string }[]>()
+  const [autoCompleteBrandsValues, setAutoCompleteBrandsValues] = useState<
+    { id: number; display_name: string }[]
+  >()
 
   // STOCK ***********************************
   const [searchValueForStock, setSearchValueForStock] = useState<string>("")
@@ -146,6 +158,10 @@ const StoreProvider = ({ children }) => {
         selectFilter,
         searchValueForStock,
         setSearchValueForStock,
+        autoCompleteCategoriesValues,
+        setAutoCompleteCategoriesValues,
+        autoCompleteBrandsValues,
+        setAutoCompleteBrandsValues,
       }}
     >
       {children}

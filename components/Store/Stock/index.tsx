@@ -2,16 +2,24 @@ import React, { useState, useEffect, useContext, useRef } from "react"
 import { StoreContext } from "contexts/Store"
 import getProducts from "services/Store/getProducts.service"
 import { searchProducts } from "services/Store/searchProduct.service"
+import RowsInterface from "interfaces/store/RowsInterface"
+import ProductInterface from "interfaces/store/ProductInterface"
 import TextButton from "components/UI/TextButton"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
 import Input from "../UI/Input"
+import columns from "./const/content"
 import {
   Container,
   ButtonsContainer,
   Content,
   AutocompleteContainer,
 } from "./styles"
+
+interface DefaultInterface {
+  id: number
+  name: string
+}
 
 const Stock = () => {
   const {
@@ -20,33 +28,18 @@ const Stock = () => {
     brands,
     categories,
     searchValueForStock,
+    autoCompleteCategoriesValues,
+    setAutoCompleteCategoriesValues,
+    autoCompleteBrandsValues,
+    setAutoCompleteBrandsValues,
   } = useContext(StoreContext)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
   const [activeEdition, setActiveEdition] = useState<boolean>(false)
+  const [productSelected, setProductSelected] = useState<number>()
 
   const [currentPage, setCurrentPage] = useState<number>(1)
+  const [newValues, setNewValues] = useState<ProductInterface>()
 
-  const columns: {
-    id: number
-    field: string
-    header_name: string
-    width: "s" | "m" | "l" | "xl"
-  }[] = [
-    { id: 1, field: "item", header_name: "Item", width: "l" },
-    { id: 2, field: "brand", header_name: "Marca", width: "m" },
-    { id: 3, field: "category", header_name: "Categoria", width: "m" },
-    { id: 4, field: "stock", header_name: "Stock", width: "s" },
-    { id: 5, field: "price", header_name: "Precio", width: "s" },
-    { id: 6, field: "margin", header_name: "Margen (%)", width: "s" },
-    { id: 7, field: "cost", header_name: "Costo", width: "s" },
-    {
-      id: 8,
-      field: "contact_name",
-      header_name: "Contacto del vendedor",
-      width: "l",
-    },
-    { id: 9, field: "contact_info", header_name: "N° de telefono", width: "m" },
-  ]
   const [rows, setRows] = useState<{
     success: boolean
     message?: {
@@ -63,98 +56,24 @@ const Stock = () => {
       const data = await getProducts(currentPage)
       setProductsList(data.data)
 
-      const rowsCleaned: {
-        id: number
-        item: string
-        brand: string | number
-        category: string | number
-        stock: any
-        price: number
-        margin: any
-        cost: any
-        contact_name: string
-        contact_info: string
-      }[] = []
+      const rowsCleaned: RowsInterface[] = []
 
-      data.data.map(product =>
+      data.data.map((product: ProductInterface) =>
         rowsCleaned.push({
-          // id: product.id,
-          // item: activeEdition ? (
-          //   <Input width={150} value={product.name} />
-          // ) : (
-          //   product.name
-          // ),
-          // brand: activeEdition ? (
-          //   <AutocompleteContainer>
-          //     <Autocomplete
-          //       width={120}
-          //       options={brands}
-          //       setValue={
-          //         brands.filter(brand => brand.id === product.brand_id)[0]?.name
-          //       }
-          //     />
-          //   </AutocompleteContainer>
-          // ) : (
-          //   brands.filter(brand => brand.id === product.brand_id)[0]?.name
-          // ),
-          // category: activeEdition ? (
-          //   <AutocompleteContainer>
-          //     <Autocomplete
-          //       width={120}
-          //       options={categories}
-          //       setValue={
-          //         categories.filter(
-          //           category => category.id === product.category_id,
-          //         )[0]?.name
-          //       }
-          //     />
-          //   </AutocompleteContainer>
-          // ) : (
-          //   categories.filter(
-          //     category => category.id === product.category_id,
-          //   )[0]?.name
-          // ),
-          // stock: activeEdition ? (
-          //   <Input value={product.stock} />
-          // ) : (
-          //   product.stock
-          // ),
-          // price: product.price,
-          // margin: activeEdition ? (
-          //   <Input value={product.margin} />
-          // ) : (
-          //   product.margin
-          // ),
-          // cost: activeEdition ? <Input value={product.cost} /> : product.cost,
-          // contact_name: activeEdition ? (
-          //   <Input width={150} value={product.sales_contact_name} />
-          // ) : (
-          //   product.sales_contact_name
-          // ),
-
-          // contact_info: activeEdition ? (
-          //   <Input width={120} value={product.sales_contact_information} />
-          // ) : (
-          //   product.sales_contact_information
-          // ),
           id: product.id,
           item: product.name,
-          brand: brands.filter(brand => brand.id === product.brand_id)[0]?.name,
+          brand: brands.filter(
+            (brand: DefaultInterface) => brand.id === product.brand_id,
+          )[0]?.name,
           category: categories.filter(
-            category => category.id === product.category_id,
+            (category: DefaultInterface) => category.id === product.category_id,
           )[0]?.name,
           stock: product.stock,
           price: product.price,
           margin: product.margin,
           cost: product.cost,
-          contact_name:
-            product.sales_contact_name === ""
-              ? "-"
-              : product.sales_contact_name,
-          contact_info:
-            product.sales_contact_information === ""
-              ? "-"
-              : product.sales_contact_information,
+          sales_contact_name: product.sales_contact_name,
+          sales_contact_information: product.sales_contact_information,
         }),
       )
 
@@ -165,39 +84,24 @@ const Stock = () => {
     } else {
       const search = await searchProducts(searchValueForStock, 1)
       setProductsList(search.data)
-      const rowsCleaned: {
-        id: number
-        item: string
-        brand: string | number
-        category: string | number
-        stock: number
-        price: number
-        margin: number
-        cost: number
-        contact_name: string
-        contact_info: string
-      }[] = []
+      const rowsCleaned: RowsInterface[] = []
 
-      search.data.map(product =>
+      search.data.map((product: ProductInterface) =>
         rowsCleaned.push({
           id: product.id,
           item: product.name,
-          brand: brands.filter(brand => brand.id === product.brand_id)[0]?.name,
+          brand: brands.filter(
+            (brand: DefaultInterface) => brand.id === product.brand_id,
+          )[0]?.name,
           category: categories.filter(
-            category => category.id === product.category_id,
+            (category: DefaultInterface) => category.id === product.category_id,
           )[0]?.name,
           stock: product.stock,
           price: product.price,
           margin: product.margin,
           cost: product.cost,
-          contact_name:
-            product.sales_contact_name === ""
-              ? "-"
-              : product.sales_contact_name,
-          contact_info:
-            product.sales_contact_information === ""
-              ? "-"
-              : product.sales_contact_information,
+          sales_contact_name: product.sales_contact_name,
+          sales_contact_information: product.sales_contact_information,
         }),
       )
 
@@ -205,13 +109,29 @@ const Stock = () => {
         success: true,
         rows: rowsCleaned,
       })
-      // set table with this data
     }
+  }
+
+  const fillAutocompletes = () => {
+    const autocompleteBrands: { id: number; display_name: string }[] = []
+    brands.map(brand =>
+      autocompleteBrands.push({ id: brand.id, display_name: brand.name }),
+    )
+    const autocompleteCategories: { id: number; display_name: string }[] = []
+    categories.map(category =>
+      autocompleteCategories.push({
+        id: category.id,
+        display_name: category.name,
+      }),
+    )
+    setAutoCompleteBrandsValues(autocompleteBrands)
+    setAutoCompleteCategoriesValues(autocompleteCategories)
   }
 
   useEffect(() => {
     if (brands !== undefined && categories !== undefined) {
       fillRows()
+      fillAutocompletes()
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -229,6 +149,106 @@ const Stock = () => {
     }
   }
 
+  const setContentOfEditableRow = () => {
+    const getRow = rows.rows.filter(row => row.id === newValues.id)
+    const getIndexOfRow = rows.rows.indexOf(getRow[0])
+
+    const newSetOfRows = rows.rows
+    newSetOfRows[getIndexOfRow] = {
+      id: rows.rows[getIndexOfRow].id,
+      item: (
+        <Input
+          width={150}
+          value={newValues.name || ""}
+          onChange={e => setNewValues({ ...newValues, name: e.target.value })}
+        />
+      ),
+      brand: (
+        <AutocompleteContainer>
+          <Autocomplete
+            width={120}
+            options={autoCompleteBrandsValues}
+            setValue={
+              brands.filter(
+                (brand: DefaultInterface) => brand.id === newValues.brand_id,
+              )[0]?.name || ""
+            }
+            onChangeProps={(e: { id: number; display_name: string }) =>
+              setNewValues({ ...newValues, brand_id: e.id })
+            }
+          />
+        </AutocompleteContainer>
+      ),
+      category: (
+        <AutocompleteContainer>
+          <Autocomplete
+            width={120}
+            options={autoCompleteCategoriesValues}
+            setValue={
+              categories.filter(
+                (category: DefaultInterface) =>
+                  category.id === newValues.category_id,
+              )[0]?.name || ""
+            }
+            onChangeProps={(e: { id: number; display_name: string }) =>
+              setNewValues({ ...newValues, category_id: e.id })
+            }
+          />
+        </AutocompleteContainer>
+      ),
+      stock: (
+        <Input
+          value={newValues.stock || ""}
+          onChange={e =>
+            setNewValues({ ...newValues, stock: parseInt(e.target.value, 10) })
+          }
+        />
+      ),
+      price: rows.rows[getIndexOfRow].price,
+      margin: (
+        <Input
+          value={newValues.margin || ""}
+          onChange={e =>
+            setNewValues({ ...newValues, margin: parseInt(e.target.value, 10) })
+          }
+        />
+      ),
+      cost: (
+        <Input
+          value={newValues.cost || ""}
+          onChange={e =>
+            setNewValues({ ...newValues, cost: parseInt(e.target.value, 10) })
+          }
+        />
+      ),
+      sales_contact_name: (
+        <Input
+          width={150}
+          value={newValues.sales_contact_name || ""}
+          onChange={e =>
+            setNewValues({ ...newValues, sales_contact_name: e.target.value })
+          }
+        />
+      ),
+      sales_contact_information: (
+        <Input
+          width={120}
+          value={newValues.sales_contact_information || ""}
+          onChange={e =>
+            setNewValues({
+              ...newValues,
+              sales_contact_information: e.target.value,
+            })
+          }
+        />
+      ),
+    }
+    setRows({
+      success: true,
+      rows: newSetOfRows,
+    })
+  }
+
   const activateRow = (item: {
     id: number
     item: string
@@ -238,66 +258,53 @@ const Stock = () => {
     price: number
     margin: number
     cost: number
-    contact_name: string
-    contact_info: string
+    sales_contact_name: string
+    sales_contact_information: string
   }) => {
-    const getIndexOfRow = rows.rows.indexOf(item)
+    const getDataOfItem = productsList.filter(
+      (product: ProductInterface) => product.id === item.id,
+    )
 
-    const newSetOfRows = rows.rows
-
-    newSetOfRows[getIndexOfRow] = {
-      id: rows.rows[getIndexOfRow].id,
-      item: <Input width={150} value={rows.rows[getIndexOfRow].name} />,
-      brand: (
-        <AutocompleteContainer>
-          <Autocomplete
-            width={120}
-            options={brands}
-            setValue={
-              brands.filter(
-                brand => brand.id === rows.rows[getIndexOfRow].brand_id,
-              )[0]?.name
-            }
-          />
-        </AutocompleteContainer>
-      ),
-      category: (
-        <AutocompleteContainer>
-          <Autocomplete
-            width={120}
-            options={categories}
-            setValue={
-              categories.filter(
-                category =>
-                  category.id === rows.rows[getIndexOfRow].category_id,
-              )[0]?.name
-            }
-          />
-        </AutocompleteContainer>
-      ),
-      stock: <Input value={rows.rows[getIndexOfRow].stock} />,
-      price: rows.rows[getIndexOfRow].price,
-      margin: <Input value={rows.rows[getIndexOfRow].margin} />,
-      cost: <Input value={rows.rows[getIndexOfRow].cost} />,
-      contact_name: (
-        <Input
-          width={150}
-          value={rows.rows[getIndexOfRow].sales_contact_name}
-        />
-      ),
-      contact_info: (
-        <Input
-          width={120}
-          value={rows.rows[getIndexOfRow].sales_contact_information}
-        />
-      ),
-    }
-
-    setRows({
-      success: true,
-      rows: newSetOfRows,
+    setNewValues({
+      id: item.id,
+      name: item.item,
+      brand_id: getDataOfItem[0].brand_id,
+      stock: item.stock,
+      price: item.price,
+      margin: item.margin,
+      cost: item.cost,
+      sales_contact_name: item.sales_contact_name,
+      sales_contact_information: item.sales_contact_information,
+      category_id: getDataOfItem[0].category_id,
     })
+
+    const index = productsList.indexOf(getDataOfItem[0])
+
+    setProductSelected(index)
+    setActiveEdition(true)
   }
+
+  useEffect(() => {
+    if (
+      newValues !== undefined &&
+      productSelected !== undefined &&
+      JSON.stringify(newValues) ===
+        JSON.stringify(productsList[productSelected])
+    ) {
+      setContentOfEditableRow()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newValues, activeEdition, productSelected])
+
+  useEffect(() => {
+    if (
+      JSON.stringify(newValues) !==
+      JSON.stringify(productsList[productSelected])
+    ) {
+      setContentOfEditableRow()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newValues])
 
   return (
     <Container>
@@ -306,7 +313,11 @@ const Stock = () => {
           rows={rows}
           columns={columns}
           height={350}
-          onRowClick={e => activateRow(e.item)}
+          onRowClick={e => {
+            if (!activeEdition) {
+              activateRow(e.item)
+            }
+          }}
           totalPages={1}
           reference={rowRef}
           onClickNext={goNext}
@@ -316,8 +327,8 @@ const Stock = () => {
       </Content>
 
       <ButtonsContainer>
-        <TextButton content="Descartar" />
-        <TextButton cta content="Guardar" />
+        <TextButton content="Descartar" disabled={!activeEdition} />
+        <TextButton cta content="Guardar" disabled={!activeEdition} />
       </ButtonsContainer>
     </Container>
   )

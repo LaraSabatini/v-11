@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { PartnersContext } from "contexts/Partners"
 import getUsers from "services/Users/GetUsers.service"
+import UserInterface from "interfaces/users/UserInterface"
 import Icon from "components/UI/Assets/Icon"
 import theme from "theme/index"
 import texts from "strings/partners.json"
@@ -24,7 +25,9 @@ const PartnerDetails = () => {
   const getUsersInfo = async (creatorId: number) => {
     const data = await getUsers()
 
-    const creator = data.data.filter(user => user.id === creatorId)
+    const creator = data.data.filter(
+      (user: UserInterface) => user.id === creatorId,
+    )
     setCreatedBy(creator[0].name)
   }
 

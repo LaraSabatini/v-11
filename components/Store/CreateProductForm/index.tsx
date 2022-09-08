@@ -24,6 +24,10 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
     costRef,
     marginRef,
     stockRef,
+    autoCompleteCategoriesValues,
+    setAutoCompleteCategoriesValues,
+    autoCompleteBrandsValues,
+    setAutoCompleteBrandsValues,
   } = useContext(StoreContext)
   const [brandSelected, setBrandSelected] = useState<string>("")
   const [newProductData, setNewProductData] = useState<ProductInterface>({
@@ -38,15 +42,6 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
     sales_contact_name: "",
     sales_contact_information: "",
   })
-
-  const [autoCompleteBrandsValues, setAutoCompleteBrandsValues] = useState<
-    { id: number; display_name: string }[]
-  >()
-
-  const [
-    autoCompleteCategoriesValues,
-    setAutoCompleteCategoriesValues,
-  ] = useState<{ id: number; display_name: string }[]>()
 
   const fillAutocompletes = () => {
     const autocompleteBrands: { id: number; display_name: string }[] = []
