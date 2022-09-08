@@ -117,7 +117,7 @@ function StoreView() {
               if (stockChanges) {
                 setModalStockHasChanges(true)
               } else {
-                setSectionSelected({ section: `${texts.sells}`, id: 2 })
+                setSectionSelected({ section: `${texts.purchases}`, id: 2 })
               }
             }}
             selected={sectionSelected.id === 2}
@@ -129,7 +129,7 @@ function StoreView() {
               if (stockChanges) {
                 setModalStockHasChanges(true)
               } else {
-                setSectionSelected({ section: `${texts.sells}`, id: 3 })
+                setSectionSelected({ section: `${texts.stock}`, id: 3 })
               }
             }}
             selected={sectionSelected.id === 3}
