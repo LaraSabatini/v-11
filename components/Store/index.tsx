@@ -168,21 +168,24 @@ function StoreView() {
         )}
         {sectionSelected.id === 2 && <Purchases />}
         {sectionSelected.id === 3 && <Stock />}
-        <MainButton>
-          <Tooptip title={texts.mainButton}>
-            <CreateProduct
-              onClick={() => {
-                if (stockChanges) {
-                  setModalStockHasChanges(true)
-                } else {
-                  setCreateModal(true)
-                }
-              }}
-            >
-              <Icon color={theme.colors.white} icon="IconAdd" />
-            </CreateProduct>
-          </Tooptip>
-        </MainButton>
+        {sectionSelected.id === 1 ||
+          (sectionSelected.id === 3 && (
+            <MainButton>
+              <Tooptip title={texts.mainButton}>
+                <CreateProduct
+                  onClick={() => {
+                    if (stockChanges) {
+                      setModalStockHasChanges(true)
+                    } else {
+                      setCreateModal(true)
+                    }
+                  }}
+                >
+                  <Icon color={theme.colors.white} icon="IconAdd" />
+                </CreateProduct>
+              </Tooptip>
+            </MainButton>
+          ))}
       </Content>
       {createModal && (
         <CreateProductForm cancelCreate={() => setCreateModal(false)} />

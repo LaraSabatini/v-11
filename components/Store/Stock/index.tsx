@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { StoreContext } from "contexts/Store"
+import texts from "strings/store.json"
 import getProducts from "services/Store/getProducts.service"
 import editProduct from "services/Store/editProduct.service"
 import ModalAlert from "components/UI/ModalAlert"
@@ -363,7 +364,7 @@ const Stock = () => {
   return (
     <Container>
       {validationError && (
-        <ErrorMessage>*Completa todos los campos requeridos</ErrorMessage>
+        <ErrorMessage>{texts.stockSection.errorMessage}</ErrorMessage>
       )}
       {modalStockHasChanges && (
         <ModalAlert
@@ -371,13 +372,13 @@ const Stock = () => {
           message={{
             status: `alert`,
             icon: `IconAlert`,
-            title: "¿Deseas descartar los cambios realizados?",
-            content: "Si descartas los cambios no se guardara tu progreso",
+            title: `${texts.stockSection.changesModal.title}`,
+            content: `${texts.stockSection.changesModal.content}`,
           }}
           closeModal={cancelDiscard}
           closeRefresh={cancelDiscard}
-          mainButtonContent="Descartar"
-          secondButtonContent="Cancelar"
+          mainButtonContent={texts.stockSection.discard}
+          secondButtonContent={texts.stockSection.cancel}
           mainAction={discardChanges}
           isNotice
         />
@@ -409,13 +410,13 @@ const Stock = () => {
       <ButtonsContainer>
         <TextButton
           onClick={discardChanges}
-          content="Descartar"
+          content={texts.stockSection.cancel}
           disabled={!stockChanges}
         />
         <TextButton
           onClick={saveChanges}
           cta
-          content="Guardar"
+          content={texts.stockSection.save}
           disabled={!stockChanges}
         />
       </ButtonsContainer>
