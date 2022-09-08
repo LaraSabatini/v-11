@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { StoreContext } from "contexts/Store"
 import getProducts from "services/Store/getProducts.service"
+import editProduct from "services/Store/editProduct.service"
+import ModalAlert from "components/UI/ModalAlert"
 import { searchProducts } from "services/Store/searchProduct.service"
 import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
@@ -14,6 +16,7 @@ import {
   ButtonsContainer,
   Content,
   AutocompleteContainer,
+  ErrorMessage,
 } from "./styles"
 
 interface DefaultInterface {
@@ -32,13 +35,18 @@ const Stock = () => {
     setAutoCompleteCategoriesValues,
     autoCompleteBrandsValues,
     setAutoCompleteBrandsValues,
+    stockChanges,
+    setStockChanges,
+    modalStockHasChanges,
+    setModalStockHasChanges,
   } = useContext(StoreContext)
 
   const [activeEdition, setActiveEdition] = useState<boolean>(false)
   const [productSelected, setProductSelected] = useState<number>()
 
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [newValues, setNewValues] = useState<ProductInterface>()
+  const [newValues, setNewValues] = useState<ProductInterface>(null)
+  const [validationError, setValidationError] = useState<boolean>(false)
 
   const [rows, setRows] = useState<{
     success: boolean
@@ -204,21 +212,21 @@ const Stock = () => {
           }
         />
       ),
-      price: rows.rows[getIndexOfRow].price,
+      price: (newValues.margin * newValues.cost) / 100 + newValues.cost,
       margin: (
         <Input
           value={newValues.margin || ""}
-          onChange={e =>
+          onChange={e => {
             setNewValues({ ...newValues, margin: parseInt(e.target.value, 10) })
-          }
+          }}
         />
       ),
       cost: (
         <Input
           value={newValues.cost || ""}
-          onChange={e =>
+          onChange={e => {
             setNewValues({ ...newValues, cost: parseInt(e.target.value, 10) })
-          }
+          }}
         />
       ),
       sales_contact_name: (
@@ -284,9 +292,57 @@ const Stock = () => {
     setActiveEdition(true)
   }
 
+  const discardChanges = () => {
+    setModalStockHasChanges(false)
+    setStockChanges(false)
+    setNewValues(null)
+    setActiveEdition(false)
+    fillRows()
+  }
+  const saveChanges = async () => {
+    // put
+    // sacar vista edicion
+    const body = {
+      id: newValues.id,
+      name: newValues.name,
+      brand_id: newValues.brand_id,
+      category_id: newValues.category_id,
+      stock: newValues.stock,
+      price: (newValues.margin * newValues.cost) / 100 + newValues.cost,
+      margin: newValues.margin,
+      cost: newValues.cost,
+      sales_contact_name: newValues.sales_contact_name,
+      sales_contact_information: newValues.sales_contact_information,
+    }
+
+    if (
+      newValues.name.length > 0 &&
+      newValues.brand_id !== undefined &&
+      newValues.stock !== undefined &&
+      body.price !== undefined &&
+      newValues.margin !== undefined &&
+      newValues.cost !== undefined
+    ) {
+      setValidationError(false)
+      const executeEdition = await editProduct(body)
+      if (executeEdition.message === "product updated successfully") {
+        // setStockChanges(false)
+        // setNewValues(null)
+        // setActiveEdition(false)
+        // fillRows()
+        discardChanges()
+      }
+    } else {
+      setValidationError(true)
+    }
+
+    // VALIDACION DE INPUTS
+    // EJECUTAR EDICION
+  }
+
   useEffect(() => {
     if (
-      newValues !== undefined &&
+      newValues !== null &&
       productSelected !== undefined &&
       JSON.stringify(newValues) ===
         JSON.stringify(productsList[productSelected])
@@ -298,16 +354,43 @@ const Stock = () => {
 
   useEffect(() => {
     if (
+      newValues !== null &&
       JSON.stringify(newValues) !==
-      JSON.stringify(productsList[productSelected])
+        JSON.stringify(productsList[productSelected]) &&
+      activeEdition
     ) {
+      setStockChanges(true)
       setContentOfEditableRow()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newValues])
 
+  const cancelDiscard = () => {
+    setModalStockHasChanges(false)
+  }
+
   return (
     <Container>
+      {validationError && (
+        <ErrorMessage>*Completa todos los campos requeridos</ErrorMessage>
+      )}
+      {modalStockHasChanges && (
+        <ModalAlert
+          success={false}
+          message={{
+            status: `alert`,
+            icon: `IconAlert`,
+            title: "¿Deseas descartar los cambios realizados?",
+            content: "Si descartas los cambios no se guardara tu progreso",
+          }}
+          closeModal={cancelDiscard}
+          closeRefresh={cancelDiscard}
+          mainButtonContent="Descartar"
+          secondButtonContent="Cancelar"
+          mainAction={discardChanges}
+          isNotice
+        />
+      )}
       <Content>
         <DataTable
           rows={rows}
@@ -316,6 +399,12 @@ const Stock = () => {
           onRowClick={e => {
             if (!activeEdition) {
               activateRow(e.item)
+            } else if (
+              activeEdition &&
+              e.item.id !== newValues.id &&
+              stockChanges
+            ) {
+              setModalStockHasChanges(true)
             }
           }}
           totalPages={1}
@@ -327,8 +416,17 @@ const Stock = () => {
       </Content>
 
       <ButtonsContainer>
-        <TextButton content="Descartar" disabled={!activeEdition} />
-        <TextButton cta content="Guardar" disabled={!activeEdition} />
+        <TextButton
+          onClick={discardChanges}
+          content="Descartar"
+          disabled={!stockChanges}
+        />
+        <TextButton
+          onClick={saveChanges}
+          cta
+          content="Guardar"
+          disabled={!stockChanges}
+        />
       </ButtonsContainer>
     </Container>
   )

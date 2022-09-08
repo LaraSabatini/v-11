@@ -41,6 +41,8 @@ function StoreView() {
     triggerListUpdate,
     searchValueForStock,
     setSearchValueForStock,
+    setModalStockHasChanges,
+    stockChanges,
   } = useContext(StoreContext)
   const [createModal, setCreateModal] = useState<boolean>(false)
 
@@ -99,25 +101,37 @@ function StoreView() {
       <Content>
         <SectionsButtons>
           <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.sells}`, id: 1 })
-            }
+            onClick={() => {
+              if (stockChanges) {
+                setModalStockHasChanges(true)
+              } else {
+                setSectionSelected({ section: `${texts.sells}`, id: 1 })
+              }
+            }}
             selected={sectionSelected.id === 1}
           >
             {texts.sells}
           </Section>
           <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.purchases}`, id: 2 })
-            }
+            onClick={() => {
+              if (stockChanges) {
+                setModalStockHasChanges(true)
+              } else {
+                setSectionSelected({ section: `${texts.sells}`, id: 2 })
+              }
+            }}
             selected={sectionSelected.id === 2}
           >
             {texts.purchases}
           </Section>
           <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.stock}`, id: 3 })
-            }
+            onClick={() => {
+              if (stockChanges) {
+                setModalStockHasChanges(true)
+              } else {
+                setSectionSelected({ section: `${texts.sells}`, id: 3 })
+              }
+            }}
             selected={sectionSelected.id === 3}
           >
             {texts.stock}
@@ -129,11 +143,21 @@ function StoreView() {
           </Title>
           {sectionSelected.id === 1 && <Filters />}
           {sectionSelected.id === 3 && (
-            <SearchBar
-              searchValue={searchValueForStock}
-              onChangeSearch={e => setSearchValueForStock(e.target.value)}
-              width={250}
-            />
+            <button
+              className="btn-search"
+              type="button"
+              onClick={() => {
+                if (stockChanges) {
+                  setModalStockHasChanges(true)
+                }
+              }}
+            >
+              <SearchBar
+                searchValue={searchValueForStock}
+                onChangeSearch={e => setSearchValueForStock(e.target.value)}
+                width={250}
+              />
+            </button>
           )}
         </HeadContent>
         {sectionSelected.id === 1 && (
@@ -146,7 +170,15 @@ function StoreView() {
         {sectionSelected.id === 3 && <Stock />}
         <MainButton>
           <Tooptip title={texts.mainButton}>
-            <CreateProduct onClick={() => setCreateModal(true)}>
+            <CreateProduct
+              onClick={() => {
+                if (stockChanges) {
+                  setModalStockHasChanges(true)
+                } else {
+                  setCreateModal(true)
+                }
+              }}
+            >
               <Icon color={theme.colors.white} icon="IconAdd" />
             </CreateProduct>
           </Tooptip>

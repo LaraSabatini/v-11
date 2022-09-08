@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import theme from "theme/index"
 
 const Container = styled.div`
   margin-top: -20px;
@@ -19,4 +20,15 @@ const AutocompleteContainer = styled.div`
   margin-top: 33px;
 `
 
-export { Container, Content, ButtonsContainer, AutocompleteContainer }
+const ErrorMessage = styled.p`
+  color: ${theme.colors.danger};
+  position: absolute;
+`
+
+export {
+  Container,
+  Content,
+  ButtonsContainer,
+  AutocompleteContainer,
+  ErrorMessage,
+}

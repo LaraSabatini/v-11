@@ -41,6 +41,10 @@ export const StoreContext = createContext({
   setAutoCompleteCategoriesValues: null,
   autoCompleteBrandsValues: null,
   setAutoCompleteBrandsValues: null,
+  stockChanges: null,
+  setStockChanges: null,
+  modalStockHasChanges: null,
+  setModalStockHasChanges: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -79,6 +83,11 @@ const StoreProvider = ({ children }) => {
 
   // STOCK ***********************************
   const [searchValueForStock, setSearchValueForStock] = useState<string>("")
+
+  const [stockChanges, setStockChanges] = useState<boolean>(false)
+  const [modalStockHasChanges, setModalStockHasChanges] = useState<boolean>(
+    false,
+  )
 
   // BUY *************************************
   const [purchase, setPurchase] = useState<
@@ -162,6 +171,10 @@ const StoreProvider = ({ children }) => {
         setAutoCompleteCategoriesValues,
         autoCompleteBrandsValues,
         setAutoCompleteBrandsValues,
+        stockChanges,
+        setStockChanges,
+        modalStockHasChanges,
+        setModalStockHasChanges,
       }}
     >
       {children}

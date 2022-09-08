@@ -29,6 +29,12 @@ const HeadContent = styled.div`
   margin-bottom: 50px;
   margin-top: 25px;
   height: 38px;
+
+  .btn-search {
+    border: none;
+    padding: 0;
+    background: none;
+  }
 `
 
 const FiltersContainer = styled.div`

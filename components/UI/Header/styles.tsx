@@ -23,11 +23,15 @@ const Sections = styled.div`
   gap: 20px;
 `
 
-const SectionTitle = styled.a<{ bold: boolean }>`
+const SectionTitle = styled.button<{ bold: boolean }>`
+  background: none;
+  border: none;
+  outline: none;
   margin: 0;
   font-family: ${theme.fonts.primary};
   cursor: pointer;
   font-weight: ${theme.fontWeights.light};
+  font-size: 16px;
   color: ${theme.colors.white};
   text-decoration: none;
 
