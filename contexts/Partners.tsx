@@ -35,6 +35,25 @@ export const PartnersContext = createContext({
   setModalHasChanges: null,
   triggerListUpdate: null,
   setTriggerListUpdate: null,
+  newPartnerData: null,
+  setNewPartnerData: null,
+  comboRef: null,
+  clasesRef: null,
+  paymentRef: null,
+  paidTime: null,
+  setPaidTime: null,
+  paidTimeUnit: null,
+  setPaidTimeUnit: null,
+  combos: null,
+  setCombos: null,
+  paymentMethods: null,
+  setPaymentMethods: null,
+  comboSelected: null,
+  setComboSelected: null,
+  amountOfClases: null,
+  setAmountOfClases: null,
+  isChecked: null,
+  setIsChecked: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -65,6 +84,22 @@ const PartnersProvider = ({ children }) => {
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
 
   // CREATE *************************************************************
+  const [newPartnerData, setNewPartnerData] = useState<PartnerInterface>({
+    id: 0,
+    name: "",
+    last_name: "",
+    identification_number: "",
+    birth_date: "",
+    email: "",
+    membership_start_date: "",
+    membership_time_paid: "",
+    payment_expire_date: "",
+    payment_is_active: 0,
+    created_by: null,
+    trainer_id: null,
+    free_pass: 0,
+  })
+
   const timeUnits = [
     {
       id: 1,
@@ -90,6 +125,9 @@ const PartnersProvider = ({ children }) => {
   const paidTimeRef = useRef(null)
   const paidTimeUnitRef = useRef(null)
   const trainertRef = useRef(null)
+  const comboRef = useRef(null)
+  const clasesRef = useRef(null)
+  const paymentRef = useRef(null)
 
   const [modalSuccess, setModalSuccess] = useState<{
     status: string
@@ -105,6 +143,29 @@ const PartnersProvider = ({ children }) => {
     content: string
   } | null>(null)
 
+  const [paidTime, setPaidTime] = useState<number>(0)
+  const [paidTimeUnit, setPaidTimeUnit] = useState<{
+    id: number
+    display_name: string
+  }>()
+
+  const [combos, setCombos] = useState<{ id: number; display_name: string }[]>([
+    { id: 1, display_name: "combo 1" },
+  ])
+
+  const [paymentMethods, setPaymentMethods] = useState<
+    { id: number; display_name: string }[]
+  >([
+    { id: 1, display_name: "Efectivo" },
+    { id: 2, display_name: "MP" },
+  ])
+
+  const [comboSelected, setComboSelected] = useState<number>()
+
+  const [amountOfClases, setAmountOfClases] = useState<number>()
+
+  const [isChecked, setIsChecked] = useState<boolean>(false)
+
   // EDIT *************************************************************
 
   const [hasChanges, setHasChanges] = useState<boolean>(false)
@@ -113,6 +174,8 @@ const PartnersProvider = ({ children }) => {
   return (
     <PartnersContext.Provider
       value={{
+        isChecked,
+        setIsChecked,
         filterSelected,
         setFilterSelected,
         filters,
@@ -145,6 +208,23 @@ const PartnersProvider = ({ children }) => {
         setModalHasChanges,
         triggerListUpdate,
         setTriggerListUpdate,
+        newPartnerData,
+        setNewPartnerData,
+        comboRef,
+        clasesRef,
+        paymentRef,
+        paidTime,
+        setPaidTime,
+        paidTimeUnit,
+        setPaidTimeUnit,
+        combos,
+        setCombos,
+        paymentMethods,
+        setPaymentMethods,
+        comboSelected,
+        setComboSelected,
+        amountOfClases,
+        setAmountOfClases,
       }}
     >
       {children}
