@@ -43,5 +43,15 @@
             "title": "UPS!",
             "content": "Hubo un error al realizar la compra, por favor intenta nuevamente o contactate con el admin."
         }
+    },
+    "stockSection": {
+        "errorMessage": "*Completa todos los campos requeridos",
+        "changesModal": {
+            "title": "¿Deseas descartar los cambios realizados?",
+            "content": "Si descartas los cambios no se guardara tu progreso" 
+        },
+        "cancel": "Cancelar",
+        "discard": "Descartar",
+        "save": "Guardar"
     }
 }
