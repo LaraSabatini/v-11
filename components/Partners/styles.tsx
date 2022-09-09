@@ -73,7 +73,7 @@ const MainButton = styled.div`
 
 const ListAndDetailContainer = styled.div`
   display: flex;
-  align-items: center;
+  align-items: top;
   margin-top: 20px;
   gap: 20px;
 `

@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const PartnerData = styled.div`
-  padding-top: 25px;
+  padding-top: 30px;
   p {
     text-decoration: underline;
     margin: 0;

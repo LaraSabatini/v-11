@@ -183,7 +183,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       )}
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.create.name}
           required
           value={newData.name}
@@ -192,7 +192,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           onChange={e => setNewData({ ...newData, name: e.target.value })}
         />
         <TextField
-          width={200}
+          width={190}
           label={texts.create.last_name}
           required
           value={newData.last_name}
@@ -203,7 +203,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       </PartnerData>
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.create.email}
           value={newData.email}
           type="email"
@@ -211,7 +211,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           onChange={e => setNewData({ ...newData, email: e.target.value })}
         />
         <TextField
-          width={200}
+          width={190}
           label={texts.create.identification}
           value={newData.identification_number}
           type="text"
@@ -224,7 +224,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       <PartnerData />
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.edit.member_since}
           value={partnerInfo?.membership_start_date}
           type="text"
@@ -232,7 +232,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           disabledAutocompleted
         />
         <InputCalendar
-          width={200}
+          width={190}
           required
           label={texts.member_expire}
           valueCalendar={newData.payment_expire_date}
@@ -247,7 +247,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       </PartnerData>
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.created_by}
           value={`@${createdBy}`}
           type="text"
@@ -256,7 +256,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         />
         <Autocomplete
           label={texts.trainer}
-          width={200}
+          width={190}
           options={trainers}
           setValue={hasTrainer}
           ref={trainertRef}

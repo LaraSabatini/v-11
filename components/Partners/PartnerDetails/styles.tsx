@@ -4,7 +4,7 @@ import theme from "theme/index"
 const Container = styled.div`
   background-color: white;
   height: 450px;
-  width: 450px;
+  width: 400px;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0px 0px 20px 5px rgba(59, 0, 135, 0.1);
@@ -13,22 +13,13 @@ const Container = styled.div`
 
 const Title = styled.h4`
   margin: 0;
+  padding-bottom: 15px;
   font-size: 20px;
   display: flex;
   align-items: center;
-  width: 400px;
+  width: 340px;
   justify-content: space-between;
   position: relative;
-
-  span {
-    display: flex;
-    align-items: center;
-    font-size: 15px;
-
-    p {
-      margin-right: 10px;
-    }
-  }
 `
 
 const Divider = styled.div`

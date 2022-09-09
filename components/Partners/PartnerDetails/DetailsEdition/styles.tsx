@@ -4,12 +4,12 @@ const PartnerData = styled.div`
   padding-top: 0px;
 
   display: flex;
-  /* gap: 15px; */
+  gap: 10px;
   justify-content: space-between;
 `
 
 const Details = styled.div`
-  padding: 10px 10px;
+  padding: 25px 0 0 0;
 `
 
 const ButtonContainer = styled.div`
