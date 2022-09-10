@@ -1,6 +1,9 @@
-import React, { useContext, useState } from "react"
-// import getTrainers from "services/Trainers/GetTrainers.service"
-// import createPartner from "services/Partners/CreatePartner.service"
+import React, { useContext, useState, useEffect } from "react"
+import createPartner from "services/Partners/CreatePartner.service"
+import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
+import getPrices from "services/Partners/GetPrices.service"
+import getCombos from "services/Partners/GetCombos.service"
+import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PartnersContext } from "contexts/Partners"
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
@@ -23,8 +26,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     emailRef,
     newPartnerData,
     setNewPartnerData,
-    // setModalSuccess,
-    // setModalError,
+    setModalSuccess,
+    setModalError,
     paidTimeUnitRef,
     paidTimeRef,
     trainertRef,
@@ -32,6 +35,12 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     paymentRef,
     paidTimeUnit,
     paidTime,
+    setPrices,
+    setCombos,
+    comboSelected,
+    amountOfClases,
+    paymentMethodSelected,
+    finalPrice,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
 
@@ -77,18 +86,12 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         birth_date:
           newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
         membership_start_date: `${day}/${month}/${year}`,
-        payment_is_active: 1,
         created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       setNewPartnerData(body)
       setView(2)
     }
-  }
-
-  const addMonths = (numOfMonths: number, date = new Date()) => {
-    date.setMonth(date.getMonth() + numOfMonths)
-    return date
   }
 
   const finalizeCreate = async e => {
@@ -110,65 +113,78 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       paymentRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
-      // eslint-disable-next-line no-console
-      console.log("success")
-
-      let expireDate = new Date()
-      if (paidTimeUnit.id === 1) {
-        expireDate.setDate(today.getDate() + paidTime)
-      } else if (paidTimeUnit.id === 2) {
-        expireDate = addMonths(paidTime, today)
-      } else {
-        expireDate.setFullYear(expireDate.getFullYear() + paidTime)
-      }
-
-      const finalExpireDay =
-        expireDate.getDate() > 9
-          ? expireDate.getDate()
-          : `0${expireDate.getDate()}`
-
-      const finalExpireMonth =
-        expireDate.getMonth() + 1 > 9
-          ? expireDate.getMonth() + 1
-          : `0${expireDate.getMonth() + 1}`
-
-      // setear nuevo partner
-      // setear nuevo pago
       const body = {
         ...newPartnerData,
-        membership_time_paid: `${paidTime} ${paidTimeUnit.display_name}`,
-        payment_expire_date:
-          paidTimeUnit.id !== 1
-            ? `${finalExpireDay}/${finalExpireMonth}/${expireDate.getFullYear()}`
-            : "",
         trainer_id:
           newPartnerData.trainer_id === null ? null : newPartnerData.trainer_id,
         free_pass:
-          paidTimeUnit.id !== 1 || newPartnerData.trainer_id !== null ? 1 : 0,
+          paidTimeUnit?.id !== 1 || newPartnerData.trainer_id !== null ? 1 : 0,
       }
 
-      // eslint-disable-next-line no-console
-      console.log(body)
+      const apiValidation = await createPartner(body)
 
-      // const apiValidation = await createPartner(body)
-      // if (apiValidation.message === "partner created successfully") {
-      //   setModalSuccess({
-      //     status: "success",
-      //     icon: "IconCheckModal",
-      //     title: `${texts.create.success.title}`,
-      //     content: `${texts.create.success.content}`,
-      //   })
-      //   cancelCreate()
-      // } else {
-      //   setModalError({
-      //     status: "alert",
-      //     icon: "IconExclamation",
-      //     title: `${texts.create.error.title}`,
-      //     content: `${texts.create.error.content}`,
-      //   })
-      // }
+      if (apiValidation.message === "partner created successfully") {
+        cancelCreate()
+        const paymentBody: PaymentInterface = {
+          id: 0,
+          partner_id: apiValidation.partnerId,
+          partner_name: "",
+          partner_last_name: "",
+          combo:
+            comboSelected !== null && comboSelected !== undefined
+              ? comboSelected
+              : 0,
+          time_paid: paidTime !== null && paidTime !== 0 ? paidTime : 0,
+          time_paid_unit:
+            paidTimeUnit?.id !== null && paidTimeUnit !== undefined
+              ? paidTimeUnit.id
+              : "",
+          clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
+          trainer_id: newPartnerData.trainer_id,
+          trainer_name: "",
+          payment_method_id: paymentMethodSelected,
+          payment_method_name: "",
+          price_paid: finalPrice,
+        }
+        const createPayment = await createPartnerPayment(paymentBody)
+        if (createPayment.message === "partnerPayment created successfully") {
+          setModalSuccess({
+            status: "success",
+            icon: "IconCheckModal",
+            title: `${texts.create.success.title}`,
+            content: `${texts.create.success.content}`,
+          })
+        } else {
+          setModalError({
+            status: "alert",
+            icon: "IconExclamation",
+            title: `${texts.create.error.title}`,
+            content: `${texts.create.error.content}`,
+          })
+        }
+      } else {
+        setModalError({
+          status: "alert",
+          icon: "IconExclamation",
+          title: `${texts.create.error.title}`,
+          content: `${texts.create.error.content}`,
+        })
+      }
     }
   }
+
+  const fillPrices = async () => {
+    const data = await getPrices()
+    setPrices(data.data)
+
+    const combosData = await getCombos()
+    setCombos(combosData.data)
+  }
+
+  useEffect(() => {
+    fillPrices()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <ModalForm

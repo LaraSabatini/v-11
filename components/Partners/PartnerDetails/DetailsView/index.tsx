@@ -49,10 +49,7 @@ const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
         <p>{texts.member_since}</p>
         {partnerInfo?.membership_start_date}
       </PartnerData>
-      <PartnerData>
-        <p>{texts.member_expire}</p>
-        {partnerInfo?.payment_expire_date}
-      </PartnerData>
+
       <PartnerData>
         <p>{texts.created_by}</p>@{createdBy}
       </PartnerData>

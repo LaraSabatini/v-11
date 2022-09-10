@@ -68,8 +68,16 @@ const FreePass = styled.p`
   font-weight: ${theme.fontWeights.light};
 `
 
+const Day = styled.p`
+  background-color: #764e9a;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: ${theme.colors.white};
+  font-weight: ${theme.fontWeights.light};
+`
+
 const IconContainer = styled.div<{ active: boolean }>`
-  margin-left: 120px;
+  margin-left: 200px;
   transform: rotate(90deg);
 
   ${props =>
@@ -118,4 +126,5 @@ export {
   Paginator,
   Navigate,
   NoPartnersView,
+  Day,
 }

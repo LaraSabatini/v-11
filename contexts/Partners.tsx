@@ -1,6 +1,8 @@
 import { createContext, useState, useRef } from "react"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
+import PricesInterface from "interfaces/partners/PricesInterface"
+import CombosInterface from "interfaces/partners/CombosInterface"
 
 export const PartnersContext = createContext({
   filterSelected: null,
@@ -54,6 +56,12 @@ export const PartnersContext = createContext({
   setAmountOfClases: null,
   isChecked: null,
   setIsChecked: null,
+  prices: null,
+  setPrices: null,
+  finalPrice: null,
+  setFinalPrice: null,
+  paymentMethodSelected: null,
+  setPaymentMethodSelected: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -92,9 +100,6 @@ const PartnersProvider = ({ children }) => {
     birth_date: "",
     email: "",
     membership_start_date: "",
-    membership_time_paid: "",
-    payment_expire_date: "",
-    payment_is_active: 0,
     created_by: null,
     trainer_id: null,
     free_pass: 0,
@@ -108,10 +113,6 @@ const PartnersProvider = ({ children }) => {
     {
       id: 2,
       display_name: "Mes/es",
-    },
-    {
-      id: 3,
-      display_name: "Año/s",
     },
   ]
 
@@ -149,9 +150,7 @@ const PartnersProvider = ({ children }) => {
     display_name: string
   }>()
 
-  const [combos, setCombos] = useState<{ id: number; display_name: string }[]>([
-    { id: 1, display_name: "combo 1" },
-  ])
+  const [combos, setCombos] = useState<CombosInterface[]>([])
 
   const [paymentMethods, setPaymentMethods] = useState<
     { id: number; display_name: string }[]
@@ -165,6 +164,13 @@ const PartnersProvider = ({ children }) => {
   const [amountOfClases, setAmountOfClases] = useState<number>()
 
   const [isChecked, setIsChecked] = useState<boolean>(false)
+
+  const [prices, setPrices] = useState<PricesInterface[]>([])
+  const [finalPrice, setFinalPrice] = useState<number>(0)
+
+  const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(
+    null,
+  )
 
   // EDIT *************************************************************
 
@@ -225,6 +231,12 @@ const PartnersProvider = ({ children }) => {
         setComboSelected,
         amountOfClases,
         setAmountOfClases,
+        prices,
+        setPrices,
+        finalPrice,
+        setFinalPrice,
+        paymentMethodSelected,
+        setPaymentMethodSelected,
       }}
     >
       {children}
