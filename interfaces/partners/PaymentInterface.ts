@@ -12,4 +12,5 @@ export default interface PaymentInterface {
   payment_method_id: number
   payment_method_name: string
   price_paid: number
+  date: string
 }

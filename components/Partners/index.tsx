@@ -15,6 +15,7 @@ import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
+import PaymentsHistory from "./PaymentsHistory"
 import {
   Container,
   Title,
@@ -24,6 +25,8 @@ import {
   MainButton,
   ListAndDetailContainer,
   SearchBarContainer,
+  Section,
+  SectionsButtons,
 } from "./styles"
 
 function PartnersView() {
@@ -40,6 +43,14 @@ function PartnersView() {
     setDetailState,
     triggerListUpdate,
   } = useContext(PartnersContext)
+
+  const [sectionSelected, setSectionSelected] = useState<{
+    section: string
+    id: number
+  }>({
+    section: "Clientes",
+    id: 1,
+  })
 
   const [createModal, setCreateModal] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>("")
@@ -98,29 +109,64 @@ function PartnersView() {
       <Modals />
       <Header />
       <Content>
+        <SectionsButtons>
+          <Section
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else {
+                setSectionSelected({ section: "Clientes", id: 1 })
+              }
+            }}
+            selected={sectionSelected.id === 1}
+          >
+            Clientes
+          </Section>
+          <Section
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else {
+                setSectionSelected({ section: "Historial de pagos", id: 2 })
+              }
+            }}
+            selected={sectionSelected.id === 2}
+          >
+            Historial de pagos
+          </Section>
+        </SectionsButtons>
         <HeadContent>
-          <Title>{texts.title}</Title>
-          <Filters />
+          <Title>
+            {texts.title} <span> / {sectionSelected.section}</span>
+          </Title>
+          {sectionSelected.id === 1 && <Filters />}
         </HeadContent>
-        <SearchBarContainer
-          onClick={() => {
-            if (hasChanges) {
-              setModalHasChanges(true)
-            } else {
-              setDetailState("view")
-            }
-          }}
-        >
-          <SearchBar
-            searchValue={searchValue}
-            onChangeSearch={e => setSearchValue(e.target.value)}
-            width={250}
-          />
-        </SearchBarContainer>
-        <ListAndDetailContainer>
-          <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
-          {partnerSelected !== null && <PartnerDetails />}
-        </ListAndDetailContainer>
+
+        {sectionSelected.id === 1 && (
+          <>
+            <SearchBarContainer
+              onClick={() => {
+                if (hasChanges) {
+                  setModalHasChanges(true)
+                } else {
+                  setDetailState("view")
+                }
+              }}
+            >
+              <SearchBar
+                searchValue={searchValue}
+                onChangeSearch={e => setSearchValue(e.target.value)}
+                width={250}
+              />
+            </SearchBarContainer>
+            <ListAndDetailContainer>
+              <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
+              {partnerSelected !== null && <PartnerDetails />}
+            </ListAndDetailContainer>
+          </>
+        )}
+        {sectionSelected.id === 2 && <PaymentsHistory />}
+
         <MainButton>
           <Tooptip title={texts.mainButton}>
             <AddPartner

@@ -145,6 +145,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           payment_method_id: paymentMethodSelected,
           payment_method_name: "",
           price_paid: finalPrice,
+          date: `${day}/${month}/${year}`,
         }
         const createPayment = await createPartnerPayment(paymentBody)
         if (createPayment.message === "partnerPayment created successfully") {
