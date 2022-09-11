@@ -10,6 +10,7 @@ import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import theme from "theme/index"
 import Header from "components/UI/Header"
+import AddPayment from "./PaymentsHistory/AddPayment"
 import Modals from "./Modals"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
@@ -53,6 +54,7 @@ function PartnersView() {
   })
 
   const [createModal, setCreateModal] = useState<boolean>(false)
+  const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>("")
 
   const setPartnerList = async () => {
@@ -175,7 +177,11 @@ function PartnersView() {
                   setModalHasChanges(true)
                 } else {
                   setDetailState("view")
-                  setCreateModal(true)
+                  if (sectionSelected.id === 1) {
+                    setCreateModal(true)
+                  } else {
+                    setAddPaymentModal(true)
+                  }
                 }
               }}
             >
@@ -186,6 +192,9 @@ function PartnersView() {
       </Content>
       {createModal && (
         <CreatePartner cancelCreate={() => setCreateModal(false)} />
+      )}
+      {addPaymentModal && (
+        <AddPayment cancelCreate={() => setAddPaymentModal(false)} />
       )}
     </Container>
   )
