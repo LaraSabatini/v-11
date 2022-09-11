@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
+import searchPartner from "services/Partners/SearchPartner.service"
 import { PartnersContext } from "contexts/Partners"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TextButton from "components/UI/TextButton"
 import {
   Card,
@@ -26,7 +28,7 @@ interface PaymentCardInterface {
   time_paid: number
   time_paid_unit: number
   clases_paid: number
-  trainer_id: number
+  // trainer_id: number
   trainer_name: string
   //   payment_method_id: number
   //   payment_method_name: string
@@ -44,7 +46,7 @@ const PaymentCard = ({
   time_paid,
   time_paid_unit,
   clases_paid,
-  trainer_id,
+  // trainer_id,
   trainer_name,
   //   payment_method_id,
   //   payment_method_name,
@@ -63,6 +65,7 @@ const PaymentCard = ({
     price_mp: number
     details: string
   }>()
+  const [partner, setPartner] = useState<PartnerInterface>()
 
   const filterCombo = () => {
     const searchCombo = combos.filter(c => c.id === combo)
@@ -70,6 +73,16 @@ const PaymentCard = ({
       setComboSelected(searchCombo[0])
     }
   }
+
+  const getPartnerData = async () => {
+    const data = await searchPartner(partner_name, 1)
+    setPartner(data.data[0])
+  }
+
+  useEffect(() => {
+    getPartnerData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [partner_name])
 
   useEffect(() => {
     if (combo !== 0) {
@@ -85,9 +98,17 @@ const PaymentCard = ({
           {partner_name} {partner_last_name}
         </Name>
         <Tags>
-          {trainer_id !== 0 && <Student>Alumno</Student>}
-          {time_paid_unit === 2 && <FreePass>Pase Libre</FreePass>}
-          {time_paid_unit === 1 && <Day>Dia</Day>}
+          <Tags>
+            {partner !== undefined && (
+              <>
+                {partner.trainer_id !== 0 && <Student>Alumno</Student>}
+                {partner.free_pass !== 0 && <FreePass>Pase Libre</FreePass>}
+                {partner.free_pass === 0 && partner.trainer_id === 0 && (
+                  <Day>Dia</Day>
+                )}
+              </>
+            )}
+          </Tags>
         </Tags>
       </CardHead>
       {/* DIAS RESTANTES => time_paid_unit === 1 */}
@@ -111,7 +132,9 @@ const PaymentCard = ({
             <Section>
               <p>Vencimiento de pago</p>
               {/* CALCULAR FECHA DE VENC. CON DATE */}
-              <Date>{time_paid_unit === 2 ? payment_expire_date : "-"}</Date>
+              <Date>
+                {payment_expire_date !== "" ? payment_expire_date : "-"}
+              </Date>
             </Section>
             <Section>
               <p>Profesor</p>
@@ -123,8 +146,8 @@ const PaymentCard = ({
               <p>Pago actual</p>
               <span>{comboSelected !== undefined && comboSelected.name}</span>
               <span>
-                {time_paid !== 0 && time_paid}{" "}
-                {time_paid_unit === 1 ? "Dia/s" : "Mes/es"}
+                {time_paid !== 0 && time_paid} {time_paid_unit === 1 && "Dia/s"}
+                {time_paid_unit === 2 && "Mes/es"}
               </span>
               <span>{clases_paid !== 0 && `${clases_paid} clases`}</span>
             </Section>

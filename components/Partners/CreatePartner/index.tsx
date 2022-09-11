@@ -41,6 +41,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     amountOfClases,
     paymentMethodSelected,
     finalPrice,
+    paymentMethods,
+    trainerSelected,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
 
@@ -118,7 +120,11 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         trainer_id:
           newPartnerData.trainer_id === null ? null : newPartnerData.trainer_id,
         free_pass:
-          paidTimeUnit?.id !== 1 || newPartnerData.trainer_id !== null ? 1 : 0,
+          paidTimeUnit?.id !== null &&
+          paidTimeUnit !== undefined &&
+          paidTimeUnit?.id !== 1
+            ? 1
+            : 0,
       }
 
       const apiValidation = await createPartner(body)
@@ -136,8 +142,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         const paymentBody: PaymentInterface = {
           id: 0,
           partner_id: apiValidation.partnerId,
-          partner_name: "",
-          partner_last_name: "",
+          partner_name: newPartnerData.name,
+          partner_last_name: newPartnerData.last_name,
           combo:
             comboSelected !== null && comboSelected !== undefined
               ? comboSelected
@@ -148,14 +154,19 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               ? paidTimeUnit.id
               : "",
           clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
-          trainer_id: newPartnerData.trainer_id,
-          trainer_name: "",
+          trainer_id:
+            newPartnerData.trainer_id !== null ? newPartnerData.trainer_id : 0,
+          trainer_name:
+            trainerSelected !== undefined ? trainerSelected.display_name : "",
           payment_method_id: paymentMethodSelected,
-          payment_method_name: "",
+          payment_method_name: paymentMethods.filter(
+            pm => pm.id === paymentMethodSelected,
+          )[0].display_name,
           price_paid: finalPrice,
           date: `${day}/${month}/${year}`,
           payment_expire_date:
-            paidTimeUnit !== undefined && paidTimeUnit?.id === 2
+            (paidTimeUnit !== undefined && paidTimeUnit?.id === 2) ||
+            (comboSelected !== null && comboSelected !== undefined)
               ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
               : "",
         }

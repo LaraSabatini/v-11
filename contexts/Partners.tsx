@@ -69,6 +69,8 @@ export const PartnersContext = createContext({
   setAddPaymentModal: null,
   createModal: null,
   setCreateModal: null,
+  trainerSelected: null,
+  setTrainerSelected: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -185,6 +187,11 @@ const PartnersProvider = ({ children }) => {
 
   const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
 
+  const [trainerSelected, setTrainerSelected] = useState<{
+    id: number
+    display_name: string
+  }>()
+
   // EDIT *************************************************************
 
   const [hasChanges, setHasChanges] = useState<boolean>(false)
@@ -256,6 +263,8 @@ const PartnersProvider = ({ children }) => {
         createModal,
         setCreateModal,
         setAddPaymentModal,
+        trainerSelected,
+        setTrainerSelected,
       }}
     >
       {children}

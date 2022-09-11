@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import getTrainers from "services/Trainers/GetTrainers.service"
 import { PartnersContext } from "contexts/Partners"
 import Autocomplete from "components/UI/Autocomplete"
@@ -35,11 +35,10 @@ const MakePayment = () => {
     amountOfClases,
     paymentMethodSelected,
     setPaymentMethodSelected,
+    trainersList,
+    setTrainersList,
+    setTrainerSelected,
   } = useContext(PartnersContext)
-
-  const [trainers, setTrainers] = useState<
-    { id: number; display_name: string }[]
-  >([])
 
   const fillTrainersData = async () => {
     const data = await getTrainers()
@@ -51,7 +50,7 @@ const MakePayment = () => {
       }),
     )
 
-    setTrainers(arrayTrainers)
+    setTrainersList(arrayTrainers)
   }
 
   useEffect(() => {
@@ -238,11 +237,6 @@ const MakePayment = () => {
           reference={clasesRef}
           onChange={e => {
             setAmountOfClases(parseInt(e.target.value, 10))
-            if (parseInt(e.target.value, 10) > 0) {
-              setIsChecked(true)
-            } else {
-              setIsChecked(false)
-            }
           }}
         />
       </HorizontalGroup>
@@ -250,14 +244,15 @@ const MakePayment = () => {
         <Autocomplete
           label="Profesor"
           width={290}
-          options={trainers}
+          options={trainersList}
           ref={trainertRef}
-          onChangeProps={(e: { id: number; display_name: string }) =>
+          onChangeProps={(e: { id: number; display_name: string }) => {
             setNewPartnerData({
               ...newPartnerData,
               trainer_id: e.id,
             })
-          }
+            setTrainerSelected(e)
+          }}
         />
       </HorizontalGroup>
       <HorizontalGroup>
@@ -281,11 +276,7 @@ const MakePayment = () => {
         />
       </HorizontalGroup>
       <CheckboxContainer>
-        <Checkbox
-          checked={isChecked || newPartnerData.trainer_id !== null}
-          isDisabled
-          idParam="free-pass"
-        />
+        <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
         <p>Pase libre</p>
       </CheckboxContainer>
     </Form>

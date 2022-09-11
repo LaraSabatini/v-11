@@ -1,59 +1,49 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import getCombos from "services/Partners/GetCombos.service"
+import getPartnerPayments from "services/Partners/GetPartnerPayments.service"
 import { PartnersContext } from "contexts/Partners"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import PaymentCard from "./PaymentCard"
 
 const PaymentsHistory = () => {
   const { setCombos } = useContext(PartnersContext)
+  const [paymentsList, setPaymentsList] = useState<PaymentInterface[]>([])
 
-  const fillCombos = async () => {
+  const fillData = async () => {
     const data = await getCombos()
     setCombos(data.data)
+
+    const payments = await getPartnerPayments(1)
+    setPaymentsList(payments.data)
   }
 
   useEffect(() => {
-    fillCombos()
+    fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const hola: PaymentInterface = {
-    id: 2,
-    partner_id: 1,
-    partner_name: "Lara",
-    partner_last_name: "Sabatini",
-    combo: 0,
-    time_paid: 1,
-    time_paid_unit: 1,
-    clases_paid: 0,
-    trainer_id: 0,
-    trainer_name: "",
-    payment_method_id: 1,
-    payment_method_name: "Efectivo",
-    price_paid: 750,
-    date: "11/09/2022",
-    payment_expire_date: "10/12/2022",
-  }
-
   return (
     <div style={{ marginTop: "30px" }}>
-      <PaymentCard
-        // id={hola.id}
-        // partner_id={hola.partner_id}
-        partner_name={hola.partner_name}
-        partner_last_name={hola.partner_last_name}
-        combo={hola.combo}
-        time_paid={hola.time_paid}
-        time_paid_unit={hola.time_paid_unit}
-        clases_paid={hola.clases_paid}
-        trainer_id={hola.trainer_id}
-        trainer_name={hola.trainer_name}
-        // payment_method_id={hola.payment_method_id}
-        // payment_method_name={hola.payment_method_name}
-        // price_paid={hola.price_paid}
-        // date={hola.date}
-        payment_expire_date={hola.payment_expire_date}
-      />
+      {paymentsList.length &&
+        paymentsList.map(payment => (
+          <PaymentCard
+            // id={payment.id}
+            // partner_id={payment.partner_id}
+            partner_name={payment.partner_name}
+            partner_last_name={payment.partner_last_name}
+            combo={payment.combo}
+            time_paid={payment.time_paid}
+            time_paid_unit={payment.time_paid_unit}
+            clases_paid={payment.clases_paid}
+            // trainer_id={payment.trainer_id}
+            trainer_name={payment.trainer_name}
+            // payment_method_id={payment.payment_method_id}
+            // payment_method_name={payment.payment_method_name}
+            // price_paid={payment.price_paid}
+            // date={payment.date}
+            payment_expire_date={payment.payment_expire_date}
+          />
+        ))}
     </div>
   )
 }
