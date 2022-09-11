@@ -5,7 +5,7 @@ export default interface PaymentInterface {
   partner_last_name: string
   combo: number
   time_paid: number
-  time_paid_unit: string
+  time_paid_unit: number
   clases_paid: number
   trainer_id: number
   trainer_name: string
@@ -13,4 +13,5 @@ export default interface PaymentInterface {
   payment_method_name: string
   price_paid: number
   date: string
+  payment_expire_date: string
 }

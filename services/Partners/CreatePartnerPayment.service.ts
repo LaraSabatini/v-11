@@ -7,7 +7,7 @@ const createPartnerPayment = async (body: {
   partner_last_name: string
   combo: number
   time_paid: number
-  time_paid_unit: string
+  time_paid_unit: number
   clases_paid: number
   trainer_id: number
   trainer_name: string

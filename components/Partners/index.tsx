@@ -10,7 +10,7 @@ import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import theme from "theme/index"
 import Header from "components/UI/Header"
-import AddPayment from "./PaymentsHistory/AddPayment"
+// import AddPayment from "./PaymentsHistory/AddPayment"
 import Modals from "./Modals"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
@@ -43,7 +43,7 @@ function PartnersView() {
     setModalHasChanges,
     setDetailState,
     triggerListUpdate,
-    addPaymentModal,
+    // addPaymentModal,
     setAddPaymentModal,
   } = useContext(PartnersContext)
 
@@ -194,9 +194,9 @@ function PartnersView() {
       {createModal && (
         <CreatePartner cancelCreate={() => setCreateModal(false)} />
       )}
-      {addPaymentModal && (
+      {/* {addPaymentModal && (
         <AddPayment cancelCreate={() => setAddPaymentModal(false)} />
-      )}
+      )} */}
     </Container>
   )
 }
