@@ -3,6 +3,7 @@ import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
+import PaymentInterface from "interfaces/partners/PaymentInterface"
 
 export const PartnersContext = createContext({
   filterSelected: null,
@@ -62,6 +63,8 @@ export const PartnersContext = createContext({
   setFinalPrice: null,
   paymentMethodSelected: null,
   setPaymentMethodSelected: null,
+  partnerPayments: null,
+  setPartnerPayments: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -90,6 +93,8 @@ const PartnersProvider = ({ children }) => {
   const [detailState, setDetailState] = useState<"view" | "edit">("view")
 
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
+
+  const [partnerPayments, setPartnerPayments] = useState<PaymentInterface[]>([])
 
   // CREATE *************************************************************
   const [newPartnerData, setNewPartnerData] = useState<PartnerInterface>({
@@ -237,6 +242,8 @@ const PartnersProvider = ({ children }) => {
         setFinalPrice,
         paymentMethodSelected,
         setPaymentMethodSelected,
+        partnerPayments,
+        setPartnerPayments,
       }}
     >
       {children}
