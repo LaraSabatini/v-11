@@ -65,6 +65,8 @@ export const PartnersContext = createContext({
   setPaymentMethodSelected: null,
   partnerPayments: null,
   setPartnerPayments: null,
+  addPaymentModal: null,
+  setAddPaymentModal: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -177,6 +179,8 @@ const PartnersProvider = ({ children }) => {
     null,
   )
 
+  const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
+
   // EDIT *************************************************************
 
   const [hasChanges, setHasChanges] = useState<boolean>(false)
@@ -244,6 +248,8 @@ const PartnersProvider = ({ children }) => {
         setPaymentMethodSelected,
         partnerPayments,
         setPartnerPayments,
+        addPaymentModal,
+        setAddPaymentModal,
       }}
     >
       {children}

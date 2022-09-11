@@ -1,7 +1,12 @@
 import React, { useContext, useState, useEffect } from "react"
+import texts from "strings/partners.json"
 import { PartnersContext } from "contexts/Partners"
 import getTrainers from "services/Trainers/GetTrainers.service"
+import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
+import editPartner from "services/Partners/EditPartner.service"
 import getCombos from "services/Partners/GetCombos.service"
+import getPrices from "services/Partners/GetPrices.service"
+import PaymentInterface from "interfaces/partners/PaymentInterface"
 import searchPartner from "services/Partners/SearchPartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import SearchBar from "components/UI/SearchBar"
@@ -44,19 +49,28 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
     paymentRef,
     setPaymentMethodSelected,
     isChecked,
+    paymentMethodSelected,
+    paidTime,
+    paidTimeUnit,
+    prices,
+    setPrices,
+    amountOfClases,
+    setFinalPrice,
+    setModalSuccess,
+    setModalError,
   } = useContext(PartnersContext)
   const [searchValue, setSearchValue] = useState<string>("")
   const [results, setResults] = useState<PartnerInterface[]>([])
 
-  const [partnerSelected, setPartnerSelected] = useState<{
-    id: number
-    name: string
-  }>()
+  const [partnerSelected, setPartnerSelected] = useState<PartnerInterface>()
   const [trainers, setTrainers] = useState<
     { id: number; display_name: string }[]
   >([])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [newTrainer, setNewTrainer] = useState<number>()
+  const [newTrainer, setNewTrainer] = useState<{
+    id: number
+    name: string
+  }>()
 
   const searchPartnerFunction = async () => {
     if (searchValue.length > 2) {
@@ -89,6 +103,9 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
     )
 
     setTrainers(arrayTrainers)
+
+    const pricesData = await getPrices()
+    setPrices(pricesData.data)
   }
 
   useEffect(() => {
@@ -97,16 +114,192 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
-  const addPayment = () => {
-    // crear payment
-    // si trainer !== al del perfil => put
+  const today = new Date()
+  const getDay = today.getDate()
+  const getMonth = today.getMonth()
+  const year = today.getFullYear()
+
+  const day = getDay > 9 ? getDay : `0${getDay}`
+  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
+
+  const addPayment = async e => {
+    e.preventDefault()
+
+    // VALIDAR INPUTS OBLIGATORIOS
+    await paymentRef.current?.focus()
+
+    if (
+      paymentRef.current.attributes.getNamedItem("data-error").value === "false"
+    ) {
+      // si trainer !== al del perfil => put
+      const paymentBody: PaymentInterface = {
+        id: 0,
+        partner_id: partnerSelected.id,
+        partner_name: partnerSelected.name,
+        partner_last_name: partnerSelected.last_name,
+        combo:
+          comboSelected !== null && comboSelected !== undefined
+            ? comboSelected
+            : 0,
+        time_paid: paidTime !== null && paidTime !== 0 ? paidTime : 0,
+        time_paid_unit:
+          paidTimeUnit?.id !== null && paidTimeUnit !== undefined
+            ? paidTimeUnit.id
+            : "",
+        clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
+        trainer_id: newTrainer !== undefined ? newTrainer.id : 0,
+        trainer_name: newTrainer !== undefined ? newTrainer.name : "",
+        payment_method_id: paymentMethodSelected,
+        payment_method_name: paymentMethods.filter(
+          pm => pm.id === paymentMethodSelected,
+        )[0].display_name,
+        price_paid: finalPrice,
+        date: `${day}/${month}/${year}`,
+      }
+      const createPayment = await createPartnerPayment(paymentBody)
+      // eslint-disable-next-line no-console
+      console.log(paymentBody)
+
+      if (
+        newTrainer !== undefined &&
+        partnerSelected.trainer_id !== newTrainer.id
+      ) {
+        await editPartner({
+          ...partnerSelected,
+          trainer_id: newTrainer.id,
+        })
+      }
+
+      if (createPayment.message === "partnerPayment created successfully") {
+        setModalSuccess({
+          status: "success",
+          icon: "IconCheckModal",
+          title: `${texts.create.success.title}`,
+          content: "Pago actualizado",
+        })
+      } else {
+        setModalError({
+          status: "alert",
+          icon: "IconExclamation",
+          title: `${texts.create.error.title}`,
+          content: "Ocurrio un error al crear el pago",
+        })
+      }
+    }
   }
+
+  const calculatePrice = () => {
+    if (paymentMethodSelected === 1) {
+      let price = 0
+      if (comboSelected !== null && comboSelected !== undefined) {
+        const comboCash = combos.filter(combo => combo.id === comboSelected)
+        price += comboCash[0].price_cash
+      }
+      if (
+        paidTime !== null &&
+        paidTime !== 0 &&
+        paidTimeUnit !== undefined &&
+        paidTimeUnit.id !== null
+      ) {
+        // si paga un dia
+        if (paidTime === 1 && paidTimeUnit.id === 1) {
+          price += prices[0].price_cash
+        } else if (paidTime === 8 && paidTimeUnit.id === 1) {
+          // si paga 8 dias
+          price += prices[1].price_cash
+        } else if (paidTime === 1 && paidTimeUnit.id === 2) {
+          // si paga un mes
+          price += prices[2].price_cash
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (paidTimeUnit.id === 1) {
+            // si paga X dias
+            price += prices[0].price_cash * paidTime
+          } else {
+            // si paga X meses
+            price += prices[2].price_cash * paidTime
+          }
+        }
+      }
+      if (amountOfClases !== undefined) {
+        if (amountOfClases === 1) {
+          price += prices[3].price_cash
+        } else if (amountOfClases === 4) {
+          price += prices[4].price_cash
+        } else if (amountOfClases === 8) {
+          price += prices[5].price_cash
+        } else {
+          // si no son ni 1 ni 4 ni 8
+          price += prices[3].price_cash * amountOfClases
+        }
+      }
+      setFinalPrice(price)
+    } else if (paymentMethodSelected === 2) {
+      let price = 0
+      if (comboSelected !== null && comboSelected !== undefined) {
+        const comboCash = combos.filter(combo => combo.id === comboSelected)
+        price += comboCash[0].price_mp
+      }
+      if (
+        paidTime !== null &&
+        paidTime !== 0 &&
+        paidTimeUnit !== undefined &&
+        paidTimeUnit.id !== null
+      ) {
+        // si paga un dia
+        if (paidTime === 1 && paidTimeUnit.id === 1) {
+          price += prices[0].price_mp
+        } else if (paidTime === 8 && paidTimeUnit.id === 1) {
+          // si paga 8 dias
+          price += prices[1].price_mp
+        } else if (paidTime === 1 && paidTimeUnit.id === 2) {
+          // si paga un mes
+          price += prices[2].price_mp
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (paidTimeUnit.id === 1) {
+            // si paga X dias
+            price += prices[0].price_mp * paidTime
+          } else {
+            // si paga X meses
+            price += prices[2].price_mp * paidTime
+          }
+        }
+      }
+      if (amountOfClases !== undefined) {
+        if (amountOfClases === 1) {
+          price += prices[3].price_mp
+        } else if (amountOfClases === 4) {
+          price += prices[4].price_mp
+        } else if (amountOfClases === 8) {
+          price += prices[5].price_mp
+        } else {
+          // si no son ni 1 ni 4 ni 8
+          price += prices[3].price_mp * amountOfClases
+        }
+      }
+      setFinalPrice(price)
+    } else {
+      setFinalPrice(0)
+    }
+  }
+
+  useEffect(() => {
+    calculatePrice()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    paidTimeUnit,
+    paidTime,
+    paymentMethodSelected,
+    comboSelected,
+    amountOfClases,
+  ])
 
   return (
     <ModalForm
       title={
         partnerSelected !== undefined
-          ? `Agregar Pago - ${partnerSelected.name}`
+          ? `Agregar Pago - ${partnerSelected.name} ${partnerSelected.last_name}`
           : "Agregar Pago"
       }
       cancelButtonContent="Cancelar"
@@ -128,10 +321,7 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
                   key={result.id}
                   selected={partnerSelected?.id === result.id}
                   onClick={() => {
-                    setPartnerSelected({
-                      id: result.id,
-                      name: `${result.name} ${result.last_name}`,
-                    })
+                    setPartnerSelected(result)
                     setResults([])
                     setSearchValue("")
                   }}
@@ -221,7 +411,10 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
             options={trainers}
             ref={trainertRef}
             onChangeProps={(e: { id: number; display_name: string }) =>
-              setNewTrainer(e.id)
+              setNewTrainer({
+                id: e.id,
+                name: e.display_name,
+              })
             }
           />
         </HorizontalGroup>
