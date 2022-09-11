@@ -67,6 +67,8 @@ export const PartnersContext = createContext({
   setPartnerPayments: null,
   addPaymentModal: null,
   setAddPaymentModal: null,
+  createModal: null,
+  setCreateModal: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -97,6 +99,8 @@ const PartnersProvider = ({ children }) => {
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
 
   const [partnerPayments, setPartnerPayments] = useState<PaymentInterface[]>([])
+
+  const [createModal, setCreateModal] = useState<boolean>(false)
 
   // CREATE *************************************************************
   const [newPartnerData, setNewPartnerData] = useState<PartnerInterface>({
@@ -249,6 +253,8 @@ const PartnersProvider = ({ children }) => {
         partnerPayments,
         setPartnerPayments,
         addPaymentModal,
+        createModal,
+        setCreateModal,
         setAddPaymentModal,
       }}
     >

@@ -124,7 +124,15 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
       const apiValidation = await createPartner(body)
 
       if (apiValidation.message === "partner created successfully") {
-        cancelCreate()
+        const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
+        const expireDate = newDate.getDate()
+        const expireMonth = newDate.getMonth()
+        const expireYear = newDate.getFullYear()
+
+        const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
+        const finalExpireMonth =
+          expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
+
         const paymentBody: PaymentInterface = {
           id: 0,
           partner_id: apiValidation.partnerId,
@@ -146,7 +154,12 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           payment_method_name: "",
           price_paid: finalPrice,
           date: `${day}/${month}/${year}`,
+          payment_expire_date:
+            paidTimeUnit !== undefined && paidTimeUnit?.id === 2
+              ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
+              : "",
         }
+
         const createPayment = await createPartnerPayment(paymentBody)
         if (createPayment.message === "partnerPayment created successfully") {
           setModalSuccess({

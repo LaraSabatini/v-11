@@ -15,6 +15,7 @@ const createPartnerPayment = async (body: {
   payment_method_name: string
   price_paid: number
   date: string
+  payment_expire_date: string
 }) => {
   const axiosHeader = {
     headers: {

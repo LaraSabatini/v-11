@@ -20,6 +20,7 @@ const Modals = () => {
     setIsChecked,
     setFinalPrice,
     setPaymentMethodSelected,
+    setCreateModal,
   } = useContext(PartnersContext)
 
   const cleanStates = () => {
@@ -47,6 +48,7 @@ const Modals = () => {
     setIsChecked(false)
     setFinalPrice(0)
     setPaymentMethodSelected(null)
+    setCreateModal(false)
   }
 
   return (
@@ -65,7 +67,7 @@ const Modals = () => {
         <ModalAlert
           success={false}
           message={modalError}
-          closeRefresh={() => {
+          closeModal={() => {
             cleanStates()
           }}
         />

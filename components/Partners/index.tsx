@@ -45,6 +45,8 @@ function PartnersView() {
     triggerListUpdate,
     // addPaymentModal,
     setAddPaymentModal,
+    createModal,
+    setCreateModal,
   } = useContext(PartnersContext)
 
   const [sectionSelected, setSectionSelected] = useState<{
@@ -55,7 +57,6 @@ function PartnersView() {
     id: 1,
   })
 
-  const [createModal, setCreateModal] = useState<boolean>(false)
   const [searchValue, setSearchValue] = useState<string>("")
 
   const setPartnerList = async () => {
