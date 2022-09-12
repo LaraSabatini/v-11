@@ -9,6 +9,7 @@ const Card = styled.div`
   padding: 15px 25px 15px 20px;
   display: flex;
   flex-direction: column;
+  height: fit-content;
 `
 
 const Name = styled.p`
@@ -62,7 +63,7 @@ const FirstData = styled.div`
   padding-top: 20px;
 `
 
-const Button = styled.button<{ disabled: boolean }>`
+const Button = styled.button<{ disabled?: boolean }>`
   background: rgba(217, 217, 217, 0.63);
   border-radius: 5px;
   border: none;

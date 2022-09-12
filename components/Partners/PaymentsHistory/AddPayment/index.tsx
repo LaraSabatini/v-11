@@ -155,10 +155,9 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
         )[0].display_name,
         price_paid: finalPrice,
         date: `${day}/${month}/${year}`,
+        payment_expire_date: "",
       }
       const createPayment = await createPartnerPayment(paymentBody)
-      // eslint-disable-next-line no-console
-      console.log(paymentBody)
 
       if (
         newTrainer !== undefined &&

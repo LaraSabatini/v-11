@@ -20,44 +20,31 @@ import {
 } from "./styles"
 
 interface PaymentCardInterface {
-  //   id: number
-  //   partner_id: number
   partner_name: string
   partner_last_name: string
   combo: number
   time_paid: number
   time_paid_unit: number
   clases_paid: number
-  // trainer_id: number
   trainer_name: string
-  //   payment_method_id: number
-  //   payment_method_name: string
-  //   price_paid: number
-  //   date: string
   payment_expire_date: string
+  onClickEdit: () => void
 }
 
 const PaymentCard = ({
-  //   id,
-  //   partner_id,
   partner_name,
   partner_last_name,
   combo,
   time_paid,
   time_paid_unit,
   clases_paid,
-  // trainer_id,
   trainer_name,
-  //   payment_method_id,
-  //   payment_method_name,
-  //   price_paid,
-  //   date,
   payment_expire_date,
+  onClickEdit,
 }: PaymentCardInterface) => {
   const { combos } = useContext(PartnersContext)
 
   const [active, setActive] = useState<boolean>(false)
-  const [activeEdition, setActiveEdition] = useState<boolean>(false)
   const [comboSelected, setComboSelected] = useState<{
     id: number
     name: string
@@ -93,7 +80,11 @@ const PaymentCard = ({
 
   return (
     <Card>
-      <CardHead onClick={() => setActive(!active)}>
+      <CardHead
+        onClick={() => {
+          setActive(!active)
+        }}
+      >
         <Name>
           {partner_name} {partner_last_name}
         </Name>
@@ -120,18 +111,17 @@ const PaymentCard = ({
             <Section>
               <p>Dias restantes</p>
               <DaysLeft>
-                <Button disabled={activeEdition === false} type="button">
+                <Button disabled type="button">
                   -
                 </Button>
                 <p>{time_paid_unit === 1 ? time_paid : "-"}</p>
-                <Button disabled={activeEdition === false} type="button">
+                <Button disabled type="button">
                   +
                 </Button>
               </DaysLeft>
             </Section>
             <Section>
               <p>Vencimiento de pago</p>
-              {/* CALCULAR FECHA DE VENC. CON DATE */}
               <Date>
                 {payment_expire_date !== "" ? payment_expire_date : "-"}
               </Date>
@@ -153,17 +143,7 @@ const PaymentCard = ({
             </Section>
           </FirstData>
           <ButtonContainer>
-            {activeEdition && (
-              <TextButton
-                content="Cancelar"
-                onClick={() => setActiveEdition(false)}
-              />
-            )}
-            <TextButton
-              content={activeEdition ? "Guardar" : "Editar"}
-              cta
-              onClick={() => setActiveEdition(true)}
-            />
+            <TextButton content="Editar" cta onClick={() => onClickEdit()} />
           </ButtonContainer>
         </>
       )}
