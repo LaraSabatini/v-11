@@ -10,7 +10,46 @@ const Modals = () => {
     setModalError,
     triggerListUpdate,
     setTriggerListUpdate,
+    setAddPaymentModal,
+    setPartnerSelected,
+    setNewPartnerData,
+    setPaidTime,
+    setPaidTimeUnit,
+    setComboSelected,
+    setAmountOfClases,
+    setIsChecked,
+    setFinalPrice,
+    setPaymentMethodSelected,
+    setCreateModal,
   } = useContext(PartnersContext)
+
+  const cleanStates = () => {
+    setModalSuccess(null)
+    setAddPaymentModal(false)
+    setModalError(null)
+    setAddPaymentModal(false)
+    setPartnerSelected(null)
+    setNewPartnerData({
+      id: 0,
+      name: "",
+      last_name: "",
+      identification_number: "",
+      birth_date: "",
+      email: "",
+      membership_start_date: "",
+      created_by: null,
+      trainer_id: null,
+      free_pass: 0,
+    })
+    setPaidTime(0)
+    setPaidTimeUnit()
+    setComboSelected()
+    setAmountOfClases()
+    setIsChecked(false)
+    setFinalPrice(0)
+    setPaymentMethodSelected(null)
+    setCreateModal(false)
+  }
 
   return (
     <>
@@ -20,7 +59,7 @@ const Modals = () => {
           message={modalSuccess}
           closeRefresh={() => {
             setTriggerListUpdate(triggerListUpdate + 1)
-            setModalSuccess(null)
+            cleanStates()
           }}
         />
       )}
@@ -28,8 +67,8 @@ const Modals = () => {
         <ModalAlert
           success={false}
           message={modalError}
-          closeRefresh={() => {
-            setModalError(null)
+          closeModal={() => {
+            cleanStates()
           }}
         />
       )}

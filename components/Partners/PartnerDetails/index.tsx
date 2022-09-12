@@ -44,10 +44,6 @@ const PartnerDetails = () => {
     <Container>
       <Title>
         {texts.details}
-        <span>
-          <p>{texts.partner_number}</p>
-          {partnerInfo?.id}
-        </span>
         <IconContainer
           onClick={() => {
             if (hasChanges) {

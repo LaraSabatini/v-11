@@ -117,7 +117,7 @@ function StoreView() {
               if (stockChanges) {
                 setModalStockHasChanges(true)
               } else {
-                setSectionSelected({ section: `${texts.sells}`, id: 2 })
+                setSectionSelected({ section: `${texts.purchases}`, id: 2 })
               }
             }}
             selected={sectionSelected.id === 2}
@@ -129,7 +129,7 @@ function StoreView() {
               if (stockChanges) {
                 setModalStockHasChanges(true)
               } else {
-                setSectionSelected({ section: `${texts.sells}`, id: 3 })
+                setSectionSelected({ section: `${texts.stock}`, id: 3 })
               }
             }}
             selected={sectionSelected.id === 3}
@@ -168,24 +168,23 @@ function StoreView() {
         )}
         {sectionSelected.id === 2 && <Purchases />}
         {sectionSelected.id === 3 && <Stock />}
-        {sectionSelected.id === 1 ||
-          (sectionSelected.id === 3 && (
-            <MainButton>
-              <Tooptip title={texts.mainButton}>
-                <CreateProduct
-                  onClick={() => {
-                    if (stockChanges) {
-                      setModalStockHasChanges(true)
-                    } else {
-                      setCreateModal(true)
-                    }
-                  }}
-                >
-                  <Icon color={theme.colors.white} icon="IconAdd" />
-                </CreateProduct>
-              </Tooptip>
-            </MainButton>
-          ))}
+        {(sectionSelected.id === 1 || sectionSelected.id === 3) && (
+          <MainButton>
+            <Tooptip title={texts.mainButton}>
+              <CreateProduct
+                onClick={() => {
+                  if (stockChanges) {
+                    setModalStockHasChanges(true)
+                  } else {
+                    setCreateModal(true)
+                  }
+                }}
+              >
+                <Icon color={theme.colors.white} icon="IconAdd" />
+              </CreateProduct>
+            </Tooptip>
+          </MainButton>
+        )}
       </Content>
       {createModal && (
         <CreateProductForm cancelCreate={() => setCreateModal(false)} />

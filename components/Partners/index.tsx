@@ -10,11 +10,13 @@ import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import theme from "theme/index"
 import Header from "components/UI/Header"
+// import AddPayment from "./PaymentsHistory/AddPayment"
 import Modals from "./Modals"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
+import PaymentsHistory from "./PaymentsHistory"
 import {
   Container,
   Title,
@@ -24,6 +26,8 @@ import {
   MainButton,
   ListAndDetailContainer,
   SearchBarContainer,
+  Section,
+  SectionsButtons,
 } from "./styles"
 
 function PartnersView() {
@@ -39,9 +43,20 @@ function PartnersView() {
     setModalHasChanges,
     setDetailState,
     triggerListUpdate,
+    // addPaymentModal,
+    setAddPaymentModal,
+    createModal,
+    setCreateModal,
   } = useContext(PartnersContext)
 
-  const [createModal, setCreateModal] = useState<boolean>(false)
+  const [sectionSelected, setSectionSelected] = useState<{
+    section: string
+    id: number
+  }>({
+    section: "Clientes",
+    id: 1,
+  })
+
   const [searchValue, setSearchValue] = useState<string>("")
 
   const setPartnerList = async () => {
@@ -98,29 +113,64 @@ function PartnersView() {
       <Modals />
       <Header />
       <Content>
+        <SectionsButtons>
+          <Section
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else {
+                setSectionSelected({ section: "Clientes", id: 1 })
+              }
+            }}
+            selected={sectionSelected.id === 1}
+          >
+            Clientes
+          </Section>
+          <Section
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else {
+                setSectionSelected({ section: "Historial de pagos", id: 2 })
+              }
+            }}
+            selected={sectionSelected.id === 2}
+          >
+            Historial de pagos
+          </Section>
+        </SectionsButtons>
         <HeadContent>
-          <Title>{texts.title}</Title>
-          <Filters />
+          <Title>
+            {texts.title} <span> / {sectionSelected.section}</span>
+          </Title>
+          {sectionSelected.id === 1 && <Filters />}
         </HeadContent>
-        <SearchBarContainer
-          onClick={() => {
-            if (hasChanges) {
-              setModalHasChanges(true)
-            } else {
-              setDetailState("view")
-            }
-          }}
-        >
-          <SearchBar
-            searchValue={searchValue}
-            onChangeSearch={e => setSearchValue(e.target.value)}
-            width={250}
-          />
-        </SearchBarContainer>
-        <ListAndDetailContainer>
-          <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
-          {partnerSelected !== null && <PartnerDetails />}
-        </ListAndDetailContainer>
+
+        {sectionSelected.id === 1 && (
+          <>
+            <SearchBarContainer
+              onClick={() => {
+                if (hasChanges) {
+                  setModalHasChanges(true)
+                } else {
+                  setDetailState("view")
+                }
+              }}
+            >
+              <SearchBar
+                searchValue={searchValue}
+                onChangeSearch={e => setSearchValue(e.target.value)}
+                width={250}
+              />
+            </SearchBarContainer>
+            <ListAndDetailContainer>
+              <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
+              {partnerSelected !== null && <PartnerDetails />}
+            </ListAndDetailContainer>
+          </>
+        )}
+        {sectionSelected.id === 2 && <PaymentsHistory />}
+
         <MainButton>
           <Tooptip title={texts.mainButton}>
             <AddPartner
@@ -129,7 +179,11 @@ function PartnersView() {
                   setModalHasChanges(true)
                 } else {
                   setDetailState("view")
-                  setCreateModal(true)
+                  if (sectionSelected.id === 1) {
+                    setCreateModal(true)
+                  } else {
+                    setAddPaymentModal(true)
+                  }
                 }
               }}
             >
@@ -141,6 +195,9 @@ function PartnersView() {
       {createModal && (
         <CreatePartner cancelCreate={() => setCreateModal(false)} />
       )}
+      {/* {addPaymentModal && (
+        <AddPayment cancelCreate={() => setAddPaymentModal(false)} />
+      )} */}
     </Container>
   )
 }

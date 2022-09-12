@@ -8,7 +8,6 @@ import texts from "strings/partners.json"
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
 import TextButton from "components/UI/TextButton"
-import InputCalendar from "components/UI/InputCalendar"
 import Autocomplete from "components/UI/Autocomplete"
 import { PartnerData, Details, ButtonContainer } from "./styles"
 
@@ -73,7 +72,6 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       newData.last_name !== partnerInfo.last_name ||
       newData.email !== partnerInfo.email ||
       newData.identification_number !== partnerInfo.identification_number ||
-      newData.payment_expire_date !== partnerInfo.payment_expire_date ||
       newData.trainer_id !== partnerInfo.trainer_id
     ) {
       setHasChanges(true)
@@ -183,7 +181,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       )}
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.create.name}
           required
           value={newData.name}
@@ -192,7 +190,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           onChange={e => setNewData({ ...newData, name: e.target.value })}
         />
         <TextField
-          width={200}
+          width={190}
           label={texts.create.last_name}
           required
           value={newData.last_name}
@@ -203,7 +201,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       </PartnerData>
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.create.email}
           value={newData.email}
           type="email"
@@ -211,7 +209,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           onChange={e => setNewData({ ...newData, email: e.target.value })}
         />
         <TextField
-          width={200}
+          width={190}
           label={texts.create.identification}
           value={newData.identification_number}
           type="text"
@@ -224,30 +222,17 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       <PartnerData />
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.edit.member_since}
           value={partnerInfo?.membership_start_date}
           type="text"
           disabled
           disabledAutocompleted
         />
-        <InputCalendar
-          width={200}
-          required
-          label={texts.member_expire}
-          valueCalendar={newData.payment_expire_date}
-          reference={paymentExpireDateRef}
-          onChange={e =>
-            setNewData({
-              ...newData,
-              payment_expire_date: e.selectedChangeDate,
-            })
-          }
-        />
       </PartnerData>
       <PartnerData>
         <TextField
-          width={200}
+          width={190}
           label={texts.created_by}
           value={`@${createdBy}`}
           type="text"
@@ -256,7 +241,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         />
         <Autocomplete
           label={texts.trainer}
-          width={200}
+          width={190}
           options={trainers}
           setValue={hasTrainer}
           ref={trainertRef}

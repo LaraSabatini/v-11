@@ -3,7 +3,7 @@ import theme from "theme/index"
 
 const Container = styled.div`
   height: 80%;
-  width: 750px;
+  width: 790px;
 `
 
 const ListContainer = styled.div`
@@ -14,9 +14,7 @@ const ListContainer = styled.div`
 `
 
 const ListItem = styled.div`
-  box-shadow: 0px 0px 28px -5px rgba(83, 45, 117, 0.29);
-  -webkit-box-shadow: 0px 0px 28px -5px rgba(83, 45, 117, 0.29);
-  -moz-box-shadow: 0px 0px 28px -5px rgba(83, 45, 117, 0.29);
+  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
   background-color: ${theme.colors.white};
   padding: 0 15px;
@@ -31,7 +29,6 @@ const Name = styled.p`
 
 const PaymentActive = styled.p<{ active: boolean }>`
   width: 100px;
-  text-align: right;
   ${props =>
     props.active
       ? css`
@@ -56,19 +53,31 @@ const Tags = styled.div`
 `
 
 const Student = styled.p`
-  background-color: #c66a48c0;
-  padding: 5px;
+  background-color: #c66948;
+  padding: 5px 10px;
   border-radius: 5px;
+  color: ${theme.colors.white};
+  font-weight: ${theme.fontWeights.light};
 `
 
 const FreePass = styled.p`
-  background-color: #48aba3ca;
-  padding: 5px;
+  background-color: #48aba2;
+  padding: 5px 10px;
   border-radius: 5px;
+  color: ${theme.colors.white};
+  font-weight: ${theme.fontWeights.light};
+`
+
+const Day = styled.p`
+  background-color: #764e9a;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: ${theme.colors.white};
+  font-weight: ${theme.fontWeights.light};
 `
 
 const IconContainer = styled.div<{ active: boolean }>`
-  margin-left: 100px;
+  margin-left: 200px;
   transform: rotate(90deg);
 
   ${props =>
@@ -85,6 +94,7 @@ const Paginator = styled.div`
   gap: 5px;
   justify-content: flex-end;
   padding-right: 10px;
+  margin-top: 10px;
 `
 
 const Navigate = styled.button`
@@ -99,6 +109,7 @@ const NoPartnersView = styled.h1`
   color: ${theme.colors.primary_light};
   text-align: center;
   margin-top: 100px;
+  font-size: 25px;
 `
 
 export {
@@ -115,4 +126,5 @@ export {
   Paginator,
   Navigate,
   NoPartnersView,
+  Day,
 }

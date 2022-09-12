@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
 import texts from "strings/partners.json"
 import ScrollView from "components/UI/ScrollView"
@@ -11,7 +11,6 @@ import {
   ListItem,
   Name,
   Container,
-  PaymentActive,
   PartnerNumber,
   Tags,
   Student,
@@ -20,6 +19,7 @@ import {
   Paginator,
   Navigate,
   NoPartnersView,
+  Day,
 } from "./styles"
 
 interface PartnerListInterface {
@@ -38,8 +38,6 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
     setDetailState,
   } = useContext(PartnersContext)
 
-  const [paymentIsActive, setPaymentIsActive] = useState<boolean[]>([])
-
   const selectPartner = (partner: number) => {
     if (partnerSelected === null || partnerSelected !== partner) {
       setPartnerSelected(partner)
@@ -48,32 +46,12 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
     }
   }
 
-  const checkPaymentActiveness = () => {
-    const booleanArr = []
-    const today = new Date()
-
-    data.map(expirement => {
-      const str = expirement.payment_expire_date
-      const [day, month, year] = str.split("/")
-      const date = new Date(+year, parseInt(month, 10) - 1, +day)
-
-      return booleanArr.push(date > today)
-    })
-
-    setPaymentIsActive(booleanArr)
-  }
-
-  useEffect(() => {
-    checkPaymentActiveness()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
-
   return (
     <Container>
       <ScrollView height={500}>
         <ListContainer>
           {data.length > 0 ? (
-            data.map((partner: PartnerInterface, index: number) => {
+            data.map((partner: PartnerInterface) => {
               return (
                 <ListItem
                   key={partner.id}
@@ -97,12 +75,11 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
                     {partner.free_pass !== 0 && (
                       <FreePass>{texts.free_pass}</FreePass>
                     )}
+                    {partner.free_pass === 0 && partner.trainer_id === 0 && (
+                      <Day>Dia</Day>
+                    )}
                   </Tags>
-                  <PaymentActive active={paymentIsActive[index]}>
-                    {paymentIsActive[index]
-                      ? `${texts.active_payment}`
-                      : `${texts.expired_payment}`}
-                  </PaymentActive>
+
                   <IconContainer active={partnerSelected === partner.id}>
                     <Icon icon="IconArrowRight" color={theme.colors.primary} />
                   </IconContainer>
