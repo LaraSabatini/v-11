@@ -3,7 +3,7 @@ import theme from "theme/index"
 
 const Container = styled.div`
   height: 80%;
-  width: 790px;
+  width: 600px;
 `
 
 const ListContainer = styled.div`
@@ -77,7 +77,7 @@ const Day = styled.p`
 `
 
 const IconContainer = styled.div<{ active: boolean }>`
-  margin-left: 200px;
+  margin-left: 50px;
   transform: rotate(90deg);
 
   ${props =>

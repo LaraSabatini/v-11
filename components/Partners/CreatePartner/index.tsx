@@ -150,7 +150,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               : 0,
           time_paid: paidTime !== null && paidTime !== 0 ? paidTime : 0,
           time_paid_unit:
-            paidTimeUnit?.id !== null && paidTimeUnit !== undefined
+            paidTimeUnit !== undefined && paidTimeUnit?.id !== null
               ? paidTimeUnit.id
               : "",
           clases_paid: amountOfClases !== undefined ? amountOfClases : 0,

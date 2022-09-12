@@ -79,8 +79,10 @@ const MainButton = styled.div`
 const ListAndDetailContainer = styled.div`
   display: flex;
   align-items: top;
+  justify-content: center;
   margin-top: 20px;
   gap: 20px;
+  /* border: 1px solid red; */
 `
 
 const SearchBarContainer = styled.div`
