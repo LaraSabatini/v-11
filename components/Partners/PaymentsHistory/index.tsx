@@ -44,6 +44,7 @@ const PaymentsHistory = () => {
               clases_paid={payment.clases_paid}
               trainer_name={payment.trainer_name}
               payment_expire_date={payment.payment_expire_date}
+              date={payment.date}
               onClickEdit={() => setActiveEdition(payment)}
             />
           ))}

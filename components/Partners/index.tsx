@@ -44,7 +44,7 @@ function PartnersView() {
     setDetailState,
     triggerListUpdate,
     // addPaymentModal,
-    setAddPaymentModal,
+    // setAddPaymentModal,
     createModal,
     setCreateModal,
   } = useContext(PartnersContext)
@@ -165,32 +165,33 @@ function PartnersView() {
             </SearchBarContainer>
             <ListAndDetailContainer>
               <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
-              {partnerSelected !== null && <PartnerDetails />}
+              {partnerSelected !== null ? (
+                <PartnerDetails />
+              ) : (
+                <div style={{ width: "440px" }} />
+              )}
             </ListAndDetailContainer>
           </>
         )}
         {sectionSelected.id === 2 && <PaymentsHistory />}
-
-        <MainButton>
-          <Tooptip title={texts.mainButton}>
-            <AddPartner
-              onClick={() => {
-                if (hasChanges) {
-                  setModalHasChanges(true)
-                } else {
-                  setDetailState("view")
-                  if (sectionSelected.id === 1) {
-                    setCreateModal(true)
+        {sectionSelected.id === 1 && (
+          <MainButton>
+            <Tooptip title={texts.mainButton}>
+              <AddPartner
+                onClick={() => {
+                  if (hasChanges) {
+                    setModalHasChanges(true)
                   } else {
-                    setAddPaymentModal(true)
+                    setDetailState("view")
+                    setCreateModal(true)
                   }
-                }
-              }}
-            >
-              <Icon color={theme.colors.white} icon="IconAdd" />
-            </AddPartner>
-          </Tooptip>
-        </MainButton>
+                }}
+              >
+                <Icon color={theme.colors.white} icon="IconAdd" />
+              </AddPartner>
+            </Tooptip>
+          </MainButton>
+        )}
       </Content>
       {createModal && (
         <CreatePartner cancelCreate={() => setCreateModal(false)} />

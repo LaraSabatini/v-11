@@ -2,6 +2,11 @@
 import React, { useContext, useState, useEffect } from "react"
 import texts from "strings/store.json"
 import createPurchase from "services/Store/createPurchase.service"
+import {
+  getProductPurchasesByMonth,
+  editProductPurchase,
+  createProductPurchase,
+} from "services/Store/productPurchases.service"
 import editProduct from "services/Store/editProduct.service"
 import { StoreContext } from "contexts/Store"
 import TextButton from "components/UI/TextButton"
@@ -24,10 +29,10 @@ const Receipt = () => {
     productsList,
     setModalSuccess,
     setModalError,
+    months,
   } = useContext(StoreContext)
 
   const [finalPrice, setFinalPrice] = useState<number>(0)
-  const [purchaseSuccess, setPurchaseSuccess] = useState<boolean>(false)
 
   const calculatePrice = () => {
     let final = 0
@@ -49,6 +54,8 @@ const Receipt = () => {
   }
 
   const executePurchase = async () => {
+    let success = false
+
     const today = new Date()
     const day = today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`
     const month =
@@ -70,9 +77,9 @@ const Receipt = () => {
       // post purchase
       const execute = await createPurchase(bodyPurchase)
       if (execute.message === "purchase created successfully") {
-        setPurchaseSuccess(true)
+        success = true
       } else {
-        setPurchaseSuccess(false)
+        success = false
       }
 
       const filterProduct = productsList.filter(
@@ -94,13 +101,47 @@ const Receipt = () => {
 
       const editStock = await editProduct(editStockBody)
       if (editStock.message === "product updated successfully") {
-        setPurchaseSuccess(true)
+        success = true
       } else {
-        setPurchaseSuccess(false)
+        success = false
+      }
+
+      //  CREAR PRODUCT PURCHASE
+      const thisMonth = today.getMonth() + 1
+      const checkIfHasMonths = await getProductPurchasesByMonth(
+        thisMonth,
+        purchase[i].product_id,
+      )
+      const finalPriceForProfit = purchase[i].final_price - bodyPurchase.cost // este valor esta multiplicado por la cantidad
+
+      if (checkIfHasMonths.data.length) {
+        const bodyProductPurchase = {
+          id: checkIfHasMonths.data[0].id,
+          month_name: checkIfHasMonths.data[0].month_name,
+          month_id: checkIfHasMonths.data[0].month_id,
+          product_id: checkIfHasMonths.data[0].product_id,
+          product_name: checkIfHasMonths.data[0].product_name,
+          amount_of_sales:
+            checkIfHasMonths.data[0].amount_of_sales +
+            purchase[i].product_amount,
+          profit: checkIfHasMonths.data[0].profit + finalPriceForProfit,
+        }
+        await editProductPurchase(bodyProductPurchase)
+      } else {
+        const bodyProductPurchase = {
+          id: 0,
+          month_name: months.filter(m => m.id === thisMonth)[0].display_name,
+          month_id: thisMonth,
+          product_id: purchase[i].product_id,
+          product_name: purchase[i].product_name,
+          amount_of_sales: purchase[i].product_amount,
+          profit: finalPriceForProfit,
+        }
+        await createProductPurchase(bodyProductPurchase)
       }
     }
 
-    if (purchaseSuccess) {
+    if (success) {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",

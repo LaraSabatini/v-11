@@ -48,7 +48,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
 
   return (
     <Container>
-      <ScrollView height={500}>
+      <ScrollView height={450}>
         <ListContainer>
           {data.length > 0 ? (
             data.map((partner: PartnerInterface) => {

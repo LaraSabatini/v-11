@@ -28,6 +28,7 @@ interface PaymentCardInterface {
   clases_paid: number
   trainer_name: string
   payment_expire_date: string
+  date: string
   onClickEdit: () => void
 }
 
@@ -40,6 +41,7 @@ const PaymentCard = ({
   clases_paid,
   trainer_name,
   payment_expire_date,
+  date,
   onClickEdit,
 }: PaymentCardInterface) => {
   const { combos } = useContext(PartnersContext)
@@ -133,7 +135,10 @@ const PaymentCard = ({
           </FirstData>
           <FirstData>
             <Section>
-              <p>Pago actual</p>
+              <p>
+                Pago actual
+                <span> ({date})</span>
+              </p>
               <span>{comboSelected !== undefined && comboSelected.name}</span>
               <span>
                 {time_paid !== 0 && time_paid} {time_paid_unit === 1 && "Dia/s"}
