@@ -6,7 +6,7 @@ import PaymentInterface from "interfaces/partners/PaymentInterface"
 import ScrollView from "components/UI/ScrollView"
 import ModalForm from "components/UI/ModalForm"
 import PaymentCard from "./PaymentCard"
-import { Container } from "./styles"
+import Container from "./styles"
 
 const PaymentsHistory = () => {
   const { setCombos } = useContext(PartnersContext)
