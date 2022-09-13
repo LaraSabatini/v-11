@@ -1,7 +1,6 @@
 /* eslint-disable no-await-in-loop */
 import React, { useContext, useState, useEffect } from "react"
 import texts from "strings/store.json"
-import createPurchase from "services/Store/createPurchase.service"
 import {
   getProductPurchasesByMonth,
   editProductPurchase,
@@ -75,12 +74,6 @@ const Receipt = () => {
         final_price: purchase[i].final_price,
       }
       // post purchase
-      const execute = await createPurchase(bodyPurchase)
-      if (execute.message === "purchase created successfully") {
-        success = true
-      } else {
-        success = false
-      }
 
       const filterProduct = productsList.filter(
         product => product.id === purchase[i].product_id,
