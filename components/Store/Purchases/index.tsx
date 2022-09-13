@@ -1,11 +1,14 @@
 import React, { useContext, useState, useEffect } from "react"
-import { getProductPurchases } from "services/Store/productPurchases.service"
+import {
+  getProductPurchases,
+  getProductPurchasesByMonth,
+} from "services/Store/productPurchases.service"
 import { StoreContext } from "contexts/Store"
 import HistoryCard from "./HistoryCard"
 import { Container } from "./styles"
 
 const Purchases = () => {
-  const { productsList } = useContext(StoreContext)
+  const { productsList, monthSelected } = useContext(StoreContext)
   const [historyList, setHistoryList] = useState<
     {
       id: number
@@ -21,14 +24,19 @@ const Purchases = () => {
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const fillData = async () => {
-    const data = await getProductPurchases(currentPage)
-    setHistoryList(data.data)
+    if (monthSelected === null) {
+      const data = await getProductPurchases(currentPage)
+      setHistoryList(data.data)
+    } else {
+      const data = await getProductPurchasesByMonth(monthSelected)
+      setHistoryList(data.data)
+    }
   }
 
   useEffect(() => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage, monthSelected])
 
   return (
     <Container>

@@ -65,11 +65,12 @@ const Select = styled.div`
 `
 
 const Selector = styled.div`
+  background-color: white;
   box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.25);
   -webkit-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.25);
   -moz-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.25);
   position: absolute;
-  background-color: white;
+  z-index: 100;
   right: 0;
   top: 50px;
   padding: 10px 5px;
@@ -81,6 +82,7 @@ const Selector = styled.div`
 `
 
 const Option = styled.div`
+  background-color: white;
   font-weight: ${theme.fontWeights.light};
   margin-left: 5px;
 

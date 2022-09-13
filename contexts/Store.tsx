@@ -46,6 +46,8 @@ export const StoreContext = createContext({
   modalStockHasChanges: null,
   setModalStockHasChanges: null,
   months: null,
+  monthSelected: null,
+  setMonthSelected: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -132,6 +134,8 @@ const StoreProvider = ({ children }) => {
       display_name: "Diciembre",
     },
   ]
+
+  const [monthSelected, setMonthSelected] = useState<number>(null)
 
   // STOCK ***********************************
   const [searchValueForStock, setSearchValueForStock] = useState<string>("")
@@ -228,6 +232,8 @@ const StoreProvider = ({ children }) => {
         modalStockHasChanges,
         setModalStockHasChanges,
         months,
+        monthSelected,
+        setMonthSelected,
       }}
     >
       {children}

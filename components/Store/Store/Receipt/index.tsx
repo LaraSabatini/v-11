@@ -2,7 +2,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import texts from "strings/store.json"
 import {
-  getProductPurchasesByMonth,
+  getProductPurchasesByMonthAndProduct,
   editProductPurchase,
   createProductPurchase,
 } from "services/Store/productPurchases.service"
@@ -101,7 +101,7 @@ const Receipt = () => {
 
       //  CREAR PRODUCT PURCHASE
       const thisMonth = today.getMonth() + 1
-      const checkIfHasMonths = await getProductPurchasesByMonth(
+      const checkIfHasMonths = await getProductPurchasesByMonthAndProduct(
         thisMonth,
         purchase[i].product_id,
       )

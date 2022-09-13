@@ -13,7 +13,7 @@ export const getProductPurchases = async (page: number) => {
   return res.data
 }
 
-export const getProductPurchasesByMonth = async (
+export const getProductPurchasesByMonthAndProduct = async (
   month_id: number,
   product_id: number,
 ) => {
@@ -24,6 +24,19 @@ export const getProductPurchasesByMonth = async (
   }
   const res = await axios.get(
     `https://v-11-backend.vercel.app/productPurchases/month=${month_id}&product=${product_id}`,
+    axiosHeader,
+  )
+  return res.data
+}
+
+export const getProductPurchasesByMonth = async (month_id: number) => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.get(
+    `https://v-11-backend.vercel.app/productPurchases/month=${month_id}`,
     axiosHeader,
   )
   return res.data

@@ -134,10 +134,15 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         const expireDate = newDate.getDate()
         const expireMonth = newDate.getMonth()
         const expireYear = newDate.getFullYear()
-
         const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
-        const finalExpireMonth =
-          expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
+        let finalExpireMonth
+        if (comboSelected !== null && comboSelected !== undefined) {
+          finalExpireMonth =
+            expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`
+        } else {
+          finalExpireMonth =
+            expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
+        }
 
         const paymentBody: PaymentInterface = {
           id: 0,
@@ -165,7 +170,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           price_paid: finalPrice,
           date: `${day}/${month}/${year}`,
           payment_expire_date:
-            (paidTimeUnit !== undefined && paidTimeUnit?.id === 2) ||
+            (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
             (comboSelected !== null && comboSelected !== undefined)
               ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
               : "",
