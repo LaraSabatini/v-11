@@ -8,7 +8,6 @@ const Card = styled.div`
   border-radius: 10px;
   gap: 20px;
   padding: 20px;
-  width: 340px;
   height: 150px;
   img {
     width: 90px;

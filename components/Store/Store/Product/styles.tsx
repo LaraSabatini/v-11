@@ -60,6 +60,10 @@ const ComponentContainer = styled.div`
   margin-top: 10px;
 `
 
+const ComponentContainerZapas = styled.div`
+  margin-top: 30px;
+`
+
 export {
   ProductCard,
   ProductName,
@@ -68,4 +72,5 @@ export {
   IconContainer,
   Amount,
   ComponentContainer,
+  ComponentContainerZapas,
 }

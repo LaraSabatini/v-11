@@ -1,5 +1,7 @@
 import React from "react"
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
+import Zapas from "components/UI/Assets/images/Zapas"
+import { ComponentContainerZapas } from "../../Store/Product/styles"
 import {
   Card,
   ComponentContainer,
@@ -35,6 +37,11 @@ const HistoryCard = ({
         <ComponentContainer>
           <Magnesiera />
         </ComponentContainer>
+      )}
+      {type === 3 && (
+        <ComponentContainerZapas>
+          <Zapas />
+        </ComponentContainerZapas>
       )}
       <Description>
         <p className="name">{name}</p>

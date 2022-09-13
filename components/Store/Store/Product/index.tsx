@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from "react"
 import { StoreContext } from "contexts/Store"
 import Icon from "components/UI/Assets/Icon"
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
+import Zapas from "components/UI/Assets/images/Zapas"
 import {
   ProductCard,
   ProductName,
@@ -10,6 +11,7 @@ import {
   IconContainer,
   Amount,
   ComponentContainer,
+  ComponentContainerZapas,
 } from "./styles"
 
 interface ProductCardInterface {
@@ -169,6 +171,11 @@ const Product = ({
         <ComponentContainer>
           <Magnesiera />
         </ComponentContainer>
+      )}
+      {category_id === 3 && (
+        <ComponentContainerZapas>
+          <Zapas />
+        </ComponentContainerZapas>
       )}
       {/* merch */}
       <Description>
