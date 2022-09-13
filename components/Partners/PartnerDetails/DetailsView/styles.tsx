@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import theme from "theme/index"
 
 const PartnerData = styled.div`
   padding-top: 30px;
@@ -12,6 +13,21 @@ const PartnerData = styled.div`
 
 const Details = styled.div`
   padding: 0 10px;
+  position: relative;
 `
 
-export { PartnerData, Details }
+const RemoveButton = styled.button`
+  background: ${theme.colors.danger};
+  border: none;
+  padding: 10px 15px;
+  font-family: ${theme.fonts.primary};
+  font-size: 16px;
+  border-radius: 5px;
+  color: white;
+  position: absolute;
+  right: 0;
+  bottom: -100px;
+  cursor: pointer;
+`
+
+export { PartnerData, Details, RemoveButton }
