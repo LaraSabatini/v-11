@@ -17,6 +17,7 @@ import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import PaymentsHistory from "./PaymentsHistory"
+import Prices from "./Prices"
 import {
   Container,
   Title,
@@ -177,6 +178,18 @@ function PartnersView() {
           >
             Historial de pagos
           </Section>
+          <Section
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else {
+                setSectionSelected({ section: "Precios", id: 3 })
+              }
+            }}
+            selected={sectionSelected.id === 3}
+          >
+            Precios
+          </Section>
         </SectionsButtons>
         <HeadContent>
           <Title>
@@ -213,6 +226,7 @@ function PartnersView() {
           </>
         )}
         {sectionSelected.id === 2 && <PaymentsHistory />}
+        {sectionSelected.id === 3 && <Prices />}
         {sectionSelected.id === 1 && (
           <MainButton>
             <Tooptip title={texts.mainButton}>
