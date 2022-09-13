@@ -47,6 +47,18 @@ function PartnersView() {
     // setAddPaymentModal,
     createModal,
     setCreateModal,
+    setModalSuccess,
+    setModalError,
+    setAddPaymentModal,
+    setPartnerSelected,
+    setNewPartnerData,
+    setPaidTime,
+    setPaidTimeUnit,
+    setComboSelected,
+    setAmountOfClases,
+    setIsChecked,
+    setFinalPrice,
+    setPaymentMethodSelected,
   } = useContext(PartnersContext)
 
   const [sectionSelected, setSectionSelected] = useState<{
@@ -107,6 +119,33 @@ function PartnersView() {
     setPartnerList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterSelected, currentPage, searchValue, triggerListUpdate])
+
+  const cleanStates = () => {
+    setModalSuccess(null)
+    setAddPaymentModal(false)
+    setModalError(null)
+    setPartnerSelected(null)
+    setNewPartnerData({
+      id: 0,
+      name: "",
+      last_name: "",
+      identification_number: "",
+      birth_date: "",
+      email: "",
+      membership_start_date: "",
+      created_by: null,
+      trainer_id: null,
+      free_pass: 0,
+    })
+    setPaidTime(0)
+    setPaidTimeUnit()
+    setComboSelected()
+    setAmountOfClases()
+    setIsChecked(false)
+    setFinalPrice(0)
+    setPaymentMethodSelected(null)
+    setCreateModal(false)
+  }
 
   return (
     <Container>
@@ -193,9 +232,7 @@ function PartnersView() {
           </MainButton>
         )}
       </Content>
-      {createModal && (
-        <CreatePartner cancelCreate={() => setCreateModal(false)} />
-      )}
+      {createModal && <CreatePartner cancelCreate={() => cleanStates()} />}
       {/* {addPaymentModal && (
         <AddPayment cancelCreate={() => setAddPaymentModal(false)} />
       )} */}
