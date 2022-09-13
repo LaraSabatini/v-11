@@ -212,11 +212,18 @@ const MakePayment = () => {
             type="number"
             reference={paidTimeRef}
             onChange={e => {
-              setPaidTime(parseInt(e.target.value, 10))
+              const number = parseInt(e.target.value, 10)
+              // eslint-disable-next-line no-restricted-globals
+              if (isNaN(number)) {
+                setPaidTime(0)
+              } else {
+                setPaidTime(number)
+              }
             }}
           />
           <Autocomplete
             label="Unidad"
+            required={paidTime !== 0 && paidTime !== ""}
             width={115}
             options={timeUnits}
             ref={paidTimeUnitRef}
@@ -236,7 +243,13 @@ const MakePayment = () => {
           type="number"
           reference={clasesRef}
           onChange={e => {
-            setAmountOfClases(parseInt(e.target.value, 10))
+            const number = parseInt(e.target.value, 10)
+            // eslint-disable-next-line no-restricted-globals
+            if (isNaN(number)) {
+              setAmountOfClases(0)
+            } else {
+              setAmountOfClases(number)
+            }
           }}
         />
       </HorizontalGroup>
@@ -244,6 +257,11 @@ const MakePayment = () => {
         <Autocomplete
           label="Profesor"
           width={290}
+          required={
+            amountOfClases !== undefined &&
+            amountOfClases !== 0 &&
+            amountOfClases !== ""
+          }
           options={trainersList}
           ref={trainertRef}
           onChangeProps={(e: { id: number; display_name: string }) => {
