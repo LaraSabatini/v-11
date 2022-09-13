@@ -15,7 +15,6 @@ const Details = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-top: 20px;
 `
 
 export { PartnerData, Details, ButtonContainer }

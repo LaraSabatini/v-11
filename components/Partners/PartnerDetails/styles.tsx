@@ -3,7 +3,7 @@ import theme from "theme/index"
 
 const Container = styled.div`
   background-color: white;
-  height: 450px;
+  height: 410px;
   width: 400px;
   border-radius: 10px;
   padding: 20px;
