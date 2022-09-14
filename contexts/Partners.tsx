@@ -71,6 +71,7 @@ export const PartnersContext = createContext({
   setCreateModal: null,
   trainerSelected: null,
   setTrainerSelected: null,
+  cleanStates: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -197,6 +198,33 @@ const PartnersProvider = ({ children }) => {
   const [hasChanges, setHasChanges] = useState<boolean>(false)
   const [modalHasChanges, setModalHasChanges] = useState<boolean>(false)
 
+  const cleanStates = () => {
+    setModalSuccess(null)
+    setAddPaymentModal(false)
+    setModalError(null)
+    setPartnerSelected(null)
+    setNewPartnerData({
+      id: 0,
+      name: "",
+      last_name: "",
+      identification_number: "",
+      birth_date: "",
+      email: "",
+      membership_start_date: "",
+      created_by: null,
+      trainer_id: null,
+      free_pass: 0,
+    })
+    setPaidTime(0)
+    setPaidTimeUnit(undefined)
+    setComboSelected(undefined)
+    setAmountOfClases(0)
+    setIsChecked(false)
+    setFinalPrice(0)
+    setPaymentMethodSelected(null)
+    setCreateModal(false)
+  }
+
   return (
     <PartnersContext.Provider
       value={{
@@ -265,6 +293,7 @@ const PartnersProvider = ({ children }) => {
         setAddPaymentModal,
         trainerSelected,
         setTrainerSelected,
+        cleanStates,
       }}
     >
       {children}

@@ -59,7 +59,7 @@ const CardHead = styled.div`
 
 const FirstData = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 25px;
   padding-top: 20px;
 `
 

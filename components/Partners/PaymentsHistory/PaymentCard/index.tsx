@@ -12,7 +12,6 @@ import {
   Day,
   CardHead,
   FirstData,
-  Button,
   DaysLeft,
   Section,
   ButtonContainer,
@@ -113,13 +112,7 @@ const PaymentCard = ({
             <Section>
               <p>Dias restantes</p>
               <DaysLeft>
-                <Button disabled type="button">
-                  -
-                </Button>
                 <p>{time_paid_unit === 1 ? time_paid : "-"}</p>
-                <Button disabled type="button">
-                  +
-                </Button>
               </DaysLeft>
             </Section>
             <Section>

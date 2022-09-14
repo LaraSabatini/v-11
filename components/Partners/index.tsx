@@ -17,6 +17,7 @@ import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import PaymentsHistory from "./PaymentsHistory"
+import Prices from "./Prices"
 import {
   Container,
   Title,
@@ -47,18 +48,7 @@ function PartnersView() {
     // setAddPaymentModal,
     createModal,
     setCreateModal,
-    setModalSuccess,
-    setModalError,
-    setAddPaymentModal,
-    setPartnerSelected,
-    setNewPartnerData,
-    setPaidTime,
-    setPaidTimeUnit,
-    setComboSelected,
-    setAmountOfClases,
-    setIsChecked,
-    setFinalPrice,
-    setPaymentMethodSelected,
+    cleanStates,
   } = useContext(PartnersContext)
 
   const [sectionSelected, setSectionSelected] = useState<{
@@ -120,33 +110,6 @@ function PartnersView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterSelected, currentPage, searchValue, triggerListUpdate])
 
-  const cleanStates = () => {
-    setModalSuccess(null)
-    setAddPaymentModal(false)
-    setModalError(null)
-    setPartnerSelected(null)
-    setNewPartnerData({
-      id: 0,
-      name: "",
-      last_name: "",
-      identification_number: "",
-      birth_date: "",
-      email: "",
-      membership_start_date: "",
-      created_by: null,
-      trainer_id: null,
-      free_pass: 0,
-    })
-    setPaidTime(0)
-    setPaidTimeUnit()
-    setComboSelected()
-    setAmountOfClases()
-    setIsChecked(false)
-    setFinalPrice(0)
-    setPaymentMethodSelected(null)
-    setCreateModal(false)
-  }
-
   return (
     <Container>
       <Modals />
@@ -176,6 +139,18 @@ function PartnersView() {
             selected={sectionSelected.id === 2}
           >
             Historial de pagos
+          </Section>
+          <Section
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else {
+                setSectionSelected({ section: "Precios", id: 3 })
+              }
+            }}
+            selected={sectionSelected.id === 3}
+          >
+            Precios
           </Section>
         </SectionsButtons>
         <HeadContent>
@@ -213,6 +188,7 @@ function PartnersView() {
           </>
         )}
         {sectionSelected.id === 2 && <PaymentsHistory />}
+        {sectionSelected.id === 3 && <Prices />}
         {sectionSelected.id === 1 && (
           <MainButton>
             <Tooptip title={texts.mainButton}>

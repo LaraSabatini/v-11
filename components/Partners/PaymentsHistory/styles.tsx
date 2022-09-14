@@ -6,5 +6,6 @@ const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 25px;
+  padding-left: 20px;
 `
 export default Container
