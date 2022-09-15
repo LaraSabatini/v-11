@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import createPartner from "services/Partners/CreatePartner.service"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
 import getPrices from "services/Partners/GetPrices.service"
 import getCombos from "services/Partners/GetCombos.service"
@@ -44,8 +45,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     phoneRef,
     wantsSubscription,
     setWantsSubscription,
-    trainertRef,
-    trainerSelected,
+    scheduleSelected,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
 
@@ -63,12 +63,15 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     await nameRef.current?.focus()
     await lastNameRef.current?.focus()
     await identificationRef.current?.focus()
+    await phoneRef.current?.focus()
     await birthDateRef.current?.focus()
     await emailRef.current?.focus()
 
     if (
       nameRef.current.attributes.getNamedItem("data-error").value === "false" &&
       lastNameRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      phoneRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       identificationRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
@@ -103,8 +106,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     e.preventDefault()
     await paidTimeUnitRef.current?.focus()
     await paidTimeRef.current?.focus()
-    await trainertRef.current?.focus()
-    await phoneRef.current?.focus()
+    // await trainertRef.current?.focus()
     await clasesRef.current?.focus()
     await paymentRef.current?.focus()
 
@@ -115,21 +117,17 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       clasesRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      paymentRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
-      trainertRef.current.attributes.getNamedItem("data-error").value ===
-        "false"
+      paymentRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
-      const body = {
+      const body: PartnerInterface = {
         ...newPartnerData,
-        trainer_id:
-          newPartnerData.trainer_id === null ? null : newPartnerData.trainer_id,
         free_pass:
           paidTimeUnit?.id !== null &&
           paidTimeUnit !== undefined &&
           paidTimeUnit?.id !== 1
             ? 1
             : 0,
+        is_student: scheduleSelected.length > 0 ? 1 : 0,
       }
 
       const apiValidation = await createPartner(body)
@@ -164,10 +162,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               ? paidTimeUnit.id
               : "",
           clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
-          trainer_id:
-            newPartnerData.trainer_id !== null ? newPartnerData.trainer_id : 0,
-          trainer_name:
-            trainerSelected !== undefined ? trainerSelected.display_name : "",
           payment_method_id: paymentMethodSelected,
           payment_method_name: paymentMethods.filter(
             pm => pm.id === paymentMethodSelected,
@@ -179,6 +173,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             (comboSelected !== null && comboSelected !== undefined)
               ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
               : "",
+          days_and_hours:
+            scheduleSelected.length > 0 ? `${scheduleSelected}` : null,
         }
 
         const createPayment = await createPartnerPayment(paymentBody)
