@@ -1,9 +1,13 @@
-import React, { useEffect, useState, useContext } from "react"
+import React, {
+  // useEffect
+  useState,
+  useContext,
+} from "react"
 import { PartnersContext } from "contexts/Partners"
 import deletePartner from "services/Partners/DeletePartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import TrainerInterface from "interfaces/trainers/TrainerInterface"
-import getTrainers from "services/Trainers/GetTrainers.service"
+// import TrainerInterface from "interfaces/trainers/TrainerInterface"
+// import getTrainers from "services/Trainers/GetTrainers.service"
 import texts from "strings/partners.json"
 import ModalAlert from "components/UI/ModalAlert"
 import { PartnerData, Details, RemoveButton } from "./styles"
@@ -15,25 +19,25 @@ interface DetailViewInterface {
 
 const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
   const { setModalSuccess, setModalError } = useContext(PartnersContext)
-  const [trainer, setTrainer] = useState<string>("")
+  // const [trainer, setTrainer] = useState<string>("")
 
-  const getTrainer = async () => {
-    const data = await getTrainers()
-    if (partnerInfo?.trainer_id !== 0 && partnerInfo?.trainer_id !== 0) {
-      const filterTrainer = data.data.filter(
-        (t: TrainerInterface) => t.id === partnerInfo?.trainer_id,
-      )
-      if (filterTrainer.length) {
-        const trainerName = `${filterTrainer[0].name} ${filterTrainer[0].last_name}`
-        setTrainer(trainerName)
-      }
-    }
-  }
+  // const getTrainer = async () => {
+  //   const data = await getTrainers()
+  //   if (partnerInfo?.trainer_id !== 0 && partnerInfo?.trainer_id !== 0) {
+  //     const filterTrainer = data.data.filter(
+  //       (t: TrainerInterface) => t.id === partnerInfo?.trainer_id,
+  //     )
+  //     if (filterTrainer.length) {
+  //       const trainerName = `${filterTrainer[0].name} ${filterTrainer[0].last_name}`
+  //       setTrainer(trainerName)
+  //     }
+  //   }
+  // }
 
-  useEffect(() => {
-    getTrainer()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [partnerInfo])
+  // useEffect(() => {
+  //   getTrainer()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [partnerInfo])
 
   const [safeModal, setSafeModal] = useState<boolean>(false)
 
@@ -99,10 +103,10 @@ const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
       <PartnerData>
         <p>{texts.created_by}</p>@{createdBy}
       </PartnerData>
-      <PartnerData>
+      {/* <PartnerData>
         <p>{texts.trainer}</p>
         {trainer === "" ? `${texts.not_trainer}` : trainer}
-      </PartnerData>
+      </PartnerData> */}
       <RemoveButton type="button" onClick={() => setSafeModal(true)}>
         Eliminar
       </RemoveButton>

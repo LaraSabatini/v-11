@@ -25,7 +25,7 @@ interface PaymentCardInterface {
   time_paid: number
   time_paid_unit: number
   clases_paid: number
-  trainer_name: string
+  // trainer_name: string
   payment_expire_date: string
   date: string
   onClickEdit: () => void
@@ -38,7 +38,7 @@ const PaymentCard = ({
   time_paid,
   time_paid_unit,
   clases_paid,
-  trainer_name,
+  // trainer_name,
   payment_expire_date,
   date,
   onClickEdit,
@@ -93,9 +93,9 @@ const PaymentCard = ({
           <Tags>
             {partner !== undefined && (
               <>
-                {partner.trainer_id !== 0 && <Student>Alumno</Student>}
+                {partner.is_student !== 0 && <Student>Alumno</Student>}
                 {partner.free_pass !== 0 && <FreePass>Pase Libre</FreePass>}
-                {partner.free_pass === 0 && partner.trainer_id === 0 && (
+                {partner.free_pass === 0 && partner.is_student === 0 && (
                   <Day>Dia</Day>
                 )}
               </>
@@ -123,7 +123,7 @@ const PaymentCard = ({
             </Section>
             <Section>
               <p>Profesor</p>
-              <Date>{trainer_name.length ? trainer_name : "-"}</Date>
+              <Date>{partner.is_student !== 0 ? "Guillermo" : "-"}</Date>
             </Section>
           </FirstData>
           <FirstData>

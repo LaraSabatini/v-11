@@ -320,7 +320,7 @@ const PaymentsHistory = () => {
               time_paid={payment.time_paid}
               time_paid_unit={payment.time_paid_unit}
               clases_paid={payment.clases_paid}
-              trainer_name={payment.trainer_name}
+              // trainer_name={payment.trainer_name}
               payment_expire_date={payment.payment_expire_date}
               date={payment.date}
               onClickEdit={() => {
