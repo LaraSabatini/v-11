@@ -74,7 +74,6 @@ const PaymentsHistory = () => {
     if (searchPartner.length > 3) {
       const payments = await getPaymentByPartner(searchPartner, 1)
       setPaymentsList(payments.data)
-      console.log(searchPartner)
     } else {
       const payments = await getPartnerPayments(1)
       setPaymentsList(payments.data)
