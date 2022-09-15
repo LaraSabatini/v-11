@@ -10,5 +10,5 @@ export default interface PartnerInterface {
   membership_start_date: string
   created_by: number
   free_pass: number
-  is_student: number
+  is_student: string
 }

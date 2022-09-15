@@ -93,9 +93,9 @@ const PaymentCard = ({
           <Tags>
             {partner !== undefined && (
               <>
-                {partner.is_student !== 0 && <Student>Alumno</Student>}
+                {partner.is_student === "SI" && <Student>Alumno</Student>}
                 {partner.free_pass !== 0 && <FreePass>Pase Libre</FreePass>}
-                {partner.free_pass === 0 && partner.is_student === 0 && (
+                {partner.free_pass === 0 && partner.is_student === "SI" && (
                   <Day>Dia</Day>
                 )}
               </>
@@ -123,7 +123,7 @@ const PaymentCard = ({
             </Section>
             <Section>
               <p>Profesor</p>
-              <Date>{partner.is_student !== 0 ? "Guillermo" : "-"}</Date>
+              <Date>{partner.is_student === "SI" ? "Guillermo" : "-"}</Date>
             </Section>
           </FirstData>
           <FirstData>

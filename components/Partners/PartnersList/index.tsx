@@ -69,13 +69,13 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
                   </Name>
                   <PartnerNumber>N°: {partner.id}</PartnerNumber>
                   <Tags>
-                    {partner.is_student !== 0 && (
+                    {partner.is_student === "SI" && (
                       <Student>{texts.student}</Student>
                     )}
                     {partner.free_pass !== 0 && (
                       <FreePass>{texts.free_pass}</FreePass>
                     )}
-                    {partner.free_pass === 0 && partner.is_student === 0 && (
+                    {partner.free_pass === 0 && partner.is_student === "NO" && (
                       <Day>Dia</Day>
                     )}
                   </Tags>

@@ -9,7 +9,7 @@ const editPartner = async (body: {
   email: string
   membership_start_date: string
   created_by: number
-  is_student: number
+  is_student: string
   free_pass: number
 }) => {
   const res = await axios.put(
