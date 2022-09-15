@@ -13,7 +13,7 @@ export const SelectLabel = styled.label<{ error: boolean; backError: boolean }>`
   font-weight: ${theme.fontWeights.regular};
   font-size: ${theme.fontSizes.xs};
   color: ${theme.colors.grey};
-  margin: 0 0 2px 13px;
+  margin-bottom: 2px;
   padding: 0;
   ${({ error, backError }) =>
     (error || backError) &&

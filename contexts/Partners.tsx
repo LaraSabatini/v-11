@@ -72,6 +72,11 @@ export const PartnersContext = createContext({
   trainerSelected: null,
   setTrainerSelected: null,
   cleanStates: null,
+  phoneRef: null,
+  wantsSubscription: null,
+  setWantsSubscription: null,
+  scheduleList: null,
+  setScheduleList: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -113,10 +118,13 @@ const PartnersProvider = ({ children }) => {
     identification_number: "",
     birth_date: "",
     email: "",
+    subs: 0,
+    phone: "",
     membership_start_date: "",
     created_by: null,
     trainer_id: null,
     free_pass: 0,
+    hours_and_days: [],
   })
 
   const timeUnits = [
@@ -143,6 +151,7 @@ const PartnersProvider = ({ children }) => {
   const comboRef = useRef(null)
   const clasesRef = useRef(null)
   const paymentRef = useRef(null)
+  const phoneRef = useRef(null)
 
   const [modalSuccess, setModalSuccess] = useState<{
     status: string
@@ -178,6 +187,7 @@ const PartnersProvider = ({ children }) => {
   const [amountOfClases, setAmountOfClases] = useState<number>()
 
   const [isChecked, setIsChecked] = useState<boolean>(false)
+  const [wantsSubscription, setWantsSubscription] = useState<boolean>(false)
 
   const [prices, setPrices] = useState<PricesInterface[]>([])
   const [finalPrice, setFinalPrice] = useState<number>(0)
@@ -189,6 +199,11 @@ const PartnersProvider = ({ children }) => {
   const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
 
   const [trainerSelected, setTrainerSelected] = useState<{
+    id: number
+    display_name: string
+  }>()
+
+  const [scheduleList, setScheduleList] = useState<{
     id: number
     display_name: string
   }>()
@@ -210,10 +225,13 @@ const PartnersProvider = ({ children }) => {
       identification_number: "",
       birth_date: "",
       email: "",
+      subs: 0,
+      phone: "",
       membership_start_date: "",
       created_by: null,
       trainer_id: null,
       free_pass: 0,
+      hours_and_days: [],
     })
     setPaidTime(0)
     setPaidTimeUnit(undefined)
@@ -294,6 +312,11 @@ const PartnersProvider = ({ children }) => {
         trainerSelected,
         setTrainerSelected,
         cleanStates,
+        phoneRef,
+        wantsSubscription,
+        setWantsSubscription,
+        scheduleList,
+        setScheduleList,
       }}
     >
       {children}

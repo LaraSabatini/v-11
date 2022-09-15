@@ -1,8 +1,9 @@
 import React, { useContext, useEffect } from "react"
-import getTrainers from "services/Trainers/GetTrainers.service"
 import { PartnersContext } from "contexts/Partners"
+import { getSchedule } from "services/Trainers/Schedule.service"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
+import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Checkbox from "components/UI/Checkbox"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 import { Form } from "./styles"
@@ -14,7 +15,6 @@ const MakePayment = () => {
     setNewPartnerData,
     paidTimeUnitRef,
     paidTimeRef,
-    trainertRef,
     comboRef,
     clasesRef,
     paymentRef,
@@ -35,27 +35,26 @@ const MakePayment = () => {
     amountOfClases,
     paymentMethodSelected,
     setPaymentMethodSelected,
-    trainersList,
-    setTrainersList,
-    setTrainerSelected,
+    setScheduleList,
+    scheduleList,
   } = useContext(PartnersContext)
 
-  const fillTrainersData = async () => {
-    const data = await getTrainers()
-    const arrayTrainers = []
-    data.data.map(trainer =>
-      arrayTrainers.push({
-        id: trainer.id,
-        display_name: `${trainer.name} ${trainer.last_name}`,
+  const fillScheduleData = async () => {
+    const data = await getSchedule()
+    const arraySchedule = []
+    data.data.map(schedule =>
+      arraySchedule.push({
+        id: schedule.id,
+        display_name: `${schedule.day_and_hour}`,
       }),
     )
 
-    setTrainersList(arrayTrainers)
+    setScheduleList(arraySchedule)
   }
 
   useEffect(() => {
-    fillTrainersData()
-    //   eslint-disable-next-line react-hooks/exhaustive-deps
+    fillScheduleData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const combosAutocomplete = []
@@ -254,23 +253,22 @@ const MakePayment = () => {
         />
       </HorizontalGroup>
       <HorizontalGroup>
-        <Autocomplete
-          label="Profesor"
-          width={290}
+        {/* ACA ************************************** */}
+        <ComboBoxSelect
           required={
             amountOfClases !== undefined &&
             amountOfClases !== 0 &&
             amountOfClases !== ""
           }
-          options={trainersList}
-          ref={trainertRef}
-          onChangeProps={(e: { id: number; display_name: string }) => {
-            setNewPartnerData({
-              ...newPartnerData,
-              trainer_id: e.id,
-            })
-            setTrainerSelected(e)
+          onChange={e => {
+            const ids = []
+            e.map(data => ids.push(data.id))
+            setNewPartnerData({ ...newPartnerData, hours_and_days: ids })
           }}
+          options={scheduleList}
+          width={290}
+          label="Dias y Horarios"
+          optionsList="single"
         />
       </HorizontalGroup>
       <HorizontalGroup>
