@@ -1,20 +1,7 @@
 import axios from "axios"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 
-const createPartner = async (body: {
-  id: number
-  name: string
-  last_name: string
-  identification_number: string
-  birth_date: string
-  email: string
-  phone: string
-  subs: number
-  membership_start_date: string
-  created_by: number
-  traier_id: number
-  free_pass: number
-  // hours_and_days: number[]
-}) => {
+const createPartner = async (body: PartnerInterface) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -23,7 +10,6 @@ const createPartner = async (body: {
 
   const data = await axios
     .post("https://v-11-backend.vercel.app/partners", body, axiosHeader)
-    // .post("https://v-11-backend.vercel.app/partners", body, axiosHeader)
     .then(response => {
       const res = response.data
       return res

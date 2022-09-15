@@ -7,11 +7,12 @@ export default interface PaymentInterface {
   time_paid: number
   time_paid_unit: number
   clases_paid: number
-  trainer_id: number
-  trainer_name: string
+  // trainer_id: number
+  // trainer_name: string
   payment_method_id: number
   payment_method_name: string
   price_paid: number
   date: string
   payment_expire_date: string
+  days_and_hours: number[] | string
 }

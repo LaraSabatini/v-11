@@ -77,6 +77,8 @@ export const PartnersContext = createContext({
   setWantsSubscription: null,
   scheduleList: null,
   setScheduleList: null,
+  setScheduleSelected: null,
+  scheduleSelected: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -122,9 +124,8 @@ const PartnersProvider = ({ children }) => {
     phone: "",
     membership_start_date: "",
     created_by: null,
-    trainer_id: null,
     free_pass: 0,
-    // hours_and_days: [],
+    is_student: 0,
   })
 
   const timeUnits = [
@@ -208,12 +209,15 @@ const PartnersProvider = ({ children }) => {
     display_name: string
   }>()
 
+  const [scheduleSelected, setScheduleSelected] = useState<number[]>([])
+
   // EDIT *************************************************************
 
   const [hasChanges, setHasChanges] = useState<boolean>(false)
   const [modalHasChanges, setModalHasChanges] = useState<boolean>(false)
 
   const cleanStates = () => {
+    setScheduleSelected([])
     setModalSuccess(null)
     setAddPaymentModal(false)
     setModalError(null)
@@ -229,9 +233,8 @@ const PartnersProvider = ({ children }) => {
       phone: "",
       membership_start_date: "",
       created_by: null,
-      trainer_id: null,
       free_pass: 0,
-      // hours_and_days: [],
+      is_student: 0,
     })
     setPaidTime(0)
     setPaidTimeUnit(undefined)
@@ -317,6 +320,8 @@ const PartnersProvider = ({ children }) => {
         setWantsSubscription,
         scheduleList,
         setScheduleList,
+        scheduleSelected,
+        setScheduleSelected,
       }}
     >
       {children}

@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from "react"
 import texts from "strings/partners.json"
 import { PartnersContext } from "contexts/Partners"
-import getTrainers from "services/Trainers/GetTrainers.service"
+// import getTrainers from "services/Trainers/GetTrainers.service"
+import { getSchedule } from "services/Trainers/Schedule.service"
 import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
 import editPartner from "services/Partners/EditPartner.service"
 import getCombos from "services/Partners/GetCombos.service"
@@ -12,6 +13,7 @@ import PartnerInterface from "interfaces/partners/PartnerInterface"
 import SearchBar from "components/UI/SearchBar"
 import ScrollView from "components/UI/ScrollView"
 import ModalForm from "components/UI/ModalForm"
+import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
@@ -44,7 +46,7 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
     finalPrice,
     clasesRef,
     setAmountOfClases,
-    trainertRef,
+    // trainertRef,
     paymentMethods,
     paymentRef,
     setPaymentMethodSelected,
@@ -58,19 +60,23 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
     setFinalPrice,
     setModalSuccess,
     setModalError,
+    setScheduleSelected,
+    scheduleList,
+    setScheduleList,
+    scheduleSelected,
   } = useContext(PartnersContext)
   const [searchValue, setSearchValue] = useState<string>("")
   const [results, setResults] = useState<PartnerInterface[]>([])
 
   const [partnerSelected, setPartnerSelected] = useState<PartnerInterface>()
-  const [trainers, setTrainers] = useState<
-    { id: number; display_name: string }[]
-  >([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [newTrainer, setNewTrainer] = useState<{
-    id: number
-    name: string
-  }>()
+  // const [trainers, setTrainers] = useState<
+  //   { id: number; display_name: string }[]
+  // >([])
+  // // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // const [newTrainer, setNewTrainer] = useState<{
+  //   id: number
+  //   name: string
+  // }>()
 
   const searchPartnerFunction = async () => {
     if (searchValue.length > 2) {
@@ -93,16 +99,27 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
     const combosData = await getCombos()
     setCombos(combosData.data)
 
-    const data = await getTrainers()
-    const arrayTrainers = []
-    data.data.map(trainer =>
-      arrayTrainers.push({
-        id: trainer.id,
-        display_name: `${trainer.name} ${trainer.last_name}`,
+    // const data = await getTrainers()
+    // const arrayTrainers = []
+    // data.data.map(trainer =>
+    //   arrayTrainers.push({
+    //     id: trainer.id,
+    //     display_name: `${trainer.name} ${trainer.last_name}`,
+    //   }),
+    // )
+
+    // setTrainers(arrayTrainers)
+
+    const data = await getSchedule()
+    const arraySchedule = []
+    data.data.map(schedule =>
+      arraySchedule.push({
+        id: schedule.id,
+        display_name: `${schedule.day_and_hour}`,
       }),
     )
 
-    setTrainers(arrayTrainers)
+    setScheduleList(arraySchedule)
 
     const pricesData = await getPrices()
     setPrices(pricesData.data)
@@ -147,8 +164,8 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
             ? paidTimeUnit.id
             : "",
         clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
-        trainer_id: newTrainer !== undefined ? newTrainer.id : 0,
-        trainer_name: newTrainer !== undefined ? newTrainer.name : "",
+        // trainer_id: newTrainer !== undefined ? newTrainer.id : 0,
+        // trainer_name: newTrainer !== undefined ? newTrainer.name : "",
         payment_method_id: paymentMethodSelected,
         payment_method_name: paymentMethods.filter(
           pm => pm.id === paymentMethodSelected,
@@ -156,16 +173,15 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
         price_paid: finalPrice,
         date: `${day}/${month}/${year}`,
         payment_expire_date: "",
+        days_and_hours: scheduleSelected.length > 0 ? scheduleSelected : null,
       }
       const createPayment = await createPartnerPayment(paymentBody)
 
-      if (
-        newTrainer !== undefined &&
-        partnerSelected.trainer_id !== newTrainer.id
-      ) {
+      if (scheduleSelected.length > 0 && partnerSelected.is_student === 0) {
         await editPartner({
           ...partnerSelected,
-          trainer_id: newTrainer.id,
+          // trainer_id: newTrainer.id,
+          is_student: 1,
         })
       }
 
@@ -404,7 +420,7 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
           />
         </HorizontalGroup>
         <HorizontalGroup>
-          <Autocomplete
+          {/* <Autocomplete
             label="Profesor"
             width={290}
             options={trainers}
@@ -415,6 +431,23 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
                 name: e.display_name,
               })
             }
+          /> */}
+          <ComboBoxSelect
+            required={
+              amountOfClases !== undefined &&
+              amountOfClases !== 0 &&
+              amountOfClases !== ""
+            }
+            onChange={e => {
+              const ids = []
+              e.map(data => ids.push(data.id))
+              // setNewPartnerData({ ...newPartnerData, hours_and_days: ids })
+              setScheduleSelected(ids)
+            }}
+            options={scheduleList}
+            width={290}
+            label="Dias y Horarios"
+            optionsList="single"
           />
         </HorizontalGroup>
         <HorizontalGroup>
@@ -439,7 +472,7 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
         </HorizontalGroup>
         <CheckboxContainer>
           <Checkbox
-            checked={isChecked || newTrainer !== undefined}
+            checked={isChecked || scheduleSelected.length}
             isDisabled
             idParam="free-pass"
           />

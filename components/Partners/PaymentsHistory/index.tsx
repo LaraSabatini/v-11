@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import getCombos from "services/Partners/GetCombos.service"
-import getTrainers from "services/Trainers/GetTrainers.service"
+// import getTrainers from "services/Trainers/GetTrainers.service"
+import { getSchedule } from "services/Trainers/Schedule.service"
 import getPartnerPayments from "services/Partners/GetPartnerPayments.service"
 import getPrices from "services/Partners/GetPrices.service"
 import editPartnerPayment from "services/Partners/EditPartnerPayment.service"
@@ -11,6 +12,7 @@ import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
+import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Container from "./styles"
 import PaymentCard from "./PaymentCard"
 import {
@@ -35,16 +37,16 @@ const PaymentsHistory = () => {
     clasesRef,
     setAmountOfClases,
     amountOfClases,
-    trainersList,
-    trainertRef,
-    setTrainerSelected,
+    // trainersList,
+    // trainertRef,
+    // setTrainerSelected,
     setComboSelected,
     paymentMethods,
     paymentRef,
     setPaymentMethodSelected,
     finalPrice,
     isChecked,
-    setTrainersList,
+    // setTrainersList,
     setFinalPrice,
     paymentMethodSelected,
     paidTimeUnit,
@@ -53,6 +55,10 @@ const PaymentsHistory = () => {
     cleanStates,
     setModalSuccess,
     setModalError,
+    setScheduleList,
+    setScheduleSelected,
+    scheduleList,
+    scheduleSelected,
   } = useContext(PartnersContext)
   const [paymentsList, setPaymentsList] = useState<PaymentInterface[]>([])
   const [activeEdition, setActiveEdition] = useState<PaymentInterface>()
@@ -110,19 +116,18 @@ const PaymentsHistory = () => {
         (comboSelected !== null && comboSelected !== undefined)
           ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
           : "",
+      days_and_hours:
+        scheduleSelected.length > 0 ? `${scheduleSelected}` : null,
     }
-    // eslint-disable-next-line no-console
-    console.log(body)
-    // calcular expire date
 
     await paidTimeUnitRef.current?.focus()
-    await trainertRef.current?.focus()
+    // await trainertRef.current?.focus()
     await paymentRef.current?.focus()
     if (
       paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      trainertRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
+      // trainertRef.current.attributes.getNamedItem("data-error").value ===
+      //   "false" &&
       paymentRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
       const executeEdition = await editPartnerPayment(body)
@@ -159,22 +164,40 @@ const PaymentsHistory = () => {
     cleanStates()
   }
 
-  const fillTrainersData = async () => {
-    const data = await getTrainers()
-    const arrayTrainers = []
-    data.data.map(trainer =>
-      arrayTrainers.push({
-        id: trainer.id,
-        display_name: `${trainer.name} ${trainer.last_name}`,
+  // const fillTrainersData = async () => {
+  //   const data = await getTrainers()
+  //   const arrayTrainers = []
+  //   data.data.map(trainer =>
+  //     arrayTrainers.push({
+  //       id: trainer.id,
+  //       display_name: `${trainer.name} ${trainer.last_name}`,
+  //     }),
+  //   )
+
+  //   setTrainersList(arrayTrainers)
+  // }
+
+  // useEffect(() => {
+  //   fillTrainersData()
+  //   //   eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+
+  const fillScheduleData = async () => {
+    const data = await getSchedule()
+    const arraySchedule = []
+    data.data.map(schedule =>
+      arraySchedule.push({
+        id: schedule.id,
+        display_name: `${schedule.day_and_hour}`,
       }),
     )
 
-    setTrainersList(arrayTrainers)
+    setScheduleList(arraySchedule)
   }
 
   useEffect(() => {
-    fillTrainersData()
-    //   eslint-disable-next-line react-hooks/exhaustive-deps
+    fillScheduleData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const calculatePrice = () => {
@@ -297,7 +320,7 @@ const PaymentsHistory = () => {
               time_paid={payment.time_paid}
               time_paid_unit={payment.time_paid_unit}
               clases_paid={payment.clases_paid}
-              trainer_name={payment.trainer_name}
+              // trainer_name={payment.trainer_name}
               payment_expire_date={payment.payment_expire_date}
               date={payment.date}
               onClickEdit={() => {
@@ -417,7 +440,7 @@ const PaymentsHistory = () => {
               />
             </HorizontalGroup>
             <HorizontalGroup>
-              <Autocomplete
+              {/* <Autocomplete
                 label="Profesor"
                 width={290}
                 required={
@@ -436,6 +459,23 @@ const PaymentsHistory = () => {
                     trainer_name: e.display_name,
                   })
                 }}
+              /> */}
+              <ComboBoxSelect
+                required={
+                  amountOfClases !== undefined &&
+                  amountOfClases !== 0 &&
+                  amountOfClases !== ""
+                }
+                onChange={e => {
+                  const ids = []
+                  e.map(data => ids.push(data.id))
+                  // setNewPartnerData({ ...newPartnerData, hours_and_days: ids })
+                  setScheduleSelected(ids)
+                }}
+                options={scheduleList}
+                width={290}
+                label="Dias y Horarios"
+                optionsList="single"
               />
             </HorizontalGroup>
             <HorizontalGroup>
