@@ -89,6 +89,18 @@ const DaysLeft = styled.div`
   align-items: center;
   gap: 10px;
   width: 100px;
+
+  .remove {
+    border: none;
+    font-family: ${theme.fonts.primary};
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
 `
 
 const Section = styled.div`

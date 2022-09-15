@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from "react"
-import searchPartner from "services/Partners/SearchPartner.service"
+// import searchPartner from "services/Partners/SearchPartner.service"
 import { PartnersContext } from "contexts/Partners"
-import PartnerInterface from "interfaces/partners/PartnerInterface"
+import Icon from "components/UI/Assets/Icon"
+// import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TextButton from "components/UI/TextButton"
 import {
   Card,
@@ -22,6 +23,7 @@ interface PaymentCardInterface {
   partner_name: string
   partner_last_name: string
   combo: number
+  id: number
   time_paid: number
   time_paid_unit: number
   clases_paid: number
@@ -29,6 +31,7 @@ interface PaymentCardInterface {
   payment_expire_date: string
   date: string
   onClickEdit: () => void
+  onClickRemoveDays: (e) => void
 }
 
 const PaymentCard = ({
@@ -42,6 +45,8 @@ const PaymentCard = ({
   payment_expire_date,
   date,
   onClickEdit,
+  onClickRemoveDays,
+  id,
 }: PaymentCardInterface) => {
   const { combos } = useContext(PartnersContext)
 
@@ -53,7 +58,7 @@ const PaymentCard = ({
     price_mp: number
     details: string
   }>()
-  const [partner, setPartner] = useState<PartnerInterface>()
+  // const [partner, setPartner] = useState<PartnerInterface>()
 
   const filterCombo = () => {
     const searchCombo = combos.filter(c => c.id === combo)
@@ -62,15 +67,15 @@ const PaymentCard = ({
     }
   }
 
-  const getPartnerData = async () => {
-    const data = await searchPartner(partner_name, 1)
-    setPartner(data.data[0])
-  }
+  // const getPartnerData = async () => {
+  //   const data = await searchPartner(partner_name, 1)
+  //   setPartner(data.data[0])
+  // }
 
-  useEffect(() => {
-    getPartnerData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [partner_name])
+  // useEffect(() => {
+  //   getPartnerData()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [id])
 
   useEffect(() => {
     if (combo !== 0) {
@@ -90,29 +95,27 @@ const PaymentCard = ({
           {partner_name} {partner_last_name}
         </Name>
         <Tags>
-          <Tags>
-            {partner !== undefined && (
-              <>
-                {partner.is_student === "SI" && <Student>Alumno</Student>}
-                {partner.free_pass !== 0 && <FreePass>Pase Libre</FreePass>}
-                {partner.free_pass === 0 && partner.is_student === "SI" && (
-                  <Day>Dia</Day>
-                )}
-              </>
-            )}
-          </Tags>
+          <>
+            {clases_paid > 0 && <Student>Alumno</Student>}
+            {time_paid_unit === 2 && <FreePass>Pase Libre</FreePass>}
+            {time_paid_unit === 1 && <Day>Dia</Day>}
+          </>
         </Tags>
       </CardHead>
-      {/* DIAS RESTANTES => time_paid_unit === 1 */}
-      {/* SI SE SUMAN O RESTAN dias => PUT time_paid */}
-      {/* FECHA DE VENCIMIENTO => time_paid_unit === 2 || combo === 1 */}
       {active && (
         <>
           <FirstData>
             <Section>
               <p>Dias restantes</p>
               <DaysLeft>
-                <p>{time_paid_unit === 1 ? time_paid : "-"}</p>
+                <button
+                  className="remove"
+                  type="button"
+                  onClick={() => onClickRemoveDays(id)}
+                >
+                  <Icon icon="IconLess" />
+                </button>
+                <p>{time_paid_unit === 1 ? time_paid : 0}</p>
               </DaysLeft>
             </Section>
             <Section>
@@ -123,7 +126,7 @@ const PaymentCard = ({
             </Section>
             <Section>
               <p>Profesor</p>
-              <Date>{partner.is_student === "SI" ? "Guillermo" : "-"}</Date>
+              <Date>{clases_paid > 0 ? "Guillermo" : "-"}</Date>
             </Section>
           </FirstData>
           <FirstData>
