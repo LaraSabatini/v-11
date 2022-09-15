@@ -127,7 +127,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           paidTimeUnit?.id !== 1
             ? 1
             : 0,
-        is_student: scheduleSelected.length > 0 ? 1 : 0,
+        is_student: scheduleSelected.length > 0 ? "SI" : "NO",
       }
 
       const apiValidation = await createPartner(body)

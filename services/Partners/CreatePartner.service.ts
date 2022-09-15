@@ -1,7 +1,19 @@
 import axios from "axios"
-import PartnerInterface from "interfaces/partners/PartnerInterface"
 
-const createPartner = async (body: PartnerInterface) => {
+const createPartner = async (body: {
+  id: number
+  name: string
+  last_name: string
+  identification_number: string
+  birth_date: string
+  email: string
+  phone: string
+  subs: number
+  membership_start_date: string
+  created_by: number
+  free_pass: number
+  is_student: string
+}) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",

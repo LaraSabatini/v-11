@@ -177,11 +177,11 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
       }
       const createPayment = await createPartnerPayment(paymentBody)
 
-      if (scheduleSelected.length > 0 && partnerSelected.is_student === 0) {
+      if (scheduleSelected.length > 0) {
         await editPartner({
           ...partnerSelected,
           // trainer_id: newTrainer.id,
-          is_student: 1,
+          is_student: "SI",
         })
       }
 

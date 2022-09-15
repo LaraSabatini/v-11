@@ -125,7 +125,7 @@ const PartnersProvider = ({ children }) => {
     membership_start_date: "",
     created_by: null,
     free_pass: 0,
-    is_student: 0,
+    is_student: "NO",
   })
 
   const timeUnits = [
@@ -234,7 +234,7 @@ const PartnersProvider = ({ children }) => {
       membership_start_date: "",
       created_by: null,
       free_pass: 0,
-      is_student: 0,
+      is_student: "NO",
     })
     setPaidTime(0)
     setPaidTimeUnit(undefined)
