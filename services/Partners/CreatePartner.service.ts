@@ -7,10 +7,13 @@ const createPartner = async (body: {
   identification_number: string
   birth_date: string
   email: string
+  phone: string
+  subs: number
   membership_start_date: string
   created_by: number
-  trainer_id: number | null
+  traier_id: number
   free_pass: number
+  // hours_and_days: number[]
 }) => {
   const axiosHeader = {
     headers: {
@@ -20,6 +23,7 @@ const createPartner = async (body: {
 
   const data = await axios
     .post("https://v-11-backend.vercel.app/partners", body, axiosHeader)
+    // .post("https://v-11-backend.vercel.app/partners", body, axiosHeader)
     .then(response => {
       const res = response.data
       return res

@@ -9,9 +9,9 @@ import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
 import texts from "strings/partners.json"
 import InputCalendar from "components/UI/InputCalendar"
+import Checkbox from "components/UI/Checkbox"
 import MakePayment from "./MakePayment"
-
-import { Form, HorizontalGroup } from "./styles"
+import { Form, HorizontalGroup, CheckboxContainer } from "./styles"
 
 interface CreateInterface {
   cancelCreate: () => void
@@ -30,7 +30,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     setModalError,
     paidTimeUnitRef,
     paidTimeRef,
-    trainertRef,
     clasesRef,
     paymentRef,
     paidTimeUnit,
@@ -42,6 +41,10 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     paymentMethodSelected,
     finalPrice,
     paymentMethods,
+    phoneRef,
+    wantsSubscription,
+    setWantsSubscription,
+    trainertRef,
     trainerSelected,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
@@ -101,6 +104,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     await paidTimeUnitRef.current?.focus()
     await paidTimeRef.current?.focus()
     await trainertRef.current?.focus()
+    await phoneRef.current?.focus()
     await clasesRef.current?.focus()
     await paymentRef.current?.focus()
 
@@ -109,11 +113,12 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       paidTimeRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      trainertRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
       clasesRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      paymentRef.current.attributes.getNamedItem("data-error").value === "false"
+      paymentRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      trainertRef.current.attributes.getNamedItem("data-error").value ===
+        "false"
     ) {
       const body = {
         ...newPartnerData,
@@ -253,7 +258,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           </HorizontalGroup>
           <HorizontalGroup>
             <TextField
-              required
               width={180}
               label={texts.create.identification}
               type="text"
@@ -279,7 +283,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           </HorizontalGroup>
           <HorizontalGroup>
             <TextField
-              required
               width={180}
               label={texts.create.email}
               type="email"
@@ -291,7 +294,37 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
                 })
               }
             />
+            <TextField
+              width={180}
+              required={wantsSubscription}
+              label="N° de telefono"
+              type="text"
+              reference={phoneRef}
+              onChange={e =>
+                setNewPartnerData({
+                  ...newPartnerData,
+                  phone: e.target.value,
+                })
+              }
+            />
           </HorizontalGroup>
+          <CheckboxContainer>
+            <Checkbox
+              onChange={() => {
+                if (newPartnerData.subs === 0) {
+                  setNewPartnerData({ ...newPartnerData, subs: 1 })
+                  setWantsSubscription(true)
+                } else {
+                  setNewPartnerData({ ...newPartnerData, subs: 0 })
+                  setWantsSubscription(false)
+                }
+              }}
+              ownState
+              checked={wantsSubscription}
+              idParam="subs"
+            />
+            <p>Desea recibir noticias</p>
+          </CheckboxContainer>
         </Form>
       )}
       {view === 2 && <MakePayment />}

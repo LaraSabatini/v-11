@@ -1,8 +1,10 @@
 import React, { useContext, useEffect } from "react"
-import getTrainers from "services/Trainers/GetTrainers.service"
 import { PartnersContext } from "contexts/Partners"
+import getTrainers from "services/Trainers/GetTrainers.service"
+// import { getSchedule } from "services/Trainers/Schedule.service"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
+// import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Checkbox from "components/UI/Checkbox"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 import { Form } from "./styles"
@@ -13,8 +15,8 @@ const MakePayment = () => {
     newPartnerData,
     setNewPartnerData,
     paidTimeUnitRef,
-    paidTimeRef,
     trainertRef,
+    paidTimeRef,
     comboRef,
     clasesRef,
     paymentRef,
@@ -35,10 +37,30 @@ const MakePayment = () => {
     amountOfClases,
     paymentMethodSelected,
     setPaymentMethodSelected,
+    // setScheduleList,
+    // scheduleList,
     trainersList,
     setTrainersList,
     setTrainerSelected,
   } = useContext(PartnersContext)
+
+  // const fillScheduleData = async () => {
+  //   const data = await getSchedule()
+  //   const arraySchedule = []
+  //   data.data.map(schedule =>
+  //     arraySchedule.push({
+  //       id: schedule.id,
+  //       display_name: `${schedule.day_and_hour}`,
+  //     }),
+  //   )
+
+  //   setScheduleList(arraySchedule)
+  // }
+
+  // useEffect(() => {
+  //   fillScheduleData()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
   const fillTrainersData = async () => {
     const data = await getTrainers()
@@ -254,6 +276,23 @@ const MakePayment = () => {
         />
       </HorizontalGroup>
       <HorizontalGroup>
+        {/* ACA ************************************** */}
+        {/* <ComboBoxSelect
+          required={
+            amountOfClases !== undefined &&
+            amountOfClases !== 0 &&
+            amountOfClases !== ""
+          }
+          onChange={e => {
+            const ids = []
+            e.map(data => ids.push(data.id))
+            setNewPartnerData({ ...newPartnerData, hours_and_days: ids })
+          }}
+          options={scheduleList}
+          width={290}
+          label="Dias y Horarios"
+          optionsList="single"
+        /> */}
         <Autocomplete
           label="Profesor"
           width={290}
