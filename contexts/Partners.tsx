@@ -124,7 +124,7 @@ const PartnersProvider = ({ children }) => {
     created_by: null,
     trainer_id: null,
     free_pass: 0,
-    hours_and_days: [],
+    // hours_and_days: [],
   })
 
   const timeUnits = [
@@ -231,7 +231,7 @@ const PartnersProvider = ({ children }) => {
       created_by: null,
       trainer_id: null,
       free_pass: 0,
-      hours_and_days: [],
+      // hours_and_days: [],
     })
     setPaidTime(0)
     setPaidTimeUnit(undefined)

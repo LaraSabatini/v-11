@@ -44,6 +44,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     phoneRef,
     wantsSubscription,
     setWantsSubscription,
+    trainertRef,
+    trainerSelected,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
 
@@ -101,6 +103,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     e.preventDefault()
     await paidTimeUnitRef.current?.focus()
     await paidTimeRef.current?.focus()
+    await trainertRef.current?.focus()
     await phoneRef.current?.focus()
     await clasesRef.current?.focus()
     await paymentRef.current?.focus()
@@ -114,7 +117,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       paymentRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      phoneRef.current.attributes.getNamedItem("data-error").value === "false"
+      trainertRef.current.attributes.getNamedItem("data-error").value ===
+        "false"
     ) {
       const body = {
         ...newPartnerData,
@@ -160,6 +164,10 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               ? paidTimeUnit.id
               : "",
           clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
+          trainer_id:
+            newPartnerData.trainer_id !== null ? newPartnerData.trainer_id : 0,
+          trainer_name:
+            trainerSelected !== undefined ? trainerSelected.display_name : "",
           payment_method_id: paymentMethodSelected,
           payment_method_name: paymentMethods.filter(
             pm => pm.id === paymentMethodSelected,

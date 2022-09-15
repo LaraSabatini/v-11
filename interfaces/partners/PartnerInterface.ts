@@ -11,5 +11,5 @@ export default interface PartnerInterface {
   created_by: number
   trainer_id: number | null
   free_pass: number
-  hours_and_days: number[]
+  // hours_and_days: number[]
 }

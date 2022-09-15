@@ -1,9 +1,10 @@
 import React, { useContext, useEffect } from "react"
 import { PartnersContext } from "contexts/Partners"
-import { getSchedule } from "services/Trainers/Schedule.service"
+import getTrainers from "services/Trainers/GetTrainers.service"
+// import { getSchedule } from "services/Trainers/Schedule.service"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
-import ComboBoxSelect from "components/UI/ComboBoxSelect"
+// import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Checkbox from "components/UI/Checkbox"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 import { Form } from "./styles"
@@ -14,6 +15,7 @@ const MakePayment = () => {
     newPartnerData,
     setNewPartnerData,
     paidTimeUnitRef,
+    trainertRef,
     paidTimeRef,
     comboRef,
     clasesRef,
@@ -35,26 +37,47 @@ const MakePayment = () => {
     amountOfClases,
     paymentMethodSelected,
     setPaymentMethodSelected,
-    setScheduleList,
-    scheduleList,
+    // setScheduleList,
+    // scheduleList,
+    trainersList,
+    setTrainersList,
+    setTrainerSelected,
   } = useContext(PartnersContext)
 
-  const fillScheduleData = async () => {
-    const data = await getSchedule()
-    const arraySchedule = []
-    data.data.map(schedule =>
-      arraySchedule.push({
-        id: schedule.id,
-        display_name: `${schedule.day_and_hour}`,
+  // const fillScheduleData = async () => {
+  //   const data = await getSchedule()
+  //   const arraySchedule = []
+  //   data.data.map(schedule =>
+  //     arraySchedule.push({
+  //       id: schedule.id,
+  //       display_name: `${schedule.day_and_hour}`,
+  //     }),
+  //   )
+
+  //   setScheduleList(arraySchedule)
+  // }
+
+  // useEffect(() => {
+  //   fillScheduleData()
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
+
+  const fillTrainersData = async () => {
+    const data = await getTrainers()
+    const arrayTrainers = []
+    data.data.map(trainer =>
+      arrayTrainers.push({
+        id: trainer.id,
+        display_name: `${trainer.name} ${trainer.last_name}`,
       }),
     )
 
-    setScheduleList(arraySchedule)
+    setTrainersList(arrayTrainers)
   }
 
   useEffect(() => {
-    fillScheduleData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fillTrainersData()
+    //   eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const combosAutocomplete = []
@@ -254,7 +277,7 @@ const MakePayment = () => {
       </HorizontalGroup>
       <HorizontalGroup>
         {/* ACA ************************************** */}
-        <ComboBoxSelect
+        {/* <ComboBoxSelect
           required={
             amountOfClases !== undefined &&
             amountOfClases !== 0 &&
@@ -269,6 +292,24 @@ const MakePayment = () => {
           width={290}
           label="Dias y Horarios"
           optionsList="single"
+        /> */}
+        <Autocomplete
+          label="Profesor"
+          width={290}
+          required={
+            amountOfClases !== undefined &&
+            amountOfClases !== 0 &&
+            amountOfClases !== ""
+          }
+          options={trainersList}
+          ref={trainertRef}
+          onChangeProps={(e: { id: number; display_name: string }) => {
+            setNewPartnerData({
+              ...newPartnerData,
+              trainer_id: e.id,
+            })
+            setTrainerSelected(e)
+          }}
         />
       </HorizontalGroup>
       <HorizontalGroup>
