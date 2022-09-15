@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const Container = styled.div`
-  margin-top: 20px;
+  margin-top: 35px;
 
   display: flex;
   flex-wrap: wrap;
