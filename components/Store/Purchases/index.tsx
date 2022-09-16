@@ -40,7 +40,8 @@ const Purchases = () => {
 
   return (
     <Container>
-      {historyList.length &&
+      {historyList.length > 0 &&
+        productsList.length > 0 &&
         historyList.map(history => (
           <HistoryCard
             key={history.id}
@@ -70,8 +71,7 @@ const Purchases = () => {
               )[0].price
             }
             final_sells={history.profit}
-            amount={history.amount_of_sales}
-            // month={history.month_name}
+            amount={history.amount_of_sales} // month={history.month_name}
           />
         ))}
     </Container>
