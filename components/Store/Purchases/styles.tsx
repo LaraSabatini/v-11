@@ -6,6 +6,7 @@ const Container = styled.div`
   position: relative;
   height: 520px;
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
   gap: 20px;
 `
