@@ -5,6 +5,7 @@ import searchPartner from "services/Partners/SearchPartner.service"
 import getStudents from "services/Partners/GetStudents.service"
 import getPartners from "services/Partners/GetPartners.service"
 import { PartnersContext } from "contexts/Partners"
+import PaymentsHistoryProvider from "contexts/PaymentsHistory"
 import Icon from "components/UI/Assets/Icon"
 import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
@@ -17,6 +18,7 @@ import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import PaymentsHistory from "./PaymentsHistory"
 import Prices from "./Prices"
+import PaymentsView from "./PaymentsView"
 import {
   Container,
   Title,
@@ -132,12 +134,12 @@ function PartnersView() {
               if (hasChanges) {
                 setModalHasChanges(true)
               } else {
-                setSectionSelected({ section: "Historial de pagos", id: 2 })
+                setSectionSelected({ section: "Pagos", id: 2 })
               }
             }}
             selected={sectionSelected.id === 2}
           >
-            Historial de pagos
+            Pagos
           </Section>
           <Section
             onClick={() => {
@@ -150,6 +152,18 @@ function PartnersView() {
             selected={sectionSelected.id === 3}
           >
             Precios
+          </Section>
+          <Section
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else {
+                setSectionSelected({ section: "Historial de pagos", id: 4 })
+              }
+            }}
+            selected={sectionSelected.id === 4}
+          >
+            Historial de pagos
           </Section>
         </SectionsButtons>
         <HeadContent>
@@ -188,6 +202,11 @@ function PartnersView() {
         )}
         {sectionSelected.id === 2 && <PaymentsHistory />}
         {sectionSelected.id === 3 && <Prices />}
+        {sectionSelected.id === 4 && (
+          <PaymentsHistoryProvider>
+            <PaymentsView />
+          </PaymentsHistoryProvider>
+        )}
         {sectionSelected.id === 1 && (
           <MainButton>
             <Tooptip title={texts.mainButton}>

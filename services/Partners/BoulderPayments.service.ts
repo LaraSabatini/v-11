@@ -1,13 +1,13 @@
 import axios from "axios"
 
-export const getBoulderPayments = async () => {
+export const getBoulderPayments = async (page: number) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
     },
   }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/boulderPayments`,
+    `https://v-11-backend.vercel.app/boulderPayments?page=${page}`,
     axiosHeader,
   )
   return res.data
@@ -22,7 +22,7 @@ export const createBoulderPayment = async (body: {
   clases_paid: number
   payment_method_id: number
   price_paid: number
-  date: Date
+  date: string
 }) => {
   const axiosHeader = {
     headers: {

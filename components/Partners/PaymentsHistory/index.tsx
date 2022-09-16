@@ -120,7 +120,7 @@ const PaymentsHistory = () => {
         clases_paid: newValues.clases_paid,
         payment_method_id: newValues.payment_method_id,
         price_paid: finalPrice,
-        date: today,
+        date: `${day}/${month}/${year}`,
       }
       const boulderPayment = await createBoulderPayment(boulderBody)
 
