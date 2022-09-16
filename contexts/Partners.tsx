@@ -81,6 +81,8 @@ export const PartnersContext = createContext({
   scheduleSelected: null,
   activeEdition: null,
   setActiveEdition: null,
+  newValues: null,
+  setNewValues: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -250,6 +252,7 @@ const PartnersProvider = ({ children }) => {
 
   // PAYMENTS ******************************
   const [activeEdition, setActiveEdition] = useState<PaymentInterface>()
+  const [newValues, setNewValues] = useState<PaymentInterface>(null)
 
   return (
     <PartnersContext.Provider
@@ -329,6 +332,8 @@ const PartnersProvider = ({ children }) => {
         setScheduleSelected,
         activeEdition,
         setActiveEdition,
+        newValues,
+        setNewValues,
       }}
     >
       {children}

@@ -173,7 +173,8 @@ const AddPayment = ({ cancelCreate }: AddPaymentInterface) => {
         price_paid: finalPrice,
         date: `${day}/${month}/${year}`,
         payment_expire_date: "",
-        days_and_hours: scheduleSelected.length > 0 ? scheduleSelected : null,
+        days_and_hours:
+          scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
       }
       const createPayment = await createPartnerPayment(paymentBody)
 
