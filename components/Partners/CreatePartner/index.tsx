@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react"
 import createPartner from "services/Partners/CreatePartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
+import { createBoulderPayment } from "@services/Partners/BoulderPayments.service"
 import getPrices from "services/Partners/GetPrices.service"
 import getCombos from "services/Partners/GetCombos.service"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
@@ -174,11 +175,37 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
               : "",
           days_and_hours:
-            scheduleSelected.length > 0 ? `${scheduleSelected}` : null,
+            scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
         }
 
         const createPayment = await createPartnerPayment(paymentBody)
-        if (createPayment.message === "partnerPayment created successfully") {
+
+        const boulderBody = {
+          id: 0,
+          partner_id: apiValidation.partnerId,
+          combo:
+            comboSelected !== null && comboSelected !== undefined
+              ? comboSelected
+              : 0,
+          time_paid: paidTime !== null && paidTime !== 0 ? paidTime : 0,
+          time_paid_unit:
+            paidTimeUnit !== undefined && paidTimeUnit?.id !== null
+              ? paidTimeUnit.id
+              : "",
+          clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
+          payment_method_id: paymentMethodSelected,
+          payment_method_name: paymentMethods.filter(
+            pm => pm.id === paymentMethodSelected,
+          )[0].display_name,
+          price_paid: finalPrice,
+          date: today,
+        }
+        const boulderPayment = await createBoulderPayment(boulderBody)
+
+        if (
+          createPayment.message === "partnerPayment created successfully" &&
+          boulderPayment.message === "payment created successfully"
+        ) {
           setModalSuccess({
             status: "success",
             icon: "IconCheckModal",
