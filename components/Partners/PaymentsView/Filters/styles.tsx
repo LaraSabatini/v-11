@@ -8,7 +8,7 @@ const FiltersContainer = styled.div`
   font-family: ${theme.fonts.primary};
   position: absolute;
   right: 0;
-  top: -50px;
+  top: -100px;
 `
 
 const Select = styled.div`

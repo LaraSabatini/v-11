@@ -159,25 +159,57 @@ const PaymentsHistory = () => {
     cleanStates()
   }
 
-  const removeDays = async e => {
-    const paymentUnit = paymentsList.filter(payment => payment.id === e)
-    if (paymentUnit[0].time_paid > 0) {
-      const calculate = paymentUnit[0].time_paid - 1
+  const [changedDays, setChangedDays] = useState<boolean>(false)
+  const [changedClases, setChangedClases] = useState<boolean>(false)
+
+  const removeDays = async () => {
+    setChangedDays(true)
+  }
+
+  const removeClases = async () => {
+    setChangedClases(true)
+  }
+
+  const confirmChange = async e => {
+    if (changedDays) {
+      const paymentUnit = paymentsList.filter(payment => payment.id === e)
+      if (paymentUnit[0].time_paid > 0) {
+        const calculate = paymentUnit[0].time_paid - 1
+        if (calculate > 0) {
+          const body = {
+            ...paymentUnit[0],
+            time_paid: calculate,
+          }
+          await editPartnerPayment(body)
+        } else {
+          const body = {
+            ...paymentUnit[0],
+            time_paid: 0,
+            time_paid_unit: 0,
+          }
+          await editPartnerPayment(body)
+        }
+      }
+    }
+    if (changedClases) {
+      const payment = paymentsList.filter(p => p.id === e)
+      const calculate = payment[0].clases_paid - 1
       if (calculate > 0) {
         const body = {
-          ...paymentUnit[0],
-          time_paid: calculate,
+          ...payment[0],
+          clases_paid: calculate,
         }
         await editPartnerPayment(body)
       } else {
         const body = {
-          ...paymentUnit[0],
-          time_paid: 0,
-          time_paid_unit: 0,
+          ...payment[0],
+          clases_paid: 0,
         }
         await editPartnerPayment(body)
       }
     }
+    setChangedDays(false)
+    setChangedClases(false)
     setTriggerListUpdate(triggerListUpdate + 1)
   }
 
@@ -223,6 +255,12 @@ const PaymentsHistory = () => {
                   })
                 }}
                 onClickRemoveDays={removeDays}
+                onClickRemoveClases={removeClases}
+                confirmChange={confirmChange}
+                cancelChange={() => {
+                  setChangedDays(false)
+                  setChangedClases(false)
+                }}
               />
             ))
           ) : (

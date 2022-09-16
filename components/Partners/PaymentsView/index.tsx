@@ -21,10 +21,8 @@ interface RowsInterface {
 }
 
 const PaymentsView = () => {
-  const { setPaymentsList } = useContext(PaymentsHistory)
-  const { combos, setCombos, timeUnits, paymentMethods } = useContext(
-    PartnersContext,
-  )
+  const { setPaymentsList, paymentsList } = useContext(PaymentsHistory)
+  const { setCombos, timeUnits, paymentMethods } = useContext(PartnersContext)
   // filtros
   // visual mensual
   // visual diario
@@ -72,8 +70,6 @@ const PaymentsView = () => {
         date: item.date,
       }),
     )
-    // const prueba = new Date(data.data[0].date)
-    // console.log(prueba.toISOString().split("T")[0], prueba, data.data[0].date)
 
     setRows({
       success: true,
@@ -84,15 +80,33 @@ const PaymentsView = () => {
   useEffect(() => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [currentPage])
 
-  console.log(combos)
+  const goNext = () => {
+    if (paymentsList.length > 0) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
+
+  const goPrev = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
 
   return (
     <Container>
       <Filters />
       <TableContainer>
-        <DataTable columns={columns} rows={rows} height={500} />
+        <DataTable
+          columns={columns}
+          rows={rows}
+          height={500}
+          totalPages={1}
+          onClickNext={goNext}
+          onClickBack={goPrev}
+          setPage={currentPage}
+        />
       </TableContainer>
     </Container>
   )

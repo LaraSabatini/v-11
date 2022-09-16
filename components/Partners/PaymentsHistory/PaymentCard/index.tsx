@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect } from "react"
-// import searchPartner from "services/Partners/SearchPartner.service"
 import { PartnersContext } from "contexts/Partners"
 import Icon from "components/UI/Assets/Icon"
-// import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TextButton from "components/UI/TextButton"
 import {
   Card,
@@ -27,11 +25,13 @@ interface PaymentCardInterface {
   time_paid: number
   time_paid_unit: number
   clases_paid: number
-  // trainer_name: string
   payment_expire_date: string
   date: string
   onClickEdit: () => void
-  onClickRemoveDays: (e) => void
+  onClickRemoveDays: () => void
+  onClickRemoveClases: () => void
+  confirmChange: (e) => void
+  cancelChange: () => void
 }
 
 const PaymentCard = ({
@@ -41,14 +41,17 @@ const PaymentCard = ({
   time_paid,
   time_paid_unit,
   clases_paid,
-  // trainer_name,
   payment_expire_date,
   date,
   onClickEdit,
   onClickRemoveDays,
+  onClickRemoveClases,
   id,
+  confirmChange,
+  cancelChange,
 }: PaymentCardInterface) => {
   const { combos } = useContext(PartnersContext)
+  const [changes, setChanges] = useState<boolean>(false)
 
   const [active, setActive] = useState<boolean>(false)
   const [comboSelected, setComboSelected] = useState<{
@@ -58,7 +61,6 @@ const PaymentCard = ({
     price_mp: number
     details: string
   }>()
-  // const [partner, setPartner] = useState<PartnerInterface>()
 
   const filterCombo = () => {
     const searchCombo = combos.filter(c => c.id === combo)
@@ -67,22 +69,17 @@ const PaymentCard = ({
     }
   }
 
-  // const getPartnerData = async () => {
-  //   const data = await searchPartner(partner_name, 1)
-  //   setPartner(data.data[0])
-  // }
-
-  // useEffect(() => {
-  //   getPartnerData()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [id])
-
   useEffect(() => {
     if (combo !== 0) {
       filterCombo()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [combo])
+
+  const [variableValues, setVariableValues] = useState([
+    { name: "clases", value: clases_paid },
+    { name: "days", value: time_paid_unit === 1 ? time_paid : 0 },
+  ])
 
   return (
     <Card>
@@ -111,11 +108,43 @@ const PaymentCard = ({
                 <button
                   className="remove"
                   type="button"
-                  onClick={() => onClickRemoveDays(id)}
+                  onClick={() => {
+                    onClickRemoveDays()
+                    setChanges(true)
+                    setVariableValues([
+                      { name: "clases", value: variableValues[0].value },
+                      { name: "days", value: variableValues[1].value - 1 },
+                    ])
+                  }}
                 >
                   <Icon icon="IconLess" />
                 </button>
-                <p>{time_paid_unit === 1 ? time_paid : 0}</p>
+                {/* <p>{time_paid_unit === 1 ? time_paid : 0}</p> */}
+                <p>{variableValues[1].value}</p>
+              </DaysLeft>
+            </Section>
+            {/*  */}
+            <Section>
+              <p>Clases restantes</p>
+              <DaysLeft>
+                <button
+                  className="remove"
+                  type="button"
+                  onClick={() => {
+                    onClickRemoveClases()
+                    setChanges(true)
+                    setVariableValues([
+                      { name: "clases", value: clases_paid - 1 },
+                      {
+                        name: "days",
+                        value: variableValues[1].value,
+                      },
+                    ])
+                  }}
+                >
+                  <Icon icon="IconLess" />
+                </button>
+                <p>{variableValues[0].value}</p>
               </DaysLeft>
             </Section>
             <Section>
@@ -123,10 +152,6 @@ const PaymentCard = ({
               <Date>
                 {payment_expire_date !== "" ? payment_expire_date : "-"}
               </Date>
-            </Section>
-            <Section>
-              <p>Profesor</p>
-              <Date>{clases_paid > 0 ? "Guillermo" : "-"}</Date>
             </Section>
           </FirstData>
           <FirstData>
@@ -145,6 +170,26 @@ const PaymentCard = ({
           </FirstData>
           <ButtonContainer>
             <TextButton content="Editar" cta onClick={() => onClickEdit()} />
+            <TextButton
+              disabled={changes === false}
+              content="Confirmar"
+              onClick={() => {
+                confirmChange(id)
+                setChanges(false)
+              }}
+            />
+            <TextButton
+              content="Cancelar"
+              disabled={changes === false}
+              onClick={() => {
+                setChanges(false)
+                cancelChange()
+                setVariableValues([
+                  { name: "clases", value: clases_paid },
+                  { name: "days", value: time_paid_unit === 1 ? time_paid : 0 },
+                ])
+              }}
+            />
           </ButtonContainer>
         </>
       )}
