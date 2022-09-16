@@ -1,13 +1,7 @@
-import React, {
-  // useEffect
-  useState,
-  useContext,
-} from "react"
+import React, { useState, useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
 import deletePartner from "services/Partners/DeletePartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-// import TrainerInterface from "interfaces/trainers/TrainerInterface"
-// import getTrainers from "services/Trainers/GetTrainers.service"
 import texts from "strings/partners.json"
 import ModalAlert from "components/UI/ModalAlert"
 import { PartnerData, Details, RemoveButton } from "./styles"
@@ -19,25 +13,6 @@ interface DetailViewInterface {
 
 const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
   const { setModalSuccess, setModalError } = useContext(PartnersContext)
-  // const [trainer, setTrainer] = useState<string>("")
-
-  // const getTrainer = async () => {
-  //   const data = await getTrainers()
-  //   if (partnerInfo?.trainer_id !== 0 && partnerInfo?.trainer_id !== 0) {
-  //     const filterTrainer = data.data.filter(
-  //       (t: TrainerInterface) => t.id === partnerInfo?.trainer_id,
-  //     )
-  //     if (filterTrainer.length) {
-  //       const trainerName = `${filterTrainer[0].name} ${filterTrainer[0].last_name}`
-  //       setTrainer(trainerName)
-  //     }
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getTrainer()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [partnerInfo])
 
   const [safeModal, setSafeModal] = useState<boolean>(false)
 
@@ -90,11 +65,17 @@ const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
       </PartnerData>
       <PartnerData>
         <p>{texts.email}</p>
-        {partnerInfo?.email}
+        {partnerInfo?.email === "" ? "-" : partnerInfo?.email}
+      </PartnerData>
+      <PartnerData>
+        <p>N° de telefono:</p>
+        {partnerInfo?.phone === "" ? "-" : partnerInfo?.phone}
       </PartnerData>
       <PartnerData>
         <p>{texts.identification}</p>
-        {partnerInfo?.identification_number}
+        {partnerInfo?.identification_number === ""
+          ? "-"
+          : partnerInfo?.identification_number}
       </PartnerData>
       <PartnerData>
         <p>{texts.member_since}</p>
@@ -103,10 +84,11 @@ const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
       <PartnerData>
         <p>{texts.created_by}</p>@{createdBy}
       </PartnerData>
-      {/* <PartnerData>
+      <PartnerData>
         <p>{texts.trainer}</p>
-        {trainer === "" ? `${texts.not_trainer}` : trainer}
-      </PartnerData> */}
+        {partnerInfo?.is_student === "" ? `${texts.not_trainer}` : "Guillermo"}
+      </PartnerData>
+
       <RemoveButton type="button" onClick={() => setSafeModal(true)}>
         Eliminar
       </RemoveButton>

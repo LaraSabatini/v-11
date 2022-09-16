@@ -1,15 +1,18 @@
-import React, { useRef, useEffect, useState, useContext } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
 import editPartner from "services/Partners/EditPartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-// import getTrainers from "services/Trainers/GetTrainers.service"
-// import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import texts from "strings/partners.json"
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
 import TextButton from "components/UI/TextButton"
-// import Autocomplete from "components/UI/Autocomplete"
-import { PartnerData, Details, ButtonContainer } from "./styles"
+import Checkbox from "components/UI/Checkbox"
+import {
+  PartnerData,
+  Details,
+  ButtonContainer,
+  CheckboxContainer,
+} from "./styles"
 
 interface DetailEditInterface {
   partnerInfo: PartnerInterface
@@ -29,42 +32,12 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
     trainertRef,
     setModalSuccess,
     setModalError,
+    phoneRef,
+    wantsSubscription,
+    setWantsSubscription,
   } = useContext(PartnersContext)
 
-  // const [trainers, setTrainers] = useState<
-  //   { id: number; display_name: string }[]
-  // >([])
-  // const [hasTrainer, setHasTrainer] = useState<string>("")
   const [newData, setNewData] = useState<PartnerInterface>(partnerInfo)
-
-  const paymentExpireDateRef = useRef(null)
-
-  // const fillTrainersData = async () => {
-  //   const data = await getTrainers()
-  //   const arrayTrainers = []
-  //   data.data.map((trainer: TrainerInterface) =>
-  //     arrayTrainers.push({
-  //       id: trainer.id,
-  //       display_name: `${trainer.name} ${trainer.last_name}`,
-  //     }),
-  //   )
-
-  //   setTrainers(arrayTrainers)
-
-  //   if (partnerInfo.trainer_id === 0) {
-  //     setHasTrainer("")
-  //   } else {
-  //     const getTrainer = arrayTrainers.filter(
-  //       trainer => trainer.id === partnerInfo.trainer_id,
-  //     )
-  //     setHasTrainer(getTrainer[0].display_name)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   fillTrainersData()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [partnerInfo])
 
   const checkDiff = () => {
     if (
@@ -72,7 +45,6 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       newData.last_name !== partnerInfo.last_name ||
       newData.email !== partnerInfo.email ||
       newData.identification_number !== partnerInfo.identification_number
-      // newData.trainer_id !== partnerInfo.trainer_id
     ) {
       setHasChanges(true)
     } else {
@@ -99,7 +71,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
     await identificationRef.current?.focus()
     await emailRef.current?.focus()
     await trainertRef.current?.focus()
-    await paymentExpireDateRef.current?.focus()
+    await phoneRef.current?.focus()
 
     if (
       nameRef.current.attributes.getNamedItem("data-error").value === "false" &&
@@ -109,8 +81,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         "false" &&
       emailRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      paymentExpireDateRef.current.attributes.getNamedItem("data-error")
-        .value === "false"
+      phoneRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
       const inputName = newData.name.toLowerCase()
       const name = inputName.charAt(0).toUpperCase() + inputName.slice(1)
@@ -120,10 +91,6 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         inputLastName.charAt(0).toUpperCase() + inputLastName.slice(1)
 
       const freePass = newData.free_pass
-
-      // if (newData.trainer_id !== null || newData.free_pass === 1) {
-      //   freePass = 1
-      // }
 
       const body = {
         ...newData,
@@ -222,6 +189,20 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       <PartnerData />
       <PartnerData>
         <TextField
+          width={180}
+          required={wantsSubscription}
+          label="N° de telefono"
+          type="text"
+          value={newData.phone}
+          reference={phoneRef}
+          onChange={e =>
+            setNewData({
+              ...newData,
+              phone: e.target.value,
+            })
+          }
+        />
+        <TextField
           width={190}
           label={texts.edit.member_since}
           value={partnerInfo?.membership_start_date}
@@ -231,6 +212,23 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         />
       </PartnerData>
       <PartnerData>
+        <CheckboxContainer>
+          <Checkbox
+            onChange={() => {
+              if (newData.subs === 0) {
+                setNewData({ ...newData, subs: 1 })
+                setWantsSubscription(true)
+              } else {
+                setNewData({ ...newData, subs: 0 })
+                setWantsSubscription(false)
+              }
+            }}
+            ownState
+            checked={wantsSubscription}
+            idParam="subs"
+          />
+          <p>Desea recibir noticias</p>
+        </CheckboxContainer>
         <TextField
           width={190}
           label={texts.created_by}
@@ -239,19 +237,6 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           disabled
           disabledAutocompleted
         />
-        {/* <Autocomplete
-          label={texts.trainer}
-          width={190}
-          options={trainers}
-          setValue={hasTrainer}
-          ref={trainertRef}
-          onChangeProps={(e: { id: number; display_name: string }) =>
-            setNewData({
-              ...newData,
-              trainer_id: e.id,
-            })
-          }
-        /> */}
       </PartnerData>
       <ButtonContainer>
         <TextButton onClick={discardChanges} content={texts.edit.cancel} />

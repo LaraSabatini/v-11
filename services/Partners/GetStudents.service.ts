@@ -7,7 +7,7 @@ const getStudents = async (page: number) => {
     },
   }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/partners/students/0?page=${page}`,
+    `https://v-11-backend.vercel.app/partners/students/SI?page=${page}`,
     axiosHeader,
   )
   return res.data

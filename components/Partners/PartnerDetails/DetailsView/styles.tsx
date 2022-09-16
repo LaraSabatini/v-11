@@ -26,7 +26,7 @@ const RemoveButton = styled.button`
   color: white;
   position: absolute;
   right: 0;
-  bottom: -100px;
+  bottom: -50px;
   cursor: pointer;
 `
 
