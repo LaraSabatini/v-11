@@ -198,7 +198,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             pm => pm.id === paymentMethodSelected,
           )[0].display_name,
           price_paid: finalPrice,
-          date: today,
+          date: `${day}/${month}/${year}`,
         }
         const boulderPayment = await createBoulderPayment(boulderBody)
 
