@@ -12,8 +12,12 @@ const ProductCard = styled.div`
   -webkit-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
   -moz-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
 
-  img {
+  .zapas {
     width: 90px;
+  }
+
+  .monster {
+    width: 50px;
   }
 `
 
