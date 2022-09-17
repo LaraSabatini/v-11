@@ -25,6 +25,7 @@ const ProductsContainer = styled.div`
   /* width: 60%; */
   width: 900px;
   gap: 15px;
+  padding-bottom: 20px;
 `
 
 export { Container, Paginator, Navigate, ProductsContainer }

@@ -166,7 +166,12 @@ const Product = ({
 
   return (
     <ProductCard>
-      {category_id === 1 && <img src="/beer.png" alt="beer" />}
+      {category_id === 1 && (
+        <img className="zapas" src="/beer.png" alt="beer" />
+      )}
+      {category_id === 4 && (
+        <img className="monster" src="/monster.webp" alt="beer" />
+      )}
       {category_id === 2 && (
         <ComponentContainer>
           <Magnesiera />
