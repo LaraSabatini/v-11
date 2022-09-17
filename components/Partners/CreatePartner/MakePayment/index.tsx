@@ -234,6 +234,7 @@ const MakePayment = () => {
             label="Tiempo"
             type="number"
             reference={paidTimeRef}
+            value={paidTime}
             onChange={e => {
               const number = parseInt(e.target.value, 10)
               // eslint-disable-next-line no-restricted-globals
@@ -250,6 +251,7 @@ const MakePayment = () => {
             width={115}
             options={timeUnits}
             ref={paidTimeUnitRef}
+            setValue={paidTimeUnit.display_name}
             onChangeProps={(e: { id: number; display_name: string }) => {
               setPaidTimeUnit(e)
               if (e.id !== 1) {
@@ -302,6 +304,11 @@ const MakePayment = () => {
           label="Metodo de pago"
           width={150}
           options={paymentMethods}
+          setValue={
+            paymentMethods.filter(
+              payment => payment.id === paymentMethodSelected,
+            )[0].display_name
+          }
           ref={paymentRef}
           onChangeProps={(e: { id: number; display_name: string }) =>
             setPaymentMethodSelected(e.id)
