@@ -200,6 +200,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           price_paid: finalPrice,
           date: `${day}/${month}/${year}`,
         }
+
         const boulderPayment = await createBoulderPayment(boulderBody)
 
         if (

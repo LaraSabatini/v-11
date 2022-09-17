@@ -172,11 +172,14 @@ const PartnersProvider = ({ children }) => {
     content: string
   } | null>(null)
 
-  const [paidTime, setPaidTime] = useState<number>(0)
+  const [paidTime, setPaidTime] = useState<number>(1)
   const [paidTimeUnit, setPaidTimeUnit] = useState<{
     id: number
     display_name: string
-  }>()
+  }>({
+    id: 1,
+    display_name: "Dia/s",
+  })
 
   const [combos, setCombos] = useState<CombosInterface[]>([])
 
@@ -197,9 +200,7 @@ const PartnersProvider = ({ children }) => {
   const [prices, setPrices] = useState<PricesInterface[]>([])
   const [finalPrice, setFinalPrice] = useState<number>(0)
 
-  const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(
-    null,
-  )
+  const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
 
   const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
 
@@ -240,13 +241,16 @@ const PartnersProvider = ({ children }) => {
       free_pass: 0,
       is_student: "NO",
     })
-    setPaidTime(0)
-    setPaidTimeUnit(undefined)
+    setPaidTime(1)
+    setPaidTimeUnit({
+      id: 1,
+      display_name: "Dia/s",
+    })
     setComboSelected(undefined)
     setAmountOfClases(0)
     setIsChecked(false)
     setFinalPrice(0)
-    setPaymentMethodSelected(null)
+    setPaymentMethodSelected(1)
     setCreateModal(false)
   }
 

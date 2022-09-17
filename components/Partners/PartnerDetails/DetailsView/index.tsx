@@ -86,7 +86,9 @@ const DetailsView = ({ partnerInfo, createdBy }: DetailViewInterface) => {
       </PartnerData>
       <PartnerData>
         <p>{texts.trainer}</p>
-        {partnerInfo?.is_student === "" ? `${texts.not_trainer}` : "Guillermo"}
+        {partnerInfo?.is_student === "NO"
+          ? `${texts.not_trainer}`
+          : "Guillermo"}
       </PartnerData>
 
       <RemoveButton type="button" onClick={() => setSafeModal(true)}>
