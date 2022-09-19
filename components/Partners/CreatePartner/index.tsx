@@ -2,7 +2,8 @@ import React, { useContext, useState, useEffect } from "react"
 import createPartner from "services/Partners/CreatePartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
-import { createBoulderPayment } from "@services/Partners/BoulderPayments.service"
+import { createBoulderPayment } from "services/Partners/BoulderPayments.service"
+import searchPartner from "services/Partners/SearchPartner.service"
 import getPrices from "services/Partners/GetPrices.service"
 import getCombos from "services/Partners/GetCombos.service"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
@@ -48,8 +49,10 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     setWantsSubscription,
     scheduleSelected,
     usesDay,
+    // paymentUserRef,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
+  const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
 
   const today = new Date()
   const getDay = today.getDate()
@@ -88,19 +91,28 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
       const lastName =
         inputLastName.charAt(0).toUpperCase() + inputLastName.slice(1)
 
-      const body = {
-        ...newPartnerData,
-        id: 0,
-        name,
-        last_name: lastName,
-        birth_date:
-          newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
-        membership_start_date: `${day}/${month}/${year}`,
-        created_by: parseInt(localStorage.getItem("id"), 10),
-      }
+      const seeDuplicated = await searchPartner(
+        newPartnerData.identification_number,
+        1,
+      )
 
-      setNewPartnerData(body)
-      setView(2)
+      if (seeDuplicated.data.length > 0) {
+        setPartnerDuplicated(true)
+      } else {
+        const body = {
+          ...newPartnerData,
+          id: 0,
+          name,
+          last_name: lastName,
+          birth_date:
+            newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
+          membership_start_date: `${day}/${month}/${year}`,
+          created_by: parseInt(localStorage.getItem("id"), 10),
+        }
+
+        setNewPartnerData(body)
+        setView(2)
+      }
     }
   }
 
@@ -110,6 +122,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     await paidTimeRef.current?.focus()
     await clasesRef.current?.focus()
     await paymentRef.current?.focus()
+    // await paymentUserRef.current?.focus()
 
     if (
       paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
@@ -119,6 +132,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
       clasesRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       paymentRef.current.attributes.getNamedItem("data-error").value === "false"
+      // paymentUserRef.current.attributes.getNamedItem("data-error").value ===
+      //   "false"
     ) {
       const body: PartnerInterface = {
         ...newPartnerData,
@@ -147,11 +162,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           finalExpireMonth =
             expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
         }
-        // usesDay
-        // const finalTimePaid =
-        //   paidTime !== null && paidTime !== 0 && paidTimeUnit.id === 1
-        //     ? paidTime - 1
-        //     : 0
 
         let finalTime = 0
         if (paidTime !== null && paidTime !== 0) {
@@ -301,6 +311,9 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               width={180}
               label={texts.create.identification}
               type="text"
+              required
+              backError={partnerDuplicated}
+              backErrorMessage={partnerDuplicated && "El socio ya existe"}
               reference={identificationRef}
               onChange={e =>
                 setNewPartnerData({

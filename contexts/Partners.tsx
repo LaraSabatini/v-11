@@ -88,6 +88,10 @@ export const PartnersContext = createContext({
   setModalErrorAddDays: null,
   usesDay: null,
   setUsesDay: null,
+  paymentUsers: null,
+  paymentUserSelected: null,
+  setPaymentUserSelected: null,
+  paymentUserRef: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -162,6 +166,7 @@ const PartnersProvider = ({ children }) => {
   const clasesRef = useRef(null)
   const paymentRef = useRef(null)
   const phoneRef = useRef(null)
+  const paymentUserRef = useRef(null)
 
   const [modalSuccess, setModalSuccess] = useState<{
     status: string
@@ -369,6 +374,19 @@ const PartnersProvider = ({ children }) => {
     setModalErrorAddDays(null)
   }
 
+  const paymentUsers = [
+    { id: 1, display_name: "Roman" },
+    { id: 2, display_name: "Federico" },
+    { id: 3, display_name: "Tobias" },
+    { id: 4, display_name: "Guillermo" },
+    { id: 5, display_name: "Joaco" },
+  ]
+
+  const [paymentUserSelected, setPaymentUserSelected] = useState<{
+    id: number
+    display_name: string
+  }>(null)
+
   return (
     <PartnersContext.Provider
       value={{
@@ -454,6 +472,10 @@ const PartnersProvider = ({ children }) => {
         setModalErrorAddDays,
         usesDay,
         setUsesDay,
+        paymentUsers,
+        paymentUserSelected,
+        setPaymentUserSelected,
+        paymentUserRef,
       }}
     >
       {children}
