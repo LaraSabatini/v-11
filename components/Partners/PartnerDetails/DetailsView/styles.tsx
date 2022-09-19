@@ -2,7 +2,7 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const PartnerData = styled.div`
-  padding-top: 30px;
+  padding-top: 20px;
   p {
     text-decoration: underline;
     margin: 0;
@@ -13,7 +13,10 @@ const PartnerData = styled.div`
 
 const Details = styled.div`
   padding: 0 10px;
-  position: relative;
+  height: 370px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
 `
 
 const RemoveButton = styled.button`
@@ -24,10 +27,35 @@ const RemoveButton = styled.button`
   font-size: 16px;
   border-radius: 5px;
   color: white;
-  position: absolute;
-  right: 0;
-  bottom: -50px;
   cursor: pointer;
 `
 
-export { PartnerData, Details, RemoveButton }
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 20px;
+  align-self: flex-end;
+`
+
+const DaysLeft = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  p {
+    text-decoration: none;
+  }
+
+  .remove {
+    border: none;
+    font-family: ${theme.fonts.primary};
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+`
+
+export { PartnerData, Details, RemoveButton, ButtonContainer, DaysLeft }

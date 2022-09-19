@@ -84,6 +84,10 @@ export const PartnersContext = createContext({
   newValues: null,
   setNewValues: null,
   calculatePrice: null,
+  modalErrorAddDays: null,
+  setModalErrorAddDays: null,
+  usesDay: null,
+  setUsesDay: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -196,6 +200,8 @@ const PartnersProvider = ({ children }) => {
   const [amountOfClases, setAmountOfClases] = useState<number>()
 
   const [isChecked, setIsChecked] = useState<boolean>(false)
+  const [usesDay, setUsesDay] = useState<boolean>(true)
+
   const [wantsSubscription, setWantsSubscription] = useState<boolean>(false)
 
   const [prices, setPrices] = useState<PricesInterface[]>([])
@@ -222,39 +228,6 @@ const PartnersProvider = ({ children }) => {
   const [hasChanges, setHasChanges] = useState<boolean>(false)
   const [modalHasChanges, setModalHasChanges] = useState<boolean>(false)
 
-  const cleanStates = () => {
-    setScheduleSelected([])
-    setModalSuccess(null)
-    setAddPaymentModal(false)
-    setModalError(null)
-    setPartnerSelected(null)
-    setNewPartnerData({
-      id: 0,
-      name: "",
-      last_name: "",
-      identification_number: "",
-      birth_date: "",
-      email: "",
-      subs: 0,
-      phone: "",
-      membership_start_date: "",
-      created_by: null,
-      free_pass: 0,
-      is_student: "NO",
-    })
-    setPaidTime(1)
-    setPaidTimeUnit({
-      id: 1,
-      display_name: "Dia/s",
-    })
-    setComboSelected(undefined)
-    setAmountOfClases(0)
-    setIsChecked(false)
-    setFinalPrice(0)
-    setPaymentMethodSelected(1)
-    setCreateModal(false)
-  }
-
   // PAYMENTS ******************************
   const [activeEdition, setActiveEdition] = useState<PaymentInterface>()
   const [newValues, setNewValues] = useState<PaymentInterface>(null)
@@ -274,7 +247,7 @@ const PartnersProvider = ({ children }) => {
       ) {
         //   si paga un dia
         if (paidTime === 1 && paidTimeUnit.id === 1) {
-          price += prices[0].price_cash
+          price += prices[0]?.price_cash
         } else if (paidTime === 8 && paidTimeUnit.id === 1) {
           // si paga 8 dias
           price += prices[1].price_cash
@@ -353,6 +326,47 @@ const PartnersProvider = ({ children }) => {
     } else {
       setFinalPrice(0)
     }
+  }
+
+  const [modalErrorAddDays, setModalErrorAddDays] = useState<{
+    status: string
+    icon: string
+    title: string
+    content: string
+  } | null>(null)
+
+  const cleanStates = () => {
+    setScheduleSelected([])
+    setModalSuccess(null)
+    setAddPaymentModal(false)
+    setModalError(null)
+    setPartnerSelected(null)
+    setNewPartnerData({
+      id: 0,
+      name: "",
+      last_name: "",
+      identification_number: "",
+      birth_date: "",
+      email: "",
+      subs: 0,
+      phone: "",
+      membership_start_date: "",
+      created_by: null,
+      free_pass: 0,
+      is_student: "NO",
+    })
+    setPaidTime(1)
+    setPaidTimeUnit({
+      id: 1,
+      display_name: "Dia/s",
+    })
+    setComboSelected(undefined)
+    setAmountOfClases(0)
+    setIsChecked(false)
+    setFinalPrice(0)
+    setPaymentMethodSelected(1)
+    setCreateModal(false)
+    setModalErrorAddDays(null)
   }
 
   return (
@@ -436,6 +450,10 @@ const PartnersProvider = ({ children }) => {
         newValues,
         setNewValues,
         calculatePrice,
+        modalErrorAddDays,
+        setModalErrorAddDays,
+        usesDay,
+        setUsesDay,
       }}
     >
       {children}

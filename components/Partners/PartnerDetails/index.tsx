@@ -60,7 +60,7 @@ const PartnerDetails = () => {
       </Title>
       <Divider />
       {detailState === "view" ? (
-        <DetailsView partnerInfo={partnerInfo} createdBy={createdBy} />
+        <DetailsView partnerInfo={partnerInfo} />
       ) : (
         <DetailsEdition partnerInfo={partnerInfo} createdBy={createdBy} />
       )}
