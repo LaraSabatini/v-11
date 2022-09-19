@@ -9,8 +9,12 @@ const Card = styled.div`
   gap: 20px;
   padding: 20px;
   height: 150px;
-  img {
+  .zapas {
     width: 90px;
+  }
+
+  .monster {
+    width: 50px;
   }
 `
 
