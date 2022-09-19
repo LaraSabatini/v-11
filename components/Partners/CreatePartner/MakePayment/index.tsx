@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from "react"
 import { PartnersContext } from "contexts/Partners"
-// import getTrainers from "services/Trainers/GetTrainers.service"
 import { getSchedule } from "services/Trainers/Schedule.service"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
@@ -12,10 +11,7 @@ import { Form } from "./styles"
 const MakePayment = () => {
   const {
     timeUnits,
-    // newPartnerData,
-    // setNewPartnerData,
     paidTimeUnitRef,
-    // trainertRef,
     paidTimeRef,
     comboRef,
     clasesRef,
@@ -40,9 +36,6 @@ const MakePayment = () => {
     setScheduleList,
     scheduleList,
     setScheduleSelected,
-    // trainersList,
-    // setTrainersList,
-    // setTrainerSelected,
   } = useContext(PartnersContext)
 
   const fillScheduleData = async () => {
@@ -62,24 +55,6 @@ const MakePayment = () => {
     fillScheduleData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  // const fillTrainersData = async () => {
-  //   const data = await getTrainers()
-  //   const arrayTrainers = []
-  //   data.data.map(trainer =>
-  //     arrayTrainers.push({
-  //       id: trainer.id,
-  //       display_name: `${trainer.name} ${trainer.last_name}`,
-  //     }),
-  //   )
-
-  //   setTrainersList(arrayTrainers)
-  // }
-
-  // useEffect(() => {
-  //   fillTrainersData()
-  //   //   eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
 
   const combosAutocomplete = []
   combos.map(combo =>
@@ -289,7 +264,6 @@ const MakePayment = () => {
           onChange={e => {
             const ids = []
             e.map(data => ids.push(data.id))
-            // setNewPartnerData({ ...newPartnerData, hours_and_days: ids })
             setScheduleSelected(ids)
           }}
           options={scheduleList}
