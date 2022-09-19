@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import { getPartnerPaymentsById } from "services/Partners/GetPartnerPayments.service"
 import editPartnerPayment from "services/Partners/EditPartnerPayment.service"
+import { createBoulderPayment } from "services/Partners/BoulderPayments.service"
 import getPrices from "services/Partners/GetPrices.service"
 import deletePartner from "services/Partners/DeletePartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
@@ -28,6 +29,17 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     setModalError,
     setNewValues,
     setPrices,
+    cleanStates,
+    newValues,
+    paidTime,
+    comboSelected,
+    finalPrice,
+    paidTimeUnit,
+    scheduleSelected,
+    paidTimeUnitRef,
+    paymentRef,
+    setModalErrorAddDays,
+    modalErrorAddDays,
   } = useContext(PartnersContext)
 
   const [initialPayment, setInitialPayment] = useState<{
@@ -78,102 +90,106 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     }
   }
 
-  // const handleEdit = async e => {
-  //   e.preventDefault()
+  const today = new Date()
+  const getDay = today.getDate()
+  const getMonth = today.getMonth()
+  const year = today.getFullYear()
 
-  //   const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
-  //   const expireDate = newDate.getDate()
-  //   const expireMonth = newDate.getMonth()
-  //   const expireYear = newDate.getFullYear()
-  //   const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
-  //   let finalExpireMonth
-  //   if (comboSelected !== null && comboSelected !== undefined) {
-  //     finalExpireMonth =
-  //       expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`
-  //   } else {
-  //     finalExpireMonth =
-  //       expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
-  //   }
+  const day = getDay > 9 ? getDay : `0${getDay}`
+  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
 
-  //   const body = {
-  //     ...newValues,
-  //     price_paid: finalPrice,
-  //     payment_expire_date:
-  //       (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-  //       (comboSelected !== null && comboSelected !== undefined)
-  //         ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
-  //         : "",
-  //     days_and_hours: scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
-  //     date: `${day}/${month}/${year}`,
-  //   }
+  const handleEdit = async e => {
+    e.preventDefault()
 
-  //   await paidTimeUnitRef.current?.focus()
-  //   await paymentRef.current?.focus()
-  //   if (
-  //     paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
-  //       "false" &&
-  //     paymentRef.current.attributes.getNamedItem("data-error").value === "false"
-  //   ) {
-  //     const executeEdition = await editPartnerPayment(body)
+    const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
+    const expireDate = newDate.getDate()
+    const expireMonth = newDate.getMonth()
+    const expireYear = newDate.getFullYear()
+    const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
+    let finalExpireMonth
+    if (comboSelected !== null && comboSelected !== undefined) {
+      finalExpireMonth =
+        expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`
+    } else {
+      finalExpireMonth =
+        expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
+    }
 
-  //     const boulderBody = {
-  //       id: 0,
-  //       partner_id: newValues.partner_id,
-  //       combo: newValues.combo,
-  //       time_paid: newValues.time_paid,
-  //       time_paid_unit: newValues.time_paid_unit,
-  //       clases_paid: newValues.clases_paid,
-  //       payment_method_id: newValues.payment_method_id,
-  //       price_paid: finalPrice,
-  //       date: `${day}/${month}/${year}`,
-  //     }
-  //     const boulderPayment = await createBoulderPayment(boulderBody)
+    const canAddDays =
+      initialPayment.time_paid_unit === newValues.time_paid_unit
 
-  //     if (
-  //       executeEdition.message === "payment updated successfully" &&
-  //       boulderPayment.message === "payment created successfully"
-  //     ) {
-  //       setModalSuccess({
-  //         status: "success",
-  //         icon: "IconCheckModal",
-  //         title: "Excelente!",
-  //         content: "El pago ha sido actualizado correctamente",
-  //       })
-  //       setTriggerListUpdate(triggerListUpdate + 1)
-  //       setActiveEdition(null)
-  //       setNewValues(null)
-  //       cleanStates()
-  //     } else {
-  //       setModalError({
-  //         status: "alert",
-  //         icon: "IconExclamation",
-  //         title: "UPS!",
-  //         content:
-  //           "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
-  //       })
-  //       setActiveEdition(null)
-  //       setNewValues(null)
-  //       cleanStates()
-  //     }
-  //   }
-  // }
+    if (canAddDays === false) {
+      setModalErrorAddDays({
+        status: "alert",
+        icon: "IconExclamation",
+        title: "No se puede realizar esta accion",
+        content:
+          "Esta accion no se puede realizar porque el socio cuenta con un abono activo",
+      })
+      // cleanStates()
+    } else {
+      const body = {
+        ...newValues,
+        time_paid: initialPayment.time_paid + newValues.time_paid,
+        price_paid: finalPrice,
+        payment_expire_date:
+          (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
+          (comboSelected !== null && comboSelected !== undefined)
+            ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
+            : "",
+        days_and_hours:
+          scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
+        date: `${day}/${month}/${year}`,
+      }
 
-  // const cancelEdit = () => {
-  //   setActiveEdition(null)
-  //   setNewValues(null)
-  //   cleanStates()
-  // }
+      await paidTimeUnitRef.current?.focus()
+      await paymentRef.current?.focus()
+      if (
+        paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
+          "false" &&
+        paymentRef.current.attributes.getNamedItem("data-error").value ===
+          "false"
+      ) {
+        const executeEdition = await editPartnerPayment(body)
 
-  const handleEdit = () => {}
-  const cancelEdit = () => {}
+        const boulderBody = {
+          id: 0,
+          partner_id: newValues.partner_id,
+          combo: newValues.combo,
+          time_paid: newValues.time_paid,
+          time_paid_unit: newValues.time_paid_unit,
+          clases_paid: newValues.clases_paid,
+          payment_method_id: newValues.payment_method_id,
+          price_paid: finalPrice,
+          date: `${day}/${month}/${year}`,
+        }
+        const boulderPayment = await createBoulderPayment(boulderBody)
 
-  // const onClickRemoveDays = () => {
-  //   setChangedDays(true)
-  // }
-  // const onClickRemoveClases = () => {
-  //   setChangedClases(true)
-  // }
-  const cancelChange = () => {}
+        if (
+          executeEdition.message === "payment updated successfully" &&
+          boulderPayment.message === "payment created successfully"
+        ) {
+          setModalSuccess({
+            status: "success",
+            icon: "IconCheckModal",
+            title: "Excelente!",
+            content: "El pago ha sido actualizado correctamente",
+          })
+          cleanStates()
+        } else {
+          setModalError({
+            status: "alert",
+            icon: "IconExclamation",
+            title: "UPS!",
+            content:
+              "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
+          })
+          cleanStates()
+        }
+      }
+    }
+  }
+
   const excecuteChanges = async () => {
     let success: boolean = false
     if (changedDays) {
@@ -256,6 +272,15 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
   return (
     <Details>
+      {modalErrorAddDays !== null && (
+        <ModalAlert
+          success={false}
+          message={modalErrorAddDays}
+          closeModal={() => {
+            cleanStates()
+          }}
+        />
+      )}
       {safeModal && (
         <ModalAlert
           success={false}
@@ -410,7 +435,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
               content="Cancelar"
               onClick={() => {
                 setChanges(false)
-                cancelChange()
                 setVariableValues([
                   { name: "clases", value: initialPayment.clases_paid },
                   { name: "days", value: initialPayment.time_paid },
@@ -425,7 +449,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       {updatePaymentModal && (
         <EditPayment
           handleEdit={handleEdit}
-          cancelEdit={cancelEdit}
+          cancelEdit={() => cleanStates()}
           partnerName={partnerInfo.name}
           partnerLastName={partnerInfo.last_name}
         />

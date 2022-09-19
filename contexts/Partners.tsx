@@ -84,6 +84,8 @@ export const PartnersContext = createContext({
   newValues: null,
   setNewValues: null,
   calculatePrice: null,
+  modalErrorAddDays: null,
+  setModalErrorAddDays: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -222,39 +224,6 @@ const PartnersProvider = ({ children }) => {
   const [hasChanges, setHasChanges] = useState<boolean>(false)
   const [modalHasChanges, setModalHasChanges] = useState<boolean>(false)
 
-  const cleanStates = () => {
-    setScheduleSelected([])
-    setModalSuccess(null)
-    setAddPaymentModal(false)
-    setModalError(null)
-    setPartnerSelected(null)
-    setNewPartnerData({
-      id: 0,
-      name: "",
-      last_name: "",
-      identification_number: "",
-      birth_date: "",
-      email: "",
-      subs: 0,
-      phone: "",
-      membership_start_date: "",
-      created_by: null,
-      free_pass: 0,
-      is_student: "NO",
-    })
-    setPaidTime(1)
-    setPaidTimeUnit({
-      id: 1,
-      display_name: "Dia/s",
-    })
-    setComboSelected(undefined)
-    setAmountOfClases(0)
-    setIsChecked(false)
-    setFinalPrice(0)
-    setPaymentMethodSelected(1)
-    setCreateModal(false)
-  }
-
   // PAYMENTS ******************************
   const [activeEdition, setActiveEdition] = useState<PaymentInterface>()
   const [newValues, setNewValues] = useState<PaymentInterface>(null)
@@ -355,6 +324,47 @@ const PartnersProvider = ({ children }) => {
     }
   }
 
+  const [modalErrorAddDays, setModalErrorAddDays] = useState<{
+    status: string
+    icon: string
+    title: string
+    content: string
+  } | null>(null)
+
+  const cleanStates = () => {
+    setScheduleSelected([])
+    setModalSuccess(null)
+    setAddPaymentModal(false)
+    setModalError(null)
+    setPartnerSelected(null)
+    setNewPartnerData({
+      id: 0,
+      name: "",
+      last_name: "",
+      identification_number: "",
+      birth_date: "",
+      email: "",
+      subs: 0,
+      phone: "",
+      membership_start_date: "",
+      created_by: null,
+      free_pass: 0,
+      is_student: "NO",
+    })
+    setPaidTime(1)
+    setPaidTimeUnit({
+      id: 1,
+      display_name: "Dia/s",
+    })
+    setComboSelected(undefined)
+    setAmountOfClases(0)
+    setIsChecked(false)
+    setFinalPrice(0)
+    setPaymentMethodSelected(1)
+    setCreateModal(false)
+    setModalErrorAddDays(null)
+  }
+
   return (
     <PartnersContext.Provider
       value={{
@@ -436,6 +446,8 @@ const PartnersProvider = ({ children }) => {
         newValues,
         setNewValues,
         calculatePrice,
+        modalErrorAddDays,
+        setModalErrorAddDays,
       }}
     >
       {children}

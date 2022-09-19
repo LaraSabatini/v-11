@@ -16,7 +16,6 @@ import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
-import PaymentsHistory from "./PaymentsHistory"
 import Prices from "./Prices"
 import PaymentsView from "./PaymentsView"
 import {
@@ -127,18 +126,7 @@ function PartnersView() {
           >
             Clientes
           </Section>
-          <Section
-            onClick={() => {
-              if (hasChanges) {
-                setModalHasChanges(true)
-              } else {
-                setSectionSelected({ section: "Pagos", id: 2 })
-              }
-            }}
-            selected={sectionSelected.id === 2}
-          >
-            Pagos
-          </Section>
+
           <Section
             onClick={() => {
               if (hasChanges) {
@@ -198,7 +186,6 @@ function PartnersView() {
             </ListAndDetailContainer>
           </>
         )}
-        {sectionSelected.id === 2 && <PaymentsHistory />}
         {sectionSelected.id === 3 && <Prices />}
         {sectionSelected.id === 4 && (
           <PaymentsHistoryProvider>
