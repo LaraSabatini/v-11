@@ -45,8 +45,6 @@ function PartnersView() {
     setModalHasChanges,
     setDetailState,
     triggerListUpdate,
-    // addPaymentModal,
-    // setAddPaymentModal,
     createModal,
     setCreateModal,
     cleanStates,

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react"
 import getCombos from "services/Partners/GetCombos.service"
-import getPartnerPayments from "services/Partners/GetPartnerPayments.service"
+import { getPartnerPayments } from "services/Partners/GetPartnerPayments.service"
 import getPaymentByPartner from "services/Partners/SearchPayment.service"
 import getPrices from "services/Partners/GetPrices.service"
 import editPartnerPayment from "services/Partners/EditPartnerPayment.service"
