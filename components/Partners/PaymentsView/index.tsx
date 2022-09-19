@@ -1,13 +1,16 @@
 import React, { useContext, useEffect, useState } from "react"
 import PaymentHistoryInterface from "interfaces/partners/PaymentHistoryInterface"
 import getCombos from "services/Partners/GetCombos.service"
-import { getBoulderPayments } from "services/Partners/BoulderPayments.service"
+import {
+  getBoulderPayments,
+  getBoulderPaymentsByDate,
+} from "services/Partners/BoulderPayments.service"
 import { PaymentsHistory } from "contexts/PaymentsHistory"
 import { PartnersContext } from "contexts/Partners"
 import DataTable from "components/UI/DataTable"
 import Filters from "./Filters"
 import columns from "./const/content"
-import { Container, TableContainer } from "./styles"
+import { Container, TableContainer, AmountOfPayments } from "./styles"
 
 interface RowsInterface {
   partner_id: number
@@ -21,13 +24,11 @@ interface RowsInterface {
 }
 
 const PaymentsView = () => {
-  const { setPaymentsList, paymentsList } = useContext(PaymentsHistory)
+  const { setPaymentsList, paymentsList, dateSelected } = useContext(
+    PaymentsHistory,
+  )
   const { setCombos, timeUnits, paymentMethods } = useContext(PartnersContext)
-  // filtros
-  // visual mensual
-  // visual diario
-  // mostrar hora
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [amountOfPartnersByDay, setAmountOfPartnersByDay] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const [rows, setRows] = useState<{
@@ -40,11 +41,19 @@ const PaymentsView = () => {
   }>()
 
   const fillData = async () => {
-    const data = await getBoulderPayments(currentPage)
-    setPaymentsList(data.data)
-
     const combosData = await getCombos()
     setCombos(combosData.data)
+
+    const formatDate =
+      dateSelected !== "" && dateSelected.replace("/", "-").replace("/", "-")
+
+    const data =
+      dateSelected === ""
+        ? await getBoulderPayments(currentPage)
+        : await getBoulderPaymentsByDate(formatDate)
+    setPaymentsList(data.data)
+
+    setAmountOfPartnersByDay(dateSelected !== "" && data.data.length)
 
     const rowsCleaned: RowsInterface[] = []
 
@@ -65,7 +74,7 @@ const PaymentsView = () => {
         clases_paid: item.clases_paid,
         payment_method_id: paymentMethods.filter(
           payment => payment.id === item.payment_method_id,
-        )[0].display_name,
+        )[0]?.display_name,
         price_paid: `$${item.price_paid}`,
         date: item.date,
       }),
@@ -80,7 +89,7 @@ const PaymentsView = () => {
   useEffect(() => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage, dateSelected])
 
   const goNext = () => {
     if (paymentsList.length > 0) {
@@ -97,6 +106,9 @@ const PaymentsView = () => {
   return (
     <Container>
       <Filters />
+      <AmountOfPayments>
+        Cantidad de clientes x dia ({dateSelected}): {amountOfPartnersByDay}
+      </AmountOfPayments>
       <TableContainer>
         <DataTable
           columns={columns}

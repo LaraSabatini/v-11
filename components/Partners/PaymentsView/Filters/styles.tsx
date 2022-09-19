@@ -9,6 +9,7 @@ const FiltersContainer = styled.div`
   position: absolute;
   right: 0;
   top: -100px;
+  z-index: 100;
 `
 
 const Select = styled.div`
@@ -37,7 +38,6 @@ const Selector = styled.div`
   -webkit-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.25);
   -moz-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.25);
   position: absolute;
-  z-index: 100;
   right: 0;
   top: 50px;
   padding: 10px 5px;

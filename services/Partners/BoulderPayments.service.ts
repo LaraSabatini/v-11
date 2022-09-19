@@ -13,14 +13,14 @@ export const getBoulderPayments = async (page: number) => {
   return res.data
 }
 
-export const getBoulderPaymentsByDate = async (date: string, page: number) => {
+export const getBoulderPaymentsByDate = async (date: string) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
     },
   }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/boulderPayments/date=${date}?page=${page}`,
+    `https://v-11-backend.vercel.app/boulderPayments/date=${date}`,
     axiosHeader,
   )
   return res.data

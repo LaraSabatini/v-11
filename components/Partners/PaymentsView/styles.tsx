@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import theme from "theme/index"
 
 const Container = styled.div`
   position: relative;
@@ -8,4 +9,8 @@ const Container = styled.div`
 
 const TableContainer = styled.div``
 
-export { Container, TableContainer }
+const AmountOfPayments = styled.p`
+  font-family: ${theme.fonts.primary};
+`
+
+export { Container, TableContainer, AmountOfPayments }
