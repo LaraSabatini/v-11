@@ -10,7 +10,7 @@ import { PartnersContext } from "contexts/Partners"
 import DataTable from "components/UI/DataTable"
 import Filters from "./Filters"
 import columns from "./const/content"
-import { Container, TableContainer } from "./styles"
+import { Container, TableContainer, AmountOfPayments } from "./styles"
 
 interface RowsInterface {
   partner_id: number
@@ -28,11 +28,7 @@ const PaymentsView = () => {
     PaymentsHistory,
   )
   const { setCombos, timeUnits, paymentMethods } = useContext(PartnersContext)
-  // filtros
-  // visual mensual
-  // visual diario
-  // mostrar hora
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [amountOfPartnersByDay, setAmountOfPartnersByDay] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const [rows, setRows] = useState<{
@@ -54,8 +50,10 @@ const PaymentsView = () => {
     const data =
       dateSelected === ""
         ? await getBoulderPayments(currentPage)
-        : await getBoulderPaymentsByDate(formatDate, currentPage)
+        : await getBoulderPaymentsByDate(formatDate)
     setPaymentsList(data.data)
+
+    setAmountOfPartnersByDay(dateSelected !== "" && data.data.length)
 
     const rowsCleaned: RowsInterface[] = []
 
@@ -108,6 +106,9 @@ const PaymentsView = () => {
   return (
     <Container>
       <Filters />
+      <AmountOfPayments>
+        Cantidad de clientes x dia ({dateSelected}): {amountOfPartnersByDay}
+      </AmountOfPayments>
       <TableContainer>
         <DataTable
           columns={columns}
