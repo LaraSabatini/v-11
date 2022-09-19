@@ -47,6 +47,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     wantsSubscription,
     setWantsSubscription,
     scheduleSelected,
+    usesDay,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
 
@@ -146,6 +147,22 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           finalExpireMonth =
             expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
         }
+        // usesDay
+        // const finalTimePaid =
+        //   paidTime !== null && paidTime !== 0 && paidTimeUnit.id === 1
+        //     ? paidTime - 1
+        //     : 0
+
+        let finalTime = 0
+        if (paidTime !== null && paidTime !== 0) {
+          if (usesDay) {
+            finalTime = paidTime - 1
+          } else {
+            finalTime = paidTime
+          }
+        } else {
+          finalTime = 0
+        }
 
         const paymentBody: PaymentInterface = {
           id: 0,
@@ -156,7 +173,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             comboSelected !== null && comboSelected !== undefined
               ? comboSelected
               : 0,
-          time_paid: paidTime !== null && paidTime !== 0 ? paidTime : 0,
+          time_paid: paidTimeUnit.id === 1 ? finalTime : paidTime,
           time_paid_unit:
             paidTimeUnit !== undefined && paidTimeUnit?.id !== null
               ? paidTimeUnit.id

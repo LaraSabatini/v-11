@@ -86,6 +86,8 @@ export const PartnersContext = createContext({
   calculatePrice: null,
   modalErrorAddDays: null,
   setModalErrorAddDays: null,
+  usesDay: null,
+  setUsesDay: null,
 })
 
 const PartnersProvider = ({ children }) => {
@@ -198,6 +200,8 @@ const PartnersProvider = ({ children }) => {
   const [amountOfClases, setAmountOfClases] = useState<number>()
 
   const [isChecked, setIsChecked] = useState<boolean>(false)
+  const [usesDay, setUsesDay] = useState<boolean>(true)
+
   const [wantsSubscription, setWantsSubscription] = useState<boolean>(false)
 
   const [prices, setPrices] = useState<PricesInterface[]>([])
@@ -448,6 +452,8 @@ const PartnersProvider = ({ children }) => {
         calculatePrice,
         modalErrorAddDays,
         setModalErrorAddDays,
+        usesDay,
+        setUsesDay,
       }}
     >
       {children}
