@@ -24,7 +24,7 @@ const ListItem = styled.div`
 `
 
 const Name = styled.p`
-  width: 120px;
+  width: 200px;
 `
 
 const PaymentActive = styled.p<{ active: boolean }>`

@@ -107,7 +107,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     e.preventDefault()
     await paidTimeUnitRef.current?.focus()
     await paidTimeRef.current?.focus()
-    // await trainertRef.current?.focus()
     await clasesRef.current?.focus()
     await paymentRef.current?.focus()
 

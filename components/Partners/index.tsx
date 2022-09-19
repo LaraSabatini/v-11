@@ -227,9 +227,6 @@ function PartnersView() {
         )}
       </Content>
       {createModal && <CreatePartner cancelCreate={() => cleanStates()} />}
-      {/* {addPaymentModal && (
-        <AddPayment cancelCreate={() => setAddPaymentModal(false)} />
-      )} */}
     </Container>
   )
 }
