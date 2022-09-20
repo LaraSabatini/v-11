@@ -10,7 +10,14 @@ import { PartnersContext } from "contexts/Partners"
 import DataTable from "components/UI/DataTable"
 import Filters from "./Filters"
 import columns from "./const/content"
-import { Container, TableContainer, AmountOfPayments } from "./styles"
+import CardsView from "./CardsView"
+import { Section } from "../styles"
+import {
+  Container,
+  TableContainer,
+  AmountOfPayments,
+  SectionsButtons,
+} from "./styles"
 
 interface RowsInterface {
   partner_id: number
@@ -104,23 +111,52 @@ const PaymentsView = () => {
     }
   }
 
+  const [sectionSelected, setSectionSelected] = useState<{
+    section: string
+    id: number
+  }>({
+    section: "Historico",
+    id: 1,
+  })
+
   return (
     <Container>
       <Filters />
+      <SectionsButtons>
+        <Section
+          onClick={() => {
+            setSectionSelected({ section: "Historico", id: 1 })
+          }}
+          selected={sectionSelected.id === 1}
+        >
+          Tabla / Historico
+        </Section>
+        <Section
+          onClick={() => {
+            setSectionSelected({ section: "Cards", id: 2 })
+          }}
+          selected={sectionSelected.id === 2}
+        >
+          Cartas / Historico
+        </Section>
+      </SectionsButtons>
       <AmountOfPayments>
         Cantidad de clientes x dia ({dateSelected}): {amountOfPartnersByDay}
       </AmountOfPayments>
-      <TableContainer>
-        <DataTable
-          columns={columns}
-          rows={rows}
-          height={500}
-          totalPages={1}
-          onClickNext={goNext}
-          onClickBack={goPrev}
-          setPage={currentPage}
-        />
-      </TableContainer>
+      {sectionSelected.id === 1 && (
+        <TableContainer>
+          <DataTable
+            columns={columns}
+            rows={rows}
+            height={500}
+            totalPages={1}
+            onClickNext={goNext}
+            onClickBack={goPrev}
+            setPage={currentPage}
+          />
+        </TableContainer>
+      )}
+      {sectionSelected.id === 2 && <CardsView />}
     </Container>
   )
 }

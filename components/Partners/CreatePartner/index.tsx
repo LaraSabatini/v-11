@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react"
 // SERVICES
 import { createPartner, searchPartner } from "services/Partners/Partner.service"
 import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
-import { createBoulderPayment } from "services/Partners/BoulderPayments.service"
 import { getPrices } from "services/Partners/Prices.service"
 import getCombos from "services/Partners/GetCombos.service"
 // INTERFACES
@@ -197,11 +196,11 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             pm => pm.id === paymentMethodSelected,
           )[0].display_name,
           price_paid: finalPrice,
-          date: `${day}/${month}/${year}`,
+          date: `${day}-${month}-${year}`,
           payment_expire_date:
             (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
             (comboSelected !== null && comboSelected !== undefined)
-              ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
+              ? `${finalExpireDay}-${finalExpireMonth}-${expireYear}`
               : "",
           days_and_hours:
             scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
@@ -209,33 +208,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
 
         const createPayment = await createPartnerPayment(paymentBody)
 
-        const boulderBody = {
-          id: 0,
-          partner_id: apiValidation.partnerId,
-          combo:
-            comboSelected !== null && comboSelected !== undefined
-              ? comboSelected
-              : 0,
-          time_paid: paidTime !== null && paidTime !== 0 ? paidTime : 0,
-          time_paid_unit:
-            paidTimeUnit !== undefined && paidTimeUnit?.id !== null
-              ? paidTimeUnit.id
-              : "",
-          clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
-          payment_method_id: paymentMethodSelected,
-          payment_method_name: paymentMethods.filter(
-            pm => pm.id === paymentMethodSelected,
-          )[0].display_name,
-          price_paid: finalPrice,
-          date: `${day}-${month}-${year}`,
-        }
-
-        const boulderPayment = await createBoulderPayment(boulderBody)
-
-        if (
-          createPayment.message === "partnerPayment created successfully" &&
-          boulderPayment.message === "payment created successfully"
-        ) {
+        if (createPayment.message === "partnerPayment created successfully") {
           setModalSuccess({
             status: "success",
             icon: "IconCheckModal",

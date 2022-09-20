@@ -82,7 +82,6 @@ const ListAndDetailContainer = styled.div`
   justify-content: center;
   margin-top: 20px;
   gap: 20px;
-  /* border: 1px solid red; */
 `
 
 const SearchBarContainer = styled.div`
