@@ -4,6 +4,11 @@ import {
   createPartnerPayment,
   editPartnerPayment,
 } from "services/Partners/PartnerPayments.service"
+import {
+  searchByUserAndDate,
+  updateDigitalPayment,
+  createDigitalPayment,
+} from "services/Finances/DigitalPayments.service"
 import { getPrices } from "services/Partners/Prices.service"
 import { deletePartner } from "services/Partners/Partner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
@@ -43,6 +48,9 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     paymentRef,
     setModalErrorAddDays,
     modalErrorAddDays,
+    paymentMethodSelected,
+    paymentUserSelected,
+    months,
   } = useContext(PartnersContext)
 
   const [initialPayment, setInitialPayment] = useState<PaymentInterface>()
@@ -88,6 +96,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
   const handleEdit = async e => {
     e.preventDefault()
+    let success = false
 
     const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
     const expireDate = newDate.getDate()
@@ -115,7 +124,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         content:
           "Esta accion no se puede realizar porque el socio cuenta con un abono activo",
       })
-      // cleanStates()
+      cleanStates()
     }
     if (canAddDays) {
       const body = {
@@ -143,22 +152,9 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         const createPayment = await createPartnerPayment(body)
 
         if (createPayment.message === "payment updated successfully") {
-          setModalSuccess({
-            status: "success",
-            icon: "IconCheckModal",
-            title: "Excelente!",
-            content: "El pago ha sido actualizado correctamente",
-          })
-          cleanStates()
+          success = true
         } else {
-          setModalError({
-            status: "alert",
-            icon: "IconExclamation",
-            title: "UPS!",
-            content:
-              "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
-          })
-          cleanStates()
+          success = false
         }
       }
     }
@@ -175,7 +171,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             : "",
         days_and_hours:
           scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
-        date: `${day}/${month}/${year}`,
+        date: `${day}-${month}-${year}`,
       }
 
       await paidTimeUnitRef.current?.focus()
@@ -189,24 +185,76 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         const createPayment = await createPartnerPayment(body)
 
         if (createPayment.message === "payment updated successfully") {
-          setModalSuccess({
-            status: "success",
-            icon: "IconCheckModal",
-            title: "Excelente!",
-            content: "El pago ha sido actualizado correctamente",
-          })
-          cleanStates()
+          success = true
         } else {
-          setModalError({
-            status: "alert",
-            icon: "IconExclamation",
-            title: "UPS!",
-            content:
-              "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
-          })
-          cleanStates()
+          success = false
         }
       }
+    }
+
+    if (paymentMethodSelected === 2) {
+      const searchIfExists = await searchByUserAndDate(
+        paymentUserSelected.id,
+        `${day}-${month}-${year}`,
+      )
+
+      if (searchIfExists.data.length > 0) {
+        const digitalPaymentBody = {
+          id: searchIfExists.data[0].id,
+          user_id: searchIfExists.data[0].user_id,
+          user_name: searchIfExists.data[0].user_name,
+          date: searchIfExists.data[0].date,
+          month: searchIfExists.data[0].month,
+          month_id: searchIfExists.data[0].month_id,
+          total_profit: searchIfExists.data[0].total_profit + finalPrice,
+        }
+        const editDigitalPayment = await updateDigitalPayment(
+          digitalPaymentBody,
+        )
+        if (editDigitalPayment.message === "payment updated successfully") {
+          success = true
+        } else {
+          success = false
+        }
+        // editar
+      } else {
+        // crear
+        const digitalPaymentBody = {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
+          date: `${day}-${month}-${year}`,
+          month: months.filter(m => m.id === getMonth + 1)[0].display_name,
+          month_id: getMonth + 1,
+          total_profit: finalPrice,
+        }
+        const createDigital = await createDigitalPayment(digitalPaymentBody)
+
+        if (createDigital.message === "payment created successfully") {
+          success = true
+        } else {
+          success = false
+        }
+      }
+    }
+
+    if (success) {
+      setModalSuccess({
+        status: "success",
+        icon: "IconCheckModal",
+        title: "Excelente!",
+        content: "El pago ha sido actualizado correctamente",
+      })
+      cleanStates()
+    } else {
+      setModalError({
+        status: "alert",
+        icon: "IconExclamation",
+        title: "UPS!",
+        content:
+          "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
+      })
+      cleanStates()
     }
   }
 

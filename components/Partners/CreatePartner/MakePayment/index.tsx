@@ -27,9 +27,7 @@ const MakePayment = () => {
     comboSelected,
     paidTimeUnit,
     paidTime,
-    // prices,
     finalPrice,
-    // setFinalPrice,
     amountOfClases,
     paymentMethodSelected,
     setPaymentMethodSelected,
@@ -39,9 +37,9 @@ const MakePayment = () => {
     calculatePrice,
     usesDay,
     setUsesDay,
-    // paymentUsers,
-    // paymentUserRef,
-    // setPaymentUserSelected,
+    paymentUsers,
+    paymentUserRef,
+    setPaymentUserSelected,
   } = useContext(PartnersContext)
 
   const fillScheduleData = async () => {
@@ -194,9 +192,12 @@ const MakePayment = () => {
             )[0].display_name
           }
           ref={paymentRef}
-          onChangeProps={(e: { id: number; display_name: string }) =>
+          onChangeProps={(e: { id: number; display_name: string }) => {
             setPaymentMethodSelected(e.id)
-          }
+            if (e.id === 1) {
+              setPaymentUserSelected(null)
+            }
+          }}
         />
         <TextField
           label="Precio final"
@@ -207,18 +208,20 @@ const MakePayment = () => {
           value={`${finalPrice}` || ""}
         />
       </HorizontalGroup>
-      {/* <HorizontalGroup>
-        <Autocomplete
-          required={paymentMethodSelected === 2}
-          label="MP User"
-          width={150}
-          options={paymentUsers}
-          ref={paymentUserRef}
-          onChangeProps={(e: { id: number; display_name: string }) =>
-            setPaymentUserSelected(e)
-          }
-        />
-      </HorizontalGroup> */}
+      {paymentMethodSelected === 2 && (
+        <HorizontalGroup>
+          <Autocomplete
+            required
+            label="MP User"
+            width={150}
+            options={paymentUsers}
+            ref={paymentUserRef}
+            onChangeProps={(e: { id: number; display_name: string }) =>
+              setPaymentUserSelected(e)
+            }
+          />
+        </HorizontalGroup>
+      )}
       <div style={{ display: "flex", gap: "10px" }}>
         <CheckboxContainer>
           <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
