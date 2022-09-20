@@ -14,7 +14,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  z-index: 100;
+  z-index: 200;
 `
 
 const Title = styled.h5`

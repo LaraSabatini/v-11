@@ -10,6 +10,8 @@ export const PaymentsHistory = createContext({
   setDateSelected: null,
   paymentsList: null,
   setPaymentsList: null,
+  amountOfPartnersByDay: null,
+  setAmountOfPartnersByDay: null,
 })
 
 const PaymentsHistoryProvider = ({ children }) => {
@@ -68,6 +70,8 @@ const PaymentsHistoryProvider = ({ children }) => {
   const [dateSelected, setDateSelected] = useState<string>("")
   const [paymentsList, setPaymentsList] = useState<PaymentInterface[]>([])
 
+  const [amountOfPartnersByDay, setAmountOfPartnersByDay] = useState<number>(0)
+
   return (
     <PaymentsHistory.Provider
       value={{
@@ -78,6 +82,8 @@ const PaymentsHistoryProvider = ({ children }) => {
         setDateSelected,
         paymentsList,
         setPaymentsList,
+        amountOfPartnersByDay,
+        setAmountOfPartnersByDay,
       }}
     >
       {children}
