@@ -32,11 +32,14 @@ interface RowsInterface {
 }
 
 const PaymentsView = () => {
-  const { setPaymentsList, paymentsList, dateSelected } = useContext(
-    PaymentsHistory,
-  )
+  const {
+    setPaymentsList,
+    paymentsList,
+    dateSelected,
+    amountOfPartnersByDay,
+    setAmountOfPartnersByDay,
+  } = useContext(PaymentsHistory)
   const { setCombos, timeUnits } = useContext(PartnersContext)
-  const [amountOfPartnersByDay, setAmountOfPartnersByDay] = useState<number>(0)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const [rows, setRows] = useState<{
