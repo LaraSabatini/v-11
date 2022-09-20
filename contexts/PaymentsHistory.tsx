@@ -1,5 +1,5 @@
 import { createContext, useState } from "react"
-import PaymentHistoryInterface from "interfaces/partners/PaymentHistoryInterface"
+import BoulderPaymentInterface from "interfaces/partners/BoulderPaymentInterface"
 
 export const PaymentsHistory = createContext({
   months: null,
@@ -65,7 +65,7 @@ const PaymentsHistoryProvider = ({ children }) => {
 
   const [monthSelected, setMonthSelected] = useState<number>(null)
   const [dateSelected, setDateSelected] = useState<string>("")
-  const [paymentsList, setPaymentsList] = useState<PaymentHistoryInterface[]>(
+  const [paymentsList, setPaymentsList] = useState<BoulderPaymentInterface[]>(
     [],
   )
 

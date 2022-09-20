@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react"
-import PaymentHistoryInterface from "interfaces/partners/PaymentHistoryInterface"
+import BoulderPaymentInterface from "interfaces/partners/BoulderPaymentInterface"
 import getCombos from "services/Partners/GetCombos.service"
 import {
   getBoulderPayments,
@@ -57,7 +57,7 @@ const PaymentsView = () => {
 
     const rowsCleaned: RowsInterface[] = []
 
-    data.data.map((item: PaymentHistoryInterface) =>
+    data.data.map((item: BoulderPaymentInterface) =>
       rowsCleaned.push({
         partner_id: item.partner_id,
         combo:

@@ -1,6 +1,19 @@
 import axios from "axios"
 
-const editPrices = async (body: {
+export const getPrices = async () => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.get(
+    `https://v-11-backend.vercel.app/prices`,
+    axiosHeader,
+  )
+  return res.data
+}
+
+export const editPrices = async (body: {
   id: number
   name: string
   price_cash: number
@@ -17,5 +30,3 @@ const editPrices = async (body: {
   )
   return res.data
 }
-
-export default editPrices

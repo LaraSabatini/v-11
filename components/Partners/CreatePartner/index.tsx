@@ -1,16 +1,19 @@
 import React, { useContext, useState, useEffect } from "react"
-import createPartner from "services/Partners/CreatePartner.service"
-import PartnerInterface from "interfaces/partners/PartnerInterface"
-import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
+// SERVICES
+import { createPartner, searchPartner } from "services/Partners/Partner.service"
+import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { createBoulderPayment } from "services/Partners/BoulderPayments.service"
-import searchPartner from "services/Partners/SearchPartner.service"
-import getPrices from "services/Partners/GetPrices.service"
+import { getPrices } from "services/Partners/Prices.service"
 import getCombos from "services/Partners/GetCombos.service"
+// INTERFACES
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
+// CONTEXTS
 import { PartnersContext } from "contexts/Partners"
+import texts from "strings/partners.json"
+// COMPONENTS
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
-import texts from "strings/partners.json"
 import InputCalendar from "components/UI/InputCalendar"
 import Checkbox from "components/UI/Checkbox"
 import MakePayment from "./MakePayment"
