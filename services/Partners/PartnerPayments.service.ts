@@ -115,3 +115,17 @@ export const getPaymentByPartner = async (partner: string, page: number) => {
   )
   return res.data
 }
+
+export const getPaymentByDate = async (date: string) => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.get(
+    `https://v-11-backend.vercel.app/partnersPayment/date/${date}`,
+
+    axiosHeader,
+  )
+  return res.data
+}
