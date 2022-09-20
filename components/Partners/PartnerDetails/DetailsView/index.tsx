@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import { getPartnerPaymentsById } from "services/Partners/GetPartnerPayments.service"
 import editPartnerPayment from "services/Partners/EditPartnerPayment.service"
+import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
 import { createBoulderPayment } from "services/Partners/BoulderPayments.service"
 import getPrices from "services/Partners/GetPrices.service"
 import deletePartner from "services/Partners/DeletePartner.service"
@@ -116,9 +117,10 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     }
 
     const canAddDays =
+      initialPayment !== undefined &&
       initialPayment.time_paid_unit === newValues.time_paid_unit
 
-    if (canAddDays === false) {
+    if (canAddDays === false && initialPayment !== undefined) {
       setModalErrorAddDays({
         status: "alert",
         icon: "IconExclamation",
@@ -127,7 +129,8 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           "Esta accion no se puede realizar porque el socio cuenta con un abono activo",
       })
       // cleanStates()
-    } else {
+    }
+    if (canAddDays) {
       const body = {
         ...newValues,
         time_paid: initialPayment.time_paid + newValues.time_paid,
@@ -167,6 +170,69 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
         if (
           executeEdition.message === "payment updated successfully" &&
+          boulderPayment.message === "payment created successfully"
+        ) {
+          setModalSuccess({
+            status: "success",
+            icon: "IconCheckModal",
+            title: "Excelente!",
+            content: "El pago ha sido actualizado correctamente",
+          })
+          cleanStates()
+        } else {
+          setModalError({
+            status: "alert",
+            icon: "IconExclamation",
+            title: "UPS!",
+            content:
+              "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
+          })
+          cleanStates()
+        }
+      }
+    }
+
+    if (initialPayment === undefined) {
+      const body = {
+        ...newValues,
+        time_paid: newValues.time_paid,
+        price_paid: finalPrice,
+        payment_expire_date:
+          (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
+          (comboSelected !== null && comboSelected !== undefined)
+            ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
+            : "",
+        days_and_hours:
+          scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
+        date: `${day}/${month}/${year}`,
+      }
+
+      await paidTimeUnitRef.current?.focus()
+      await paymentRef.current?.focus()
+      if (
+        paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
+          "false" &&
+        paymentRef.current.attributes.getNamedItem("data-error").value ===
+          "false"
+      ) {
+        // create payment
+        const createPayment = await createPartnerPayment(body)
+
+        const boulderBody = {
+          id: 0,
+          partner_id: newValues.partner_id,
+          combo: newValues.combo,
+          time_paid: newValues.time_paid,
+          time_paid_unit: newValues.time_paid_unit,
+          clases_paid: newValues.clases_paid,
+          payment_method_id: newValues.payment_method_id,
+          price_paid: finalPrice,
+          date: `${day}-${month}-${year}`,
+        }
+        const boulderPayment = await createBoulderPayment(boulderBody)
+
+        if (
+          createPayment.message === "payment updated successfully" &&
           boulderPayment.message === "payment created successfully"
         ) {
           setModalSuccess({
@@ -410,10 +476,10 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             cta
             onClick={() => {
               setNewValues({
-                id: initialPayment.id,
-                partner_id: initialPayment.partner_id,
-                partner_name: initialPayment.partner_name,
-                partner_last_name: initialPayment.partner_last_name,
+                id: initialPayment !== undefined ? initialPayment.id : 0,
+                partner_id: partnerInfo.id,
+                partner_name: partnerInfo.name,
+                partner_last_name: partnerInfo.last_name,
                 combo: 0,
                 time_paid: 0,
                 time_paid_unit: 0,

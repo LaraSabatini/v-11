@@ -9,8 +9,6 @@ const editPartnerPayment = async (body: {
   time_paid: number
   time_paid_unit: number
   clases_paid: number
-  // trainer_id: number
-  // trainer_name: string
   payment_method_id: number
   payment_method_name: string
   price_paid: number
