@@ -6,6 +6,7 @@ import {
   editProductPurchase,
   createProductPurchase,
 } from "services/Store/productPurchases.service"
+import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { editProduct } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import TextButton from "components/UI/TextButton"
@@ -81,7 +82,7 @@ const Receipt = () => {
       const editStockBody = {
         id: purchase[i].product_id,
         stock: filterProduct[0].stock - purchase[i].product_amount,
-        //
+
         name: filterProduct[0].name,
         brand_id: filterProduct[0].brand_id,
         category_id: filterProduct[0].category_id,
@@ -131,6 +132,41 @@ const Receipt = () => {
           profit: finalPriceForProfit,
         }
         await createProductPurchase(bodyProductPurchase)
+      }
+    }
+
+    //  SI PRODUCT_ID EN PURCHASE ES 12 O 13 => CREAR PARTNER PAYMENT CON ID 258
+
+    const checkProducts = purchase.filter(
+      product => product.product_id === 12 || product.product_id === 13,
+    )
+
+    if (checkProducts.length > 0) {
+      for (let i = 0; i < checkProducts.length; i += 1) {
+        const paymentBody = {
+          id: 0,
+          partner_id: 258,
+          partner_name: "Pase diario",
+          partner_last_name: "No borrar",
+          combo: 0,
+          time_paid: checkProducts[i].product_amount,
+          time_paid_unit: 1,
+          clases_paid: 0,
+          payment_method_id: checkProducts[i].product_id === 12 ? 1 : 2,
+          payment_method_name:
+            checkProducts[i].product_id === 12 ? "Efectivo" : "MP",
+          price_paid: checkProducts[i].final_price,
+          date: `${day}-${month}-${year}`,
+          payment_expire_date: "",
+          days_and_hours: "",
+        }
+        const createPurchase = await createPartnerPayment(paymentBody)
+
+        if (createPurchase.message === "partnerPayment created successfully") {
+          success = true
+        } else {
+          success = false
+        }
       }
     }
 

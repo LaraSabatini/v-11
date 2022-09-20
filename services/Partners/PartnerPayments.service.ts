@@ -129,3 +129,17 @@ export const getPaymentByDate = async (date: string) => {
   )
   return res.data
 }
+
+export const getEarningsByDate = async (date: string) => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.get(
+    `https://v-11-backend.vercel.app/partnersPayment/cards/${date}`,
+
+    axiosHeader,
+  )
+  return res.data
+}
