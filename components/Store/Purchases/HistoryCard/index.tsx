@@ -34,6 +34,9 @@ const HistoryCard = ({
     <Card>
       {type === 1 && <img className="zapas" src="/beer.png" alt="beer" />}
       {type === 4 && <img className="monster" src="/monster.webp" alt="beer" />}
+      {type === 5 && (
+        <img className="calendar" src="/calendar.png" alt="beer" />
+      )}
       {type === 2 && (
         <ComponentContainer>
           <Magnesiera />
