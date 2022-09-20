@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
-import { productByCategory } from "services/Store/searchProduct.service"
-import getProducts from "services/Store/getProducts.service"
+import { getProducts, productByCategory } from "services/Store/Products.service"
 import getCategories from "services/Store/getCategories.service"
 import getBrands from "services/Store/getBrands.service"
 import { StoreContext } from "contexts/Store"

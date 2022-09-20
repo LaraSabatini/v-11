@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
-import createProduct from "services/Store/createProduct.service"
+import { createProduct } from "services/Store/Products.service"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextField from "components/UI/TextField"
 import Autocomplete from "components/UI/Autocomplete"

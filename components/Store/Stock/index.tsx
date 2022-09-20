@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
-import getProducts from "services/Store/getProducts.service"
-import editProduct from "services/Store/editProduct.service"
+import {
+  editProduct,
+  getProducts,
+  searchProducts,
+} from "services/Store/Products.service"
 import ModalAlert from "components/UI/ModalAlert"
-import { searchProducts } from "services/Store/searchProduct.service"
 import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextButton from "components/UI/TextButton"

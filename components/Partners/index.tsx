@@ -1,9 +1,11 @@
 import React, { useContext, useState, useEffect } from "react"
 import texts from "strings/partners.json"
-import getFreePassPartners from "services/Partners/GetFreePass.service"
-import searchPartner from "services/Partners/SearchPartner.service"
-import getStudents from "services/Partners/GetStudents.service"
-import getPartners from "services/Partners/GetPartners.service"
+import {
+  searchPartner,
+  getPartners,
+  getStudents,
+  getFreePassPartners,
+} from "services/Partners/Partner.service"
 import { PartnersContext } from "contexts/Partners"
 import PaymentsHistoryProvider from "contexts/PaymentsHistory"
 import Icon from "components/UI/Assets/Icon"

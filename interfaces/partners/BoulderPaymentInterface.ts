@@ -1,4 +1,4 @@
-export default interface PaymentHistoryInterface {
+export default interface BoulderPaymentInterface {
   id: number
   partner_id: number
   combo: number

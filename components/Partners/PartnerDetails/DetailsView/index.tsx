@@ -1,11 +1,13 @@
 import React, { useState, useContext, useEffect } from "react"
-import { getPartnerPaymentsById } from "services/Partners/GetPartnerPayments.service"
-import editPartnerPayment from "services/Partners/EditPartnerPayment.service"
-import createPartnerPayment from "services/Partners/CreatePartnerPayment.service"
-import { createBoulderPayment } from "services/Partners/BoulderPayments.service"
-import getPrices from "services/Partners/GetPrices.service"
-import deletePartner from "services/Partners/DeletePartner.service"
+import { getPartnerPaymentsById } from "@services/Partners/PartnerPayments.service"
+import {
+  createPartnerPayment,
+  editPartnerPayment,
+} from "services/Partners/PartnerPayments.service"
+import { getPrices } from "services/Partners/Prices.service"
+import { deletePartner } from "services/Partners/Partner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PartnersContext } from "contexts/Partners"
 import texts from "strings/partners.json"
 import TextButton from "components/UI/TextButton"
@@ -43,22 +45,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     modalErrorAddDays,
   } = useContext(PartnersContext)
 
-  const [initialPayment, setInitialPayment] = useState<{
-    id: number
-    partner_id: number
-    partner_name: string
-    partner_last_name: string
-    combo: number
-    time_paid: number
-    time_paid_unit: number
-    clases_paid: number
-    payment_method_id: number
-    payment_method_name: string
-    price_paid: number
-    date: string
-    payment_expire_date: string
-    days_and_hours: string
-  }>()
+  const [initialPayment, setInitialPayment] = useState<PaymentInterface>()
   const [safeModal, setSafeModal] = useState<boolean>(false)
   const [updatePaymentModal, setUpdatePaymentModal] = useState<boolean>(false)
   const [changes, setChanges] = useState<boolean>(false)
@@ -142,7 +129,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             : "",
         days_and_hours:
           scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
-        date: `${day}/${month}/${year}`,
+        date: `${day}-${month}-${year}`,
       }
 
       await paidTimeUnitRef.current?.focus()
@@ -153,25 +140,9 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         paymentRef.current.attributes.getNamedItem("data-error").value ===
           "false"
       ) {
-        const executeEdition = await editPartnerPayment(body)
+        const createPayment = await createPartnerPayment(body)
 
-        const boulderBody = {
-          id: 0,
-          partner_id: newValues.partner_id,
-          combo: newValues.combo,
-          time_paid: newValues.time_paid,
-          time_paid_unit: newValues.time_paid_unit,
-          clases_paid: newValues.clases_paid,
-          payment_method_id: newValues.payment_method_id,
-          price_paid: finalPrice,
-          date: `${day}-${month}-${year}`,
-        }
-        const boulderPayment = await createBoulderPayment(boulderBody)
-
-        if (
-          executeEdition.message === "payment updated successfully" &&
-          boulderPayment.message === "payment created successfully"
-        ) {
+        if (createPayment.message === "payment updated successfully") {
           setModalSuccess({
             status: "success",
             icon: "IconCheckModal",
@@ -215,26 +186,9 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         paymentRef.current.attributes.getNamedItem("data-error").value ===
           "false"
       ) {
-        // create payment
         const createPayment = await createPartnerPayment(body)
 
-        const boulderBody = {
-          id: 0,
-          partner_id: newValues.partner_id,
-          combo: newValues.combo,
-          time_paid: newValues.time_paid,
-          time_paid_unit: newValues.time_paid_unit,
-          clases_paid: newValues.clases_paid,
-          payment_method_id: newValues.payment_method_id,
-          price_paid: finalPrice,
-          date: `${day}-${month}-${year}`,
-        }
-        const boulderPayment = await createBoulderPayment(boulderBody)
-
-        if (
-          createPayment.message === "payment updated successfully" &&
-          boulderPayment.message === "payment created successfully"
-        ) {
+        if (createPayment.message === "payment updated successfully") {
           setModalSuccess({
             status: "success",
             icon: "IconCheckModal",
@@ -315,12 +269,15 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     const data = await getPartnerPaymentsById(partnerInfo.id)
 
     if (data.data.length > 0) {
-      setInitialPayment(data.data[0])
+      setInitialPayment(data.data[data.data.length - 1]) // ACA SETEAR AL ULTIMO
       setVariableValues([
-        { name: "clases", value: data.data[0].clases_paid },
+        { name: "clases", value: data.data[data.data.length - 1].clases_paid },
         {
           name: "days",
-          value: data.data[0].time_paid_unit === 1 ? data.data[0].time_paid : 0,
+          value:
+            data.data[data.data.length - 1].time_paid_unit === 1
+              ? data.data[data.data.length - 1].time_paid
+              : 0,
         },
       ])
     }

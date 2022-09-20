@@ -6,7 +6,7 @@ import {
   editProductPurchase,
   createProductPurchase,
 } from "services/Store/productPurchases.service"
-import editProduct from "services/Store/editProduct.service"
+import { editProduct } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import TextButton from "components/UI/TextButton"
 import {

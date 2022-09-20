@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
-import editPartner from "services/Partners/EditPartner.service"
+import { editPartner } from "services/Partners/Partner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import texts from "strings/partners.json"
 import ModalAlert from "components/UI/ModalAlert"

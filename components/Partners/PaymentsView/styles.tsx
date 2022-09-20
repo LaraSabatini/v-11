@@ -13,4 +13,10 @@ const AmountOfPayments = styled.p`
   font-family: ${theme.fonts.primary};
 `
 
-export { Container, TableContainer, AmountOfPayments }
+const SectionsButtons = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: -20px;
+  margin-bottom: 10px;
+`
+export { Container, TableContainer, AmountOfPayments, SectionsButtons }
