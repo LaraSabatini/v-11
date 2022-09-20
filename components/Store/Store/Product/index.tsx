@@ -172,6 +172,9 @@ const Product = ({
       {category_id === 4 && (
         <img className="monster" src="/monster.webp" alt="beer" />
       )}
+      {category_id === 5 && (
+        <img className="calendar" src="/calendar.png" alt="beer" />
+      )}
       {category_id === 2 && (
         <ComponentContainer>
           <Magnesiera />

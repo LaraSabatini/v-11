@@ -4,7 +4,6 @@ import theme from "theme/index"
 const Container = styled.div`
   margin-top: -25px;
   position: relative;
-  height: 520px;
   display: flex;
   flex-wrap: wrap;
   width: 100%;

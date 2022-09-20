@@ -19,6 +19,12 @@ const ProductCard = styled.div`
   .monster {
     width: 50px;
   }
+
+  .calendar {
+    width: 103px;
+    height: 95px;
+    margin-top: 25px;
+  }
 `
 
 const ProductName = styled.p``
