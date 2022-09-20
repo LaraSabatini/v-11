@@ -25,3 +25,16 @@ export const getPartnerPaymentsById = async (id: number) => {
   )
   return res.data
 }
+
+export const getClasesPaid = async () => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.get(
+    `https://v-11-backend.vercel.app/partnersPayment/clases/0`,
+    axiosHeader,
+  )
+  return res.data
+}
