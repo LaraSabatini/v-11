@@ -1,15 +1,23 @@
 /* eslint-disable no-await-in-loop */
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState, useEffect, useRef } from "react"
 import texts from "strings/store.json"
 import {
   getProductPurchasesByMonthAndProduct,
   editProductPurchase,
   createProductPurchase,
 } from "services/Store/productPurchases.service"
+import {
+  searchByUserAndDate,
+  updateDigitalPayment,
+  createDigitalPayment,
+} from "services/Finances/DigitalPayments.service"
 import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { editProduct } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import TextButton from "components/UI/TextButton"
+import Autocomplete from "components/UI/Autocomplete"
+import ScrollView from "components/UI/ScrollView"
+import RadioButton from "components/UI/RadioButton"
 import {
   ReceiptContainer,
   Title,
@@ -17,6 +25,9 @@ import {
   Products,
   Item,
   ButtonContainer,
+  RadioContainer,
+  RadioButtonsContainer,
+  PaymentMethods,
 } from "./styles"
 
 const Receipt = () => {
@@ -33,6 +44,22 @@ const Receipt = () => {
   } = useContext(StoreContext)
 
   const [finalPrice, setFinalPrice] = useState<number>(0)
+
+  const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
+  const [paymentUserSelected, setPaymentUserSelected] = useState<{
+    id: number
+    display_name: string
+  }>(null)
+
+  const paymentUserRef = useRef(null)
+
+  const paymentUsers = [
+    { id: 1, display_name: "Roman" },
+    { id: 2, display_name: "Federico" },
+    { id: 3, display_name: "Tobias" },
+    { id: 4, display_name: "Guillermo" },
+    { id: 5, display_name: "Joaco" },
+  ]
 
   const calculatePrice = () => {
     let final = 0
@@ -170,6 +197,53 @@ const Receipt = () => {
       }
     }
 
+    if (paymentMethodSelected === 2) {
+      const searchIfExists = await searchByUserAndDate(
+        paymentUserSelected.id,
+        `${day}-${month}-${year}`,
+      )
+
+      if (searchIfExists.data.length > 0) {
+        const digitalPaymentBody = {
+          id: searchIfExists.data[0].id,
+          user_id: searchIfExists.data[0].user_id,
+          user_name: searchIfExists.data[0].user_name,
+          date: searchIfExists.data[0].date,
+          month: searchIfExists.data[0].month,
+          month_id: searchIfExists.data[0].month_id,
+          total_profit: searchIfExists.data[0].total_profit + finalPrice,
+        }
+        const editDigitalPayment = await updateDigitalPayment(
+          digitalPaymentBody,
+        )
+        if (editDigitalPayment.message === "payment updated successfully") {
+          success = true
+        } else {
+          success = false
+        }
+        // editar
+      } else {
+        // crear
+        const digitalPaymentBody = {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
+          date: `${day}-${month}-${year}`,
+          month: months.filter(m => m.id === today.getMonth() + 1)[0]
+            .display_name,
+          month_id: today.getMonth() + 1,
+          total_profit: finalPrice,
+        }
+        const createDigital = await createDigitalPayment(digitalPaymentBody)
+
+        if (createDigital.message === "payment created successfully") {
+          success = true
+        } else {
+          success = false
+        }
+      }
+    }
+
     if (success) {
       setModalSuccess({
         status: "success",
@@ -177,6 +251,8 @@ const Receipt = () => {
         title: `${texts.purchase.success.title}`,
         content: `${texts.purchase.success.content}`,
       })
+      setPaymentMethodSelected(1)
+      setPaymentUserSelected(null)
     } else {
       setModalError({
         status: "alert",
@@ -184,6 +260,8 @@ const Receipt = () => {
         title: `${texts.purchase.error.title}`,
         content: `${texts.purchase.error.content}`,
       })
+      setPaymentMethodSelected(1)
+      setPaymentUserSelected(null)
     }
   }
 
@@ -191,21 +269,60 @@ const Receipt = () => {
     <ReceiptContainer>
       <Title>{texts.purchase.receipt}</Title>
       <Products>
-        {purchase &&
-          purchase.map(
-            (pur: {
-              product_id: number
-              product_name: string
-              product_amount: number
-              final_price: number
-            }) => (
-              <Item key={pur.product_id}>
-                <p>{pur.product_name}</p>
-                <p>x {pur.product_amount}</p>
-              </Item>
-            ),
-          )}
+        <ScrollView height={190}>
+          {purchase &&
+            purchase.map(
+              (pur: {
+                product_id: number
+                product_name: string
+                product_amount: number
+                final_price: number
+              }) => (
+                <Item key={pur.product_id}>
+                  <p>{pur.product_name}</p>
+                  <p>x {pur.product_amount}</p>
+                </Item>
+              ),
+            )}
+        </ScrollView>
       </Products>
+      <PaymentMethods>
+        <RadioButtonsContainer>
+          <RadioContainer>
+            <RadioButton
+              value={3}
+              checked={paymentMethodSelected === 1}
+              onChange={() => {
+                setPaymentMethodSelected(1)
+                setPaymentUserSelected(null)
+              }}
+            />
+            <span>Efectivo</span>
+          </RadioContainer>
+          <RadioContainer>
+            <RadioButton
+              value={3}
+              checked={paymentMethodSelected === 2}
+              onChange={() => {
+                setPaymentMethodSelected(2)
+              }}
+            />
+            <span>Mercado Pago</span>
+          </RadioContainer>
+        </RadioButtonsContainer>
+        {paymentMethodSelected === 2 && (
+          <Autocomplete
+            required
+            label="MP User"
+            width={150}
+            options={paymentUsers}
+            ref={paymentUserRef}
+            onChangeProps={(e: { id: number; display_name: string }) =>
+              setPaymentUserSelected(e)
+            }
+          />
+        )}
+      </PaymentMethods>
       <Total>
         {texts.purchase.total}
         <span>$ {finalPrice}</span>
@@ -215,6 +332,7 @@ const Receipt = () => {
         <TextButton
           onClick={executePurchase}
           cta
+          disabled={paymentMethodSelected === 2 && paymentUserSelected === null}
           content={texts.purchase.execute}
         />
       </ButtonContainer>

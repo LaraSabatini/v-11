@@ -30,7 +30,7 @@ const Total = styled.p`
 `
 
 const Products = styled.div`
-  height: 300px;
+  height: 190px;
 `
 
 const Item = styled.div`
@@ -50,4 +50,38 @@ const ButtonContainer = styled.div`
   margin-top: 10px;
 `
 
-export { ReceiptContainer, Title, Total, Products, Item, ButtonContainer }
+const RadioContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+  span {
+    font-weight: ${theme.fontWeights.light};
+    font-size: 15px;
+  }
+`
+
+const RadioButtonsContainer = styled.div`
+  display: flex;
+  gap: 20px;
+`
+
+const PaymentMethods = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* border: 1px solid red; */
+  height: 120px;
+`
+
+export {
+  ReceiptContainer,
+  Title,
+  Total,
+  Products,
+  Item,
+  ButtonContainer,
+  RadioContainer,
+  RadioButtonsContainer,
+  PaymentMethods,
+}
