@@ -26,10 +26,17 @@ const Purchases = () => {
   const fillData = async () => {
     if (monthSelected === null) {
       const data = await getProductPurchases(currentPage)
-      setHistoryList(data.data)
+      const finalList = data.data.filter(
+        p => p.product_id !== 12 && p.product_id !== 13,
+      )
+
+      setHistoryList(finalList)
     } else {
       const data = await getProductPurchasesByMonth(monthSelected)
-      setHistoryList(data.data)
+      const finalList = data.data.filter(
+        p => p.product_id !== 12 && p.product_id !== 13,
+      )
+      setHistoryList(finalList)
     }
   }
 
