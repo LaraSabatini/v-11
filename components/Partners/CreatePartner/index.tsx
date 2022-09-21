@@ -141,10 +141,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       clasesRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      paymentRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
-      paymentUserRef.current.attributes.getNamedItem("data-error").value ===
-        "false"
+      paymentRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
       const body: PartnerInterface = {
         ...newPartnerData,
