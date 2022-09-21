@@ -35,6 +35,11 @@ const Card = styled.div`
   span {
     padding: 5px;
   }
+
+  .special {
+    background-color: ${theme.colors.danger_light};
+    text-decoration: underline;
+  }
 `
 
 export { CardContainer, Card }

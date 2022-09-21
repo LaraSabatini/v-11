@@ -211,6 +211,29 @@ const CardsView = () => {
           Caja MP: <b>$ {monthsPurchased.price_mp}</b>
         </span>
       </Card>
+      <Card>
+        <p className="special">CAJA DIARIA:</p>
+        <span>
+          Caja Efectivo:{" "}
+          <b>
+            ${" "}
+            {comboPurchased.price_cash +
+              clasesPurchased.price_cash +
+              daysPurchased.price_cash +
+              monthsPurchased.price_cash}
+          </b>
+        </span>
+        <span>
+          Caja MP:{" "}
+          <b>
+            ${" "}
+            {comboPurchased.price_mp +
+              clasesPurchased.price_mp +
+              daysPurchased.price_mp +
+              monthsPurchased.price_mp}
+          </b>
+        </span>
+      </Card>
     </CardContainer>
   )
 }
