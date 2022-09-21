@@ -5,6 +5,10 @@ export const Clases = createContext({
   setClasesPurchased: null,
   schedule: null,
   setSchedule: null,
+  filterSelected: null,
+  setFilterSelected: null,
+  triggerListUpdate: null,
+  setTriggerListUpdate: null,
 })
 
 const ClasesProvider = ({ children }) => {
@@ -18,6 +22,10 @@ const ClasesProvider = ({ children }) => {
     }[]
   >([])
 
+  const [filterSelected, setFilterSelected] = useState<number>(null)
+
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
+
   return (
     <Clases.Provider
       value={{
@@ -25,6 +33,10 @@ const ClasesProvider = ({ children }) => {
         setClasesPurchased,
         schedule,
         setSchedule,
+        filterSelected,
+        setFilterSelected,
+        triggerListUpdate,
+        setTriggerListUpdate,
       }}
     >
       {children}
