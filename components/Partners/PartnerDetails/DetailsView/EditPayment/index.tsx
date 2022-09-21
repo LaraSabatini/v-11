@@ -53,6 +53,9 @@ const EditPayment = ({
     setNewValues,
     newValues,
     calculatePrice,
+    paymentUsers,
+    setPaymentUserSelected,
+    paymentUserRef,
   } = useContext(PartnersContext)
 
   const fillScheduleData = async () => {
@@ -236,6 +239,9 @@ const EditPayment = ({
                 payment_method_name: e.display_name,
                 payment_method_id: e.id,
               })
+              if (e.id === 1) {
+                setPaymentUserSelected(null)
+              }
             }}
           />
           <TextField
@@ -247,6 +253,20 @@ const EditPayment = ({
             value={`${finalPrice}` || ""}
           />
         </HorizontalGroup>
+        {paymentMethodSelected === 2 && (
+          <HorizontalGroup>
+            <Autocomplete
+              required
+              label="MP User"
+              width={150}
+              options={paymentUsers}
+              ref={paymentUserRef}
+              onChangeProps={(e: { id: number; display_name: string }) =>
+                setPaymentUserSelected(e)
+              }
+            />
+          </HorizontalGroup>
+        )}
         <CheckboxContainer>
           <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
           <p>Pase libre</p>

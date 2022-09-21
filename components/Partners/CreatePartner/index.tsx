@@ -4,6 +4,11 @@ import { createPartner, searchPartner } from "services/Partners/Partner.service"
 import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { getPrices } from "services/Partners/Prices.service"
 import getCombos from "services/Partners/GetCombos.service"
+import {
+  searchByUserAndDate,
+  updateDigitalPayment,
+  createDigitalPayment,
+} from "services/Finances/DigitalPayments.service"
 // INTERFACES
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
@@ -51,7 +56,9 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     setWantsSubscription,
     scheduleSelected,
     usesDay,
-    // paymentUserRef,
+    paymentUserRef,
+    paymentUserSelected,
+    months,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
@@ -124,8 +131,9 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     await paidTimeRef.current?.focus()
     await clasesRef.current?.focus()
     await paymentRef.current?.focus()
-    // await paymentUserRef.current?.focus()
+    await paymentUserRef.current?.focus()
 
+    let success = false
     if (
       paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
@@ -133,9 +141,10 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       clasesRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      paymentRef.current.attributes.getNamedItem("data-error").value === "false"
-      // paymentUserRef.current.attributes.getNamedItem("data-error").value ===
-      //   "false"
+      paymentRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      paymentUserRef.current.attributes.getNamedItem("data-error").value ===
+        "false"
     ) {
       const body: PartnerInterface = {
         ...newPartnerData,
@@ -151,6 +160,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
       const apiValidation = await createPartner(body)
 
       if (apiValidation.message === "partner created successfully") {
+        success = true
         const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
         const expireDate = newDate.getDate()
         const expireMonth = newDate.getMonth()
@@ -207,22 +217,67 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         }
 
         const createPayment = await createPartnerPayment(paymentBody)
-
         if (createPayment.message === "partnerPayment created successfully") {
-          setModalSuccess({
-            status: "success",
-            icon: "IconCheckModal",
-            title: `${texts.create.success.title}`,
-            content: `${texts.create.success.content}`,
-          })
+          success = true
         } else {
-          setModalError({
-            status: "alert",
-            icon: "IconExclamation",
-            title: `${texts.create.error.title}`,
-            content: `${texts.create.error.content}`,
-          })
+          success = false
         }
+      }
+
+      if (paymentMethodSelected === 2) {
+        const searchIfExists = await searchByUserAndDate(
+          paymentUserSelected.id,
+          `${day}-${month}-${year}`,
+        )
+
+        if (searchIfExists.data.length > 0) {
+          const digitalPaymentBody = {
+            id: searchIfExists.data[0].id,
+            user_id: searchIfExists.data[0].user_id,
+            user_name: searchIfExists.data[0].user_name,
+            date: searchIfExists.data[0].date,
+            month: searchIfExists.data[0].month,
+            month_id: searchIfExists.data[0].month_id,
+            total_profit: searchIfExists.data[0].total_profit + finalPrice,
+          }
+          const editDigitalPayment = await updateDigitalPayment(
+            digitalPaymentBody,
+          )
+          if (editDigitalPayment.message === "payment updated successfully") {
+            success = true
+          } else {
+            success = false
+          }
+          // editar
+        } else {
+          // crear
+          const digitalPaymentBody = {
+            id: 0,
+            user_id: paymentUserSelected.id,
+            user_name: paymentUserSelected.display_name,
+            date: `${day}-${month}-${year}`,
+            month: months.filter(m => m.id === today.getMonth())[0]
+              .display_name,
+            month_id: today.getMonth(),
+            total_profit: finalPrice,
+          }
+          const createDigital = await createDigitalPayment(digitalPaymentBody)
+
+          if (createDigital.message === "payment created successfully") {
+            success = true
+          } else {
+            success = false
+          }
+        }
+      }
+
+      if (success) {
+        setModalSuccess({
+          status: "success",
+          icon: "IconCheckModal",
+          title: `${texts.create.success.title}`,
+          content: `${texts.create.success.content}`,
+        })
       } else {
         setModalError({
           status: "alert",
