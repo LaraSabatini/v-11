@@ -1,12 +1,10 @@
-/* eslint-disable no-console */
-import React, {
-  useState,
-  // useEffect, useContext }
-} from "react"
+import React, { useState, useEffect, useContext } from "react"
 import Header from "components/UI/Header"
-// import { Clases } from "contexts/Clases"
-// import { getSchedule } from "services/Trainers/Schedule.service"
-// import { getClasesPaid } from "services/Partners/GetPartnerPayments.service"
+import { Clases } from "contexts/Clases"
+import { getSchedule } from "services/Trainers/Schedule.service"
+import { getClasesPaid } from "services/Partners/PartnerPayments.service"
+import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+import ScrollView from "components/UI/ScrollView"
 import ClasesCard from "./ClasesCard"
 import {
   Container,
@@ -14,74 +12,123 @@ import {
   SectionsButtons,
   Section,
   CardsContainer,
+  FiltersContainer,
+  FilterButton,
 } from "./styles"
 
 function TrainersView() {
-  // const {
-  // clasesPurchased,
-  // setClasesPurchased,
-  // schedule,
-  // setSchedule,
-  // } = useContext(Clases)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [purchasesList, setPurchasesList] = useState<
-    {
-      id: number
-      partner_id: number
-      partner_name: string
-      partner_last_name: string
-      combo: number
-      time_paid: number
-      time_paid_unit: number
-      clases_paid: number
-      payment_method_id: number
-      payment_method_name: string
-      price_paid: number
-      date: string
-      payment_expire_date: string
-      days_and_hours: string
-    }[]
-  >([])
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const {
+    setSchedule,
+    clasesPurchased,
+    setClasesPurchased,
+    schedule,
+    filterSelected,
+    setFilterSelected,
+    triggerListUpdate,
+  } = useContext(Clases)
+
   const [sectionSelected, setSectionSelected] = useState<{
     section: string
     id: number
   }>({
-    section: "Clases",
+    section: "Alumnos",
     id: 1,
   })
 
-  // const fillData = async () => {
-  //   const data = await getClasesPaid()
-  //   setPurchasesList(data.data)
+  const cleanData = (purchases: ClasesPurchasedInterface[]) => {
+    const newArr = purchases
 
-  //   const scheduleData = await getSchedule()
-  //   setSchedule(scheduleData.data)
+    newArr.map((pur, index) => {
+      const newValue = pur.days_and_hours
+        .split(",")
+        .map(clas => parseInt(clas, 10))
+      newArr[index].days_and_hours = newValue
+      return 0
+    })
 
-  // const assignValues = data.data.filter(
-  //   payment => payment.days_and_hours !== "",
-  // )
-  // }
+    if (filterSelected !== null) {
+      const arrFiltered = newArr.filter(
+        purchase => purchase.days_and_hours.indexOf(filterSelected) !== -1,
+      )
+      setClasesPurchased(arrFiltered)
+    } else {
+      setClasesPurchased(newArr)
+    }
+  }
 
-  // useEffect(() => {
-  //   fillData()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  const fillData = async () => {
+    const scheduleData = await getSchedule()
+    setSchedule(scheduleData.data)
+
+    const data = await getClasesPaid()
+    const assignValues = data.data.filter(
+      payment => payment.days_and_hours !== "",
+    )
+
+    cleanData(assignValues)
+  }
+
+  useEffect(() => {
+    fillData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterSelected, triggerListUpdate])
 
   return (
     <>
       <Header />
       <Container>
         <SectionsButtons>
-          <Section selected={sectionSelected.id === 1}>Clases</Section>
+          <Section
+            onClick={() => setSectionSelected({ section: "Alumnos", id: 1 })}
+            selected={sectionSelected.id === 1}
+          >
+            Alumnos
+          </Section>
+          <Section
+            onClick={() =>
+              setSectionSelected({ section: "Calendario Clases", id: 2 })
+            }
+            selected={sectionSelected.id === 2}
+          >
+            Calendario Clases
+          </Section>
         </SectionsButtons>
+
         <Title>
-          Profesores
-          <span> / {sectionSelected.section}</span>
+          <div>
+            Profesores
+            <span> / {sectionSelected.section}</span>
+          </div>
+          {sectionSelected.id === 1 && (
+            <FiltersContainer>
+              {schedule.length &&
+                schedule.map(s => (
+                  <FilterButton
+                    selected={filterSelected === s.id}
+                    onClick={() => setFilterSelected(s.id)}
+                  >
+                    {s.day_and_hour}
+                  </FilterButton>
+                ))}
+              <FilterButton
+                onClick={() => setFilterSelected(null)}
+                selected={filterSelected === null}
+              >
+                Todos
+              </FilterButton>
+            </FiltersContainer>
+          )}
         </Title>
-        <CardsContainer>
-          <ClasesCard />
-        </CardsContainer>
+        {sectionSelected.id === 1 && (
+          <ScrollView height={550}>
+            <CardsContainer>
+              {clasesPurchased.length > 0 &&
+                clasesPurchased.map(clas => (
+                  <ClasesCard key={clas.id} data={clas} />
+                ))}
+            </CardsContainer>
+          </ScrollView>
+        )}
       </Container>
     </>
   )
