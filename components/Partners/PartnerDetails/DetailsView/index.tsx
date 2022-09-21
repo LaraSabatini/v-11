@@ -113,10 +113,10 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     }
 
     const canAddDays =
-      initialPayment !== undefined &&
+      initialPayment.time_paid_unit === 0 ||
       initialPayment.time_paid_unit === newValues.time_paid_unit
 
-    if (canAddDays === false && initialPayment !== undefined) {
+    if (canAddDays === false) {
       setModalErrorAddDays({
         status: "alert",
         icon: "IconExclamation",
@@ -151,7 +151,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       ) {
         const createPayment = await createPartnerPayment(body)
 
-        if (createPayment.message === "payment updated successfully") {
+        if (createPayment.message === "partnerPayment created successfully") {
           success = true
         } else {
           success = false
@@ -245,7 +245,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         title: "Excelente!",
         content: "El pago ha sido actualizado correctamente",
       })
-      cleanStates()
+      // cleanStates()
     } else {
       setModalError({
         status: "alert",
@@ -254,7 +254,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         content:
           "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
       })
-      cleanStates()
+      // cleanStates()
     }
   }
 
