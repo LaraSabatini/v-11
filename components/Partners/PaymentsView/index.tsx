@@ -12,12 +12,7 @@ import Filters from "./Filters"
 import columns from "./const/content"
 import CardsView from "./CardsView"
 import { Section } from "../styles"
-import {
-  Container,
-  TableContainer,
-  AmountOfPayments,
-  SectionsButtons,
-} from "./styles"
+import { Container, TableContainer, SectionsButtons } from "./styles"
 
 interface RowsInterface {
   partner_id: number
@@ -32,13 +27,9 @@ interface RowsInterface {
 }
 
 const PaymentsView = () => {
-  const {
-    setPaymentsList,
-    paymentsList,
-    dateSelected,
-    amountOfPartnersByDay,
-    setAmountOfPartnersByDay,
-  } = useContext(PaymentsHistory)
+  const { setPaymentsList, paymentsList, dateSelected } = useContext(
+    PaymentsHistory,
+  )
   const { setCombos, timeUnits } = useContext(PartnersContext)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
@@ -63,8 +54,6 @@ const PaymentsView = () => {
         ? await getPartnerPayments(currentPage)
         : await getPaymentByDate(formatDate)
     setPaymentsList(data.data)
-
-    setAmountOfPartnersByDay(dateSelected !== "" && data.data.length)
 
     const rowsCleaned: RowsInterface[] = []
 
@@ -143,9 +132,7 @@ const PaymentsView = () => {
           Cartas / Historico
         </Section>
       </SectionsButtons>
-      <AmountOfPayments>
-        Cantidad de clientes x dia ({dateSelected}): {amountOfPartnersByDay}
-      </AmountOfPayments>
+
       {sectionSelected.id === 1 && (
         <TableContainer>
           <DataTable
