@@ -134,7 +134,7 @@ const MakePayment = () => {
             width={115}
             options={timeUnits}
             ref={paidTimeUnitRef}
-            setValue={paidTimeUnit.display_name}
+            setValue={paidTime !== 0 ? paidTimeUnit.display_name : ""}
             onChangeProps={(e: { id: number; display_name: string }) => {
               setPaidTimeUnit(e)
               if (e.id !== 1) {
