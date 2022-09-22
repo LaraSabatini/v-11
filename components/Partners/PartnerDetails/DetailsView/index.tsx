@@ -127,8 +127,31 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       cleanStates()
     }
     if (canAddDays) {
+      let daysAndHours: any
+      // si no hay y seleccionaron
+      if (
+        (initialPayment.days_and_hours === "" && scheduleSelected.length > 0) ||
+        (initialPayment.days_and_hours !== "" && scheduleSelected.length > 0)
+      ) {
+        daysAndHours = scheduleSelected
+      } else if (
+        // si hay y no seleccionaron
+        initialPayment.days_and_hours !== "" &&
+        scheduleSelected.length === 0
+      ) {
+        daysAndHours = initialPayment.days_and_hours
+      } else if (
+        // si no hay ninguno
+        initialPayment.days_and_hours === "" &&
+        scheduleSelected.length === 0
+      ) {
+        // evaluar si son iguales
+        daysAndHours = ""
+      }
+
       const body = {
         ...newValues,
+        clases_paid: initialPayment.clases_paid + newValues.clases_paid,
         time_paid: initialPayment.time_paid + newValues.time_paid,
         price_paid: finalPrice,
         payment_expire_date:
@@ -136,13 +159,13 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           (comboSelected !== null && comboSelected !== undefined)
             ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
             : "",
-        days_and_hours:
-          scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
+        days_and_hours: daysAndHours,
         date: `${day}-${month}-${year}`,
       }
 
       await paidTimeUnitRef.current?.focus()
       await paymentRef.current?.focus()
+
       if (
         paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
           "false" &&

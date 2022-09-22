@@ -12,5 +12,5 @@ export default interface PaymentInterface {
   price_paid: number //
   date: string //
   payment_expire_date: string
-  days_and_hours: number[] | string
+  days_and_hours: any
 }
