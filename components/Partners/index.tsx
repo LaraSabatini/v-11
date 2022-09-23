@@ -49,6 +49,7 @@ function PartnersView() {
     createModal,
     setCreateModal,
     cleanStates,
+    setPartnerSelected,
   } = useContext(PartnersContext)
 
   const [sectionSelected, setSectionSelected] = useState<{
@@ -79,17 +80,20 @@ function PartnersView() {
   const goPrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1)
+      setPartnerSelected(null)
     }
   }
 
   const goNext = () => {
     if (partners.length > 0) {
       setCurrentPage(currentPage + 1)
+      setPartnerSelected(null)
     }
   }
 
   const searchPartnerInDB = async () => {
     setFilterSelected("all")
+    setPartnerSelected(null)
 
     if (searchValue.length > 2) {
       const executeSearch = await searchPartner(searchValue, 1)
