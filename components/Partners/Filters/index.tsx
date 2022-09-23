@@ -10,13 +10,16 @@ const Filters = () => {
     setModalHasChanges,
     setDetailState,
     setFilterSelected,
+    setPartnerSelected,
   } = useContext(PartnersContext)
 
   const selectFilter = (type: string) => {
     if (filterSelected === "all" || filterSelected !== type) {
       setFilterSelected(type)
+      setPartnerSelected(null)
     } else if (filterSelected === type) {
       setFilterSelected("all")
+      setPartnerSelected(null)
     }
   }
 
