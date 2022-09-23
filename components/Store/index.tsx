@@ -140,7 +140,6 @@ function StoreView() {
           <Title>
             {texts.title} <span> / {sectionSelected.section}</span>
           </Title>
-          {/* {sectionSelected.id === 1 && } */}
           <Filters section={sectionSelected.id} />
           {sectionSelected.id === 3 && (
             <button

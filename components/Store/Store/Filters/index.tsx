@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useRef } from "react"
 import texts from "strings/store.json"
 import Icon from "components/UI/Assets/Icon"
+import InputCalendar from "components/UI/InputCalendar"
 import { StoreContext } from "contexts/Store"
 import {
   FiltersContainer,
@@ -16,11 +17,14 @@ const Filters = section => {
     openTypeMenu,
     setOpenTypeMenu,
     selectFilter,
-    months,
-    setMonthSelected,
+    paymentMethods,
+    setDateSelected,
+    setPaymentFilter,
+    paymentFilter,
   } = useContext(StoreContext)
 
-  const [openMonthMenu, setOpenMonthMenu] = useState<boolean>(false)
+  const calendarRef = useRef(null)
+  const [paymentTypeMenu, setPaymentTypeMenu] = useState<boolean>(false)
 
   return (
     <FiltersContainer>
@@ -53,34 +57,51 @@ const Filters = section => {
         </Select>
       )}
       {section.section === 2 && (
-        <Select
-          onClick={() => {
-            setOpenMonthMenu(!openMonthMenu)
-          }}
-        >
-          <div className="select">
-            <p>Mes</p>
-            <IconContainer>
-              <Icon icon="IconArrowLeft" />
-            </IconContainer>
-          </div>
-          {openMonthMenu && (
-            <Selector>
-              {months.length &&
-                months.map((month: { id: number; display_name: string }) => (
-                  <Option
-                    key={month.id}
-                    onClick={() => setMonthSelected(month.id)}
-                  >
-                    {month.display_name}
-                  </Option>
-                ))}
-              <Option onClick={() => setMonthSelected(null)}>
-                {texts.all}
-              </Option>
-            </Selector>
-          )}
-        </Select>
+        <div className="other">
+          <InputCalendar
+            width={250}
+            onChange={e => {
+              setDateSelected(
+                `${e.selectedChangeDate.slice(
+                  0,
+                  2,
+                )}-${e.selectedChangeDate.slice(
+                  3,
+                  5,
+                )}-${e.selectedChangeDate.slice(6, 10)}`,
+              )
+            }}
+            reference={calendarRef}
+          />
+          <Select
+            onClick={() => {
+              setPaymentTypeMenu(!paymentTypeMenu)
+            }}
+          >
+            <div className="select">
+              {paymentFilter === null && <p>Metodo de pago</p>}
+              {paymentFilter === 1 && <p>Efectivo</p>}
+              {paymentFilter === 2 && <p>MP</p>}
+
+              <IconContainer>
+                <Icon icon="IconArrowLeft" />
+              </IconContainer>
+            </div>
+            {paymentTypeMenu && (
+              <Selector>
+                {paymentMethods.length &&
+                  paymentMethods.map((p: { id: number; name: string }) => (
+                    <Option key={p.id} onClick={() => setPaymentFilter(p.id)}>
+                      {p.name}
+                    </Option>
+                  ))}
+                <Option onClick={() => setPaymentFilter(null)}>
+                  {texts.all}
+                </Option>
+              </Selector>
+            )}
+          </Select>
+        </div>
       )}
     </FiltersContainer>
   )

@@ -263,6 +263,15 @@ const Receipt = () => {
     }
   }
 
+  useEffect(() => {
+    const check = purchase.filter(p => p.product_id === 13)
+    if (check.length > 0) {
+      setPaymentMethodSelected(2)
+    } else {
+      setPaymentMethodSelected(1)
+    }
+  }, [purchase])
+
   return (
     <ReceiptContainer>
       <Title>{texts.purchase.receipt}</Title>

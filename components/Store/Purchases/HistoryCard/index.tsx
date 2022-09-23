@@ -18,6 +18,7 @@ interface HistoryCardInterface {
   // month: string
   type: number
   price: number
+  payment: number
 }
 
 const HistoryCard = ({
@@ -29,7 +30,10 @@ const HistoryCard = ({
   // month,
   type,
   price,
+  payment,
 }: HistoryCardInterface) => {
+  const finalProfit = final_sells - cost * amount
+
   return (
     <Card>
       {type === 1 && <img className="zapas" src="/beer.png" alt="beer" />}
@@ -48,11 +52,13 @@ const HistoryCard = ({
         </ComponentContainerZapas>
       )}
       <Description>
-        <p className="name">{name}</p>
+        <p className="name">
+          {name} {payment === 1 ? "FT" : "MP"}
+        </p>
         <p className="profits">
           Ganancias:
           <span>
-            ${final_sells} <p>({margin}%)</p>
+            ${finalProfit} <p>({margin}%)</p>
           </span>
         </p>
         <HorizontalGroup>

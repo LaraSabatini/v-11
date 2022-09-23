@@ -48,6 +48,11 @@ export const StoreContext = createContext({
   months: null,
   monthSelected: null,
   setMonthSelected: null,
+  dateSelected: null,
+  setDateSelected: null,
+  paymentMethods: null,
+  paymentFilter: null,
+  setPaymentFilter: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -137,6 +142,18 @@ const StoreProvider = ({ children }) => {
 
   const [monthSelected, setMonthSelected] = useState<number>(null)
 
+  const today = new Date()
+  const getDay = today.getDate()
+  const getMonth = today.getMonth()
+  const year = today.getFullYear()
+
+  const day = getDay > 9 ? getDay : `0${getDay}`
+  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
+
+  const [dateSelected, setDateSelected] = useState<string>(
+    `${day}-${month}-${year}`,
+  )
+
   // STOCK ***********************************
   const [searchValueForStock, setSearchValueForStock] = useState<string>("")
 
@@ -161,6 +178,13 @@ const StoreProvider = ({ children }) => {
   const selectFilter = (category_id: number) => {
     setFilterSelected(category_id)
   }
+
+  const paymentMethods = [
+    { id: 1, name: "Efectivo" },
+    { id: 2, name: "MP" },
+  ]
+
+  const [paymentFilter, setPaymentFilter] = useState<number>(1)
 
   // CREATE *************************************
 
@@ -234,6 +258,11 @@ const StoreProvider = ({ children }) => {
         months,
         monthSelected,
         setMonthSelected,
+        dateSelected,
+        setDateSelected,
+        paymentMethods,
+        paymentFilter,
+        setPaymentFilter,
       }}
     >
       {children}
