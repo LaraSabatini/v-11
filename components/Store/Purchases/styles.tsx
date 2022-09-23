@@ -43,4 +43,27 @@ const Details = styled.div`
   box-shadow: 0px 0px 20px 5px rgba(59, 0, 135, 0.1);
 `
 
-export { Container, FiltersContainer, FilterButton, TableContainer, Details }
+const Caja = styled.div`
+  margin-top: -40px;
+  padding-bottom: 40px;
+  font-size: 18px;
+
+  display: flex;
+  gap: 20px;
+
+  span {
+    text-decoration: underline;
+    background-color: ${theme.colors.success_light};
+    padding: 5px;
+    margin-right: 10px;
+  }
+`
+
+export {
+  Container,
+  FiltersContainer,
+  FilterButton,
+  TableContainer,
+  Details,
+  Caja,
+}

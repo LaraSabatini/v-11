@@ -2,10 +2,10 @@
 import React, { useContext, useState, useEffect, useRef } from "react"
 import texts from "strings/store.json"
 import {
-  getProductPurchasesByMonthAndProduct,
-  editProductPurchase,
-  createProductPurchase,
-} from "services/Store/productPurchases.service"
+  getStorePurchasesByDateAndPaymentMethodAndProduct,
+  createStorePurchase,
+  editStorePurchase,
+} from "services/Store/storePurchases.service"
 import {
   searchByUserAndDate,
   updateDigitalPayment,
@@ -92,17 +92,6 @@ const Receipt = () => {
     const year = today.getFullYear()
 
     for (let i = 0; i < purchase.length; i += 1) {
-      const bodyPurchase = {
-        id: 0,
-        date: `${day}/${month}/${year}`,
-        item_id: purchase[i].product_id,
-        amount_of_items: purchase[i].product_amount,
-        cost: purchase[i].cost * purchase[i].product_amount,
-        margin: purchase[i].margin,
-        final_price: purchase[i].final_price,
-      }
-      // post purchase
-
       const filterProduct = productsList.filter(
         product => product.id === purchase[i].product_id,
       )
@@ -128,142 +117,160 @@ const Receipt = () => {
       }
 
       //  CREAR PRODUCT PURCHASE
-      const thisMonth = today.getMonth() + 1
-      const checkIfHasMonths = await getProductPurchasesByMonthAndProduct(
-        thisMonth,
-        purchase[i].product_id,
-      )
-      const finalPriceForProfit = purchase[i].final_price - bodyPurchase.cost // este valor esta multiplicado por la cantidad
-
-      if (checkIfHasMonths.data.length) {
-        const bodyProductPurchase = {
-          id: checkIfHasMonths.data[0].id,
-          month_name: checkIfHasMonths.data[0].month_name,
-          month_id: checkIfHasMonths.data[0].month_id,
-          product_id: checkIfHasMonths.data[0].product_id,
-          product_name: checkIfHasMonths.data[0].product_name,
-          amount_of_sales:
-            checkIfHasMonths.data[0].amount_of_sales +
-            purchase[i].product_amount,
-          profit: checkIfHasMonths.data[0].profit + finalPriceForProfit,
-        }
-        await editProductPurchase(bodyProductPurchase)
-      } else {
-        const bodyProductPurchase = {
-          id: 0,
-          month_name: months.filter(m => m.id === thisMonth)[0].display_name,
-          month_id: thisMonth,
-          product_id: purchase[i].product_id,
-          product_name: purchase[i].product_name,
-          amount_of_sales: purchase[i].product_amount,
-          profit: finalPriceForProfit,
-        }
-        await createProductPurchase(bodyProductPurchase)
-      }
-    }
-
-    //  SI PRODUCT_ID EN PURCHASE ES 12 O 13 => CREAR PARTNER PAYMENT CON ID 258
-
-    const checkProducts = purchase.filter(
-      product => product.product_id === 12 || product.product_id === 13,
-    )
-
-    if (checkProducts.length > 0) {
-      for (let i = 0; i < checkProducts.length; i += 1) {
-        const paymentBody = {
-          id: 0,
-          partner_id: 258,
-          partner_name: "Pase diario",
-          partner_last_name: "No borrar",
-          combo: 0,
-          time_paid: checkProducts[i].product_amount,
-          time_paid_unit: 1,
-          clases_paid: 0,
-          payment_method_id: checkProducts[i].product_id === 12 ? 1 : 2,
-          payment_method_name:
-            checkProducts[i].product_id === 12 ? "Efectivo" : "MP",
-          price_paid: checkProducts[i].final_price,
-          date: `${day}-${month}-${year}`,
-          payment_expire_date: "",
-          days_and_hours: "",
-        }
-        const createPurchase = await createPartnerPayment(paymentBody)
-
-        if (createPurchase.message === "partnerPayment created successfully") {
-          success = true
-        } else {
-          success = false
-        }
-      }
-    }
-
-    if (paymentMethodSelected === 2) {
-      const searchIfExists = await searchByUserAndDate(
-        paymentUserSelected.id,
+      const checkIfExists = await getStorePurchasesByDateAndPaymentMethodAndProduct(
         `${day}-${month}-${year}`,
+        purchase[i].product_id,
+        paymentMethodSelected,
       )
 
-      if (searchIfExists.data.length > 0) {
-        const digitalPaymentBody = {
-          id: searchIfExists.data[0].id,
-          user_id: searchIfExists.data[0].user_id,
-          user_name: searchIfExists.data[0].user_name,
-          date: searchIfExists.data[0].date,
-          month: searchIfExists.data[0].month,
-          month_id: searchIfExists.data[0].month_id,
-          total_profit: searchIfExists.data[0].total_profit + finalPrice,
+      if (checkIfExists.data.length > 0) {
+        // editar
+        const editBody = {
+          id: checkIfExists.data[0].id,
+          product_id: checkIfExists.data[0].product_id,
+          product_name: checkIfExists.data[0].product_name,
+          amount_of_items:
+            checkIfExists.data[0].amount_of_items + purchase[i].product_amount,
+          profit: checkIfExists.data[0].profit + purchase[i].final_price,
+          payment_method_id: checkIfExists.data[0].payment_method_id,
+          date: checkIfExists.data[0].date,
         }
-        const editDigitalPayment = await updateDigitalPayment(
-          digitalPaymentBody,
-        )
-        if (editDigitalPayment.message === "payment updated successfully") {
+        const edit = await editStorePurchase(editBody)
+        if (edit.message === "store_payments updated successfully") {
           success = true
         } else {
           success = false
         }
-        // editar
       } else {
         // crear
-        const digitalPaymentBody = {
+        const createBody = {
           id: 0,
-          user_id: paymentUserSelected.id,
-          user_name: paymentUserSelected.display_name,
+          product_id: purchase[i].product_id,
+          product_name: purchase[i].product_name,
+          amount_of_items: purchase[i].product_amount,
+          profit: purchase[i].final_price,
+          payment_method_id: paymentMethodSelected,
           date: `${day}-${month}-${year}`,
-          month: months.filter(m => m.id === today.getMonth() + 1)[0]
-            .display_name,
-          month_id: today.getMonth() + 1,
-          total_profit: finalPrice,
         }
-        const createDigital = await createDigitalPayment(digitalPaymentBody)
 
-        if (createDigital.message === "payment created successfully") {
+        const create = await createStorePurchase(createBody)
+        if (create.message === "productPurchase created successfully") {
           success = true
         } else {
           success = false
         }
       }
-    }
 
-    if (success) {
-      setModalSuccess({
-        status: "success",
-        icon: "IconCheckModal",
-        title: `${texts.purchase.success.title}`,
-        content: `${texts.purchase.success.content}`,
-      })
-      setPaymentMethodSelected(1)
-      setPaymentUserSelected(null)
-    } else {
-      setModalError({
-        status: "alert",
-        icon: "IconExclamation",
-        title: `${texts.purchase.error.title}`,
-        content: `${texts.purchase.error.content}`,
-      })
-      setPaymentMethodSelected(1)
-      setPaymentUserSelected(null)
+      const checkProducts = purchase.filter(
+        product => product.product_id === 12 || product.product_id === 13,
+      )
+
+      if (checkProducts.length > 0) {
+        for (let num = 0; num < checkProducts.length; num += 1) {
+          const paymentBody = {
+            id: 0,
+            partner_id: 258,
+            partner_name: "Pase diario",
+            partner_last_name: "No borrar",
+            combo: 0,
+            time_paid: checkProducts[num].product_amount,
+            time_paid_unit: 1,
+            clases_paid: 0,
+            payment_method_id: checkProducts[num].product_id === 12 ? 1 : 2,
+            payment_method_name:
+              checkProducts[num].product_id === 12 ? "Efectivo" : "MP",
+            price_paid: checkProducts[num].final_price,
+            date: `${day}-${month}-${year}`,
+            payment_expire_date: "",
+            days_and_hours: "",
+          }
+          const createPurchase = await createPartnerPayment(paymentBody)
+
+          if (
+            createPurchase.message === "partnerPayment created successfully"
+          ) {
+            success = true
+          } else {
+            success = false
+          }
+        }
+      }
+
+      if (paymentMethodSelected === 2) {
+        const searchIfExists = await searchByUserAndDate(
+          paymentUserSelected.id,
+          `${day}-${month}-${year}`,
+        )
+
+        if (searchIfExists.data.length > 0) {
+          const digitalPaymentBody = {
+            id: searchIfExists.data[0].id,
+            user_id: searchIfExists.data[0].user_id,
+            user_name: searchIfExists.data[0].user_name,
+            date: searchIfExists.data[0].date,
+            month: searchIfExists.data[0].month,
+            month_id: searchIfExists.data[0].month_id,
+            total_profit: searchIfExists.data[0].total_profit + finalPrice,
+          }
+          const editDigitalPayment = await updateDigitalPayment(
+            digitalPaymentBody,
+          )
+          if (editDigitalPayment.message === "payment updated successfully") {
+            success = true
+          } else {
+            success = false
+          }
+        } else {
+          const digitalPaymentBody = {
+            id: 0,
+            user_id: paymentUserSelected.id,
+            user_name: paymentUserSelected.display_name,
+            date: `${day}-${month}-${year}`,
+            month: months.filter(m => m.id === today.getMonth() + 1)[0]
+              .display_name,
+            month_id: today.getMonth() + 1,
+            total_profit: finalPrice,
+          }
+          const createDigital = await createDigitalPayment(digitalPaymentBody)
+
+          if (createDigital.message === "payment created successfully") {
+            success = true
+          } else {
+            success = false
+          }
+        }
+      }
+
+      if (success) {
+        setModalSuccess({
+          status: "success",
+          icon: "IconCheckModal",
+          title: `${texts.purchase.success.title}`,
+          content: `${texts.purchase.success.content}`,
+        })
+        setPaymentMethodSelected(1)
+        setPaymentUserSelected(null)
+      } else {
+        setModalError({
+          status: "alert",
+          icon: "IconExclamation",
+          title: `${texts.purchase.error.title}`,
+          content: `${texts.purchase.error.content}`,
+        })
+        setPaymentMethodSelected(1)
+        setPaymentUserSelected(null)
+      }
     }
   }
+
+  useEffect(() => {
+    const check = purchase.filter(p => p.product_id === 13)
+    if (check.length > 0) {
+      setPaymentMethodSelected(2)
+    } else {
+      setPaymentMethodSelected(1)
+    }
+  }, [purchase])
 
   return (
     <ReceiptContainer>

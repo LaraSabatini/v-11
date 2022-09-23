@@ -42,6 +42,11 @@ const FiltersContainer = styled.div`
   gap: 20px;
   align-items: center;
   font-family: ${theme.fonts.primary};
+
+  .other {
+    display: flex;
+    gap: 10px;
+  }
 `
 
 const Select = styled.div`

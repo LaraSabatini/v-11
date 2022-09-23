@@ -1,87 +1,114 @@
 import React, { useContext, useState, useEffect } from "react"
-import {
-  getProductPurchases,
-  getProductPurchasesByMonth,
-} from "services/Store/productPurchases.service"
+import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import { StoreContext } from "contexts/Store"
 import HistoryCard from "./HistoryCard"
-import { Container } from "./styles"
+import { Container, Caja } from "./styles"
 
 const Purchases = () => {
-  const { productsList, monthSelected } = useContext(StoreContext)
+  const { productsList, dateSelected, paymentFilter } = useContext(StoreContext)
   const [historyList, setHistoryList] = useState<
     {
       id: number
-      month_name: string
-      month_id: number
       product_id: number
       product_name: string
-      amount_of_sales: number
+      amount_of_items: number
       profit: number
+      payment_method_id: number
+      date: string
     }[]
   >([])
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [currentPage, setCurrentPage] = useState<number>(1)
 
-  const fillData = async () => {
-    if (monthSelected === null) {
-      const data = await getProductPurchases(currentPage)
-      const finalList = data.data.filter(
-        p => p.product_id !== 12 && p.product_id !== 13,
-      )
+  const [profitsCash, setProfitsCash] = useState<number>(0)
+  const [profitsMP, setProfitsMP] = useState<number>(0)
 
-      setHistoryList(finalList)
+  const fillData = async () => {
+    const data = await getStorePurchasesByDate(dateSelected)
+    // let cash = 0
+    const filterCash = data.data.filter(p => p.payment_method_id === 1)
+    if (filterCash.length > 0) {
+      let final = 0
+      filterCash.map(p => {
+        final += p.profit
+        return 0
+      })
+
+      setProfitsCash(final)
+    }
+
+    const filterMP = data.data.filter(p => p.payment_method_id === 2)
+    if (filterMP.length > 0) {
+      let final = 0
+      filterMP.map(p => {
+        final += p.profit
+        return 0
+      })
+
+      setProfitsMP(final)
+    }
+
+    if (paymentFilter === null) {
+      setHistoryList(data.data)
     } else {
-      const data = await getProductPurchasesByMonth(monthSelected)
-      const finalList = data.data.filter(
-        p => p.product_id !== 12 && p.product_id !== 13,
+      const filterData = data.data.filter(
+        p => p.payment_method_id === paymentFilter,
       )
-      setHistoryList(finalList)
+      setHistoryList(filterData)
     }
   }
 
   useEffect(() => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, monthSelected])
+  }, [currentPage, dateSelected, paymentFilter])
 
   return (
-    <Container>
-      {historyList.length > 0 &&
-        productsList.length > 0 &&
-        historyList.map(history => (
-          <HistoryCard
-            key={history.id}
-            name={
-              productsList.filter(
-                product => product.id === history.product_id,
-              )[0].name
-            }
-            margin={
-              productsList.filter(
-                product => product.id === history.product_id,
-              )[0].margin
-            }
-            cost={
-              productsList.filter(
-                product => product.id === history.product_id,
-              )[0].cost
-            }
-            type={
-              productsList.filter(
-                product => product.id === history.product_id,
-              )[0].category_id
-            }
-            price={
-              productsList.filter(
-                product => product.id === history.product_id,
-              )[0].price
-            }
-            final_sells={history.profit}
-            amount={history.amount_of_sales} // month={history.month_name}
-          />
-        ))}
-    </Container>
+    <>
+      <Caja>
+        <p>
+          <span>Caja MP:</span>
+          <b> $ {profitsMP}</b>
+        </p>
+        <p>
+          <span>Caja Efectivo:</span>
+          <b>$ {profitsCash}</b>
+        </p>
+      </Caja>
+      <Container>
+        {historyList.length > 0 &&
+          productsList.length > 0 &&
+          historyList.map(history => (
+            <HistoryCard
+              key={history.id}
+              name={history.product_name}
+              margin={
+                productsList.filter(
+                  product => product.id === history.product_id,
+                )[0].margin
+              }
+              cost={
+                productsList.filter(
+                  product => product.id === history.product_id,
+                )[0].cost
+              }
+              type={
+                productsList.filter(
+                  product => product.id === history.product_id,
+                )[0].category_id
+              }
+              price={
+                productsList.filter(
+                  product => product.id === history.product_id,
+                )[0].price
+              }
+              final_sells={history.profit}
+              amount={history.amount_of_items}
+              payment={history.payment_method_id}
+            />
+          ))}
+      </Container>
+    </>
   )
 }
 
