@@ -98,7 +98,7 @@ const HistoryCard = ({
               </p>
               <p className="cost">
                 Costo:
-                <span>${cost}</span>
+                <span>$ -</span>
               </p>
               <p className="cost">
                 Ventas:
