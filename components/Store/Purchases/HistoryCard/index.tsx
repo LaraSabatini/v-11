@@ -15,10 +15,10 @@ interface HistoryCardInterface {
   cost: number
   final_sells: number
   amount: number
-  // month: string
   type: number
   price: number
   payment: number
+  id: number
 }
 
 const HistoryCard = ({
@@ -27,56 +27,88 @@ const HistoryCard = ({
   cost,
   final_sells,
   amount,
-  // month,
   type,
   price,
   payment,
+  id,
 }: HistoryCardInterface) => {
   const finalProfit = final_sells - cost * amount
 
   return (
-    <Card>
-      {type === 1 && <img className="zapas" src="/beer.png" alt="beer" />}
-      {type === 4 && <img className="monster" src="/monster.webp" alt="beer" />}
-      {type === 5 && (
-        <img className="calendar" src="/calendar.png" alt="beer" />
+    <>
+      {id !== 12 && id !== 13 ? (
+        <Card>
+          {type === 1 && <img className="zapas" src="/beer.png" alt="beer" />}
+          {type === 4 && (
+            <img className="monster" src="/monster.webp" alt="beer" />
+          )}
+          {type === 2 && (
+            <ComponentContainer>
+              <Magnesiera />
+            </ComponentContainer>
+          )}
+          {type === 3 && (
+            <ComponentContainerZapas>
+              <Zapas />
+            </ComponentContainerZapas>
+          )}
+          <Description>
+            <p className="name">
+              {name} {payment === 1 ? "FT" : "MP"}
+            </p>
+            <p className="profits">
+              Ganancias:
+              <span>
+                ${finalProfit} <p>({margin}%)</p>
+              </span>
+            </p>
+            <HorizontalGroup>
+              <p className="cost">
+                Precio:
+                <span>${price}</span>
+              </p>
+              <p className="cost">
+                Costo:
+                <span>${cost}</span>
+              </p>
+              <p className="cost">
+                Ventas:
+                <span>{amount}u</span>
+              </p>
+            </HorizontalGroup>
+          </Description>
+        </Card>
+      ) : (
+        <Card>
+          <img className="calendar" src="/calendar.png" alt="beer" />
+          <Description>
+            <p className="name">
+              {name} {payment === 1 ? "FT" : "MP"}
+            </p>
+            <p className="profits">
+              Ganancias:
+              <span>
+                ${price * amount} <p>(100%)</p>
+              </span>
+            </p>
+            <HorizontalGroup>
+              <p className="cost">
+                Precio:
+                <span>${price}</span>
+              </p>
+              <p className="cost">
+                Costo:
+                <span>${cost}</span>
+              </p>
+              <p className="cost">
+                Ventas:
+                <span>{amount}u</span>
+              </p>
+            </HorizontalGroup>
+          </Description>
+        </Card>
       )}
-      {type === 2 && (
-        <ComponentContainer>
-          <Magnesiera />
-        </ComponentContainer>
-      )}
-      {type === 3 && (
-        <ComponentContainerZapas>
-          <Zapas />
-        </ComponentContainerZapas>
-      )}
-      <Description>
-        <p className="name">
-          {name} {payment === 1 ? "FT" : "MP"}
-        </p>
-        <p className="profits">
-          Ganancias:
-          <span>
-            ${finalProfit} <p>({margin}%)</p>
-          </span>
-        </p>
-        <HorizontalGroup>
-          <p className="cost">
-            Precio:
-            <span>${price}</span>
-          </p>
-          <p className="cost">
-            Costo:
-            <span>${cost}</span>
-          </p>
-          <p className="cost">
-            Ventas:
-            <span>{amount}u</span>
-          </p>
-        </HorizontalGroup>
-      </Description>
-    </Card>
+    </>
   )
 }
 

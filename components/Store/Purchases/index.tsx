@@ -80,6 +80,7 @@ const Purchases = () => {
           productsList.length > 0 &&
           historyList.map(history => (
             <HistoryCard
+              id={history.product_id}
               key={history.id}
               name={history.product_name}
               margin={
