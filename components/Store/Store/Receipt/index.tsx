@@ -132,7 +132,7 @@ const Receipt = () => {
           amount_of_items:
             checkIfExists.data[0].amount_of_items + purchase[i].product_amount,
           profit: checkIfExists.data[0].profit + purchase[i].final_price,
-          payment_method_id: checkIfExists.data[0].payment_method_id,
+          payment_method_id: paymentMethodSelected,
           date: checkIfExists.data[0].date,
         }
         const edit = await editStorePurchase(editBody)
