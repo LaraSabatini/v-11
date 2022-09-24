@@ -36,7 +36,7 @@ const HistoryCard = ({
 
   return (
     <>
-      {id !== 12 && id !== 13 ? (
+      {id !== 12 && id !== 13 && id !== 3 ? (
         <Card>
           {type === 1 && <img className="zapas" src="/beer.png" alt="beer" />}
           {type === 4 && (
@@ -80,7 +80,14 @@ const HistoryCard = ({
         </Card>
       ) : (
         <Card>
-          <img className="calendar" src="/calendar.png" alt="beer" />
+          {type === 5 && (
+            <img className="calendar" src="/calendar.png" alt="beer" />
+          )}
+          {type === 3 && (
+            <ComponentContainerZapas>
+              <Zapas />
+            </ComponentContainerZapas>
+          )}
           <Description>
             <p className="name">
               {name} {payment === 1 ? "FT" : "MP"}
