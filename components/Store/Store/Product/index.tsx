@@ -78,9 +78,7 @@ const Product = ({
         cost,
         margin,
       })
-
       const index = purchase.indexOf(checkPurchase[0])
-
       const newPurchase = purchase
       newPurchase[index] = {
         product_id: id,
@@ -91,7 +89,7 @@ const Product = ({
         margin,
       }
       if (newPurchase[index].product_amount === 0) {
-        const finalPurchase = newPurchase.slice(index + 1, newPurchase.length)
+        const finalPurchase = purchase.filter(p => p.product_id !== id)
         setPurchase(finalPurchase)
       } else {
         setPurchase(newPurchase)
