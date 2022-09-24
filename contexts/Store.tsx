@@ -184,7 +184,7 @@ const StoreProvider = ({ children }) => {
     { id: 2, name: "MP" },
   ]
 
-  const [paymentFilter, setPaymentFilter] = useState<number>(1)
+  const [paymentFilter, setPaymentFilter] = useState<number>(null)
 
   // CREATE *************************************
 
