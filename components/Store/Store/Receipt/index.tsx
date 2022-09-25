@@ -45,15 +45,13 @@ const Receipt = () => {
     setModalSuccess,
     setModalError,
     months,
+    paymentMethodSelected,
+    setPaymentMethodSelected,
+    paymentUserSelected,
+    setPaymentUserSelected,
   } = useContext(StoreContext)
 
   const [finalPrice, setFinalPrice] = useState<number>(0)
-
-  const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
-  const [paymentUserSelected, setPaymentUserSelected] = useState<{
-    id: number
-    display_name: string
-  }>(null)
 
   const paymentUserRef = useRef(null)
 
@@ -263,6 +261,7 @@ const Receipt = () => {
     } else {
       setPaymentMethodSelected(1)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [purchase])
 
   return (
@@ -290,6 +289,16 @@ const Receipt = () => {
         <RadioButtonsContainer>
           <RadioContainer>
             <RadioButton
+              disabled={
+                purchase.filter(
+                  (product: {
+                    product_id: number
+                    product_name: string
+                    product_amount: number
+                    final_price: number
+                  }) => product.product_id === 13,
+                ).length > 0
+              }
               value={3}
               checked={paymentMethodSelected === 1}
               onChange={() => {
@@ -301,6 +310,16 @@ const Receipt = () => {
           </RadioContainer>
           <RadioContainer>
             <RadioButton
+              disabled={
+                purchase.filter(
+                  (product: {
+                    product_id: number
+                    product_name: string
+                    product_amount: number
+                    final_price: number
+                  }) => product.product_id === 12,
+                ).length > 0
+              }
               value={3}
               checked={paymentMethodSelected === 2}
               onChange={() => {

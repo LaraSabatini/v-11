@@ -54,6 +54,10 @@ export const StoreContext = createContext({
   paymentMethods: null,
   paymentFilter: null,
   setPaymentFilter: null,
+  paymentMethodSelected: null,
+  setPaymentMethodSelected: null,
+  paymentUserSelected: null,
+  setPaymentUserSelected: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -210,6 +214,12 @@ const StoreProvider = ({ children }) => {
   const marginRef = useRef(null)
   const stockRef = useRef(null)
 
+  const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
+  const [paymentUserSelected, setPaymentUserSelected] = useState<{
+    id: number
+    display_name: string
+  }>(null)
+
   return (
     <StoreContext.Provider
       value={{
@@ -264,6 +274,10 @@ const StoreProvider = ({ children }) => {
         paymentMethods,
         paymentFilter,
         setPaymentFilter,
+        paymentMethodSelected,
+        setPaymentMethodSelected,
+        paymentUserSelected,
+        setPaymentUserSelected,
       }}
     >
       {children}

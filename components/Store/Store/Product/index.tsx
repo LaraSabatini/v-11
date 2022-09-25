@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from "react"
 import { StoreContext } from "contexts/Store"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
+import Tooltip from "components/UI/Tooltip"
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
 import {
@@ -56,6 +57,7 @@ const Product = ({
     cost: 0,
     margin: 0,
   })
+  const [buttonAddDisabled, setButtonAddDisabled] = useState<boolean>(false)
 
   const removeProduct = () => {
     const checkPurchase = purchase.filter(
@@ -158,8 +160,36 @@ const Product = ({
         cost: 0,
         margin: 0,
       })
+      setButtonAddDisabled(false)
     }
   }, [executeCleanPurchase])
+
+  const checkButtonDisabled = () => {
+    const purHasCashPass = purchase.filter(
+      (product: {
+        product_id: number
+        product_name: string
+        product_amount: number
+        final_price: number
+      }) => product.product_id === 12,
+    )
+    const purHasMPPass = purchase.filter(
+      (product: {
+        product_id: number
+        product_name: string
+        product_amount: number
+        final_price: number
+      }) => product.product_id === 13,
+    )
+    if (purHasCashPass.length > 0 && id === 13) {
+      setButtonAddDisabled(true)
+    } else if (purHasMPPass.length > 0 && id === 12) {
+      setButtonAddDisabled(true)
+    } else {
+      setButtonAddDisabled(false)
+      addProduct()
+    }
+  }
 
   return (
     <ProductCard>
@@ -191,9 +221,28 @@ const Product = ({
             <Icon icon="IconLess" />
           </button>
           <Amount>{purchaseProducts.product_amount}</Amount>
-          <button type="button" onClick={addProduct}>
-            <Icon icon="IconAdd" />
-          </button>
+          {buttonAddDisabled ? (
+            <Tooltip title="Deshabilitado">
+              {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
+              <button
+                type="button"
+                onClick={() => {
+                  checkButtonDisabled()
+                }}
+              >
+                <Icon icon="IconAdd" />
+              </button>
+            </Tooltip>
+          ) : (
+            <button
+              type="button"
+              onClick={() => {
+                checkButtonDisabled()
+              }}
+            >
+              <Icon icon="IconAdd" />
+            </button>
+          )}
         </IconContainer>
       </Description>
     </ProductCard>
