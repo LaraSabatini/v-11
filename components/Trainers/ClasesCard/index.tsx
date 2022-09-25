@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react"
-import { editPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { Clases } from "contexts/Clases"
+import texts from "strings/trainers.json"
+import { editPartnerPayment } from "services/Partners/PartnerPayments.service"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import Icon from "components/UI/Assets/Icon"
-import { DaysLeft } from "components/Partners/PartnerDetails/DetailsView/styles"
 import TextButton from "components/UI/TextButton"
+import { DaysLeft } from "components/Partners/PartnerDetails/DetailsView/styles"
 import { Card, Title, Days, Data, ButtonContainer } from "./styles"
 
 interface ClasesCardInterface {
@@ -18,7 +19,7 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
 
   const [changes, setChanges] = useState<boolean>(false)
   const [variableValues, setVariableValues] = useState({
-    name: "clases",
+    name: `${texts.lessons}`,
     value: data.clases_paid,
   })
 
@@ -54,7 +55,7 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
       </Title>
       <Data>
         <Days>
-          <p>Clases restantes:</p>
+          <p>{texts.lessonsLeft}</p>
           <DaysLeft>
             <button
               className="remove"
@@ -63,7 +64,7 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
                 setChanges(true)
                 if (variableValues.value > 0) {
                   setVariableValues({
-                    name: "clases",
+                    name: `${texts.lessons}`,
                     value: variableValues.value - 1,
                   })
                 }
@@ -75,7 +76,7 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
           </DaysLeft>
         </Days>
         <Days>
-          <p>Dias: </p>
+          <p>{texts.days} </p>
           {data.days_and_hours.length &&
             data.days_and_hours.map(d => (
               <ul key={d}>
@@ -85,12 +86,12 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
         </Days>
         {changes && (
           <ButtonContainer>
-            <TextButton content="Guardar" cta onClick={() => removeClas()} />
+            <TextButton content={texts.save} cta onClick={() => removeClas()} />
             <TextButton
-              content="Cancelar"
+              content={texts.cancel}
               onClick={() => {
                 setVariableValues({
-                  name: "clases",
+                  name: `${texts.lessons}`,
                   value: data.clases_paid,
                 })
                 setChanges(false)

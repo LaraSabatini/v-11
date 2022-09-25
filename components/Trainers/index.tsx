@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react"
-import Header from "components/UI/Header"
-import { Clases } from "contexts/Clases"
 import { getSchedule } from "services/Trainers/Schedule.service"
 import { getClasesPaid } from "services/Partners/PartnerPayments.service"
+import { Clases } from "contexts/Clases"
+import texts from "strings/trainers.json"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+import Header from "components/UI/Header"
 import ScrollView from "components/UI/ScrollView"
 import ClasesCard from "./ClasesCard"
 import {
@@ -31,7 +32,7 @@ function TrainersView() {
     section: string
     id: number
   }>({
-    section: "Alumnos",
+    section: `${texts.students}`,
     id: 1,
   })
 
@@ -79,24 +80,26 @@ function TrainersView() {
       <Container>
         <SectionsButtons>
           <Section
-            onClick={() => setSectionSelected({ section: "Alumnos", id: 1 })}
+            onClick={() =>
+              setSectionSelected({ section: `${texts.students}`, id: 1 })
+            }
             selected={sectionSelected.id === 1}
           >
             Alumnos
           </Section>
           <Section
             onClick={() =>
-              setSectionSelected({ section: "Calendario Clases", id: 2 })
+              setSectionSelected({ section: `${texts.calendar}`, id: 2 })
             }
             selected={sectionSelected.id === 2}
           >
-            Calendario Clases
+            {texts.calendar}
           </Section>
         </SectionsButtons>
 
         <Title>
           <div>
-            Profesores
+            {texts.trainers}
             <span> / {sectionSelected.section}</span>
           </div>
           {sectionSelected.id === 1 && (
@@ -114,7 +117,7 @@ function TrainersView() {
                 onClick={() => setFilterSelected(null)}
                 selected={filterSelected === null}
               >
-                Todos
+                {texts.all}
               </FilterButton>
             </FiltersContainer>
           )}
