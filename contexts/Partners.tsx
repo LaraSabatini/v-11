@@ -4,6 +4,8 @@ import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
+import ModalInterface from "interfaces/components/ModalInterface"
+import DefaultInterface from "interfaces/components/DefaultInterface"
 
 export const PartnersContext = createContext({
   filterSelected: null,
@@ -169,34 +171,19 @@ const PartnersProvider = ({ children }) => {
   const phoneRef = useRef(null)
   const paymentUserRef = useRef(null)
 
-  const [modalSuccess, setModalSuccess] = useState<{
-    status: string
-    icon: string
-    title: string
-    content: string
-  } | null>(null)
+  const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
 
-  const [modalError, setModalError] = useState<{
-    status: string
-    icon: string
-    title: string
-    content: string
-  } | null>(null)
+  const [modalError, setModalError] = useState<ModalInterface | null>(null)
 
   const [paidTime, setPaidTime] = useState<number>(1)
-  const [paidTimeUnit, setPaidTimeUnit] = useState<{
-    id: number
-    display_name: string
-  }>({
+  const [paidTimeUnit, setPaidTimeUnit] = useState<DefaultInterface>({
     id: 1,
     display_name: "Dia/s",
   })
 
   const [combos, setCombos] = useState<CombosInterface[]>([])
 
-  const [paymentMethods, setPaymentMethods] = useState<
-    { id: number; display_name: string }[]
-  >([
+  const [paymentMethods, setPaymentMethods] = useState<DefaultInterface[]>([
     { id: 1, display_name: "Efectivo" },
     { id: 2, display_name: "MP" },
   ])
@@ -217,15 +204,9 @@ const PartnersProvider = ({ children }) => {
 
   const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
 
-  const [trainerSelected, setTrainerSelected] = useState<{
-    id: number
-    display_name: string
-  }>()
+  const [trainerSelected, setTrainerSelected] = useState<DefaultInterface>()
 
-  const [scheduleList, setScheduleList] = useState<{
-    id: number
-    display_name: string
-  }>()
+  const [scheduleList, setScheduleList] = useState<DefaultInterface[]>()
 
   const [scheduleSelected, setScheduleSelected] = useState<number[]>([])
 
@@ -334,12 +315,10 @@ const PartnersProvider = ({ children }) => {
     }
   }
 
-  const [modalErrorAddDays, setModalErrorAddDays] = useState<{
-    status: string
-    icon: string
-    title: string
-    content: string
-  } | null>(null)
+  const [
+    modalErrorAddDays,
+    setModalErrorAddDays,
+  ] = useState<ModalInterface | null>(null)
 
   const cleanStates = () => {
     setScheduleSelected([])
@@ -383,10 +362,10 @@ const PartnersProvider = ({ children }) => {
     { id: 5, display_name: "Joaco" },
   ]
 
-  const [paymentUserSelected, setPaymentUserSelected] = useState<{
-    id: number
-    display_name: string
-  }>(null)
+  const [
+    paymentUserSelected,
+    setPaymentUserSelected,
+  ] = useState<DefaultInterface>(null)
 
   const months = [
     {

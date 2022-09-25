@@ -1,5 +1,6 @@
 import { createContext, useState, useRef } from "react"
 import ProductInterface from "interfaces/store/ProductInterface"
+import DefaultInterface from "interfaces/components/DefaultInterface"
 
 export const StoreContext = createContext({
   productsList: null,
@@ -53,6 +54,10 @@ export const StoreContext = createContext({
   paymentMethods: null,
   paymentFilter: null,
   setPaymentFilter: null,
+  paymentMethodSelected: null,
+  setPaymentMethodSelected: null,
+  paymentUserSelected: null,
+  setPaymentUserSelected: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -84,9 +89,9 @@ const StoreProvider = ({ children }) => {
   const [
     autoCompleteCategoriesValues,
     setAutoCompleteCategoriesValues,
-  ] = useState<{ id: number; display_name: string }[]>()
+  ] = useState<DefaultInterface[]>()
   const [autoCompleteBrandsValues, setAutoCompleteBrandsValues] = useState<
-    { id: number; display_name: string }[]
+    DefaultInterface[]
   >()
 
   const months = [
@@ -209,6 +214,12 @@ const StoreProvider = ({ children }) => {
   const marginRef = useRef(null)
   const stockRef = useRef(null)
 
+  const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
+  const [paymentUserSelected, setPaymentUserSelected] = useState<{
+    id: number
+    display_name: string
+  }>(null)
+
   return (
     <StoreContext.Provider
       value={{
@@ -263,6 +274,10 @@ const StoreProvider = ({ children }) => {
         paymentMethods,
         paymentFilter,
         setPaymentFilter,
+        paymentMethodSelected,
+        setPaymentMethodSelected,
+        paymentUserSelected,
+        setPaymentUserSelected,
       }}
     >
       {children}

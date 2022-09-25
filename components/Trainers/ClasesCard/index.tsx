@@ -1,10 +1,14 @@
 import React, { useContext, useState } from "react"
-import { editPartnerPayment } from "services/Partners/PartnerPayments.service"
+// SERVICES
 import { Clases } from "contexts/Clases"
+import { editPartnerPayment } from "services/Partners/PartnerPayments.service"
+// DATA STORAGE & TYPES
+import texts from "strings/trainers.json"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+// COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
-import { DaysLeft } from "components/Partners/PartnerDetails/DetailsView/styles"
 import TextButton from "components/UI/TextButton"
+import { DaysLeft } from "components/Partners/PartnerDetails/DetailsView/styles"
 import { Card, Title, Days, Data, ButtonContainer } from "./styles"
 
 interface ClasesCardInterface {
@@ -17,22 +21,24 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
   )
 
   const [changes, setChanges] = useState<boolean>(false)
-  const [variableValues, setVariableValues] = useState({
-    name: "clases",
+
+  const [lessonsPurchasedData, setLessonsPurchasedData] = useState({
+    name: `${texts.lessons}`,
     value: data.clases_paid,
   })
 
-  const removeClas = async () => {
+  const removeLesson = async () => {
     let success: boolean = false
 
     const body = {
       ...data,
-      clases_paid: variableValues.value,
-      days_and_hours: variableValues.value === 0 ? "" : data.days_and_hours,
+      clases_paid: lessonsPurchasedData.value,
+      days_and_hours:
+        lessonsPurchasedData.value === 0 ? "" : data.days_and_hours,
     }
 
-    const edit = await editPartnerPayment(body)
-    if (edit.message === "payment updated successfully") {
+    const editPaymentCall = await editPartnerPayment(body)
+    if (editPaymentCall.message === "payment updated successfully") {
       success = true
     } else {
       success = false
@@ -54,43 +60,53 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
       </Title>
       <Data>
         <Days>
-          <p>Clases restantes:</p>
+          <p>{texts.lessonsLeft}</p>
           <DaysLeft>
             <button
               className="remove"
               type="button"
               onClick={() => {
                 setChanges(true)
-                if (variableValues.value > 0) {
-                  setVariableValues({
-                    name: "clases",
-                    value: variableValues.value - 1,
+                if (lessonsPurchasedData.value > 0) {
+                  setLessonsPurchasedData({
+                    name: `${texts.lessons}`,
+                    value: lessonsPurchasedData.value - 1,
                   })
                 }
               }}
             >
               <Icon icon="IconLess" />
             </button>
-            {variableValues.value}
+            {lessonsPurchasedData.value}
           </DaysLeft>
         </Days>
         <Days>
-          <p>Dias: </p>
+          <p>{texts.days} </p>
           {data.days_and_hours.length &&
-            data.days_and_hours.map(d => (
-              <ul key={d}>
-                <li>{schedule.filter(ho => ho.id === d)[0].day_and_hour}</li>
+            data.days_and_hours.map(dayAndHour => (
+              <ul key={dayAndHour}>
+                <li>
+                  {
+                    schedule.filter(
+                      scheduleHour => scheduleHour.id === dayAndHour,
+                    )[0].day_and_hour
+                  }
+                </li>
               </ul>
             ))}
         </Days>
         {changes && (
           <ButtonContainer>
-            <TextButton content="Guardar" cta onClick={() => removeClas()} />
             <TextButton
-              content="Cancelar"
+              content={texts.save}
+              cta
+              onClick={() => removeLesson()}
+            />
+            <TextButton
+              content={texts.cancel}
               onClick={() => {
-                setVariableValues({
-                  name: "clases",
+                setLessonsPurchasedData({
+                  name: `${texts.lessons}`,
                   value: data.clases_paid,
                 })
                 setChanges(false)

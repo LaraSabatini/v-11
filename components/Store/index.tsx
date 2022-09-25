@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from "react"
+// SERVICES
 import { getProducts, productByCategory } from "services/Store/Products.service"
 import getCategories from "services/Store/getCategories.service"
 import getBrands from "services/Store/getBrands.service"
+// DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
+// COMPONENTS & STYLING
 import theme from "theme/index"
 import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
@@ -43,7 +46,8 @@ function StoreView() {
     setModalStockHasChanges,
     stockChanges,
   } = useContext(StoreContext)
-  const [createModal, setCreateModal] = useState<boolean>(false)
+
+  const [createProductModal, setCreateProductModal] = useState<boolean>(false)
 
   const [sectionSelected, setSectionSelected] = useState<{
     section: string
@@ -53,26 +57,29 @@ function StoreView() {
     id: 1,
   })
 
-  const setData = async () => {
-    const categoriesList = await getCategories()
-    setCategories(categoriesList.data)
+  const getStaticData = async () => {
+    const categoriesListCall = await getCategories()
+    setCategories(categoriesListCall.data)
 
-    const brandsList = await getBrands()
-    setBrands(brandsList.data)
+    const brandsListCall = await getBrands()
+    setBrands(brandsListCall.data)
   }
 
   useEffect(() => {
-    setData()
+    getStaticData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const getListOfProducts = async () => {
     if (filterSelected === null) {
-      const data = await getProducts(currentPage)
-      setProductsList(data.data)
+      const productListCall = await getProducts(currentPage)
+      setProductsList(productListCall.data)
     } else {
-      const data = await productByCategory(filterSelected, 1)
-      setProductsList(data.data)
+      const productListByCategoryCall = await productByCategory(
+        filterSelected,
+        1,
+      )
+      setProductsList(productListByCategoryCall.data)
     }
   }
 
@@ -175,7 +182,7 @@ function StoreView() {
                   if (stockChanges) {
                     setModalStockHasChanges(true)
                   } else {
-                    setCreateModal(true)
+                    setCreateProductModal(true)
                   }
                 }}
               >
@@ -185,8 +192,8 @@ function StoreView() {
           </MainButton>
         )}
       </Content>
-      {createModal && (
-        <CreateProductForm cancelCreate={() => setCreateModal(false)} />
+      {createProductModal && (
+        <CreateProductForm cancelCreate={() => setCreateProductModal(false)} />
       )}
     </Container>
   )

@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useContext } from "react"
-import Header from "components/UI/Header"
-import { Clases } from "contexts/Clases"
+// SERVICES
 import { getSchedule } from "services/Trainers/Schedule.service"
 import { getClasesPaid } from "services/Partners/PartnerPayments.service"
+import { Clases } from "contexts/Clases"
+// DATA STORAGE & TYPES
+import texts from "strings/trainers.json"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+// COMPONENTS & STYLING
+import Header from "components/UI/Header"
 import ScrollView from "components/UI/ScrollView"
 import ClasesCard from "./ClasesCard"
 import {
@@ -31,41 +35,40 @@ function TrainersView() {
     section: string
     id: number
   }>({
-    section: "Alumnos",
+    section: `${texts.students}`,
     id: 1,
   })
 
-  const cleanData = (purchases: ClasesPurchasedInterface[]) => {
-    const newArr = purchases
-
-    newArr.map((pur, index) => {
-      const newValue = pur.days_and_hours
+  const cleanDataForStorage = (purchases: ClasesPurchasedInterface[]) => {
+    const newPurchasesList = purchases
+    newPurchasesList.map((purchase, index) => {
+      const cleanedValueForDaysAndHours = purchase.days_and_hours
         .split(",")
-        .map(clas => parseInt(clas, 10))
-      newArr[index].days_and_hours = newValue
+        .map((lesson: string) => parseInt(lesson, 10))
+      newPurchasesList[index].days_and_hours = cleanedValueForDaysAndHours
       return 0
     })
 
     if (filterSelected !== null) {
-      const arrFiltered = newArr.filter(
+      const lessonsFiltered = newPurchasesList.filter(
         purchase => purchase.days_and_hours.indexOf(filterSelected) !== -1,
       )
-      setClasesPurchased(arrFiltered)
+      setClasesPurchased(lessonsFiltered)
     } else {
-      setClasesPurchased(newArr)
+      setClasesPurchased(newPurchasesList)
     }
   }
 
   const fillData = async () => {
-    const scheduleData = await getSchedule()
-    setSchedule(scheduleData.data)
+    const scheduleDataCall = await getSchedule()
+    setSchedule(scheduleDataCall.data)
 
-    const data = await getClasesPaid()
-    const assignValues = data.data.filter(
-      payment => payment.days_and_hours !== "",
+    const lessonsPaidCall = await getClasesPaid()
+    const assignValues = lessonsPaidCall.data.filter(
+      (payment: ClasesPurchasedInterface) => payment.days_and_hours !== "",
     )
 
-    cleanData(assignValues)
+    cleanDataForStorage(assignValues)
   }
 
   useEffect(() => {
@@ -79,42 +82,50 @@ function TrainersView() {
       <Container>
         <SectionsButtons>
           <Section
-            onClick={() => setSectionSelected({ section: "Alumnos", id: 1 })}
+            onClick={() =>
+              setSectionSelected({ section: `${texts.students}`, id: 1 })
+            }
             selected={sectionSelected.id === 1}
           >
             Alumnos
           </Section>
           <Section
             onClick={() =>
-              setSectionSelected({ section: "Calendario Clases", id: 2 })
+              setSectionSelected({ section: `${texts.calendar}`, id: 2 })
             }
             selected={sectionSelected.id === 2}
           >
-            Calendario Clases
+            {texts.calendar}
           </Section>
         </SectionsButtons>
 
         <Title>
           <div>
-            Profesores
+            {texts.trainers}
             <span> / {sectionSelected.section}</span>
           </div>
           {sectionSelected.id === 1 && (
             <FiltersContainer>
               {schedule.length &&
-                schedule.map(s => (
-                  <FilterButton
-                    selected={filterSelected === s.id}
-                    onClick={() => setFilterSelected(s.id)}
-                  >
-                    {s.day_and_hour}
-                  </FilterButton>
-                ))}
+                schedule.map(
+                  (uniqueSchedule: {
+                    id: number
+                    day_and_hour: string
+                    max_students: number
+                  }) => (
+                    <FilterButton
+                      selected={filterSelected === uniqueSchedule.id}
+                      onClick={() => setFilterSelected(uniqueSchedule.id)}
+                    >
+                      {uniqueSchedule.day_and_hour}
+                    </FilterButton>
+                  ),
+                )}
               <FilterButton
                 onClick={() => setFilterSelected(null)}
                 selected={filterSelected === null}
               >
-                Todos
+                {texts.all}
               </FilterButton>
             </FiltersContainer>
           )}
@@ -123,8 +134,8 @@ function TrainersView() {
           <ScrollView height={550}>
             <CardsContainer>
               {clasesPurchased.length > 0 &&
-                clasesPurchased.map(clas => (
-                  <ClasesCard key={clas.id} data={clas} />
+                clasesPurchased.map(lesson => (
+                  <ClasesCard key={lesson.id} data={lesson} />
                 ))}
             </CardsContainer>
           </ScrollView>
