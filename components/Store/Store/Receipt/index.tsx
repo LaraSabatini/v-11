@@ -207,7 +207,7 @@ const Receipt = () => {
         product_name: string
         product_amount: number
         final_price: number
-      }) => product.product_id === 12 || product.product_id === 13,
+      }) => product.product_id === 1 || product.product_id === 2,
     )
 
     if (checkIfProductsAreDailyPass.length > 0) {
@@ -221,9 +221,9 @@ const Receipt = () => {
         time_paid_unit: 1,
         clases_paid: 0,
         payment_method_id:
-          checkIfProductsAreDailyPass[0].product_id === 12 ? 1 : 2,
+          checkIfProductsAreDailyPass[0].product_id === 1 ? 1 : 2,
         payment_method_name:
-          checkIfProductsAreDailyPass[0].product_id === 12 ? "Efectivo" : "MP",
+          checkIfProductsAreDailyPass[0].product_id === 1 ? "Efectivo" : "MP",
         price_paid: checkIfProductsAreDailyPass[0].final_price,
         date: `${day}-${month}-${year}`,
         payment_expire_date: "",
@@ -255,7 +255,7 @@ const Receipt = () => {
   }
 
   useEffect(() => {
-    const check = purchase.filter(p => p.product_id === 13)
+    const check = purchase.filter(p => p.product_id === 2)
     if (check.length > 0) {
       setPaymentMethodSelected(2)
     } else {
@@ -296,7 +296,7 @@ const Receipt = () => {
                     product_name: string
                     product_amount: number
                     final_price: number
-                  }) => product.product_id === 13,
+                  }) => product.product_id === 2,
                 ).length > 0
               }
               value={3}
@@ -317,7 +317,7 @@ const Receipt = () => {
                     product_name: string
                     product_amount: number
                     final_price: number
-                  }) => product.product_id === 12,
+                  }) => product.product_id === 1,
                 ).length > 0
               }
               value={3}

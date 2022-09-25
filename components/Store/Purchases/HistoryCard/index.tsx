@@ -36,7 +36,7 @@ const HistoryCard = ({
 
   return (
     <>
-      {id !== 12 && id !== 13 && id !== 3 ? (
+      {id !== 1 && id !== 2 && id !== 3 ? (
         <Card>
           {type === 1 && <img className="zapas" src="/beer.png" alt="beer" />}
           {type === 4 && (
