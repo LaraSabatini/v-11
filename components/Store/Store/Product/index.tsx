@@ -1,5 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
+// DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
+// COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
@@ -66,10 +68,7 @@ const Product = ({
         margin: number
       }) => pur.product_id === id,
     )
-    if (checkPurchase.length === 0) {
-      // eslint-disable-next-line no-console
-      console.log("no hay nada que restar")
-    } else {
+    if (checkPurchase.length > 0) {
       setPurchaseProducts({
         product_id: id,
         product_name: name,

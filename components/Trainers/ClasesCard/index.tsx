@@ -1,8 +1,11 @@
 import React, { useContext, useState } from "react"
+// SERVICES
 import { Clases } from "contexts/Clases"
-import texts from "strings/trainers.json"
 import { editPartnerPayment } from "services/Partners/PartnerPayments.service"
+// DATA STORAGE & TYPES
+import texts from "strings/trainers.json"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+// COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import TextButton from "components/UI/TextButton"
 import { DaysLeft } from "components/Partners/PartnerDetails/DetailsView/styles"
@@ -18,22 +21,24 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
   )
 
   const [changes, setChanges] = useState<boolean>(false)
-  const [variableValues, setVariableValues] = useState({
+
+  const [lessonsPurchasedData, setLessonsPurchasedData] = useState({
     name: `${texts.lessons}`,
     value: data.clases_paid,
   })
 
-  const removeClas = async () => {
+  const removeLesson = async () => {
     let success: boolean = false
 
     const body = {
       ...data,
-      clases_paid: variableValues.value,
-      days_and_hours: variableValues.value === 0 ? "" : data.days_and_hours,
+      clases_paid: lessonsPurchasedData.value,
+      days_and_hours:
+        lessonsPurchasedData.value === 0 ? "" : data.days_and_hours,
     }
 
-    const edit = await editPartnerPayment(body)
-    if (edit.message === "payment updated successfully") {
+    const editPaymentCall = await editPartnerPayment(body)
+    if (editPaymentCall.message === "payment updated successfully") {
       success = true
     } else {
       success = false
@@ -62,35 +67,45 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
               type="button"
               onClick={() => {
                 setChanges(true)
-                if (variableValues.value > 0) {
-                  setVariableValues({
+                if (lessonsPurchasedData.value > 0) {
+                  setLessonsPurchasedData({
                     name: `${texts.lessons}`,
-                    value: variableValues.value - 1,
+                    value: lessonsPurchasedData.value - 1,
                   })
                 }
               }}
             >
               <Icon icon="IconLess" />
             </button>
-            {variableValues.value}
+            {lessonsPurchasedData.value}
           </DaysLeft>
         </Days>
         <Days>
           <p>{texts.days} </p>
           {data.days_and_hours.length &&
-            data.days_and_hours.map(d => (
-              <ul key={d}>
-                <li>{schedule.filter(ho => ho.id === d)[0].day_and_hour}</li>
+            data.days_and_hours.map(dayAndHour => (
+              <ul key={dayAndHour}>
+                <li>
+                  {
+                    schedule.filter(
+                      scheduleHour => scheduleHour.id === dayAndHour,
+                    )[0].day_and_hour
+                  }
+                </li>
               </ul>
             ))}
         </Days>
         {changes && (
           <ButtonContainer>
-            <TextButton content={texts.save} cta onClick={() => removeClas()} />
+            <TextButton
+              content={texts.save}
+              cta
+              onClick={() => removeLesson()}
+            />
             <TextButton
               content={texts.cancel}
               onClick={() => {
-                setVariableValues({
+                setLessonsPurchasedData({
                   name: `${texts.lessons}`,
                   value: data.clases_paid,
                 })

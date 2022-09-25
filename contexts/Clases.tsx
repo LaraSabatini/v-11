@@ -1,4 +1,5 @@
 import { createContext, useState } from "react"
+import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
 
 export const Clases = createContext({
   clasesPurchased: null,
@@ -14,13 +15,7 @@ export const Clases = createContext({
 const ClasesProvider = ({ children }) => {
   const [clasesPurchased, setClasesPurchased] = useState([])
 
-  const [schedule, setSchedule] = useState<
-    {
-      id: number
-      day_and_hour: string
-      max_students: number
-    }[]
-  >([])
+  const [schedule, setSchedule] = useState<ScheduleInterface[]>([])
 
   const [filterSelected, setFilterSelected] = useState<number>(null)
 

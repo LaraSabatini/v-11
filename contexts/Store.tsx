@@ -1,5 +1,6 @@
 import { createContext, useState, useRef } from "react"
 import ProductInterface from "interfaces/store/ProductInterface"
+import DefaultInterface from "interfaces/components/DefaultInterface"
 
 export const StoreContext = createContext({
   productsList: null,
@@ -84,9 +85,9 @@ const StoreProvider = ({ children }) => {
   const [
     autoCompleteCategoriesValues,
     setAutoCompleteCategoriesValues,
-  ] = useState<{ id: number; display_name: string }[]>()
+  ] = useState<DefaultInterface[]>()
   const [autoCompleteBrandsValues, setAutoCompleteBrandsValues] = useState<
-    { id: number; display_name: string }[]
+    DefaultInterface[]
   >()
 
   const months = [

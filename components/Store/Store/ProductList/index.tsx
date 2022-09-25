@@ -1,7 +1,9 @@
 import React, { useContext } from "react"
+// DATA STORAGE & TYPES
 import texts from "strings/store.json"
 import ProductInterface from "interfaces/store/ProductInterface"
 import { StoreContext } from "contexts/Store"
+// COMPONENTS & STYLING
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import ScrollView from "components/UI/ScrollView"
