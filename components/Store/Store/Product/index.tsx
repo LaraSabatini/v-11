@@ -171,7 +171,7 @@ const Product = ({
         product_name: string
         product_amount: number
         final_price: number
-      }) => product.product_id === 12,
+      }) => product.product_id === 1,
     )
     const purHasMPPass = purchase.filter(
       (product: {
@@ -179,11 +179,11 @@ const Product = ({
         product_name: string
         product_amount: number
         final_price: number
-      }) => product.product_id === 13,
+      }) => product.product_id === 2,
     )
-    if (purHasCashPass.length > 0 && id === 13) {
+    if (purHasCashPass.length > 0 && id === 2) {
       setButtonAddDisabled(true)
-    } else if (purHasMPPass.length > 0 && id === 12) {
+    } else if (purHasMPPass.length > 0 && id === 1) {
       setButtonAddDisabled(true)
     } else {
       setButtonAddDisabled(false)
