@@ -1,8 +1,8 @@
-/* eslint-disable no-console */
 import React, { useContext } from "react"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
+import ProductInterface from "interfaces/store/ProductInterface"
 // COMPONENTS & STYLING
 import HistoryCard from "./ProductCard"
 import {
@@ -16,21 +16,23 @@ const ProductsView = () => {
   const { productsPurchasedByDate, productList } = useContext(Finances)
 
   const filterProfitsCash = productsPurchasedByDate.filter(
-    purchase => purchase.payment_method_id === 1,
+    (purchase: ProductsPurchasedByDateInterface) =>
+      purchase.payment_method_id === 1,
   )
   const filterProfitsMP = productsPurchasedByDate.filter(
-    purchase => purchase.payment_method_id === 2,
+    (purchase: ProductsPurchasedByDateInterface) =>
+      purchase.payment_method_id === 2,
   )
 
   let profitsCash = 0
   let profitsMP = 0
 
-  filterProfitsCash.map(purchase => {
+  filterProfitsCash.map((purchase: ProductsPurchasedByDateInterface) => {
     profitsCash += purchase.profit
     return 0
   })
 
-  filterProfitsMP.map(purchase => {
+  filterProfitsMP.map((purchase: ProductsPurchasedByDateInterface) => {
     profitsMP += purchase.profit
     return 0
   })
@@ -57,23 +59,27 @@ const ProductsView = () => {
                 name={purchase.product_name}
                 margin={
                   productList.filter(
-                    product => product.id === purchase.product_id,
+                    (product: ProductInterface) =>
+                      product.id === purchase.product_id,
                   )[0].margin
                 }
                 cost={
                   productList.filter(
-                    product => product.id === purchase.product_id,
+                    (product: ProductInterface) =>
+                      product.id === purchase.product_id,
                   )[0].cost
                 }
                 amount={purchase.amount_of_items}
                 type={
                   productList.filter(
-                    product => product.id === purchase.product_id,
+                    (product: ProductInterface) =>
+                      product.id === purchase.product_id,
                   )[0].category_id
                 }
                 price={
                   productList.filter(
-                    product => product.id === purchase.product_id,
+                    (product: ProductInterface) =>
+                      product.id === purchase.product_id,
                   )[0].price
                 }
                 final_sells={purchase.profit}

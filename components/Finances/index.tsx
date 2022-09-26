@@ -50,6 +50,7 @@ const FinancesView = () => {
         <SectionButtonsContainer>
           {sections.map((section: { section: string; id: number }) => (
             <Section
+              key={section.id}
               onClick={() => {
                 setSectionSelected(section)
               }}

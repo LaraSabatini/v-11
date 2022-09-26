@@ -44,6 +44,7 @@ const FiltersCaja = () => {
           <Options>
             {cajaFilters.map((filter: { id: number; filter: string }) => (
               <Option
+                key={filter.id}
                 onClick={() => {
                   setCajaFilterSelected(filter)
                   setOpenFilters(false)

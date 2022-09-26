@@ -2,8 +2,11 @@ import React, { useContext, useEffect } from "react"
 // SERVICES
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import { getProducts } from "services/Store/Products.service"
+import { getPaymentByDate } from "services/Partners/PartnerPayments.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
+import PaymentInterface from "interfaces/partners/PaymentInterface"
+import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 // COMPONENTS & STYLING
 import ProductsView from "./ProducstView"
 import BoulderView from "./BoulderView"
@@ -15,6 +18,8 @@ const Caja = () => {
     cajaDateSelected,
     setProductsPurchasedByDate,
     setProductList,
+    setBoulderProductsPurchasedByDate,
+    setPartnerPaymentsByDate,
   } = useContext(Finances)
 
   const fillData = async () => {
@@ -23,13 +28,32 @@ const Caja = () => {
     const filterProducts =
       productPurchasesCall.data.length > 0
         ? productPurchasesCall.data.filter(
-            purchase =>
+            (purchase: ProductsPurchasedByDateInterface) =>
               purchase.product_id !== 1 &&
               purchase.product_id !== 2 &&
               purchase.product_id !== 3,
           )
         : []
     setProductsPurchasedByDate(filterProducts)
+
+    const filterBoulderProducts =
+      productPurchasesCall.data.length > 0
+        ? productPurchasesCall.data.filter(
+            (purchase: ProductsPurchasedByDateInterface) =>
+              purchase.product_id === 1 ||
+              purchase.product_id === 2 ||
+              purchase.product_id === 3,
+          )
+        : []
+
+    setBoulderProductsPurchasedByDate(filterBoulderProducts)
+
+    const getPartnerPaymentsCall = await getPaymentByDate(cajaDateSelected)
+
+    const filterPartnerPayments = getPartnerPaymentsCall.data.filter(
+      (partnerPayment: PaymentInterface) => partnerPayment.partner_id !== 258,
+    )
+    setPartnerPaymentsByDate(filterPartnerPayments)
 
     const getProductsCall = await getProducts(1)
     setProductList(getProductsCall.data)
