@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import FinancesView from "components/Finances"
+import FinancesProvider from "contexts/Finances"
 import { useRouter } from "next/router"
 
 function Finances() {
@@ -25,7 +26,11 @@ function Finances() {
           padding: 0px;
         }
       `}</style>
-      {isLoggedIn !== null && <FinancesView />}
+      {isLoggedIn !== null && (
+        <FinancesProvider>
+          <FinancesView />
+        </FinancesProvider>
+      )}
     </>
   )
 }
