@@ -114,6 +114,7 @@ function TrainersView() {
                     max_students: number
                   }) => (
                     <FilterButton
+                      key={uniqueSchedule.id}
                       selected={filterSelected === uniqueSchedule.id}
                       onClick={() => setFilterSelected(uniqueSchedule.id)}
                     >
