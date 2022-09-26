@@ -9,6 +9,7 @@ import {
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
+import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
 // INTERFACES
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
@@ -59,6 +60,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     paymentUserRef,
     paymentUserSelected,
     months,
+    combos,
+    prices,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
@@ -213,8 +216,11 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
         }
 
-        const createPayment = await createPartnerPayment(paymentBody)
-        if (createPayment.message === "partnerPayment created successfully") {
+        const createPaymentCall = await createPartnerPayment(paymentBody)
+
+        if (
+          createPaymentCall.message === "partnerPayment created successfully"
+        ) {
           success = true
         } else {
           success = false
@@ -266,6 +272,99 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             success = false
           }
         }
+      }
+
+      if (
+        comboSelected !== null &&
+        comboSelected !== undefined &&
+        comboSelected !== 0
+      ) {
+        // crear boulder payment combo
+        const boulderPurchaseBody = {
+          id: 0,
+          date: `${day}-${month}-${year}`,
+          item_id: 1,
+          item_name: "Combo",
+          amount_of_items: 1,
+          profit:
+            paymentMethodSelected === 1
+              ? combos[0].price_cash
+              : combos[0].price_mp,
+          payment_method_id: paymentMethodSelected,
+        }
+        const createBoulderPurchaseCall = await createBoulderPurchase(
+          boulderPurchaseBody,
+        )
+        success =
+          createBoulderPurchaseCall.message ===
+          "bouderPayment created successfully"
+      }
+      if (paidTime !== 0) {
+        // crear boulder payment para dia/s o mes/es
+        let finalProfit = 0
+        if (paidTimeUnit.id === 1) {
+          finalProfit =
+            paymentMethodSelected === 1
+              ? paidTime * prices[0].price_cash
+              : paidTime * prices[0].price_mp
+        } else {
+          finalProfit =
+            paymentMethodSelected === 1
+              ? paidTime * prices[2].price_cash
+              : paidTime * prices[2].price_mp
+        }
+
+        const boulderPurchaseBody = {
+          id: 0,
+          date: `${day}-${month}-${year}`,
+          item_id: paidTimeUnit.id === 1 ? 2 : 3,
+          item_name: paidTimeUnit.id === 1 ? "Dia" : "Mes",
+          amount_of_items: paidTime,
+          profit: finalProfit,
+          payment_method_id: paymentMethodSelected,
+        }
+        const createBoulderPurchaseCall = await createBoulderPurchase(
+          boulderPurchaseBody,
+        )
+        success =
+          createBoulderPurchaseCall.message ===
+          "bouderPayment created successfully"
+      }
+      if (amountOfClases !== 0 && amountOfClases !== undefined) {
+        // crear boulder payment para clases
+        let finalProfit = 0
+        if (amountOfClases === 4) {
+          finalProfit =
+            paymentMethodSelected === 1
+              ? prices[4].price_cash
+              : prices[4].price_mp
+        } else if (amountOfClases === 8) {
+          finalProfit =
+            paymentMethodSelected === 1
+              ? prices[5].price_cash
+              : prices[5].price_mp
+        } else {
+          finalProfit =
+            paymentMethodSelected === 1
+              ? amountOfClases * prices[3].price_cash
+              : amountOfClases * prices[3].price_mp
+        }
+
+        const boulderPurchaseBody = {
+          id: 0,
+          date: `${day}-${month}-${year}`,
+          item_id: 4,
+          item_name: "Clases",
+          amount_of_items: amountOfClases,
+          profit: finalProfit,
+          payment_method_id: paymentMethodSelected,
+        }
+        const createBoulderPurchaseCall = await createBoulderPurchase(
+          boulderPurchaseBody,
+        )
+        success =
+          createBoulderPurchaseCall.message ===
+          "bouderPayment created successfully"
       }
 
       if (success) {
