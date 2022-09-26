@@ -58,8 +58,12 @@ const FiltersCaja = () => {
       </Filter>
       <CalendarContainer>
         <InputCalendar
+          position="bottom-right"
           width={200}
-          valueCalendar={cajaDateSelected}
+          valueCalendar={`${cajaDateSelected.slice(
+            0,
+            2,
+          )}/${cajaDateSelected.slice(3, 5)}/${cajaDateSelected.slice(6, 10)}`}
           reference={calendarRef}
           onChange={e => cleanDate(e.selectedChangeDate)}
         />

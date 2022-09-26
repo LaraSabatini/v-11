@@ -1,5 +1,6 @@
 import { createContext, useState } from "react"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
+import ProductInterface from "interfaces/store/ProductInterface"
 
 export const Finances = createContext({
   cajaFilterSelected: null,
@@ -10,6 +11,10 @@ export const Finances = createContext({
   actualDate: null,
   productsPurchasedByDate: null,
   setProductsPurchasedByDate: null,
+  boulderProductsPurchasedByDate: null,
+  setBoulderProductsPurchasedByDate: null,
+  productList: null,
+  setProductList: null,
 })
 
 const FinancesProvider = ({ children }) => {
@@ -56,6 +61,14 @@ const FinancesProvider = ({ children }) => {
     ProductsPurchasedByDateInterface[]
   >([])
 
+  // CAJA BOULDER
+  const [
+    boulderProductsPurchasedByDate,
+    setBoulderProductsPurchasedByDate,
+  ] = useState<ProductsPurchasedByDateInterface[]>([])
+
+  const [productList, setProductList] = useState<ProductInterface[]>([])
+
   return (
     <Finances.Provider
       value={{
@@ -67,6 +80,10 @@ const FinancesProvider = ({ children }) => {
         actualDate,
         productsPurchasedByDate,
         setProductsPurchasedByDate,
+        boulderProductsPurchasedByDate,
+        setBoulderProductsPurchasedByDate,
+        productList,
+        setProductList,
       }}
     >
       {children}
