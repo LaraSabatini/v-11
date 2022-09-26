@@ -1,4 +1,5 @@
 import { createContext, useState } from "react"
+import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 
 export const Finances = createContext({
   cajaFilterSelected: null,
@@ -7,6 +8,8 @@ export const Finances = createContext({
   cajaDateSelected: null,
   setCajaDateSelected: null,
   actualDate: null,
+  productsPurchasedByDate: null,
+  setProductsPurchasedByDate: null,
 })
 
 const FinancesProvider = ({ children }) => {
@@ -48,6 +51,11 @@ const FinancesProvider = ({ children }) => {
   const actualDate = `${day}-${month}-${year}`
   const [cajaDateSelected, setCajaDateSelected] = useState<string>(actualDate)
 
+  // CAJA PRODUCTOS
+  const [productsPurchasedByDate, setProductsPurchasedByDate] = useState<
+    ProductsPurchasedByDateInterface[]
+  >([])
+
   return (
     <Finances.Provider
       value={{
@@ -57,6 +65,8 @@ const FinancesProvider = ({ children }) => {
         cajaDateSelected,
         setCajaDateSelected,
         actualDate,
+        productsPurchasedByDate,
+        setProductsPurchasedByDate,
       }}
     >
       {children}
