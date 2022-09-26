@@ -9,6 +9,7 @@ import {
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
+import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
 import { getPrices } from "services/Partners/Prices.service"
 import { deletePartner } from "services/Partners/Partner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
@@ -51,6 +52,8 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     paymentMethodSelected,
     paymentUserSelected,
     months,
+    prices,
+    combos,
   } = useContext(PartnersContext)
 
   const [initialPayment, setInitialPayment] = useState<PaymentInterface>()
@@ -93,6 +96,104 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
   const day = getDay > 9 ? getDay : `0${getDay}`
   const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
+
+  const addPayment = async () => {
+    let success
+    if (
+      newValues.combo !== null &&
+      newValues.combo !== undefined &&
+      newValues.combo !== 0
+    ) {
+      // crear boulder payment combo
+      const boulderPurchaseBody = {
+        id: 0,
+        date: `${day}-${month}-${year}`,
+        item_id: 1,
+        item_name: "Combo",
+        amount_of_items: 1,
+        profit:
+          paymentMethodSelected === 1
+            ? combos[0].price_cash
+            : combos[0].price_mp,
+        payment_method_id: paymentMethodSelected,
+      }
+      const createBoulderPurchaseCall = await createBoulderPurchase(
+        boulderPurchaseBody,
+      )
+      success =
+        createBoulderPurchaseCall.message ===
+        "bouderPayment created successfully"
+    }
+    if (paidTime !== 0) {
+      // crear boulder payment para dia/s o mes/es
+      let finalProfit = 0
+      if (paidTimeUnit.id === 1) {
+        finalProfit =
+          paymentMethodSelected === 1
+            ? paidTime * prices[0].price_cash
+            : paidTime * prices[0].price_mp
+      } else {
+        finalProfit =
+          paymentMethodSelected === 1
+            ? paidTime * prices[2].price_cash
+            : paidTime * prices[2].price_mp
+      }
+
+      const boulderPurchaseBody = {
+        id: 0,
+        date: `${day}-${month}-${year}`,
+        item_id: paidTimeUnit.id === 1 ? 2 : 3,
+        item_name: paidTimeUnit.id === 1 ? "Dia" : "Mes",
+        amount_of_items: paidTime,
+        profit: finalProfit,
+        payment_method_id: paymentMethodSelected,
+      }
+      const createBoulderPurchaseCall = await createBoulderPurchase(
+        boulderPurchaseBody,
+      )
+      success =
+        createBoulderPurchaseCall.message ===
+        "bouderPayment created successfully"
+    }
+    if (newValues.clases_paid !== 0) {
+      // crear boulder payment para clases
+      let finalProfit = 0
+      if (newValues.clases_paid === 4) {
+        finalProfit =
+          paymentMethodSelected === 1
+            ? prices[4].price_cash
+            : prices[4].price_mp
+      } else if (newValues.clases_paid === 8) {
+        finalProfit =
+          paymentMethodSelected === 1
+            ? prices[5].price_cash
+            : prices[5].price_mp
+      } else {
+        finalProfit =
+          paymentMethodSelected === 1
+            ? newValues.clases_paid * prices[3].price_cash
+            : newValues.clases_paid * prices[3].price_mp
+      }
+
+      const boulderPurchaseBody = {
+        id: 0,
+        date: `${day}-${month}-${year}`,
+        item_id: 4,
+        item_name: "Clases",
+        amount_of_items: newValues.clases_paid,
+        profit: finalProfit,
+        payment_method_id: paymentMethodSelected,
+      }
+      const createBoulderPurchaseCall = await createBoulderPurchase(
+        boulderPurchaseBody,
+      )
+      success =
+        createBoulderPurchaseCall.message ===
+        "bouderPayment created successfully"
+    }
+
+    return success
+  }
 
   const handleEdit = async e => {
     e.preventDefault()
@@ -173,8 +274,12 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           "false"
       ) {
         const createPayment = await createPartnerPayment(body)
+        const prueba = await addPayment()
 
-        if (createPayment.message === "partnerPayment created successfully") {
+        if (
+          createPayment.message === "partnerPayment created successfully" &&
+          prueba
+        ) {
           success = true
         } else {
           success = false
@@ -206,8 +311,12 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           "false"
       ) {
         const createPayment = await createPartnerPayment(body)
+        const prueba = await addPayment()
 
-        if (createPayment.message === "payment updated successfully") {
+        if (
+          createPayment.message === "payment updated successfully" &&
+          prueba
+        ) {
           success = true
         } else {
           success = false

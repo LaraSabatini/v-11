@@ -274,7 +274,11 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         }
       }
 
-      if (comboSelected !== null && comboSelected !== undefined) {
+      if (
+        comboSelected !== null &&
+        comboSelected !== undefined &&
+        comboSelected !== 0
+      ) {
         // crear boulder payment combo
         const boulderPurchaseBody = {
           id: 0,
@@ -326,7 +330,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           createBoulderPurchaseCall.message ===
           "bouderPayment created successfully"
       }
-      if (amountOfClases !== 0) {
+      if (amountOfClases !== 0 && amountOfClases !== undefined) {
         // crear boulder payment para clases
         let finalProfit = 0
         if (amountOfClases === 4) {
