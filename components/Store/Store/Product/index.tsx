@@ -1,6 +1,8 @@
 import React, { useState, useContext, useEffect } from "react"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
+import ProductCardInterface from "interfaces/store/ProductCard"
+import PurchaseProductsInterface from "interfaces/store/PurchaseProducts"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
@@ -16,15 +18,6 @@ import {
   ComponentContainer,
   ComponentContainerZapas,
 } from "./styles"
-
-interface ProductCardInterface {
-  name: string
-  category_id: number
-  price: number
-  id: number
-  cost: number
-  margin: number
-}
 
 const Product = ({
   name,
@@ -42,14 +35,10 @@ const Product = ({
     executeCleanPurchase,
   } = useContext(StoreContext)
 
-  const [purchaseProducts, setPurchaseProducts] = useState<{
-    product_id: number
-    product_name: string
-    product_amount: number
-    final_price: number
-    cost: number
-    margin: number
-  }>({
+  const [
+    purchaseProducts,
+    setPurchaseProducts,
+  ] = useState<PurchaseProductsInterface>({
     product_id: 0,
     product_name: "",
     product_amount: 0,
@@ -61,14 +50,7 @@ const Product = ({
 
   const removeProduct = () => {
     const checkPurchase = purchase.filter(
-      (pur: {
-        product_id: number
-        product_name: string
-        product_amount: number
-        final_price: number
-        cost: number
-        margin: number
-      }) => pur.product_id === id,
+      (pur: PurchaseProductsInterface) => pur.product_id === id,
     )
     if (checkPurchase.length > 0) {
       setPurchaseProducts({
@@ -90,7 +72,9 @@ const Product = ({
         margin,
       }
       if (newPurchase[index].product_amount === 0) {
-        const finalPurchase = purchase.filter(p => p.product_id !== id)
+        const finalPurchase = purchase.filter(
+          (pur: PurchaseProductsInterface) => pur.product_id !== id,
+        )
         setPurchase(finalPurchase)
       } else {
         setPurchase(newPurchase)
@@ -111,14 +95,7 @@ const Product = ({
     })
 
     const checkPurchase = purchase.filter(
-      (pur: {
-        product_id: number
-        product_name: string
-        product_amount: number
-        final_price: number
-        cost: number
-        margin: number
-      }) => pur.product_id === id,
+      (pur: PurchaseProductsInterface) => pur.product_id === id,
     )
     if (checkPurchase.length === 0) {
       setPurchase([
@@ -166,20 +143,10 @@ const Product = ({
 
   const checkButtonDisabled = () => {
     const purHasCashPass = purchase.filter(
-      (product: {
-        product_id: number
-        product_name: string
-        product_amount: number
-        final_price: number
-      }) => product.product_id === 1,
+      (product: PurchaseProductsInterface) => product.product_id === 1,
     )
     const purHasMPPass = purchase.filter(
-      (product: {
-        product_id: number
-        product_name: string
-        product_amount: number
-        final_price: number
-      }) => product.product_id === 2,
+      (product: PurchaseProductsInterface) => product.product_id === 2,
     )
     if (purHasCashPass.length > 0 && id === 2) {
       setButtonAddDisabled(true)

@@ -3,6 +3,7 @@ import React, { useEffect, useContext, useState } from "react"
 import { getPrices, editPrices } from "services/Partners/Prices.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
+import PricesInterface from "interfaces/partners/PricesInterface"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import {
@@ -20,12 +21,7 @@ import {
 
 const Prices = () => {
   const { setPrices, prices } = useContext(PartnersContext)
-  const [newPrices, setNewPrices] = useState<{
-    id: number
-    name: string
-    price_cash: number
-    price_mp: number
-  }>(null)
+  const [newPrices, setNewPrices] = useState<PricesInterface>(null)
 
   const [activeRow, setActiveRow] = useState<number>(null)
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
@@ -79,7 +75,7 @@ const Prices = () => {
         </Head>
         <Items>
           {prices.length &&
-            prices.map(price => (
+            prices.map((price: PricesInterface) => (
               <Item key={price.id} onClick={() => setActiveRow(price.id)}>
                 <p className="name">{price.name}</p>
                 {activeRow !== null &&

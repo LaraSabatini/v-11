@@ -2,6 +2,9 @@ import { createContext, useState, useRef } from "react"
 import ProductInterface from "interfaces/store/ProductInterface"
 import { day, month, year } from "const/fixedVariables"
 import DefaultInterface from "interfaces/components/DefaultInterface"
+import OptionsInterface from "interfaces/store/OptionsInterface"
+import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
+import ModalInterface from "interfaces/components/ModalInterface"
 
 export const StoreContext = createContext({
   productsList: null,
@@ -62,19 +65,9 @@ export const StoreContext = createContext({
 const StoreProvider = ({ children }) => {
   const [productsList, setProductsList] = useState<ProductInterface[]>([])
 
-  const [categories, setCategories] = useState<
-    {
-      id: number
-      name: string
-    }[]
-  >([])
+  const [categories, setCategories] = useState<OptionsInterface[]>([])
 
-  const [brands, setBrands] = useState<
-    {
-      id: number
-      name: string
-    }[]
-  >([])
+  const [brands, setBrands] = useState<OptionsInterface[]>([])
 
   const [currentPage, setCurrentPage] = useState<number>(1)
 
@@ -108,14 +101,7 @@ const StoreProvider = ({ children }) => {
   )
 
   // BUY *************************************
-  const [purchase, setPurchase] = useState<
-    {
-      product_id: number
-      product_name: string
-      product_amount: number
-      final_price: number
-    }[]
-  >([])
+  const [purchase, setPurchase] = useState<TemporalPurchaseInterface[]>([])
 
   const [purchaseChange, setPurchaseChange] = useState<number>(1)
   const [executeCleanPurchase, setExecuteCleanPurchase] = useState<number>(1)
@@ -128,19 +114,9 @@ const StoreProvider = ({ children }) => {
 
   // CREATE *************************************
 
-  const [modalSuccess, setModalSuccess] = useState<{
-    status: string
-    icon: string
-    title: string
-    content: string
-  } | null>(null)
+  const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
 
-  const [modalError, setModalError] = useState<{
-    status: string
-    icon: string
-    title: string
-    content: string
-  } | null>(null)
+  const [modalError, setModalError] = useState<ModalInterface | null>(null)
 
   const nameRef = useRef(null)
   const brandsRef = useRef(null)
@@ -150,10 +126,10 @@ const StoreProvider = ({ children }) => {
   const stockRef = useRef(null)
 
   const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
-  const [paymentUserSelected, setPaymentUserSelected] = useState<{
-    id: number
-    display_name: string
-  }>(null)
+  const [
+    paymentUserSelected,
+    setPaymentUserSelected,
+  ] = useState<DefaultInterface | null>(null)
 
   return (
     <StoreContext.Provider

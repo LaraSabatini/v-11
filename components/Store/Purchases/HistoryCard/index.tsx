@@ -1,4 +1,6 @@
 import React from "react"
+// DATA STORAGE & TYPES
+import HistoryCardInterface from "interfaces/finances/HistoryCard"
 // COMPONENTS & STYLING
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
@@ -9,18 +11,6 @@ import {
   Description,
   HorizontalGroup,
 } from "./styles"
-
-interface HistoryCardInterface {
-  name: string
-  margin: number
-  cost: number
-  final_sells: number
-  amount: number
-  type: number
-  price: number
-  payment: number
-  id: number
-}
 
 const HistoryCard = ({
   name,

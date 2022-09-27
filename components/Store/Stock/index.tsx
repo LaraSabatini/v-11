@@ -8,6 +8,8 @@ import {
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
+import OptionsInterface from "interfaces/store/OptionsInterface"
+import DefaultInterface from "interfaces/components/DefaultInterface"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import RowsInterface from "interfaces/store/RowsInterface"
@@ -24,11 +26,6 @@ import {
   AutocompleteContainer,
   ErrorMessage,
 } from "./styles"
-
-interface DefaultInterface {
-  id: number
-  name: string
-}
 
 const Stock = () => {
   const {
@@ -77,10 +74,10 @@ const Stock = () => {
           id: product.id,
           item: product.name,
           brand: brands.filter(
-            (brand: DefaultInterface) => brand.id === product.brand_id,
+            (brand: OptionsInterface) => brand.id === product.brand_id,
           )[0]?.name,
           category: categories.filter(
-            (category: DefaultInterface) => category.id === product.category_id,
+            (category: OptionsInterface) => category.id === product.category_id,
           )[0]?.name,
           stock: product.stock,
           price: product.price,
@@ -105,10 +102,10 @@ const Stock = () => {
           id: product.id,
           item: product.name,
           brand: brands.filter(
-            (brand: DefaultInterface) => brand.id === product.brand_id,
+            (brand: OptionsInterface) => brand.id === product.brand_id,
           )[0]?.name,
           category: categories.filter(
-            (category: DefaultInterface) => category.id === product.category_id,
+            (category: OptionsInterface) => category.id === product.category_id,
           )[0]?.name,
           stock: product.stock,
           price: product.price,
@@ -127,11 +124,11 @@ const Stock = () => {
   }
 
   const fillAutocompletes = () => {
-    const autocompleteBrands: { id: number; display_name: string }[] = []
+    const autocompleteBrands: DefaultInterface[] = []
     brands.map(brand =>
       autocompleteBrands.push({ id: brand.id, display_name: brand.name }),
     )
-    const autocompleteCategories: { id: number; display_name: string }[] = []
+    const autocompleteCategories: DefaultInterface[] = []
     categories.map(category =>
       autocompleteCategories.push({
         id: category.id,
@@ -187,7 +184,7 @@ const Stock = () => {
                 (brand: DefaultInterface) => brand.id === newValues.brand_id,
               )[0]?.name || ""
             }
-            onChangeProps={(e: { id: number; display_name: string }) =>
+            onChangeProps={(e: DefaultInterface) =>
               setNewValues({ ...newValues, brand_id: e.id })
             }
           />
@@ -204,7 +201,7 @@ const Stock = () => {
                   category.id === newValues.category_id,
               )[0]?.name || ""
             }
-            onChangeProps={(e: { id: number; display_name: string }) =>
+            onChangeProps={(e: DefaultInterface) =>
               setNewValues({ ...newValues, category_id: e.id })
             }
           />

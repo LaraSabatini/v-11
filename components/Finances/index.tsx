@@ -1,4 +1,7 @@
-import React, { useState } from "react"
+import React, { useContext } from "react"
+// DATA STORAGE & TYPES
+import { Finances } from "contexts/Finances"
+import { financesSections } from "const/fixedVariables"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
 import Bills from "./Bills"
@@ -16,39 +19,14 @@ import {
 } from "./styles"
 
 const FinancesView = () => {
-  const [sectionSelected, setSectionSelected] = useState<{
-    section: string
-    id: number
-  }>({
-    section: "Ganancias diarias (Boulder)",
-    id: 1,
-  })
-
-  const sections = [
-    {
-      section: "Ganancias diarias (Boulder)",
-      id: 1,
-    },
-    {
-      section: "Gastos",
-      id: 2,
-    },
-    {
-      section: "Horas de trabajo",
-      id: 3,
-    },
-    {
-      section: "Ingresos",
-      id: 4,
-    },
-  ]
+  const { sectionSelected, setSectionSelected } = useContext(Finances)
 
   return (
     <MainContainer>
       <Header />
       <Content>
         <SectionButtonsContainer>
-          {sections.map((section: { section: string; id: number }) => (
+          {financesSections.map((section: { section: string; id: number }) => (
             <Section
               key={section.id}
               onClick={() => {

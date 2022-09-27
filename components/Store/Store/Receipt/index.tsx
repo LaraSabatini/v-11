@@ -17,7 +17,15 @@ import { editProduct } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
 import ProductInterface from "interfaces/store/ProductInterface"
-import { paymentUsers, months } from "const/fixedVariables"
+import {
+  paymentUsers,
+  months,
+  day,
+  month,
+  year,
+  today,
+} from "const/fixedVariables"
+import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import Autocomplete from "components/UI/Autocomplete"
@@ -57,17 +65,10 @@ const Receipt = () => {
 
   const calculateFinalPurchasePrice = () => {
     let finalPricePaid = 0
-    purchase.map(
-      (purchaseItem: {
-        product_id: number
-        product_name: string
-        product_amount: number
-        final_price: number
-      }) => {
-        finalPricePaid += purchaseItem.final_price
-        return finalPricePaid
-      },
-    )
+    purchase.map((purchaseItem: TemporalPurchaseInterface) => {
+      finalPricePaid += purchaseItem.final_price
+      return finalPricePaid
+    })
     setFinalPrice(finalPricePaid)
   }
 
@@ -80,12 +81,6 @@ const Receipt = () => {
     setPurchase([])
     setExecuteCleanPurchase(executeCleanPurchase + 1)
   }
-
-  const today = new Date()
-  const day = today.getDate() > 9 ? today.getDate() : `0${today.getDate()}`
-  const month =
-    today.getMonth() + 1 > 9 ? today.getMonth() + 1 : `0${today.getMonth() + 1}`
-  const year = today.getFullYear()
 
   const cleanInitialStates = () => {
     setPaymentMethodSelected(1)
@@ -194,12 +189,8 @@ const Receipt = () => {
     }
 
     const checkIfProductsAreDailyPass = purchase.filter(
-      (product: {
-        product_id: number
-        product_name: string
-        product_amount: number
-        final_price: number
-      }) => product.product_id === 1 || product.product_id === 2,
+      (product: TemporalPurchaseInterface) =>
+        product.product_id === 1 || product.product_id === 2,
     )
 
     if (checkIfProductsAreDailyPass.length > 0) {
@@ -247,7 +238,9 @@ const Receipt = () => {
   }
 
   useEffect(() => {
-    const check = purchase.filter(p => p.product_id === 2)
+    const check = purchase.filter(
+      (pur: TemporalPurchaseInterface) => pur.product_id === 2,
+    )
     if (check.length > 0) {
       setPaymentMethodSelected(2)
     } else {
@@ -262,19 +255,12 @@ const Receipt = () => {
       <Products>
         <ScrollView height={190}>
           {purchase &&
-            purchase.map(
-              (pur: {
-                product_id: number
-                product_name: string
-                product_amount: number
-                final_price: number
-              }) => (
-                <Item key={pur.product_id}>
-                  <p>{pur.product_name}</p>
-                  <p>x {pur.product_amount}</p>
-                </Item>
-              ),
-            )}
+            purchase.map((pur: TemporalPurchaseInterface) => (
+              <Item key={pur.product_id}>
+                <p>{pur.product_name}</p>
+                <p>x {pur.product_amount}</p>
+              </Item>
+            ))}
         </ScrollView>
       </Products>
       <PaymentMethods>
@@ -283,12 +269,8 @@ const Receipt = () => {
             <RadioButton
               disabled={
                 purchase.filter(
-                  (product: {
-                    product_id: number
-                    product_name: string
-                    product_amount: number
-                    final_price: number
-                  }) => product.product_id === 2,
+                  (product: TemporalPurchaseInterface) =>
+                    product.product_id === 2,
                 ).length > 0
               }
               value={3}
@@ -304,12 +286,8 @@ const Receipt = () => {
             <RadioButton
               disabled={
                 purchase.filter(
-                  (product: {
-                    product_id: number
-                    product_name: string
-                    product_amount: number
-                    final_price: number
-                  }) => product.product_id === 1,
+                  (product: TemporalPurchaseInterface) =>
+                    product.product_id === 1,
                 ).length > 0
               }
               value={3}

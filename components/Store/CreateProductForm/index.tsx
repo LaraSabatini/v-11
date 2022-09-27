@@ -5,6 +5,8 @@ import { createProduct } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
 import ProductInterface from "interfaces/store/ProductInterface"
+import DefaultInterface from "interfaces/components/DefaultInterface"
+import OptionsInterface from "interfaces/store/OptionsInterface"
 // COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
 import Autocomplete from "components/UI/Autocomplete"
@@ -47,12 +49,12 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
   })
 
   const fillAutocompletes = () => {
-    const autocompleteBrands: { id: number; display_name: string }[] = []
-    brands.map(brand =>
+    const autocompleteBrands: DefaultInterface[] = []
+    brands.map((brand: OptionsInterface) =>
       autocompleteBrands.push({ id: brand.id, display_name: brand.name }),
     )
-    const autocompleteCategories: { id: number; display_name: string }[] = []
-    categories.map(category =>
+    const autocompleteCategories: DefaultInterface[] = []
+    categories.map((category: OptionsInterface) =>
       autocompleteCategories.push({
         id: category.id,
         display_name: category.name,

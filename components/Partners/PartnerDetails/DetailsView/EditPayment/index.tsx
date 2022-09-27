@@ -4,6 +4,8 @@ import { getSchedule } from "services/Trainers/Schedule.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
+import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
+import CombosInterface from "interfaces/partners/CombosInterface"
 // COMPONENTS & STYLING
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
@@ -62,7 +64,7 @@ const EditPayment = ({
   const fillScheduleData = async () => {
     const data = await getSchedule()
     const arraySchedule = []
-    data.data.map(schedule =>
+    data.data.map((schedule: ScheduleInterface) =>
       arraySchedule.push({
         id: schedule.id,
         display_name: `${schedule.day_and_hour}`,
@@ -89,7 +91,7 @@ const EditPayment = ({
   ])
 
   const combosAutocomplete = []
-  combos.map(combo =>
+  combos.map((combo: CombosInterface) =>
     combosAutocomplete.push({
       id: combo.id,
       display_name: combo.name,
@@ -112,7 +114,9 @@ const EditPayment = ({
             options={combosAutocomplete}
             setValue={
               newValues.combo !== 0 && newValues.combo !== null
-                ? combos.filter(combo => combo.id === newValues.combo)[0].name
+                ? combos.filter(
+                    (combo: CombosInterface) => combo.id === newValues.combo,
+                  )[0].name
                 : ""
             }
             ref={comboRef}
@@ -130,11 +134,13 @@ const EditPayment = ({
             value={
               comboSelected !== null && comboSelected !== undefined
                 ? `$${
-                    combos.filter(combo => combo.id === comboSelected)[0]
-                      ?.price_cash
+                    combos.filter(
+                      (combo: CombosInterface) => combo.id === comboSelected,
+                    )[0]?.price_cash
                   } /  $${
-                    combos.filter(combo => combo.id === comboSelected)[0]
-                      ?.price_mp
+                    combos.filter(
+                      (combo: CombosInterface) => combo.id === comboSelected,
+                    )[0]?.price_mp
                   }`
                 : ""
             }

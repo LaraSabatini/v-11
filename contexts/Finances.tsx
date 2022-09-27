@@ -17,6 +17,8 @@ export const Finances = createContext({
   setProductList: null,
   partnerPaymentsByDate: null,
   setPartnerPaymentsByDate: null,
+  sectionSelected: null,
+  setSectionSelected: null,
 })
 
 const FinancesProvider = ({ children }) => {
@@ -50,6 +52,14 @@ const FinancesProvider = ({ children }) => {
 
   const [productList, setProductList] = useState<ProductInterface[]>([])
 
+  const [sectionSelected, setSectionSelected] = useState<{
+    section: string
+    id: number
+  }>({
+    section: "Ganancias diarias (Boulder)",
+    id: 1,
+  })
+
   return (
     <Finances.Provider
       value={{
@@ -66,6 +76,8 @@ const FinancesProvider = ({ children }) => {
         setProductList,
         partnerPaymentsByDate,
         setPartnerPaymentsByDate,
+        sectionSelected,
+        setSectionSelected,
       }}
     >
       {children}

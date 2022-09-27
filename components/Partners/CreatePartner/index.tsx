@@ -15,7 +15,14 @@ import { PartnersContext } from "contexts/Partners"
 import texts from "strings/partners.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
-import { paymentMethods, months } from "const/fixedVariables"
+import {
+  paymentMethods,
+  months,
+  today,
+  day,
+  month,
+  year,
+} from "const/fixedVariables"
 // COMPONENTS
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
@@ -63,14 +70,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
-
-  const today = new Date()
-  const getDay = today.getDate()
-  const getMonth = today.getMonth()
-  const year = today.getFullYear()
-
-  const day = getDay > 9 ? getDay : `0${getDay}`
-  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
 
   const handleCreate = async e => {
     e.preventDefault()
@@ -164,7 +163,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         const expireMonth = newDate.getMonth()
         const expireYear = newDate.getFullYear()
         const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
-        let finalExpireMonth
+        let finalExpireMonth: number | string
         if (comboSelected !== null && comboSelected !== undefined) {
           finalExpireMonth =
             expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`

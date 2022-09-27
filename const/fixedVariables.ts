@@ -88,7 +88,7 @@ export const months = [
   },
 ]
 
-const today = new Date()
+export const today = new Date()
 const getDay = today.getDate()
 const getMonth = today.getMonth()
 export const year = today.getFullYear()
@@ -112,5 +112,24 @@ export const cajaFilters = [
   {
     id: 4,
     filter: "Caja completa",
+  },
+]
+
+export const financesSections = [
+  {
+    section: "Ganancias diarias (Boulder)",
+    id: 1,
+  },
+  {
+    section: "Gastos",
+    id: 2,
+  },
+  {
+    section: "Horas de trabajo",
+    id: 3,
+  },
+  {
+    section: "Ingresos",
+    id: 4,
   },
 ]

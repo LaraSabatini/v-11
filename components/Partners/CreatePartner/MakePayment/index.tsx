@@ -4,6 +4,8 @@ import { getSchedule } from "services/Trainers/Schedule.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
+import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
+import CombosInterface from "interfaces/partners/CombosInterface"
 // COMPONENTS & STYLING
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
@@ -46,7 +48,7 @@ const MakePayment = () => {
   const fillScheduleData = async () => {
     const data = await getSchedule()
     const arraySchedule = []
-    data.data.map(schedule =>
+    data.data.map((schedule: ScheduleInterface) =>
       arraySchedule.push({
         id: schedule.id,
         display_name: `${schedule.day_and_hour}`,
@@ -62,7 +64,7 @@ const MakePayment = () => {
   }, [])
 
   const combosAutocomplete = []
-  combos.map(combo =>
+  combos.map((combo: CombosInterface) =>
     combosAutocomplete.push({
       id: combo.id,
       display_name: combo.name,
@@ -101,11 +103,13 @@ const MakePayment = () => {
           value={
             comboSelected !== null && comboSelected !== undefined
               ? `$${
-                  combos.filter(combo => combo.id === comboSelected)[0]
-                    ?.price_cash
+                  combos.filter(
+                    (combo: CombosInterface) => combo.id === comboSelected,
+                  )[0]?.price_cash
                 } /  $${
-                  combos.filter(combo => combo.id === comboSelected)[0]
-                    ?.price_mp
+                  combos.filter(
+                    (combo: CombosInterface) => combo.id === comboSelected,
+                  )[0]?.price_mp
                 }`
               : ""
           }
