@@ -1,5 +1,6 @@
 import { createContext, useState, useRef } from "react"
 import ProductInterface from "interfaces/store/ProductInterface"
+import { day, month, year } from "const/fixedVariables"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 
 export const StoreContext = createContext({
@@ -46,12 +47,10 @@ export const StoreContext = createContext({
   setStockChanges: null,
   modalStockHasChanges: null,
   setModalStockHasChanges: null,
-  months: null,
   monthSelected: null,
   setMonthSelected: null,
   dateSelected: null,
   setDateSelected: null,
-  paymentMethods: null,
   paymentFilter: null,
   setPaymentFilter: null,
   paymentMethodSelected: null,
@@ -94,66 +93,7 @@ const StoreProvider = ({ children }) => {
     DefaultInterface[]
   >()
 
-  const months = [
-    {
-      id: 1,
-      display_name: "Enero",
-    },
-    {
-      id: 2,
-      display_name: "Febrero",
-    },
-    {
-      id: 3,
-      display_name: "Marzo",
-    },
-    {
-      id: 4,
-      display_name: "Abril",
-    },
-    {
-      id: 5,
-      display_name: "Mayo",
-    },
-    {
-      id: 6,
-      display_name: "Junio",
-    },
-    {
-      id: 7,
-      display_name: "Julio",
-    },
-    {
-      id: 8,
-      display_name: "Agosto",
-    },
-    {
-      id: 9,
-      display_name: "Septiembre",
-    },
-    {
-      id: 10,
-      display_name: "Octubre",
-    },
-    {
-      id: 11,
-      display_name: "Noviembre",
-    },
-    {
-      id: 12,
-      display_name: "Diciembre",
-    },
-  ]
-
   const [monthSelected, setMonthSelected] = useState<number>(null)
-
-  const today = new Date()
-  const getDay = today.getDate()
-  const getMonth = today.getMonth()
-  const year = today.getFullYear()
-
-  const day = getDay > 9 ? getDay : `0${getDay}`
-  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
 
   const [dateSelected, setDateSelected] = useState<string>(
     `${day}-${month}-${year}`,
@@ -183,11 +123,6 @@ const StoreProvider = ({ children }) => {
   const selectFilter = (category_id: number) => {
     setFilterSelected(category_id)
   }
-
-  const paymentMethods = [
-    { id: 1, name: "Efectivo" },
-    { id: 2, name: "MP" },
-  ]
 
   const [paymentFilter, setPaymentFilter] = useState<number>(null)
 
@@ -266,12 +201,10 @@ const StoreProvider = ({ children }) => {
         setStockChanges,
         modalStockHasChanges,
         setModalStockHasChanges,
-        months,
         monthSelected,
         setMonthSelected,
         dateSelected,
         setDateSelected,
-        paymentMethods,
         paymentFilter,
         setPaymentFilter,
         paymentMethodSelected,

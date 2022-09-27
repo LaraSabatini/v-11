@@ -1,6 +1,10 @@
 import React, { useContext, useEffect } from "react"
+// SERVICES
 import { getSchedule } from "services/Trainers/Schedule.service"
+// DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
+import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
+// COMPONENTS & STYLING
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
@@ -31,7 +35,6 @@ const EditPayment = ({
     paidTimeRef,
     setPaidTime,
     paidTime,
-    timeUnits,
     paidTimeUnitRef,
     setPaidTimeUnit,
     setIsChecked,
@@ -39,7 +42,6 @@ const EditPayment = ({
     setAmountOfClases,
     amountOfClases,
     setComboSelected,
-    paymentMethods,
     paymentRef,
     setPaymentMethodSelected,
     finalPrice,
@@ -53,7 +55,6 @@ const EditPayment = ({
     setNewValues,
     newValues,
     calculatePrice,
-    paymentUsers,
     setPaymentUserSelected,
     paymentUserRef,
   } = useContext(PartnersContext)

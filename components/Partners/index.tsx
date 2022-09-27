@@ -1,17 +1,20 @@
 import React, { useContext, useState, useEffect } from "react"
-import texts from "strings/partners.json"
+// SERVICES
 import {
   searchPartner,
   getPartners,
   getStudents,
   getFreePassPartners,
 } from "services/Partners/Partner.service"
+// DATA STORAGE & TYPES
+import texts from "strings/partners.json"
 import { PartnersContext } from "contexts/Partners"
 import PaymentsHistoryProvider from "contexts/PaymentsHistory"
+// COMPONENTS & STYLING
+import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
 import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
-import theme from "theme/index"
 import Header from "components/UI/Header"
 import Modals from "./Modals"
 import PartnersList from "./PartnersList"
@@ -20,6 +23,7 @@ import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import Prices from "./Prices"
 import PaymentsView from "./PaymentsView"
+import SectionButtons from "./SectionButtons"
 import {
   Container,
   Title,
@@ -29,8 +33,6 @@ import {
   MainButton,
   ListAndDetailContainer,
   SearchBarContainer,
-  Section,
-  SectionsButtons,
 } from "./styles"
 
 function PartnersView() {
@@ -50,15 +52,8 @@ function PartnersView() {
     setCreateModal,
     cleanStates,
     setPartnerSelected,
+    sectionSelected,
   } = useContext(PartnersContext)
-
-  const [sectionSelected, setSectionSelected] = useState<{
-    section: string
-    id: number
-  }>({
-    section: "Clientes",
-    id: 1,
-  })
 
   const [searchValue, setSearchValue] = useState<string>("")
 
@@ -119,45 +114,7 @@ function PartnersView() {
       <Modals />
       <Header />
       <Content>
-        <SectionsButtons>
-          <Section
-            onClick={() => {
-              if (hasChanges) {
-                setModalHasChanges(true)
-              } else {
-                setSectionSelected({ section: "Clientes", id: 1 })
-              }
-            }}
-            selected={sectionSelected.id === 1}
-          >
-            Clientes
-          </Section>
-
-          <Section
-            onClick={() => {
-              if (hasChanges) {
-                setModalHasChanges(true)
-              } else {
-                setSectionSelected({ section: "Precios", id: 3 })
-              }
-            }}
-            selected={sectionSelected.id === 3}
-          >
-            Precios
-          </Section>
-          <Section
-            onClick={() => {
-              if (hasChanges) {
-                setModalHasChanges(true)
-              } else {
-                setSectionSelected({ section: "Historial de pagos", id: 4 })
-              }
-            }}
-            selected={sectionSelected.id === 4}
-          >
-            Historial de pagos
-          </Section>
-        </SectionsButtons>
+        <SectionButtons />
         <HeadContent>
           <Title>
             {texts.title} <span> / {sectionSelected.section}</span>

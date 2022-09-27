@@ -1,8 +1,11 @@
 import React, { useContext, useState, useRef } from "react"
+// DATA STORAGE & TYPES
+import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
+import { paymentMethods } from "const/fixedVariables"
+// COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import InputCalendar from "components/UI/InputCalendar"
-import { StoreContext } from "contexts/Store"
 import {
   FiltersContainer,
   Select,
@@ -17,7 +20,6 @@ const Filters = section => {
     openTypeMenu,
     setOpenTypeMenu,
     selectFilter,
-    paymentMethods,
     setDateSelected,
     setPaymentFilter,
     paymentFilter,
@@ -90,11 +92,13 @@ const Filters = section => {
             {paymentTypeMenu && (
               <Selector>
                 {paymentMethods.length &&
-                  paymentMethods.map((p: { id: number; name: string }) => (
-                    <Option key={p.id} onClick={() => setPaymentFilter(p.id)}>
-                      {p.name}
-                    </Option>
-                  ))}
+                  paymentMethods.map(
+                    (p: { id: number; display_name: string }) => (
+                      <Option key={p.id} onClick={() => setPaymentFilter(p.id)}>
+                        {p.display_name}
+                      </Option>
+                    ),
+                  )}
                 <Option onClick={() => setPaymentFilter(null)}>
                   {texts.all}
                 </Option>

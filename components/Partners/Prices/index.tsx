@@ -1,6 +1,9 @@
 import React, { useEffect, useContext, useState } from "react"
-import { PartnersContext } from "contexts/Partners"
+// SERVICES
 import { getPrices, editPrices } from "services/Partners/Prices.service"
+// DATA STORAGE & TYPES
+import { PartnersContext } from "contexts/Partners"
+// COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import {
   Container,

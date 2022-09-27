@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react"
+// SERVICES
 import { getPartnerPaymentsById } from "@services/Partners/PartnerPayments.service"
 import {
   createPartnerPayment,
@@ -12,10 +13,13 @@ import {
 import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
 import { getPrices } from "services/Partners/Prices.service"
 import { deletePartner } from "services/Partners/Partner.service"
+// DATA STORAGE & TYPES
+import { months } from "const/fixedVariables"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PartnersContext } from "contexts/Partners"
 import texts from "strings/partners.json"
+// COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
 import Icon from "components/UI/Assets/Icon"
@@ -51,7 +55,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     modalErrorAddDays,
     paymentMethodSelected,
     paymentUserSelected,
-    months,
     prices,
     combos,
   } = useContext(PartnersContext)

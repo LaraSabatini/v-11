@@ -10,12 +10,12 @@ import {
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
-// INTERFACES
-import PartnerInterface from "interfaces/partners/PartnerInterface"
-import PaymentInterface from "interfaces/partners/PaymentInterface"
-// CONTEXTS
+// DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import texts from "strings/partners.json"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
+import PaymentInterface from "interfaces/partners/PaymentInterface"
+import { paymentMethods, months } from "const/fixedVariables"
 // COMPONENTS
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
@@ -51,7 +51,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     amountOfClases,
     paymentMethodSelected,
     finalPrice,
-    paymentMethods,
     phoneRef,
     wantsSubscription,
     setWantsSubscription,
@@ -59,7 +58,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     usesDay,
     paymentUserRef,
     paymentUserSelected,
-    months,
     combos,
     prices,
   } = useContext(PartnersContext)

@@ -1,11 +1,14 @@
 import React, { useContext, useState, useEffect } from "react"
-import { PartnersContext } from "contexts/Partners"
+// SERVICES
 import getUsers from "services/Users/GetUsers.service"
+// DATA STORAGE & TYPES
+import { PartnersContext } from "contexts/Partners"
 import UserInterface from "interfaces/users/UserInterface"
-import Icon from "components/UI/Assets/Icon"
-import theme from "theme/index"
-import texts from "strings/partners.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import texts from "strings/partners.json"
+// COMPONENTS & STYLING
+import theme from "theme/index"
+import Icon from "components/UI/Assets/Icon"
 import DetailsView from "./DetailsView"
 import DetailsEdition from "./DetailsEdition"
 import { Container, Title, Divider, IconContainer } from "./styles"

@@ -1,8 +1,11 @@
 import React, { useContext, useState, useEffect } from "react"
+// SERVICES
+import { createProduct } from "services/Store/Products.service"
+// DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
-import { createProduct } from "services/Store/Products.service"
 import ProductInterface from "interfaces/store/ProductInterface"
+// COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
 import Autocomplete from "components/UI/Autocomplete"
 import ModalForm from "components/UI/ModalForm"

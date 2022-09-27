@@ -1,11 +1,14 @@
 import React, { useContext } from "react"
+// SERVICES
+// DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import texts from "strings/partners.json"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
+// COMPONENTS & STYLING
+import theme from "theme/index"
 import ScrollView from "components/UI/ScrollView"
 import Tooltip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
-import PartnerInterface from "interfaces/partners/PartnerInterface"
-import theme from "theme"
 import {
   ListContainer,
   ListItem,

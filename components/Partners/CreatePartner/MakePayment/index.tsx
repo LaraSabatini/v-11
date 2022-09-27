@@ -1,6 +1,10 @@
 import React, { useContext, useEffect } from "react"
-import { PartnersContext } from "contexts/Partners"
+// SERVICES
 import { getSchedule } from "services/Trainers/Schedule.service"
+// DATA STORAGE & TYPES
+import { PartnersContext } from "contexts/Partners"
+import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
+// COMPONENTS & STYLING
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
@@ -10,7 +14,6 @@ import { Form } from "./styles"
 
 const MakePayment = () => {
   const {
-    timeUnits,
     paidTimeUnitRef,
     paidTimeRef,
     comboRef,
@@ -19,7 +22,6 @@ const MakePayment = () => {
     setPaidTime,
     setPaidTimeUnit,
     combos,
-    paymentMethods,
     setComboSelected,
     setAmountOfClases,
     isChecked,
@@ -37,7 +39,6 @@ const MakePayment = () => {
     calculatePrice,
     usesDay,
     setUsesDay,
-    paymentUsers,
     paymentUserRef,
     setPaymentUserSelected,
   } = useContext(PartnersContext)

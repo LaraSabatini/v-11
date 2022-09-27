@@ -1,6 +1,9 @@
 import React, { useContext, useState, useEffect } from "react"
+// SERVICES
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
+// DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
+// COMPONENTS & STYLING
 import HistoryCard from "./HistoryCard"
 import { Container, Caja } from "./styles"
 

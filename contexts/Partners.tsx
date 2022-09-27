@@ -10,12 +10,10 @@ import DefaultInterface from "interfaces/components/DefaultInterface"
 export const PartnersContext = createContext({
   filterSelected: null,
   setFilterSelected: null,
-  filters: null,
   partners: null,
   setPartners: null,
   partnerSelected: null,
   setPartnerSelected: null,
-  timeUnits: null,
   nameRef: null,
   lastNameRef: null,
   identificationRef: null,
@@ -51,8 +49,6 @@ export const PartnersContext = createContext({
   setPaidTimeUnit: null,
   combos: null,
   setCombos: null,
-  paymentMethods: null,
-  setPaymentMethods: null,
   comboSelected: null,
   setComboSelected: null,
   amountOfClases: null,
@@ -90,29 +86,23 @@ export const PartnersContext = createContext({
   setModalErrorAddDays: null,
   usesDay: null,
   setUsesDay: null,
-  paymentUsers: null,
   paymentUserSelected: null,
   setPaymentUserSelected: null,
   paymentUserRef: null,
-  months: null,
+  sectionSelected: null,
+  setSectionSelected: null,
 })
 
 const PartnersProvider = ({ children }) => {
+  const [sectionSelected, setSectionSelected] = useState<{
+    section: string
+    id: number
+  }>({
+    section: "Clientes",
+    id: 1,
+  })
+
   const [filterSelected, setFilterSelected] = useState<string>("all")
-  const filters = [
-    {
-      value: "students",
-      text: "Alumnos",
-    },
-    {
-      value: "free-pass",
-      text: "Pase Libre",
-    },
-    {
-      value: "all",
-      text: "Todos",
-    },
-  ]
 
   const [partners, setPartners] = useState<PartnerInterface[]>([])
 
@@ -144,17 +134,6 @@ const PartnersProvider = ({ children }) => {
     is_student: "NO",
   })
 
-  const timeUnits = [
-    {
-      id: 1,
-      display_name: "Dia/s",
-    },
-    {
-      id: 2,
-      display_name: "Mes/es",
-    },
-  ]
-
   const [trainersList, setTrainersList] = useState<TrainerInterface[]>([])
 
   const nameRef = useRef(null)
@@ -182,11 +161,6 @@ const PartnersProvider = ({ children }) => {
   })
 
   const [combos, setCombos] = useState<CombosInterface[]>([])
-
-  const [paymentMethods, setPaymentMethods] = useState<DefaultInterface[]>([
-    { id: 1, display_name: "Efectivo" },
-    { id: 2, display_name: "MP" },
-  ])
 
   const [comboSelected, setComboSelected] = useState<number>()
 
@@ -354,69 +328,10 @@ const PartnersProvider = ({ children }) => {
     setModalErrorAddDays(null)
   }
 
-  const paymentUsers = [
-    { id: 1, display_name: "Roman" },
-    { id: 2, display_name: "Federico" },
-    { id: 3, display_name: "Tobias" },
-    { id: 4, display_name: "Guillermo" },
-    { id: 5, display_name: "Joaco" },
-  ]
-
   const [
     paymentUserSelected,
     setPaymentUserSelected,
   ] = useState<DefaultInterface>(null)
-
-  const months = [
-    {
-      id: 1,
-      display_name: "Enero",
-    },
-    {
-      id: 2,
-      display_name: "Febrero",
-    },
-    {
-      id: 3,
-      display_name: "Marzo",
-    },
-    {
-      id: 4,
-      display_name: "Abril",
-    },
-    {
-      id: 5,
-      display_name: "Mayo",
-    },
-    {
-      id: 6,
-      display_name: "Junio",
-    },
-    {
-      id: 7,
-      display_name: "Julio",
-    },
-    {
-      id: 8,
-      display_name: "Agosto",
-    },
-    {
-      id: 9,
-      display_name: "Septiembre",
-    },
-    {
-      id: 10,
-      display_name: "Octubre",
-    },
-    {
-      id: 11,
-      display_name: "Noviembre",
-    },
-    {
-      id: 12,
-      display_name: "Diciembre",
-    },
-  ]
 
   return (
     <PartnersContext.Provider
@@ -425,12 +340,10 @@ const PartnersProvider = ({ children }) => {
         setIsChecked,
         filterSelected,
         setFilterSelected,
-        filters,
         partners,
         setPartners,
         partnerSelected,
         setPartnerSelected,
-        timeUnits,
         nameRef,
         lastNameRef,
         identificationRef,
@@ -466,8 +379,6 @@ const PartnersProvider = ({ children }) => {
         setPaidTimeUnit,
         combos,
         setCombos,
-        paymentMethods,
-        setPaymentMethods,
         comboSelected,
         setComboSelected,
         amountOfClases,
@@ -503,11 +414,11 @@ const PartnersProvider = ({ children }) => {
         setModalErrorAddDays,
         usesDay,
         setUsesDay,
-        paymentUsers,
         paymentUserSelected,
         setPaymentUserSelected,
         paymentUserRef,
-        months,
+        sectionSelected,
+        setSectionSelected,
       }}
     >
       {children}

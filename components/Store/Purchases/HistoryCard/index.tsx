@@ -1,4 +1,5 @@
 import React from "react"
+// COMPONENTS & STYLING
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
 import { ComponentContainerZapas } from "../../Store/Product/styles"

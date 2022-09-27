@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
-import { StoreContext } from "contexts/Store"
-import texts from "strings/store.json"
+// SERVICES
 import {
   editProduct,
   getProducts,
   searchProducts,
 } from "services/Store/Products.service"
+// DATA STORAGE & TYPES
+import { StoreContext } from "contexts/Store"
+import texts from "strings/store.json"
+// COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextButton from "components/UI/TextButton"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
-import Input from "../UI/Input"
 import columns from "./const/content"
+import Input from "../UI/Input"
 import {
   Container,
   ButtonsContainer,

@@ -17,6 +17,7 @@ import { editProduct } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
 import ProductInterface from "interfaces/store/ProductInterface"
+import { paymentUsers, months } from "const/fixedVariables"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import Autocomplete from "components/UI/Autocomplete"
@@ -44,7 +45,6 @@ const Receipt = () => {
     productsList,
     setModalSuccess,
     setModalError,
-    months,
     paymentMethodSelected,
     setPaymentMethodSelected,
     paymentUserSelected,
@@ -54,14 +54,6 @@ const Receipt = () => {
   const [finalPrice, setFinalPrice] = useState<number>(0)
 
   const paymentUserRef = useRef(null)
-
-  const paymentUsers = [
-    { id: 1, display_name: "Roman" },
-    { id: 2, display_name: "Federico" },
-    { id: 3, display_name: "Tobias" },
-    { id: 4, display_name: "Guillermo" },
-    { id: 5, display_name: "Joaco" },
-  ]
 
   const calculateFinalPurchasePrice = () => {
     let finalPricePaid = 0

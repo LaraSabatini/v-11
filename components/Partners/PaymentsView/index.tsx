@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useState } from "react"
+// SERVICES
 import getCombos from "services/Partners/GetCombos.service"
 import {
   getPaymentByDate,
   getPartnerPayments,
 } from "services/Partners/PartnerPayments.service"
+// DATA STORAGE & TYPES
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PaymentsHistory } from "contexts/PaymentsHistory"
 import { PartnersContext } from "contexts/Partners"
+import { timeUnits } from "const/fixedVariables"
 import DataTable from "components/UI/DataTable"
-import Filters from "./Filters"
 import columns from "./const/content"
+// COMPONENTS & STYLING
+import Filters from "./Filters"
 import CardsView from "./CardsView"
-import { Section } from "../styles"
+import { Section } from "../SectionButtons/styles"
 import { Container, TableContainer, SectionsButtons } from "./styles"
 
 interface RowsInterface {
@@ -30,7 +34,7 @@ const PaymentsView = () => {
   const { setPaymentsList, paymentsList, dateSelected } = useContext(
     PaymentsHistory,
   )
-  const { setCombos, timeUnits } = useContext(PartnersContext)
+  const { setCombos } = useContext(PartnersContext)
   const [currentPage, setCurrentPage] = useState<number>(1)
 
   const [rows, setRows] = useState<{

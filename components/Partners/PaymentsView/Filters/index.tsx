@@ -1,5 +1,7 @@
 import React, { useContext, useRef } from "react"
+// DATA STORAGE & TYPES
 import { PaymentsHistory } from "contexts/PaymentsHistory"
+// COMPONENTS & STYLING
 import InputCalendar from "components/UI/InputCalendar"
 import { FiltersContainer, CalendarContainer } from "./styles"
 

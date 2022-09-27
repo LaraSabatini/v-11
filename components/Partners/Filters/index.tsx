@@ -1,11 +1,13 @@
 import React, { useContext } from "react"
+// DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
+import { clientFilters } from "const/fixedVariables"
+// COMPONENTS & STYLING
 import { FiltersContainer, Filter } from "../styles"
 
 const Filters = () => {
   const {
     filterSelected,
-    filters,
     hasChanges,
     setModalHasChanges,
     setDetailState,
@@ -25,8 +27,8 @@ const Filters = () => {
 
   return (
     <FiltersContainer>
-      {filters &&
-        filters.map((filter: { value: string; text: string }) => {
+      {clientFilters &&
+        clientFilters.map((filter: { value: string; text: string }) => {
           return (
             <Filter
               key={filter.value}
