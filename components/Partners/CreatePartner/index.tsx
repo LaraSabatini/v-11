@@ -303,10 +303,18 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         // crear boulder payment para dia/s o mes/es
         let finalProfit = 0
         if (paidTimeUnit.id === 1) {
-          finalProfit =
-            paymentMethodSelected === 1
-              ? paidTime * prices[0].price_cash
-              : paidTime * prices[0].price_mp
+          if (paidTime === 8) {
+            // evaluar si son 8 dias
+            finalProfit =
+              paymentMethodSelected === 1
+                ? paidTime * prices[1].price_cash
+                : paidTime * prices[1].price_mp
+          } else {
+            finalProfit =
+              paymentMethodSelected === 1
+                ? paidTime * prices[0].price_cash
+                : paidTime * prices[0].price_mp
+          }
         } else {
           finalProfit =
             paymentMethodSelected === 1
