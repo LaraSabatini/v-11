@@ -56,7 +56,7 @@ const FinancesProvider = ({ children }) => {
     section: string
     id: number
   }>({
-    section: "Ganancias diarias (Boulder)",
+    section: "Ganancias (Boulder)",
     id: 1,
   })
 

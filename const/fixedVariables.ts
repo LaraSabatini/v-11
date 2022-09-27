@@ -117,7 +117,7 @@ export const cajaFilters = [
 
 export const financesSections = [
   {
-    section: "Ganancias diarias (Boulder)",
+    section: "Ganancias (Boulder)",
     id: 1,
   },
   {
