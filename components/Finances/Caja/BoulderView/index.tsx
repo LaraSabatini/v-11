@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext } from "react"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
-// import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 
 const BoulderView = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -9,28 +8,14 @@ const BoulderView = () => {
     Finances,
   )
 
-  // id: number
-  // product_id: number
-  // product_name: string
-  // amount_of_items: number
-  // profit: number
-  // payment_method_id: number
-  // date: string
-
-  const cleanData = () => {
-    // const cleanedPaymentsArr: ProductsPurchasedByDateInterface[] = []
-    /* FILTRAR POR:
-    dias
-    mes
-    combo
-    clases
-    */
-    //  const amountOfDaysPurchased = ()
-  }
-
-  useEffect(() => {
-    cleanData()
-  }, [partnerPaymentsByDate])
+  /*
+    VISTA POR:
+    DIA           => (boulderProductsPurchasedByDate && partnerPaymentsByDate)
+    MES           => (partnerPaymentsByDate)
+    COMBO         => (partnerPaymentsByDate)
+    CLASES        => (partnerPaymentsByDate)
+    ZAPATILLAS    => (boulderProductsPurchasedByDate)
+  */
 
   return <div>BoulderView</div>
 }

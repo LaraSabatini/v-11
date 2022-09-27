@@ -1,7 +1,6 @@
 import { createContext, useState } from "react"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
-import PaymentInterface from "interfaces/partners/PaymentInterface"
 
 export const Finances = createContext({
   cajaFilterSelected: null,
@@ -71,7 +70,7 @@ const FinancesProvider = ({ children }) => {
   ] = useState<ProductsPurchasedByDateInterface[]>([])
 
   const [partnerPaymentsByDate, setPartnerPaymentsByDate] = useState<
-    PaymentInterface[]
+    ProductsPurchasedByDateInterface[]
   >([])
 
   const [productList, setProductList] = useState<ProductInterface[]>([])
