@@ -118,7 +118,7 @@ function StoreView() {
           >
             {texts.sells}
           </Section>
-          <Section
+          {/* <Section
             onClick={() => {
               if (stockChanges) {
                 setModalStockHasChanges(true)
@@ -129,7 +129,7 @@ function StoreView() {
             selected={sectionSelected.id === 2}
           >
             {texts.purchases}
-          </Section>
+          </Section> */}
           <Section
             onClick={() => {
               if (stockChanges) {

@@ -8,6 +8,7 @@ const Container = styled.div`
 `
 
 const FinalProfit = styled.div`
+  font-family: ${theme.fonts.primary};
   width: 450px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   padding: 15px;

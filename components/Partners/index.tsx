@@ -9,7 +9,7 @@ import {
 // DATA STORAGE & TYPES
 import texts from "strings/partners.json"
 import { PartnersContext } from "contexts/Partners"
-import PaymentsHistoryProvider from "contexts/PaymentsHistory"
+// import PaymentsHistoryProvider from "contexts/PaymentsHistory"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
@@ -22,7 +22,7 @@ import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import Prices from "./Prices"
-import PaymentsView from "./PaymentsView"
+// import PaymentsView from "./PaymentsView"
 import SectionButtons from "./SectionButtons"
 import {
   Container,
@@ -150,11 +150,11 @@ function PartnersView() {
           </>
         )}
         {sectionSelected.id === 3 && <Prices />}
-        {sectionSelected.id === 4 && (
+        {/* {sectionSelected.id === 4 && (
           <PaymentsHistoryProvider>
             <PaymentsView />
           </PaymentsHistoryProvider>
-        )}
+        )} */}
         {sectionSelected.id === 1 && (
           <MainButton>
             <Tooptip title={texts.mainButton}>

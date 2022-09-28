@@ -5,10 +5,11 @@ import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases
 import ProductInterface from "interfaces/store/ProductInterface"
 // COMPONENTS & STYLING
 import HistoryCard from "./ProductCard"
+import { FinalProfit } from "../BoulderView/styles"
 import {
   Container,
   CardsContainer,
-  CajaTotal,
+  // CajaTotal,
   ProfitsContainer,
 } from "./styles"
 
@@ -40,7 +41,7 @@ const ProductsView = () => {
   return (
     <Container>
       <ProfitsContainer>
-        <CajaTotal>
+        {/* <CajaTotal>
           <span className="title">Caja:</span>
           <p>
             <span>Efectivo:</span> <b>$ {profitsCash}</b>
@@ -48,7 +49,15 @@ const ProductsView = () => {
           <p>
             <span>Mercado Pago:</span> <b>$ {profitsMP}</b>
           </p>
-        </CajaTotal>
+        </CajaTotal> */}
+        <FinalProfit>
+          <p>
+            <span>Efectivo:</span> <b>$ {profitsCash}</b>
+          </p>
+          <p>
+            <span>Mercado Pago:</span> <b>$ {profitsMP}</b>
+          </p>
+        </FinalProfit>
       </ProfitsContainer>
       <CardsContainer>
         {productsPurchasedByDate.length > 0 &&
