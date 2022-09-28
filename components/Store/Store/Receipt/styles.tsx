@@ -70,7 +70,6 @@ const PaymentMethods = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* border: 1px solid red; */
   height: 120px;
 `
 

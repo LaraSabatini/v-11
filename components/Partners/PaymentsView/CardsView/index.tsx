@@ -1,6 +1,9 @@
 import React, { useContext, useEffect, useState } from "react"
+// SERVICES
 import { getEarningsByDate } from "services/Partners/PartnerPayments.service"
+// DATA STORAGE & TYPES
 import { PaymentsHistory } from "contexts/PaymentsHistory"
+// COMPONENTS & STYLING
 import { CardContainer, Card } from "./styles"
 
 const CardsView = () => {

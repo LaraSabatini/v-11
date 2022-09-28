@@ -1,6 +1,7 @@
 import React, { useContext, useState, useRef } from "react"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
+import { cajaFilters } from "const/fixedVariables"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import InputCalendar from "components/UI/InputCalendar"
@@ -16,7 +17,6 @@ import {
 const FiltersCaja = () => {
   const {
     setCajaFilterSelected,
-    cajaFilters,
     cajaFilterSelected,
     setCajaDateSelected,
     cajaDateSelected,

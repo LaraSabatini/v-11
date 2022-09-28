@@ -2,7 +2,6 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const FiltersContainer = styled.div`
-  /* border: 1px solid red; */
   position: relative;
 `
 

@@ -1,5 +1,7 @@
 import React, { useContext } from "react"
+// DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
+// COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 
 const Modals = () => {

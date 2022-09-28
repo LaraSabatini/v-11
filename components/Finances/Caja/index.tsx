@@ -2,10 +2,11 @@ import React, { useContext, useEffect } from "react"
 // SERVICES
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import { getProducts } from "services/Store/Products.service"
-import { getPaymentByDate } from "services/Partners/PartnerPayments.service"
+// import { getPaymentByDate } from "services/Partners/PartnerPayments.service"
+import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
-import PaymentInterface from "interfaces/partners/PaymentInterface"
+// import PaymentInterface from "interfaces/partners/PaymentInterface"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 // COMPONENTS & STYLING
 import ProductsView from "./ProducstView"
@@ -48,12 +49,12 @@ const Caja = () => {
 
     setBoulderProductsPurchasedByDate(filterBoulderProducts)
 
-    const getPartnerPaymentsCall = await getPaymentByDate(cajaDateSelected)
-
-    const filterPartnerPayments = getPartnerPaymentsCall.data.filter(
-      (partnerPayment: PaymentInterface) => partnerPayment.partner_id !== 258,
+    // TRAE TODO TIPO DE PAGO MENOS partner_id === 258
+    const getBoulderPaymentsCall = await getBoulderPurchaseByDate(
+      cajaDateSelected,
     )
-    setPartnerPaymentsByDate(filterPartnerPayments)
+
+    setPartnerPaymentsByDate(getBoulderPaymentsCall.data)
 
     const getProductsCall = await getProducts(1)
     setProductList(getProductsCall.data)

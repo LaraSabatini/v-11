@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useContext } from "react"
-import { PartnersContext } from "contexts/Partners"
+// SERVICES
 import { editPartner } from "services/Partners/Partner.service"
+// DATA STORAGE & TYPES
+import { PartnersContext } from "contexts/Partners"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import texts from "strings/partners.json"
+// COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
 import TextButton from "components/UI/TextButton"

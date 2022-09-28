@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/router"
+// SERVICES
 import validateUser from "services/Users/ValidateUser.service"
+// DATA STORAGE & TYPES
+import texts from "strings/loginPage.json"
+// COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"
-import texts from "strings/loginPage.json"
 import Background from "components/UI/Assets/background"
 import {
   MainContainer,

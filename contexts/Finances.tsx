@@ -1,12 +1,12 @@
 import { createContext, useState } from "react"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
-import PaymentInterface from "interfaces/partners/PaymentInterface"
+import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
+import { day, month, year } from "const/fixedVariables"
 
 export const Finances = createContext({
   cajaFilterSelected: null,
   setCajaFilterSelected: null,
-  cajaFilters: null,
   cajaDateSelected: null,
   setCajaDateSelected: null,
   actualDate: null,
@@ -18,6 +18,12 @@ export const Finances = createContext({
   setProductList: null,
   partnerPaymentsByDate: null,
   setPartnerPaymentsByDate: null,
+  sectionSelected: null,
+  setSectionSelected: null,
+  boulderPurchasesViewData: null,
+  setBoulderPurchasesViewData: null,
+  finalEargninsBoulder: null,
+  setFinalEargninsBoulder: null,
 })
 
 const FinancesProvider = ({ children }) => {
@@ -29,34 +35,9 @@ const FinancesProvider = ({ children }) => {
     id: 2,
     filter: "Boulder",
   })
-  const cajaFilters = [
-    {
-      id: 1,
-      filter: "Productos",
-    },
-    {
-      id: 2,
-      filter: "Boulder",
-    },
-    {
-      id: 3,
-      filter: "Caja MP x Usuario",
-    },
-    {
-      id: 4,
-      filter: "Caja completa",
-    },
-  ]
-
-  const today = new Date()
-  const getDay = today.getDate()
-  const getMonth = today.getMonth()
-  const year = today.getFullYear()
-
-  const day = getDay > 9 ? getDay : `0${getDay}`
-  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
 
   const actualDate = `${day}-${month}-${year}`
+
   const [cajaDateSelected, setCajaDateSelected] = useState<string>(actualDate)
 
   // CAJA PRODUCTOS
@@ -71,17 +52,65 @@ const FinancesProvider = ({ children }) => {
   ] = useState<ProductsPurchasedByDateInterface[]>([])
 
   const [partnerPaymentsByDate, setPartnerPaymentsByDate] = useState<
-    PaymentInterface[]
+    PartnerPaymentsHistoryInterface[]
   >([])
 
   const [productList, setProductList] = useState<ProductInterface[]>([])
+
+  const [sectionSelected, setSectionSelected] = useState<{
+    section: string
+    id: number
+  }>({
+    section: "Ganancias (Boulder)",
+    id: 1,
+  })
+
+  const [boulderPurchasesViewData, setBoulderPurchasesViewData] = useState([
+    {
+      name: "Pase Diario",
+      earnings_cash: 0,
+      earnings_mp: 0,
+      amount_of_days_sold: 0,
+    },
+    {
+      name: "Mes",
+      earnings_cash: 0,
+      earnings_mp: 0,
+      amount_of_months_sold: 0,
+    },
+    {
+      name: "Combo",
+      earnings_cash: 0,
+      earnings_mp: 0,
+      amount_of_combos_sold: 0,
+    },
+    {
+      name: "Clases",
+      earnings_cash: 0,
+      earnings_mp: 0,
+      amount_of_lessons_sold: 0,
+    },
+    {
+      name: "Alquiler zapatillas",
+      earnings_cash: 0,
+      earnings_mp: 0,
+      amount_of_shoes_rented: 0,
+    },
+  ])
+
+  const [finalEargninsBoulder, setFinalEargninsBoulder] = useState<{
+    cash: number
+    mp: number
+  }>({
+    cash: 0,
+    mp: 0,
+  })
 
   return (
     <Finances.Provider
       value={{
         cajaFilterSelected,
         setCajaFilterSelected,
-        cajaFilters,
         cajaDateSelected,
         setCajaDateSelected,
         actualDate,
@@ -93,6 +122,12 @@ const FinancesProvider = ({ children }) => {
         setProductList,
         partnerPaymentsByDate,
         setPartnerPaymentsByDate,
+        sectionSelected,
+        setSectionSelected,
+        boulderPurchasesViewData,
+        setBoulderPurchasesViewData,
+        finalEargninsBoulder,
+        setFinalEargninsBoulder,
       }}
     >
       {children}

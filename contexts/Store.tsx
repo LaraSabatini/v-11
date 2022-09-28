@@ -1,6 +1,10 @@
 import { createContext, useState, useRef } from "react"
 import ProductInterface from "interfaces/store/ProductInterface"
+import { day, month, year } from "const/fixedVariables"
 import DefaultInterface from "interfaces/components/DefaultInterface"
+import OptionsInterface from "interfaces/store/OptionsInterface"
+import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
+import ModalInterface from "interfaces/components/ModalInterface"
 
 export const StoreContext = createContext({
   productsList: null,
@@ -46,12 +50,10 @@ export const StoreContext = createContext({
   setStockChanges: null,
   modalStockHasChanges: null,
   setModalStockHasChanges: null,
-  months: null,
   monthSelected: null,
   setMonthSelected: null,
   dateSelected: null,
   setDateSelected: null,
-  paymentMethods: null,
   paymentFilter: null,
   setPaymentFilter: null,
   paymentMethodSelected: null,
@@ -63,19 +65,9 @@ export const StoreContext = createContext({
 const StoreProvider = ({ children }) => {
   const [productsList, setProductsList] = useState<ProductInterface[]>([])
 
-  const [categories, setCategories] = useState<
-    {
-      id: number
-      name: string
-    }[]
-  >([])
+  const [categories, setCategories] = useState<OptionsInterface[]>([])
 
-  const [brands, setBrands] = useState<
-    {
-      id: number
-      name: string
-    }[]
-  >([])
+  const [brands, setBrands] = useState<OptionsInterface[]>([])
 
   const [currentPage, setCurrentPage] = useState<number>(1)
 
@@ -94,66 +86,7 @@ const StoreProvider = ({ children }) => {
     DefaultInterface[]
   >()
 
-  const months = [
-    {
-      id: 1,
-      display_name: "Enero",
-    },
-    {
-      id: 2,
-      display_name: "Febrero",
-    },
-    {
-      id: 3,
-      display_name: "Marzo",
-    },
-    {
-      id: 4,
-      display_name: "Abril",
-    },
-    {
-      id: 5,
-      display_name: "Mayo",
-    },
-    {
-      id: 6,
-      display_name: "Junio",
-    },
-    {
-      id: 7,
-      display_name: "Julio",
-    },
-    {
-      id: 8,
-      display_name: "Agosto",
-    },
-    {
-      id: 9,
-      display_name: "Septiembre",
-    },
-    {
-      id: 10,
-      display_name: "Octubre",
-    },
-    {
-      id: 11,
-      display_name: "Noviembre",
-    },
-    {
-      id: 12,
-      display_name: "Diciembre",
-    },
-  ]
-
   const [monthSelected, setMonthSelected] = useState<number>(null)
-
-  const today = new Date()
-  const getDay = today.getDate()
-  const getMonth = today.getMonth()
-  const year = today.getFullYear()
-
-  const day = getDay > 9 ? getDay : `0${getDay}`
-  const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
 
   const [dateSelected, setDateSelected] = useState<string>(
     `${day}-${month}-${year}`,
@@ -168,14 +101,7 @@ const StoreProvider = ({ children }) => {
   )
 
   // BUY *************************************
-  const [purchase, setPurchase] = useState<
-    {
-      product_id: number
-      product_name: string
-      product_amount: number
-      final_price: number
-    }[]
-  >([])
+  const [purchase, setPurchase] = useState<TemporalPurchaseInterface[]>([])
 
   const [purchaseChange, setPurchaseChange] = useState<number>(1)
   const [executeCleanPurchase, setExecuteCleanPurchase] = useState<number>(1)
@@ -184,28 +110,13 @@ const StoreProvider = ({ children }) => {
     setFilterSelected(category_id)
   }
 
-  const paymentMethods = [
-    { id: 1, name: "Efectivo" },
-    { id: 2, name: "MP" },
-  ]
-
   const [paymentFilter, setPaymentFilter] = useState<number>(null)
 
   // CREATE *************************************
 
-  const [modalSuccess, setModalSuccess] = useState<{
-    status: string
-    icon: string
-    title: string
-    content: string
-  } | null>(null)
+  const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
 
-  const [modalError, setModalError] = useState<{
-    status: string
-    icon: string
-    title: string
-    content: string
-  } | null>(null)
+  const [modalError, setModalError] = useState<ModalInterface | null>(null)
 
   const nameRef = useRef(null)
   const brandsRef = useRef(null)
@@ -215,10 +126,10 @@ const StoreProvider = ({ children }) => {
   const stockRef = useRef(null)
 
   const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
-  const [paymentUserSelected, setPaymentUserSelected] = useState<{
-    id: number
-    display_name: string
-  }>(null)
+  const [
+    paymentUserSelected,
+    setPaymentUserSelected,
+  ] = useState<DefaultInterface | null>(null)
 
   return (
     <StoreContext.Provider
@@ -266,12 +177,10 @@ const StoreProvider = ({ children }) => {
         setStockChanges,
         modalStockHasChanges,
         setModalStockHasChanges,
-        months,
         monthSelected,
         setMonthSelected,
         dateSelected,
         setDateSelected,
-        paymentMethods,
         paymentFilter,
         setPaymentFilter,
         paymentMethodSelected,
