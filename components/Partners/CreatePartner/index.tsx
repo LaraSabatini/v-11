@@ -304,8 +304,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             // evaluar si son 8 dias
             finalProfit =
               paymentMethodSelected === 1
-                ? paidTime * prices[1].price_cash
-                : paidTime * prices[1].price_mp
+                ? prices[1].price_cash
+                : prices[1].price_mp
           } else {
             finalProfit =
               paymentMethodSelected === 1
