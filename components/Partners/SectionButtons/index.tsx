@@ -38,7 +38,7 @@ const SectionButtons = () => {
       >
         Precios
       </Section>
-      <Section
+      {/* <Section
         onClick={() => {
           if (hasChanges) {
             setModalHasChanges(true)
@@ -49,7 +49,7 @@ const SectionButtons = () => {
         selected={sectionSelected.id === 4}
       >
         Historial de pagos
-      </Section>
+      </Section> */}
     </SectionsButtons>
   )
 }
