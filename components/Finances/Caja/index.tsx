@@ -53,6 +53,7 @@ const Caja = () => {
     const getBoulderPaymentsCall = await getBoulderPurchaseByDate(
       cajaDateSelected,
     )
+
     setPartnerPaymentsByDate(getBoulderPaymentsCall.data)
 
     const getProductsCall = await getProducts(1)
