@@ -17,7 +17,7 @@ import ProductsView from "./Store/ProductList"
 import Receipt from "./Store/Receipt"
 import CreateProductForm from "./CreateProductForm"
 import Filters from "./Store/Filters"
-import Purchases from "./Purchases"
+// import Purchases from "./Purchases"
 import Stock from "./Stock"
 import {
   Container,
@@ -172,7 +172,7 @@ function StoreView() {
             <Receipt />
           </ProductsAndReceiptContainer>
         )}
-        {sectionSelected.id === 2 && <Purchases />}
+        {/* {sectionSelected.id === 2 && <Purchases />} */}
         {sectionSelected.id === 3 && <Stock />}
         {(sectionSelected.id === 1 || sectionSelected.id === 3) && (
           <MainButton>

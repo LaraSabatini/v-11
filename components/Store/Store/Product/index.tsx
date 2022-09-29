@@ -3,6 +3,7 @@ import React, { useState, useContext, useEffect } from "react"
 import { StoreContext } from "contexts/Store"
 import ProductCardInterface from "interfaces/store/ProductCard"
 import PurchaseProductsInterface from "interfaces/store/PurchaseProducts"
+import texts from "strings/store.json"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
@@ -189,7 +190,7 @@ const Product = ({
           </button>
           <Amount>{purchaseProducts.product_amount}</Amount>
           {buttonAddDisabled ? (
-            <Tooltip title="Deshabilitado">
+            <Tooltip title={texts.purchase.disabled}>
               {/* eslint-disable-next-line jsx-a11y/control-has-associated-label */}
               <button
                 type="button"
