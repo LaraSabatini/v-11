@@ -27,6 +27,8 @@ export const Finances = createContext({
   setFinalEargninsBoulder: null,
   digitalPaymentsList: null,
   setDigitalPaymentsList: null,
+  totalEarnings: null,
+  setTotalEarnings: null,
 })
 
 const FinancesProvider = ({ children }) => {
@@ -35,8 +37,8 @@ const FinancesProvider = ({ children }) => {
     id: number
     filter: string
   }>({
-    id: 3,
-    filter: "Caja MP x Usuario",
+    id: 4,
+    filter: "Caja completa",
   })
 
   const actualDate = `${day}-${month}-${year}`
@@ -113,6 +115,14 @@ const FinancesProvider = ({ children }) => {
     MPUserPayment[]
   >([])
 
+  const [totalEarnings, setTotalEarnings] = useState<{
+    cash: number
+    mp: number
+  }>({
+    cash: 0,
+    mp: 0,
+  })
+
   return (
     <Finances.Provider
       value={{
@@ -137,6 +147,8 @@ const FinancesProvider = ({ children }) => {
         setFinalEargninsBoulder,
         digitalPaymentsList,
         setDigitalPaymentsList,
+        totalEarnings,
+        setTotalEarnings,
       }}
     >
       {children}

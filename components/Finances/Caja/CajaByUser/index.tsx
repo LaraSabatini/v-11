@@ -10,30 +10,7 @@ import DefaultInterface from "interfaces/components/DefaultInterface"
 import { MainContainer, CardContainer, Card, User } from "./styles"
 
 const CajaByUser = () => {
-  const {
-    digitalPaymentsList,
-    setDigitalPaymentsList,
-    cajaDateSelected,
-  } = useContext(Finances)
-
-  const getDigitalPayments = async () => {
-    const digitalPaymentByDateCall = await searchByDate(cajaDateSelected)
-
-    setDigitalPaymentsList(digitalPaymentByDateCall.data)
-  }
-
-  useEffect(() => {
-    getDigitalPayments()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cajaDateSelected])
-
-  /*
-   federico
-   guillermo
-   joaco
-   roman
-   tobias
-  */
+  const { digitalPaymentsList, cajaDateSelected } = useContext(Finances)
 
   return (
     <MainContainer>

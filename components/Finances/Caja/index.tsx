@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 import React, { useContext, useEffect } from "react"
 // SERVICES
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import { getProducts } from "services/Store/Products.service"
-// import { getPaymentByDate } from "services/Partners/PartnerPayments.service"
+import { searchByDate } from "services/Finances/DigitalPayments.service"
 import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
@@ -12,6 +13,7 @@ import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases
 import ProductsView from "./ProducstView"
 import BoulderView from "./BoulderView"
 import CajaByUser from "./CajaByUser"
+import TotalEarnings from "./styles"
 
 const Caja = () => {
   const {
@@ -21,6 +23,9 @@ const Caja = () => {
     setProductList,
     setBoulderProductsPurchasedByDate,
     setPartnerPaymentsByDate,
+    setDigitalPaymentsList,
+    totalEarnings,
+    setTotalEarnings,
   } = useContext(Finances)
 
   const fillData = async () => {
@@ -58,6 +63,45 @@ const Caja = () => {
 
     const getProductsCall = await getProducts(1)
     setProductList(getProductsCall.data)
+
+    const digitalPaymentByDateCall = await searchByDate(cajaDateSelected)
+
+    setDigitalPaymentsList(digitalPaymentByDateCall.data)
+
+    // console.log("productPurchasesCall", productPurchasesCall.data)
+    // console.log("getBoulderPaymentsCall", getBoulderPaymentsCall.data)
+
+    // CASH EARNIGS => STORE
+    const cashEarningsFromStore = productPurchasesCall.data.filter(
+      purchase => purchase.payment_method_id === 1,
+    )
+    let cashEarningsFinal = 0
+    cashEarningsFromStore.map(p => {
+      cashEarningsFinal += p.profit
+      return 0
+    })
+    // => BOULDER PURCHASES
+    const cashEarningsFromBoulderPayments = getBoulderPaymentsCall.data.filter(
+      purchase => purchase.payment_method_id === 1,
+    )
+    let cashEarningsFinalFromBoulder = 0
+    cashEarningsFromBoulderPayments.map(p => {
+      cashEarningsFinalFromBoulder += p.profit
+      return 0
+    })
+
+    // MP EARNIGS => STORE
+
+    let mpEarningsFinal = 0
+    digitalPaymentByDateCall.data.map(p => {
+      mpEarningsFinal += p.total_profit
+      return 0
+    })
+
+    setTotalEarnings({
+      cash: cashEarningsFinal + cashEarningsFinalFromBoulder,
+      mp: mpEarningsFinal,
+    })
   }
 
   useEffect(() => {
@@ -70,7 +114,16 @@ const Caja = () => {
       {cajaFilterSelected.id === 1 && <ProductsView />}
       {cajaFilterSelected.id === 2 && <BoulderView />}
       {cajaFilterSelected.id === 3 && <CajaByUser />}
-      {cajaFilterSelected.id === 4 && <h1>CAJA COMPLETA</h1>}
+      {cajaFilterSelected.id === 4 && (
+        <TotalEarnings>
+          <p>
+            <span>EFECTIVO:</span> <b>$ {totalEarnings.cash}</b>
+          </p>
+          <p>
+            <span>MERCADO PAGO:</span> <b>$ {totalEarnings.mp}</b>
+          </p>
+        </TotalEarnings>
+      )}
     </div>
   )
 }
