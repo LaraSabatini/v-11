@@ -2,6 +2,7 @@ import { createContext, useState } from "react"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
+import MPUserPayment from "interfaces/finances/MPUserPayments"
 import { day, month, year } from "const/fixedVariables"
 
 export const Finances = createContext({
@@ -24,6 +25,10 @@ export const Finances = createContext({
   setBoulderPurchasesViewData: null,
   finalEargninsBoulder: null,
   setFinalEargninsBoulder: null,
+  digitalPaymentsList: null,
+  setDigitalPaymentsList: null,
+  totalEarnings: null,
+  setTotalEarnings: null,
 })
 
 const FinancesProvider = ({ children }) => {
@@ -32,8 +37,8 @@ const FinancesProvider = ({ children }) => {
     id: number
     filter: string
   }>({
-    id: 2,
-    filter: "Boulder",
+    id: 4,
+    filter: "Caja completa",
   })
 
   const actualDate = `${day}-${month}-${year}`
@@ -106,6 +111,18 @@ const FinancesProvider = ({ children }) => {
     mp: 0,
   })
 
+  const [digitalPaymentsList, setDigitalPaymentsList] = useState<
+    MPUserPayment[]
+  >([])
+
+  const [totalEarnings, setTotalEarnings] = useState<{
+    cash: number
+    mp: number
+  }>({
+    cash: 0,
+    mp: 0,
+  })
+
   return (
     <Finances.Provider
       value={{
@@ -128,6 +145,10 @@ const FinancesProvider = ({ children }) => {
         setBoulderPurchasesViewData,
         finalEargninsBoulder,
         setFinalEargninsBoulder,
+        digitalPaymentsList,
+        setDigitalPaymentsList,
+        totalEarnings,
+        setTotalEarnings,
       }}
     >
       {children}

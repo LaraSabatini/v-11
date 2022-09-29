@@ -280,7 +280,7 @@ const Receipt = () => {
                 setPaymentUserSelected(null)
               }}
             />
-            <span>Efectivo</span>
+            <span>{texts.cash}</span>
           </RadioContainer>
           <RadioContainer>
             <RadioButton
@@ -296,13 +296,13 @@ const Receipt = () => {
                 setPaymentMethodSelected(2)
               }}
             />
-            <span>Mercado Pago</span>
+            <span>{texts.mp}</span>
           </RadioContainer>
         </RadioButtonsContainer>
         {paymentMethodSelected === 2 && (
           <Autocomplete
             required
-            label="MP User"
+            label={texts.purchase.user}
             width={150}
             options={paymentUsers}
             ref={paymentUserRef}

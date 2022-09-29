@@ -52,14 +52,14 @@ export const searchByMonth = async (month_id: number, page: number) => {
   return res.data
 }
 
-export const searchByDate = async (date: string, page: number) => {
+export const searchByDate = async (date: string) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
     },
   }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/digitalPayments/by-date/date=${date}&page=${page}`,
+    `https://v-11-backend.vercel.app/digitalPayments/by-date/date=${date}`,
     axiosHeader,
   )
   return res.data

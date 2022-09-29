@@ -9,6 +9,8 @@
     "all": "Todos",
     "next": "Siguiente pagina",
     "prev": "Pagina previa",
+    "cash": "Efectivo",
+    "mp": "Mercado Pago",
     "create": {
         "title": "Crear producto",
         "cancel": "Cancelar",
@@ -20,7 +22,6 @@
         "category": "Categoria",
         "seller": "Vendedor",
         "sellerContact": "Contacto vendedor",
-        
         "success": {
             "title": "Excelente!",
             "content":"El producto ha sido creado exitosamente."
@@ -35,6 +36,8 @@
         "total": "Total:",
         "execute": "Realizar",
         "cancel": "Cancelar",
+        "user": "MP User",
+        "disabled": "Deshabilitado",
         "success": {
             "title": "Excelente!",
             "content":"La compra se realizo con exito."

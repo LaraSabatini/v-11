@@ -87,7 +87,7 @@ function TrainersView() {
             }
             selected={sectionSelected.id === 1}
           >
-            Alumnos
+            {texts.students}
           </Section>
           <Section
             onClick={() =>

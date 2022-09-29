@@ -232,7 +232,7 @@ const BoulderView = () => {
               • Por tienda: <b>{daysPurchased.store}</b>
             </p>
             <p>
-              • Por partners: <b>{daysPurchased.partner}</b>
+              • Por clientes: <b>{daysPurchased.partner}</b>
             </p>
           </Earnings>
         </Card>
