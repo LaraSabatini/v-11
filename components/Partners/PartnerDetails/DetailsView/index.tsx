@@ -547,7 +547,14 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         {partnerInfo?.is_student === "SI" ? (
           <PartnerData>
             <p>{texts.trainer}</p>
-            Guillermo
+            {initialPayment?.days_and_hours.includes("1") ||
+            initialPayment?.days_and_hours.includes("2") ||
+            initialPayment?.days_and_hours.includes("3") ||
+            initialPayment?.days_and_hours.includes("4") ? (
+              <p>Guillermo</p>
+            ) : (
+              <p>Joaco</p>
+            )}
           </PartnerData>
         ) : (
           <></>
