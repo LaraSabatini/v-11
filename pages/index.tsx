@@ -9,7 +9,7 @@ function Home() {
   const router = useRouter()
 
   if (logged === "true") {
-    router.replace("/home")
+    router.replace("/home?clients=true")
   }
 
   return (

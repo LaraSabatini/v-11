@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useEffect, useContext } from "react"
+import { useRouter } from "next/router"
 // SERVICES
 import { getSchedule } from "services/Trainers/Schedule.service"
 import { getClasesPaid } from "services/Partners/PartnerPayments.service"
@@ -13,8 +14,6 @@ import ClasesCard from "./ClasesCard"
 import {
   Container,
   Title,
-  SectionsButtons,
-  Section,
   CardsContainer,
   FiltersContainer,
   FilterButton,
@@ -31,13 +30,7 @@ function TrainersView() {
     triggerListUpdate,
   } = useContext(Clases)
 
-  const [sectionSelected, setSectionSelected] = useState<{
-    section: string
-    id: number
-  }>({
-    section: `${texts.students}`,
-    id: 1,
-  })
+  const router = useRouter()
 
   const cleanDataForStorage = (purchases: ClasesPurchasedInterface[]) => {
     const newPurchasesList = purchases
@@ -80,31 +73,18 @@ function TrainersView() {
     <>
       <Header />
       <Container>
-        <SectionsButtons>
-          <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.students}`, id: 1 })
-            }
-            selected={sectionSelected.id === 1}
-          >
-            {texts.students}
-          </Section>
-          <Section
-            onClick={() =>
-              setSectionSelected({ section: `${texts.calendar}`, id: 2 })
-            }
-            selected={sectionSelected.id === 2}
-          >
-            {texts.calendar}
-          </Section>
-        </SectionsButtons>
-
         <Title>
           <div>
             {texts.trainers}
-            <span> / {sectionSelected.section}</span>
+            <span>
+              {" "}
+              /{" "}
+              {router.query.students === "true"
+                ? "Alumnos"
+                : "Calendario de clases"}
+            </span>
           </div>
-          {sectionSelected.id === 1 && (
+          {router.query.students === "true" && (
             <FiltersContainer>
               {schedule.length &&
                 schedule.map(
@@ -131,7 +111,7 @@ function TrainersView() {
             </FiltersContainer>
           )}
         </Title>
-        {sectionSelected.id === 1 && (
+        {router.query.students === "true" && (
           <ScrollView height={550}>
             <CardsContainer>
               {clasesPurchased.length > 0 &&

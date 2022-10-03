@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
+import { useRouter } from "next/router"
 // SERVICES
 import { getProducts, productByCategory } from "services/Store/Products.service"
 import getCategories from "services/Store/getCategories.service"
@@ -24,8 +25,8 @@ import {
   Content,
   Title,
   HeadContent,
-  SectionsButtons,
-  Section,
+  // SectionsButtons,
+  // Section,
   CreateProduct,
   MainButton,
   ProductsAndReceiptContainer,
@@ -49,13 +50,7 @@ function StoreView() {
 
   const [createProductModal, setCreateProductModal] = useState<boolean>(false)
 
-  const [sectionSelected, setSectionSelected] = useState<{
-    section: string
-    id: number
-  }>({
-    section: `${texts.sells}`,
-    id: 1,
-  })
+  const router = useRouter()
 
   const getStaticData = async () => {
     const categoriesListCall = await getCategories()
@@ -105,50 +100,13 @@ function StoreView() {
       <Modals />
       <Header />
       <Content>
-        <SectionsButtons>
-          <Section
-            onClick={() => {
-              if (stockChanges) {
-                setModalStockHasChanges(true)
-              } else {
-                setSectionSelected({ section: `${texts.sells}`, id: 1 })
-              }
-            }}
-            selected={sectionSelected.id === 1}
-          >
-            {texts.sells}
-          </Section>
-          {/* <Section
-            onClick={() => {
-              if (stockChanges) {
-                setModalStockHasChanges(true)
-              } else {
-                setSectionSelected({ section: `${texts.purchases}`, id: 2 })
-              }
-            }}
-            selected={sectionSelected.id === 2}
-          >
-            {texts.purchases}
-          </Section> */}
-          <Section
-            onClick={() => {
-              if (stockChanges) {
-                setModalStockHasChanges(true)
-              } else {
-                setSectionSelected({ section: `${texts.stock}`, id: 3 })
-              }
-            }}
-            selected={sectionSelected.id === 3}
-          >
-            {texts.stock}
-          </Section>
-        </SectionsButtons>
         <HeadContent>
           <Title>
-            {texts.title} <span> / {sectionSelected.section}</span>
+            {texts.title}{" "}
+            <span> / {router.query.store === "true" ? "Tienda" : "Stock"}</span>
           </Title>
-          <Filters section={sectionSelected.id} />
-          {sectionSelected.id === 3 && (
+          <Filters />
+          {router.query.stock === "true" && (
             <button
               className="btn-search"
               type="button"
@@ -166,15 +124,14 @@ function StoreView() {
             </button>
           )}
         </HeadContent>
-        {sectionSelected.id === 1 && (
+        {router.query.store === "true" && (
           <ProductsAndReceiptContainer>
             <ProductsView goNext={goNext} goPrev={goPrev} data={productsList} />
             <Receipt />
           </ProductsAndReceiptContainer>
         )}
-        {/* {sectionSelected.id === 2 && <Purchases />} */}
-        {sectionSelected.id === 3 && <Stock />}
-        {(sectionSelected.id === 1 || sectionSelected.id === 3) && (
+        {router.query.stock === "true" && <Stock />}
+        {(router.query.store === "true" || router.query.stock === "true") && (
           <MainButton>
             <Tooptip title={texts.mainButton}>
               <CreateProduct

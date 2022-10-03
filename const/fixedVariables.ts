@@ -117,7 +117,7 @@ export const cajaFilters = [
 
 export const financesSections = [
   {
-    section: "Ganancias (Boulder)",
+    section: "Facturacion Boulder",
     id: 1,
   },
   {
