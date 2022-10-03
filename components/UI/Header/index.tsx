@@ -59,6 +59,7 @@ function Header() {
                         setModalHasChanges(true)
                       } else {
                         setDetailState("view")
+                        router.replace("/home?clients=true")
                       }
                     } else if (router.asPath === "/store" && stockChanges) {
                       setModalStockHasChanges(true)
@@ -78,6 +79,7 @@ function Header() {
                         setModalHasChanges(true)
                       } else {
                         setDetailState("view")
+                        router.replace("/home?prices=true")
                       }
                     } else if (router.asPath === "/store" && stockChanges) {
                       setModalStockHasChanges(true)
