@@ -66,7 +66,7 @@ const FinancesProvider = ({ children }) => {
     section: string
     id: number
   }>({
-    section: "Ganancias (Boulder)",
+    section: "Facturacion Boulder",
     id: 1,
   })
 

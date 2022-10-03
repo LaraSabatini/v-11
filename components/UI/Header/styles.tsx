@@ -24,6 +24,7 @@ const Sections = styled.div`
 `
 
 const SectionTitle = styled.button<{ bold: boolean }>`
+  position: relative;
   background: none;
   border: none;
   outline: none;
@@ -60,10 +61,46 @@ const ProfilePicture = styled.button`
   color: ${theme.colors.white};
 `
 
+const ClientsMenu = styled.div`
+  position: absolute;
+  background-color: white;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 20px 10px 5px;
+  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
+  border-radius: 0 0 3px 3px;
+  top: 20px;
+  z-index: 150;
+`
+
+const SubButton = styled.button<{ selectedSection: boolean }>`
+  font-family: ${theme.fonts.primary};
+  border: none;
+  cursor: pointer;
+  background: none;
+  text-align: left;
+  font-size: 15px;
+  width: fit-content;
+  font-weight: ${theme.fontWeights.light};
+  &:hover {
+    font-weight: ${theme.fontWeights.regular};
+  }
+
+  ${props =>
+    props.selectedSection &&
+    css`
+      font-weight: ${theme.fontWeights.regular};
+    `};
+`
+
 export {
   HeaderContainer,
   ProfilePicture,
   HeaderContent,
   Sections,
   SectionTitle,
+  ClientsMenu,
+  SubButton,
 }

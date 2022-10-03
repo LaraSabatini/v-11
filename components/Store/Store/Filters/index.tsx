@@ -1,13 +1,11 @@
-import React, { useContext, useState, useRef } from "react"
+import React, { useContext } from "react"
+import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
-import { paymentMethods } from "const/fixedVariables"
 import OptionsInterface from "interfaces/store/OptionsInterface"
-import DefaultInterface from "interfaces/components/DefaultInterface"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
-import InputCalendar from "components/UI/InputCalendar"
 import {
   FiltersContainer,
   Select,
@@ -16,23 +14,19 @@ import {
   Option,
 } from "../../styles"
 
-const Filters = section => {
+const Filters = () => {
   const {
     categories,
     openTypeMenu,
     setOpenTypeMenu,
     selectFilter,
-    setDateSelected,
-    setPaymentFilter,
-    paymentFilter,
   } = useContext(StoreContext)
 
-  const calendarRef = useRef(null)
-  const [paymentTypeMenu, setPaymentTypeMenu] = useState<boolean>(false)
+  const router = useRouter()
 
   return (
     <FiltersContainer>
-      {section.section === 1 && (
+      {router.query.store === "true" && (
         <Select
           onClick={() => {
             setOpenTypeMenu(!openTypeMenu)
@@ -59,53 +53,6 @@ const Filters = section => {
             </Selector>
           )}
         </Select>
-      )}
-      {section.section === 2 && (
-        <div className="other">
-          <InputCalendar
-            width={250}
-            onChange={e => {
-              setDateSelected(
-                `${e.selectedChangeDate.slice(
-                  0,
-                  2,
-                )}-${e.selectedChangeDate.slice(
-                  3,
-                  5,
-                )}-${e.selectedChangeDate.slice(6, 10)}`,
-              )
-            }}
-            reference={calendarRef}
-          />
-          <Select
-            onClick={() => {
-              setPaymentTypeMenu(!paymentTypeMenu)
-            }}
-          >
-            <div className="select">
-              {paymentFilter === null && <p>Metodo de pago</p>}
-              {paymentFilter === 1 && <p>Efectivo</p>}
-              {paymentFilter === 2 && <p>MP</p>}
-
-              <IconContainer>
-                <Icon icon="IconArrowLeft" />
-              </IconContainer>
-            </div>
-            {paymentTypeMenu && (
-              <Selector>
-                {paymentMethods.length &&
-                  paymentMethods.map((p: DefaultInterface) => (
-                    <Option key={p.id} onClick={() => setPaymentFilter(p.id)}>
-                      {p.display_name}
-                    </Option>
-                  ))}
-                <Option onClick={() => setPaymentFilter(null)}>
-                  {texts.all}
-                </Option>
-              </Selector>
-            )}
-          </Select>
-        </div>
       )}
     </FiltersContainer>
   )

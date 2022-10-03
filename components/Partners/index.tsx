@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react"
+import { useRouter } from "next/router"
 // SERVICES
 import {
   searchPartner,
@@ -9,7 +10,6 @@ import {
 // DATA STORAGE & TYPES
 import texts from "strings/partners.json"
 import { PartnersContext } from "contexts/Partners"
-// import PaymentsHistoryProvider from "contexts/PaymentsHistory"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
@@ -22,8 +22,6 @@ import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import Prices from "./Prices"
-// import PaymentsView from "./PaymentsView"
-import SectionButtons from "./SectionButtons"
 import {
   Container,
   Title,
@@ -52,8 +50,9 @@ function PartnersView() {
     setCreateModal,
     cleanStates,
     setPartnerSelected,
-    sectionSelected,
   } = useContext(PartnersContext)
+
+  const router = useRouter()
 
   const [searchValue, setSearchValue] = useState<string>("")
 
@@ -114,15 +113,18 @@ function PartnersView() {
       <Modals />
       <Header />
       <Content>
-        <SectionButtons />
         <HeadContent>
           <Title>
-            {texts.title} <span> / {sectionSelected.section}</span>
+            {texts.title}{" "}
+            <span>
+              {" "}
+              / {router.query.prices === "true" ? "Precios" : "Clientes"}
+            </span>
           </Title>
-          {sectionSelected.id === 1 && <Filters />}
+          {router.query.clients === "true" && <Filters />}
         </HeadContent>
 
-        {sectionSelected.id === 1 && (
+        {router.query.clients === "true" && (
           <>
             <SearchBarContainer
               onClick={() => {
@@ -149,13 +151,8 @@ function PartnersView() {
             </ListAndDetailContainer>
           </>
         )}
-        {sectionSelected.id === 3 && <Prices />}
-        {/* {sectionSelected.id === 4 && (
-          <PaymentsHistoryProvider>
-            <PaymentsView />
-          </PaymentsHistoryProvider>
-        )} */}
-        {sectionSelected.id === 1 && (
+        {router.query.prices === "true" && <Prices />}
+        {router.query.clients === "true" && (
           <MainButton>
             <Tooptip title={texts.mainButton}>
               <AddPartner

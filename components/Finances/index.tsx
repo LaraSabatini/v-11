@@ -1,7 +1,7 @@
-import React, { useContext } from "react"
+import React from "react"
+import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
-import { Finances } from "contexts/Finances"
-import { financesSections } from "const/fixedVariables"
+import WorkingHoursProvider from "contexts/WorkingHours"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
 import Bills from "./Bills"
@@ -9,45 +9,36 @@ import Caja from "./Caja"
 import Earnings from "./Earnings"
 import WorkingHours from "./WorkingHours"
 import FiltersCaja from "./Caja/Filters"
-import {
-  MainContainer,
-  Content,
-  SectionButtonsContainer,
-  Section,
-  Title,
-  HeadContent,
-} from "./styles"
+import { MainContainer, Content, Title, HeadContent } from "./styles"
 
 const FinancesView = () => {
-  const { sectionSelected, setSectionSelected } = useContext(Finances)
+  const router = useRouter()
 
   return (
     <MainContainer>
       <Header />
       <Content>
-        <SectionButtonsContainer>
-          {financesSections.map((section: { section: string; id: number }) => (
-            <Section
-              key={section.id}
-              onClick={() => {
-                setSectionSelected(section)
-              }}
-              selected={sectionSelected.id === section.id}
-            >
-              {section.section}
-            </Section>
-          ))}
-        </SectionButtonsContainer>
         <HeadContent>
           <Title>
-            Finanzas <span> / {sectionSelected.section}</span>
+            Finanzas{" "}
+            <span>
+              {" "}
+              / {router.query.billing === "true" && "Facturacion Boulder"}
+              {router.query.expenses === "true" && "Gastos"}
+              {router.query.workingHours === "true" && "Horas de trabajo"}
+              {router.query.earnings === "true" && "Ingresos"}
+            </span>
           </Title>
-          {sectionSelected.id === 1 && <FiltersCaja />}
+          {router.query.billing === "true" && <FiltersCaja />}
         </HeadContent>
-        {sectionSelected.id === 1 && <Caja />}
-        {sectionSelected.id === 2 && <Bills />}
-        {sectionSelected.id === 3 && <WorkingHours />}
-        {sectionSelected.id === 4 && <Earnings />}
+        {router.query.billing === "true" && <Caja />}
+        {router.query.expenses === "true" && <Bills />}
+        {router.query.workingHours === "true" && (
+          <WorkingHoursProvider>
+            <WorkingHours />
+          </WorkingHoursProvider>
+        )}
+        {router.query.earnings === "true" && <Earnings />}
       </Content>
     </MainContainer>
   )
