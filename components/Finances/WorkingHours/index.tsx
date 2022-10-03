@@ -3,17 +3,17 @@ import React, { useContext, useEffect } from "react"
 import { WorkingHoursContext } from "contexts/WorkingHours"
 
 const WorkingHours = () => {
-  const { actualWeek, setActualWeek, weekSelected } = useContext(
-    WorkingHoursContext,
-  )
+  const {
+    // actualWeek, setActualWeek
+    weekSelected,
+  } = useContext(WorkingHoursContext)
 
   const calculateActualWeek = () => {
-    const currentDate = new Date()
-    const startDate = new Date(currentDate.getFullYear(), 0, 1)
-    const days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000))
-
-    const weekNumber = Math.ceil(days / 7)
-    setActualWeek(weekNumber)
+    // const currentDate = new Date()
+    // const startDate = new Date(currentDate.getFullYear(), 0, 1)
+    // const days = Math.floor((currentDate - startDate) / (24 * 60 * 60 * 1000))
+    // const weekNumber = Math.ceil(days / 7)
+    // setActualWeek(weekNumber)
   }
 
   useEffect(() => {
