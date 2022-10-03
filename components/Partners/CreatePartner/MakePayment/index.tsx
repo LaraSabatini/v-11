@@ -11,6 +11,7 @@ import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Checkbox from "components/UI/Checkbox"
+// import InputCalendar from "components/UI/InputCalendar"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 import { Form } from "./styles"
 
@@ -81,6 +82,8 @@ const MakePayment = () => {
     comboSelected,
     amountOfClases,
   ])
+
+  // const calendarRef = useRef(null)
 
   return (
     <Form>
@@ -168,6 +171,33 @@ const MakePayment = () => {
       </HorizontalGroup>
       <HorizontalGroup>
         {/* ACA ************************************** */}
+        {/* <CalendarContainer>
+          {amountOfClases > 0 &&
+            [...Array(amountOfClases)].map(amount => (
+              <div className="inputs">
+                <InputCalendar
+                  width={150}
+                  key={amount}
+                  reference={calendarRef}
+                  label="Fecha"
+                  required
+                />
+                <Autocomplete
+                  label="Turno"
+                  required
+                  width={110}
+                  options={[
+                    { id: 1, display_name: "AM" },
+                    { id: 2, display_name: "PM" },
+                  ]}
+                  // ref={comboRef}
+                  // onChangeProps={(e: { id: number; display_name: string }) => {
+                  //   setComboSelected(e.id)
+                  // }}
+                />
+              </div>
+            ))}
+        </CalendarContainer> */}
         <ComboBoxSelect
           required={
             amountOfClases !== undefined &&

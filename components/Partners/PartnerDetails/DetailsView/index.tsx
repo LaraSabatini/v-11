@@ -56,6 +56,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     paymentMethodSelected,
     paymentUserSelected,
     prices,
+    usesDay,
     combos,
   } = useContext(PartnersContext)
 
@@ -245,10 +246,24 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         daysAndHours = ""
       }
 
+      let finalTime = 0
+      if (paidTime !== null && paidTime !== 0) {
+        if (usesDay) {
+          finalTime = paidTime - 1
+        } else {
+          finalTime = paidTime
+        }
+      } else {
+        finalTime = 0
+      }
+
       const body = {
         ...newValues,
         clases_paid: initialPayment.clases_paid + newValues.clases_paid,
-        time_paid: initialPayment.time_paid + newValues.time_paid,
+        time_paid:
+          paidTimeUnit.id === 1
+            ? finalTime + initialPayment.time_paid
+            : initialPayment.time_paid + newValues.time_paid,
         price_paid: finalPrice,
         payment_expire_date:
           (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||

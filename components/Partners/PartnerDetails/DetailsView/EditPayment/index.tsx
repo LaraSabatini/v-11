@@ -59,6 +59,8 @@ const EditPayment = ({
     calculatePrice,
     setPaymentUserSelected,
     paymentUserRef,
+    usesDay,
+    setUsesDay,
   } = useContext(PartnersContext)
 
   const fillScheduleData = async () => {
@@ -274,10 +276,23 @@ const EditPayment = ({
             />
           </HorizontalGroup>
         )}
-        <CheckboxContainer>
-          <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
-          <p>Pase libre</p>
-        </CheckboxContainer>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <CheckboxContainer>
+            <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
+            <p>Pase libre</p>
+          </CheckboxContainer>
+          {paidTimeUnit.id === 1 && (
+            <CheckboxContainer>
+              <Checkbox
+                ownState
+                checked={usesDay}
+                onChange={() => setUsesDay(!usesDay)}
+                idParam="use-day"
+              />
+              <p>Usa dia hoy</p>
+            </CheckboxContainer>
+          )}
+        </div>
       </ModalForm>
     </>
   )
