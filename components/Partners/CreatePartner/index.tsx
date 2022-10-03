@@ -71,6 +71,21 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
 
+  const cleanPersonalDataFormat = () => {
+    const inputName = newPartnerData.name.toLowerCase()
+    const name = inputName.charAt(0).toUpperCase() + inputName.slice(1)
+
+    const inputLastName = newPartnerData.last_name.toLowerCase()
+    const lastName =
+      inputLastName.charAt(0).toUpperCase() + inputLastName.slice(1)
+
+    return {
+      name,
+      lastName,
+    }
+  }
+
+  // FIRST FORM
   const handleCreate = async e => {
     e.preventDefault()
 
@@ -93,12 +108,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       emailRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
-      const inputName = newPartnerData.name.toLowerCase()
-      const name = inputName.charAt(0).toUpperCase() + inputName.slice(1)
-
-      const inputLastName = newPartnerData.last_name.toLowerCase()
-      const lastName =
-        inputLastName.charAt(0).toUpperCase() + inputLastName.slice(1)
+      const formatData = cleanPersonalDataFormat()
 
       const seeDuplicated = await searchPartner(
         newPartnerData.identification_number,
@@ -111,8 +121,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         const body = {
           ...newPartnerData,
           id: 0,
-          name,
-          last_name: lastName,
+          name: formatData.name,
+          last_name: formatData.lastName,
           birth_date:
             newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
           membership_start_date: `${day}/${month}/${year}`,
@@ -125,6 +135,117 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     }
   }
 
+  // CREATE PARTNER PAYMENT
+  const executePartnerPayment = async (partnerId: number) => {
+    let success = true
+    const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
+    const expireDate = newDate.getDate()
+    const expireMonth = newDate.getMonth()
+    const expireYear = newDate.getFullYear()
+    const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
+    let finalExpireMonth: number | string
+    if (comboSelected !== null && comboSelected !== undefined) {
+      finalExpireMonth =
+        expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`
+    } else {
+      finalExpireMonth =
+        expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
+    }
+
+    let finalTime = 0
+    if (paidTime !== null && paidTime !== 0) {
+      if (usesDay) {
+        finalTime = paidTime - 1
+      } else {
+        finalTime = paidTime
+      }
+    } else {
+      finalTime = 0
+    }
+
+    const paymentBody: PaymentInterface = {
+      id: 0,
+      partner_id: partnerId,
+      partner_name: newPartnerData.name,
+      partner_last_name: newPartnerData.last_name,
+      combo:
+        comboSelected !== null && comboSelected !== undefined
+          ? comboSelected
+          : 0,
+      time_paid: paidTimeUnit.id === 1 ? finalTime : paidTime,
+      time_paid_unit:
+        paidTimeUnit !== undefined && paidTimeUnit?.id !== null
+          ? paidTimeUnit.id
+          : "",
+      clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
+      payment_method_id: paymentMethodSelected,
+      payment_method_name: paymentMethods.filter(
+        pm => pm.id === paymentMethodSelected,
+      )[0].display_name,
+      price_paid: finalPrice,
+      date: `${day}-${month}-${year}`,
+      payment_expire_date:
+        (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
+        (comboSelected !== null && comboSelected !== undefined)
+          ? `${finalExpireDay}-${finalExpireMonth}-${expireYear}`
+          : "",
+      days_and_hours: scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
+    }
+
+    const createPaymentCall = await createPartnerPayment(paymentBody)
+
+    if (createPaymentCall.message === "partnerPayment created successfully") {
+      success = true
+    } else {
+      success = false
+    }
+
+    return success
+  }
+
+  const manageDigitalPayment = async (condition: boolean, data) => {
+    let success = false
+
+    if (condition) {
+      const digitalPaymentBody = {
+        id: data.id,
+        user_id: data.user_id,
+        user_name: data.user_name,
+        date: data.date,
+        month: data.month,
+        month_id: data.month_id,
+        total_profit: data.total_profit + finalPrice,
+      }
+      const editDigitalPayment = await updateDigitalPayment(digitalPaymentBody)
+      if (editDigitalPayment.message === "payment updated successfully") {
+        success = true
+      } else {
+        success = false
+      }
+    } else {
+      const digitalPaymentBody = {
+        id: 0,
+        user_id: paymentUserSelected.id,
+        user_name: paymentUserSelected.display_name,
+        date: `${day}-${month}-${year}`,
+        month: months.filter(m => m.id === today.getMonth() + 1)[0]
+          .display_name,
+        month_id: today.getMonth() + 1,
+        total_profit: finalPrice,
+      }
+      const createDigital = await createDigitalPayment(digitalPaymentBody)
+
+      if (createDigital.message === "payment created successfully") {
+        success = true
+      } else {
+        success = false
+      }
+    }
+
+    return success
+  }
+
+  // SECOND FORM
   const finalizeCreate = async e => {
     e.preventDefault()
     await paidTimeUnitRef.current?.focus()
@@ -153,122 +274,28 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             : 0,
         is_student: scheduleSelected.length > 0 ? "SI" : "NO",
       }
-
+      // CREAR SOCIO
       const apiValidation = await createPartner(body)
 
+      // CREAR PAGO SE SOCIO
       if (apiValidation.message === "partner created successfully") {
-        success = true
-        const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
-        const expireDate = newDate.getDate()
-        const expireMonth = newDate.getMonth()
-        const expireYear = newDate.getFullYear()
-        const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
-        let finalExpireMonth: number | string
-        if (comboSelected !== null && comboSelected !== undefined) {
-          finalExpireMonth =
-            expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`
-        } else {
-          finalExpireMonth =
-            expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
-        }
-
-        let finalTime = 0
-        if (paidTime !== null && paidTime !== 0) {
-          if (usesDay) {
-            finalTime = paidTime - 1
-          } else {
-            finalTime = paidTime
-          }
-        } else {
-          finalTime = 0
-        }
-
-        const paymentBody: PaymentInterface = {
-          id: 0,
-          partner_id: apiValidation.partnerId,
-          partner_name: newPartnerData.name,
-          partner_last_name: newPartnerData.last_name,
-          combo:
-            comboSelected !== null && comboSelected !== undefined
-              ? comboSelected
-              : 0,
-          time_paid: paidTimeUnit.id === 1 ? finalTime : paidTime,
-          time_paid_unit:
-            paidTimeUnit !== undefined && paidTimeUnit?.id !== null
-              ? paidTimeUnit.id
-              : "",
-          clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
-          payment_method_id: paymentMethodSelected,
-          payment_method_name: paymentMethods.filter(
-            pm => pm.id === paymentMethodSelected,
-          )[0].display_name,
-          price_paid: finalPrice,
-          date: `${day}-${month}-${year}`,
-          payment_expire_date:
-            (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-            (comboSelected !== null && comboSelected !== undefined)
-              ? `${finalExpireDay}-${finalExpireMonth}-${expireYear}`
-              : "",
-          days_and_hours:
-            scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
-        }
-
-        const createPaymentCall = await createPartnerPayment(paymentBody)
-
-        if (
-          createPaymentCall.message === "partnerPayment created successfully"
-        ) {
-          success = true
-        } else {
-          success = false
-        }
+        const createPayment = await executePartnerPayment(
+          apiValidation.partnerId,
+        )
+        success = createPayment
       }
 
+      // CREAR PAGO DIGITAL
       if (paymentMethodSelected === 2) {
         const searchIfExists = await searchByUserAndDate(
           paymentUserSelected.id,
           `${day}-${month}-${year}`,
         )
-
-        if (searchIfExists.data.length > 0) {
-          const digitalPaymentBody = {
-            id: searchIfExists.data[0].id,
-            user_id: searchIfExists.data[0].user_id,
-            user_name: searchIfExists.data[0].user_name,
-            date: searchIfExists.data[0].date,
-            month: searchIfExists.data[0].month,
-            month_id: searchIfExists.data[0].month_id,
-            total_profit: searchIfExists.data[0].total_profit + finalPrice,
-          }
-          const editDigitalPayment = await updateDigitalPayment(
-            digitalPaymentBody,
-          )
-          if (editDigitalPayment.message === "payment updated successfully") {
-            success = true
-          } else {
-            success = false
-          }
-          // editar
-        } else {
-          // crear
-          const digitalPaymentBody = {
-            id: 0,
-            user_id: paymentUserSelected.id,
-            user_name: paymentUserSelected.display_name,
-            date: `${day}-${month}-${year}`,
-            month: months.filter(m => m.id === today.getMonth() + 1)[0]
-              .display_name,
-            month_id: today.getMonth() + 1,
-            total_profit: finalPrice,
-          }
-          const createDigital = await createDigitalPayment(digitalPaymentBody)
-
-          if (createDigital.message === "payment created successfully") {
-            success = true
-          } else {
-            success = false
-          }
-        }
+        const executeDigitalPayment = await manageDigitalPayment(
+          searchIfExists.data.length > 0,
+          searchIfExists.data[0],
+        )
+        success = executeDigitalPayment
       }
 
       if (
@@ -371,22 +398,22 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           createBoulderPurchaseCall.message ===
           "bouderPayment created successfully"
       }
+    }
 
-      if (success) {
-        setModalSuccess({
-          status: "success",
-          icon: "IconCheckModal",
-          title: `${texts.create.success.title}`,
-          content: `${texts.create.success.content}`,
-        })
-      } else {
-        setModalError({
-          status: "alert",
-          icon: "IconExclamation",
-          title: `${texts.create.error.title}`,
-          content: `${texts.create.error.content}`,
-        })
-      }
+    if (success) {
+      setModalSuccess({
+        status: "success",
+        icon: "IconCheckModal",
+        title: `${texts.create.success.title}`,
+        content: `${texts.create.success.content}`,
+      })
+    } else {
+      setModalError({
+        status: "alert",
+        icon: "IconExclamation",
+        title: `${texts.create.error.title}`,
+        content: `${texts.create.error.content}`,
+      })
     }
   }
 
