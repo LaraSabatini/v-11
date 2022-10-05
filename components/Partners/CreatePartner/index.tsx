@@ -269,9 +269,9 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             user_id: paymentUserSelected.id,
             user_name: paymentUserSelected.display_name,
             date: `${day}-${month}-${year}`,
-            month: months.filter(m => m.id === today.getMonth() + 1)[0]
+            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
               .display_name,
-            month_id: today.getMonth() + 1,
+            month_id: parseInt(`${month}`, 10),
             total_profit: finalPrice,
           }
           const createDigital = await createDigitalPayment(digitalPaymentBody)
