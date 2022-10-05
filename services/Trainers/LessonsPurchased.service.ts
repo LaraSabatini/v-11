@@ -1,4 +1,5 @@
 import axios from "axios"
+import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 
 export const getAllLessonsPurchased = async (page: number) => {
   const axiosHeader = {
@@ -39,18 +40,7 @@ export const getLessonsByDateAndShift = async (date: string, shift: string) => {
   return res.data
 }
 
-export const createLessonPurchase = async (body: {
-  id: number
-  lessons_date: string
-  shift: "AM" | "PM"
-  partner_id: number
-  parnter_name: string
-  partner_last_name: string
-  trainer_id: number
-  trainer_name: string
-  week_id: number
-  paid: "SI" | "NO"
-}) => {
+export const createLessonPurchase = async (body: ClasesPurchasedInterface) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -70,18 +60,7 @@ export const createLessonPurchase = async (body: {
   return data
 }
 
-export const editLessonDate = async (body: {
-  id: number
-  lessons_date: string
-  shift: "AM" | "PM"
-  partner_id: number
-  parnter_name: string
-  partner_last_name: string
-  trainer_id: number
-  trainer_name: string
-  week_id: number
-  paid: "SI" | "NO"
-}) => {
+export const editLessonDate = async (body: ClasesPurchasedInterface) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/lessonsPurchased/${body.id}`,
     body,

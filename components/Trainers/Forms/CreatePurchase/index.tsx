@@ -75,9 +75,18 @@ const CreatePurchaseModal = ({
     prices,
     setFinalPrice,
     setPaymentUserSelected,
+    setNewPartnerData,
+    newPartnerData,
+    clientIsRegistered,
+    setClientIsRegistered,
+    shiftRef,
+    paysNowRef,
+    paymentMethodRef,
+    paymentUserRef,
+    trainerSelected,
+    setTrainerSelected,
+    paymentUserSelected,
   } = useContext(Clases)
-
-  const [clientIsRegistered, setClientIsRegistered] = useState<boolean>(null)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 
@@ -247,6 +256,33 @@ const CreatePurchaseModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentMethodSelected, paid])
 
+  const selectedIsRegisteredOrNot = clientIsRegistered !== null
+  const selectedClient = clientIsRegistered && clientSelected !== null
+  const selectedAmountOfLessons = amountOfLessons > 0
+  const selectedTrainer = trainerSelected !== null
+  const selectedAmount = datesSelected.length === amountOfLessons
+  const selectedPays = paid && paymentMethodSelected !== null
+
+  let payment: boolean = false
+  if (paid) {
+    if (selectedPays && paymentMethodSelected.id === 2) {
+      payment = paymentUserSelected !== null
+    } else if (selectedPays && paymentMethodSelected.id === 1) {
+      payment = true
+    }
+  } else {
+    payment = true
+  }
+
+  const canExecute =
+    selectedIsRegisteredOrNot &&
+    selectedClient &&
+    selectedAmountOfLessons &&
+    selectedTrainer &&
+    selectedAmount &&
+    paid !== null &&
+    payment
+
   return (
     <ModalForm
       title={texts.createPruchase.title}
@@ -254,6 +290,7 @@ const CreatePurchaseModal = ({
       submitButtonContent={texts.createPruchase.createButton}
       submit={handleCreatePurchase}
       cancelFunction={cancelCreatePurchase}
+      disabledButton={!canExecute}
     >
       <FormContainer>
         {/* START - CLIENT IS REGISTERED VALIDATION */}
@@ -339,18 +376,33 @@ const CreatePurchaseModal = ({
                 required
                 type="text"
                 width={200}
+                onChange={e => {
+                  setNewPartnerData({ ...newPartnerData, name: e.target.value })
+                }}
               />
               <TextField
                 label={texts.createPruchase.register.lastName}
                 required
                 type="text"
                 width={200}
+                onChange={e => {
+                  setNewPartnerData({
+                    ...newPartnerData,
+                    last_name: e.target.value,
+                  })
+                }}
               />
               <TextField
                 label={texts.createPruchase.register.identification}
                 required
                 type="text"
                 width={200}
+                onChange={e => {
+                  setNewPartnerData({
+                    ...newPartnerData,
+                    identification_number: e.target.value,
+                  })
+                }}
               />
             </HorizontalGroup>
             <HorizontalGroup>
@@ -358,16 +410,34 @@ const CreatePurchaseModal = ({
                 label={texts.createPruchase.register.birthDate}
                 reference={birthDateRef}
                 width={200}
+                onChange={e => {
+                  setNewPartnerData({
+                    ...newPartnerData,
+                    birth_date: e.selectedChangeDate,
+                  })
+                }}
               />
               <TextField
                 label={texts.createPruchase.register.email}
                 type="email"
                 width={200}
+                onChange={e => {
+                  setNewPartnerData({
+                    ...newPartnerData,
+                    email: e.target.value,
+                  })
+                }}
               />
               <TextField
                 label={texts.createPruchase.register.phone}
                 type="text"
                 width={200}
+                onChange={e => {
+                  setNewPartnerData({
+                    ...newPartnerData,
+                    phone: e.target.value,
+                  })
+                }}
               />
             </HorizontalGroup>
           </RegisterClientContainer>
@@ -381,6 +451,7 @@ const CreatePurchaseModal = ({
                 <TextField
                   label={texts.createPruchase.amountOfLessons}
                   type="number"
+                  max={10}
                   width={100}
                   required
                   reference={amountOfLessonsRef}
@@ -398,6 +469,7 @@ const CreatePurchaseModal = ({
                   required
                   ref={trainerSelectedRef}
                   options={trainersList}
+                  onChangeProps={e => setTrainerSelected(e)}
                 />
               </LessonsSubGroup>
 
@@ -409,7 +481,7 @@ const CreatePurchaseModal = ({
                   label={texts.createPruchase.lessonsDate}
                   minCalendarDate={`${day}/${month}/${year}`}
                   valueCalendar={provisionalSelection.date}
-                  required
+                  required={datesSelected.length < amountOfLessons}
                   reference={lessonRef}
                   width={150}
                   onChange={e =>
@@ -424,7 +496,8 @@ const CreatePurchaseModal = ({
                   setValue={provisionalSelection.shift}
                   width={110}
                   label={texts.createPruchase.shift}
-                  required
+                  required={datesSelected.length < amountOfLessons}
+                  ref={shiftRef}
                   options={shifts}
                   onChangeProps={(e: {
                     id: number
@@ -487,6 +560,7 @@ const CreatePurchaseModal = ({
                 options={yesOrNoArr}
                 label={texts.createPruchase.paysNow}
                 required
+                ref={paysNowRef}
                 width={100}
                 onChangeProps={(e: { id: number; display_name: string }) => {
                   if (e.id === 1) {
@@ -501,6 +575,7 @@ const CreatePurchaseModal = ({
                   options={paymentMethods}
                   label={texts.createPruchase.paymentMethod}
                   required
+                  ref={paymentMethodRef}
                   width={100}
                   onChangeProps={(e: { id: number; display_name: string }) => {
                     setPaymentMethodSelected(e)
@@ -516,6 +591,7 @@ const CreatePurchaseModal = ({
                     options={paymentUsers}
                     label={texts.createPruchase.digitalUser}
                     required
+                    ref={paymentUserRef}
                     width={150}
                     onChangeProps={(e: { id: number; display_name: string }) =>
                       setPaymentUserSelected(e)

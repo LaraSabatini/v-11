@@ -37,6 +37,16 @@ export const Clases = createContext({
   setFinalPrice: null,
   paymentUserSelected: null,
   setPaymentUserSelected: null,
+  newPartnerData: null,
+  setNewPartnerData: null,
+  clientIsRegistered: null,
+  setClientIsRegistered: null,
+  shiftRef: null,
+  paysNowRef: null,
+  paymentMethodRef: null,
+  paymentUserRef: null,
+  trainerSelected: null,
+  setTrainerSelected: null,
 })
 
 const ClasesProvider = ({ children }) => {
@@ -65,6 +75,10 @@ const ClasesProvider = ({ children }) => {
   const amountOfLessonsRef = useRef(null)
   const trainerSelectedRef = useRef(null)
   const lessonRef = useRef(null)
+  const shiftRef = useRef(null)
+  const paysNowRef = useRef(null)
+  const paymentMethodRef = useRef(null)
+  const paymentUserRef = useRef(null)
 
   const [amountOfLessons, setAmountOfLessons] = useState<number>(0)
 
@@ -90,13 +104,35 @@ const ClasesProvider = ({ children }) => {
     display_name: string
   }>(null)
 
-  const [paid, setPaid] = useState<boolean>(false)
+  const [paid, setPaid] = useState<boolean>(null)
 
   const [clientSelected, setClientSelected] = useState<PartnerInterface | null>(
     null,
   )
 
   const [finalPrice, setFinalPrice] = useState<number>(0)
+
+  const [newPartnerData, setNewPartnerData] = useState<PartnerInterface>({
+    id: 0,
+    name: "",
+    last_name: "",
+    identification_number: "",
+    birth_date: "",
+    email: "",
+    subs: 0,
+    phone: "",
+    membership_start_date: "",
+    created_by: null,
+    free_pass: 0,
+    is_student: "SI",
+  })
+
+  const [clientIsRegistered, setClientIsRegistered] = useState<boolean>(null)
+
+  const [trainerSelected, setTrainerSelected] = useState<{
+    id: number
+    display_name: string
+  }>(null)
 
   return (
     <Clases.Provider
@@ -134,6 +170,16 @@ const ClasesProvider = ({ children }) => {
         setFinalPrice,
         paymentUserSelected,
         setPaymentUserSelected,
+        newPartnerData,
+        setNewPartnerData,
+        clientIsRegistered,
+        setClientIsRegistered,
+        shiftRef,
+        paysNowRef,
+        paymentMethodRef,
+        paymentUserRef,
+        trainerSelected,
+        setTrainerSelected,
       }}
     >
       {children}
