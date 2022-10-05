@@ -1,64 +1,64 @@
-import React, { useContext, useState } from "react"
+import React from "react"
 // SERVICES
-import { Clases } from "contexts/Clases"
-import { editPartnerPayment } from "services/Partners/PartnerPayments.service"
+// import { Clases } from "contexts/Clases"
+// import { editPartnerPayment } from "services/Partners/PartnerPayments.service"
 // DATA STORAGE & TYPES
-import texts from "strings/trainers.json"
+// import texts from "strings/trainers.json"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
-import Icon from "components/UI/Assets/Icon"
-import TextButton from "components/UI/TextButton"
-import { DaysLeft } from "components/Partners/PartnerDetails/DetailsView/styles"
-import { Card, Title, Days, Data, ButtonContainer } from "./styles"
+// import Icon from "components/UI/Assets/Icon"
+// import TextButton from "components/UI/TextButton"
+// import { DaysLeft } from "components/Partners/PartnerDetails/DetailsView/styles"
+import { Card, Title } from "./styles"
 
 interface ClasesCardInterface {
   data: ClasesPurchasedInterface
 }
 
 const ClasesCard = ({ data }: ClasesCardInterface) => {
-  const { schedule, triggerListUpdate, setTriggerListUpdate } = useContext(
-    Clases,
-  )
+  // const { schedule, triggerListUpdate, setTriggerListUpdate } = useContext(
+  //   Clases,
+  // )
 
-  const [changes, setChanges] = useState<boolean>(false)
+  // const [changes, setChanges] = useState<boolean>(false)
 
-  const [lessonsPurchasedData, setLessonsPurchasedData] = useState({
-    name: `${texts.lessons}`,
-    value: data.clases_paid,
-  })
+  // const [lessonsPurchasedData, setLessonsPurchasedData] = useState({
+  //   name: `${texts.lessons}`,
+  //   value: data.clases_paid,
+  // })
 
-  const removeLesson = async () => {
-    let success: boolean = false
+  // const removeLesson = async () => {
+  //   let success: boolean = false
 
-    const body = {
-      ...data,
-      clases_paid: lessonsPurchasedData.value,
-      days_and_hours:
-        lessonsPurchasedData.value === 0 ? "" : data.days_and_hours,
-    }
+  //   const body = {
+  //     ...data,
+  //     clases_paid: lessonsPurchasedData.value,
+  //     days_and_hours:
+  //       lessonsPurchasedData.value === 0 ? "" : data.days_and_hours,
+  //   }
 
-    const editPaymentCall = await editPartnerPayment(body)
-    if (editPaymentCall.message === "payment updated successfully") {
-      success = true
-    } else {
-      success = false
-    }
+  //   const editPaymentCall = await editPartnerPayment(body)
+  //   if (editPaymentCall.message === "payment updated successfully") {
+  //     success = true
+  //   } else {
+  //     success = false
+  //   }
 
-    if (success) {
-      setTriggerListUpdate(triggerListUpdate + 1)
-      setChanges(false)
-    } else {
-      setTriggerListUpdate(triggerListUpdate + 1)
-      setChanges(false)
-    }
-  }
+  //   if (success) {
+  //     setTriggerListUpdate(triggerListUpdate + 1)
+  //     setChanges(false)
+  //   } else {
+  //     setTriggerListUpdate(triggerListUpdate + 1)
+  //     setChanges(false)
+  //   }
+  // }
 
   return (
     <Card>
       <Title>
         {data.partner_name} {data.partner_last_name}
       </Title>
-      <Data>
+      {/* <Data>
         <Days>
           <p>{texts.lessonsLeft}</p>
           <DaysLeft>
@@ -114,7 +114,7 @@ const ClasesCard = ({ data }: ClasesCardInterface) => {
             />
           </ButtonContainer>
         )}
-      </Data>
+      </Data> */}
     </Card>
   )
 }

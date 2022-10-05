@@ -1,73 +1,94 @@
-import React, { useEffect, useContext } from "react"
+/* eslint-disable no-console */
+import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 // SERVICES
-import { getSchedule } from "services/Trainers/Schedule.service"
-import { getClasesPaid } from "services/Partners/PartnerPayments.service"
-import { Clases } from "contexts/Clases"
+import getTrainers from "services/Trainers/GetTrainers.service"
+import { getPrices } from "services/Partners/Prices.service"
 // DATA STORAGE & TYPES
 import texts from "strings/trainers.json"
-import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+import { Clases } from "contexts/Clases"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
-import ScrollView from "components/UI/ScrollView"
-import ClasesCard from "./ClasesCard"
+import Icon from "components/UI/Assets/Icon"
+import CalendarView from "./CalendarView"
+import CreatePurchaseModal from "./Forms/CreatePurchase"
+import EditLessonDate from "./Forms/EditLessonDate"
 import {
   Container,
   Title,
-  CardsContainer,
-  FiltersContainer,
-  FilterButton,
+  PurchaseButton,
+  ButtonContainer,
+  EditButton,
 } from "./styles"
 
 function TrainersView() {
   const {
-    setSchedule,
-    clasesPurchased,
-    setClasesPurchased,
-    schedule,
-    filterSelected,
-    setFilterSelected,
-    triggerListUpdate,
+    purchasesSelected,
+    setNewPurchases,
+    setTrainersList,
+    setPrices,
+    setAmountOfLessons,
+    setDatesSelected,
+    setPaymentMethodSelected,
+    setPaid,
+    setClientSelected,
+    setFinalPrice,
   } = useContext(Clases)
-
   const router = useRouter()
 
-  const cleanDataForStorage = (purchases: ClasesPurchasedInterface[]) => {
-    const newPurchasesList = purchases
-    newPurchasesList.map((purchase, index) => {
-      const cleanedValueForDaysAndHours = purchase.days_and_hours
-        .split(",")
-        .map((lesson: string) => parseInt(lesson, 10))
-      newPurchasesList[index].days_and_hours = cleanedValueForDaysAndHours
-      return 0
-    })
+  const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
+  const [
+    createLessonPurchaseView,
+    setCreateLessonPurchaseView,
+  ] = useState<boolean>(false)
 
-    if (filterSelected !== null) {
-      const lessonsFiltered = newPurchasesList.filter(
-        purchase => purchase.days_and_hours.indexOf(filterSelected) !== -1,
-      )
-      setClasesPurchased(lessonsFiltered)
-    } else {
-      setClasesPurchased(newPurchasesList)
-    }
+  const cancelPurchase = e => {
+    e.preventDefault()
+    setNewPurchases(null)
+    setCreateLessonPurchaseView(false)
+    setAmountOfLessons(0)
+    setDatesSelected([])
+    setPaymentMethodSelected(null)
+    setPaid(null)
+    setClientSelected(null)
+    setFinalPrice(0)
+  }
+
+  const executePurchase = e => {
+    e.preventDefault()
+    console.log("ejecutar pur")
+    // createLessonPurchase
+    // getPrices
+    // chequear cuantas compro por condicional de precios
+    // createPartnerPayment
+    // digital payments => searchByUserAndDate
+    //    si existe    => updateDigitalPayment
+    //    si no existe => createDigitalPayment
+    //
+    //
+    // EVALUAR QUE paid SEA TRUE !!!!
   }
 
   const fillData = async () => {
-    const scheduleDataCall = await getSchedule()
-    setSchedule(scheduleDataCall.data)
+    const trainersCall = await getTrainers()
 
-    const lessonsPaidCall = await getClasesPaid()
-    const assignValues = lessonsPaidCall.data.filter(
-      (payment: ClasesPurchasedInterface) => payment.days_and_hours !== "",
+    const trainerArr = []
+    trainersCall.data.map(trainer =>
+      trainerArr.push({
+        id: trainer.id,
+        display_name: trainer.name,
+      }),
     )
+    setTrainersList(trainerArr)
 
-    cleanDataForStorage(assignValues)
+    const pricesCall = await getPrices()
+    setPrices(pricesCall.data)
   }
 
   useEffect(() => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterSelected, triggerListUpdate])
+  }, [])
 
   return (
     <>
@@ -84,42 +105,32 @@ function TrainersView() {
                 : "Calendario de clases"}
             </span>
           </div>
-          {router.query.students === "true" && (
-            <FiltersContainer>
-              {schedule.length &&
-                schedule.map(
-                  (uniqueSchedule: {
-                    id: number
-                    day_and_hour: string
-                    max_students: number
-                  }) => (
-                    <FilterButton
-                      key={uniqueSchedule.id}
-                      selected={filterSelected === uniqueSchedule.id}
-                      onClick={() => setFilterSelected(uniqueSchedule.id)}
-                    >
-                      {uniqueSchedule.day_and_hour}
-                    </FilterButton>
-                  ),
-                )}
-              <FilterButton
-                onClick={() => setFilterSelected(null)}
-                selected={filterSelected === null}
-              >
-                {texts.all}
-              </FilterButton>
-            </FiltersContainer>
-          )}
+          {router.query.students === "true" && <p>search bar</p>}
         </Title>
-        {router.query.students === "true" && (
-          <ScrollView height={550}>
-            <CardsContainer>
-              {clasesPurchased.length > 0 &&
-                clasesPurchased.map(lesson => (
-                  <ClasesCard key={lesson.id} data={lesson} />
-                ))}
-            </CardsContainer>
-          </ScrollView>
+        {router.query.students === "true" && <p>ALUMNOS CARDS</p>}
+        {router.query.calendar === "true" && <CalendarView />}
+        <ButtonContainer>
+          <EditButton
+            disabled={purchasesSelected !== 0}
+            onClick={() => {
+              if (purchasesSelected !== 0) {
+                setEditLessonDateView(true)
+              }
+            }}
+          >
+            <Icon icon="IconEdit" color="#fff" />
+          </EditButton>
+          <PurchaseButton onClick={() => setCreateLessonPurchaseView(true)}>
+            <Icon icon="IconAdd" color="#fff" />
+          </PurchaseButton>
+        </ButtonContainer>
+
+        {editLessonDateView && <EditLessonDate />}
+        {createLessonPurchaseView && (
+          <CreatePurchaseModal
+            handleCreatePurchase={executePurchase}
+            cancelCreatePurchase={cancelPurchase}
+          />
         )}
       </Container>
     </>
