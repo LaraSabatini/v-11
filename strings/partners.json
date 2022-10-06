@@ -22,6 +22,10 @@
     "next": "Siguiente pagina",
     "prev": "Pagina previa",
     "no_more": "No hay mas socios en la lista",
+    "delete": "Borrar",
+    "cancel": "Cancelar",
+    "updatePayment": "Actualizar pago",
+    "confirm": "Confirmar",
     "modal_changes": {
         "title": "¿Deseas descartar los cambios realizados?",
         "content": "Si descartas los cambios no se guardara tu progreso",
@@ -62,5 +66,21 @@
             "title": "UPS!",
             "content": "Hubo un error al editar el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
+    },
+    "cannotAddDays": {
+        "title": "No se puede realizar esta accion",
+        "content": "Esta accion no se puede realizar porque el socio cuenta con un abono activo"
+    },
+    "updatePaymentSuccess": {
+        "title": "Excelente!",
+        "content": "El pago ha sido actualizado correctamente"
+    },
+    "updatePaymentError": {
+        "title": "UPS!",
+        "content": "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin."
+    },
+    "deleteWarning": {
+        "title": "Estas seguro de que deseas eliminar al cliente?",
+        "content": "Si lo eliminas se borraran todos los registros de la base de datos"
     }
 }

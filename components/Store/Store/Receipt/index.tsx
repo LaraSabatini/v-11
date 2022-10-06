@@ -17,14 +17,7 @@ import { editProduct } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
 import ProductInterface from "interfaces/store/ProductInterface"
-import {
-  paymentUsers,
-  months,
-  day,
-  month,
-  year,
-  today,
-} from "const/fixedVariables"
+import { paymentUsers, months, day, month, year } from "const/fixedVariables"
 import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
@@ -177,9 +170,9 @@ const Receipt = () => {
           user_id: paymentUserSelected.id,
           user_name: paymentUserSelected.display_name,
           date: `${day}-${month}-${year}`,
-          month: months.filter(m => m.id === today.getMonth() + 1)[0]
+          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
             .display_name,
-          month_id: today.getMonth() + 1,
+          month_id: parseInt(`${month}`, 10),
           total_profit: finalPrice,
         }
 

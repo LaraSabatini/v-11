@@ -32,6 +32,15 @@
         "paymentMethod": "Metodo de pago",
         "digitalUser": "MP User",
         "total": "TOTAL:",
-        "warningMessage": "El cupo de la fecha y turno seleccionados esta lleno, por favor intenta con otro turno o fecha."
+        "warningMessage": "El cupo de la fecha y turno seleccionados esta lleno, por favor intenta con otro turno o fecha.",
+        "successModal": {
+            "title": "Excelente!",
+            "content": "La clase se ha creado exitosamente"
+        },
+        "errorModal": {
+            "title": "UPS!",
+            "content": "Ha ocurrido un error al almacenar la clase, por favor intenta nuevamente o comunicate con el admin."
+        }
+        
     }
 }

@@ -2,6 +2,11 @@ import { createContext, useState, useRef } from "react"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import { day, month, year } from "const/fixedVariables"
+import ModalInterface from "interfaces/components/ModalInterface"
+import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
+import PricesInterface from "interfaces/partners/PricesInterface"
+import DefaultInterface from "interfaces/components/DefaultInterface"
 
 export const Clases = createContext({
   clasesPurchasedByWeek: null,
@@ -47,6 +52,13 @@ export const Clases = createContext({
   paymentUserRef: null,
   trainerSelected: null,
   setTrainerSelected: null,
+  identificationError: null,
+  setIdentificationError: null,
+  modalSuccess: null,
+  setModalSuccess: null,
+  modalError: null,
+  setModalError: null,
+  cleanStates: null,
 })
 
 const ClasesProvider = ({ children }) => {
@@ -62,6 +74,10 @@ const ClasesProvider = ({ children }) => {
   )
 
   const [purchasesSelected, setPurchasesSelected] = useState<number[]>([])
+
+  const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
+
+  const [modalError, setModalError] = useState<ModalInterface | null>(null)
 
   // BUY LESSONS ********************************
   const [newPurchases, setNewPurchases] = useState<ClasesPurchasedInterface[]>(
@@ -83,26 +99,20 @@ const ClasesProvider = ({ children }) => {
   const [amountOfLessons, setAmountOfLessons] = useState<number>(0)
 
   const [datesSelected, setDatesSelected] = useState<
-    {
-      id: number
-      date: string
-      shift: "AM" | "PM"
-    }[]
+    LessonsSelectedInterface[]
   >([])
 
-  const [prices, setPrices] = useState<
-    { id: number; name: string; price_cash: number; price_mp: number }[]
-  >([])
+  const [prices, setPrices] = useState<PricesInterface[]>([])
 
-  const [paymentMethodSelected, setPaymentMethodSelected] = useState<{
-    id: number
-    display_name: string
-  }>(null)
+  const [
+    paymentMethodSelected,
+    setPaymentMethodSelected,
+  ] = useState<DefaultInterface>(null)
 
-  const [paymentUserSelected, setPaymentUserSelected] = useState<{
-    id: number
-    display_name: string
-  }>(null)
+  const [
+    paymentUserSelected,
+    setPaymentUserSelected,
+  ] = useState<DefaultInterface>(null)
 
   const [paid, setPaid] = useState<boolean>(null)
 
@@ -121,18 +131,28 @@ const ClasesProvider = ({ children }) => {
     email: "",
     subs: 0,
     phone: "",
-    membership_start_date: "",
-    created_by: null,
+    membership_start_date: `${day}/${month}/${year}`,
+    created_by: parseInt(localStorage.getItem("id"), 10),
     free_pass: 0,
     is_student: "SI",
   })
 
   const [clientIsRegistered, setClientIsRegistered] = useState<boolean>(null)
 
-  const [trainerSelected, setTrainerSelected] = useState<{
-    id: number
-    display_name: string
-  }>(null)
+  const [trainerSelected, setTrainerSelected] = useState<DefaultInterface>(null)
+
+  const [identificationError, setIdentificationError] = useState<boolean>(false)
+
+  const cleanStates = () => {
+    setNewPurchases(null)
+    setAmountOfLessons(0)
+    setDatesSelected([])
+    setPaymentMethodSelected(null)
+    setPaid(null)
+    setClientSelected(null)
+    setFinalPrice(0)
+    setClientIsRegistered(null)
+  }
 
   return (
     <Clases.Provider
@@ -180,6 +200,13 @@ const ClasesProvider = ({ children }) => {
         paymentUserRef,
         trainerSelected,
         setTrainerSelected,
+        identificationError,
+        setIdentificationError,
+        modalSuccess,
+        setModalSuccess,
+        modalError,
+        setModalError,
+        cleanStates,
       }}
     >
       {children}

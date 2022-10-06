@@ -48,20 +48,17 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     setModalError,
     paidTimeUnitRef,
     paidTimeRef,
-    clasesRef,
     paymentRef,
     paidTimeUnit,
     paidTime,
     setPrices,
     setCombos,
     comboSelected,
-    amountOfClases,
     paymentMethodSelected,
     finalPrice,
     phoneRef,
     wantsSubscription,
     setWantsSubscription,
-    scheduleSelected,
     usesDay,
     paymentUserRef,
     paymentUserSelected,
@@ -140,7 +137,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
     e.preventDefault()
     await paidTimeUnitRef.current?.focus()
     await paidTimeRef.current?.focus()
-    await clasesRef.current?.focus()
     await paymentRef.current?.focus()
     await paymentUserRef.current?.focus()
 
@@ -149,8 +145,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
       paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       paidTimeRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
-      clasesRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       paymentRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
@@ -162,7 +156,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           paidTimeUnit?.id !== 1
             ? 1
             : 0,
-        is_student: scheduleSelected.length > 0 ? "SI" : "NO",
+        is_student: "NO",
       }
       // CREAR SOCIO
       const apiValidation = await createPartner(body)
@@ -209,7 +203,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             paidTimeUnit !== undefined && paidTimeUnit?.id !== null
               ? paidTimeUnit.id
               : "",
-          clases_paid: amountOfClases !== undefined ? amountOfClases : 0,
+          clases_paid: 0,
           payment_method_id: paymentMethodSelected,
           payment_method_name: paymentMethods.filter(
             pm => pm.id === paymentMethodSelected,
@@ -221,8 +215,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             (comboSelected !== null && comboSelected !== undefined)
               ? `${finalExpireDay}-${finalExpireMonth}-${expireYear}`
               : "",
-          days_and_hours:
-            scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
+          days_and_hours: "",
         }
 
         const createPaymentCall = await createPartnerPayment(paymentBody)
@@ -256,12 +249,13 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           const editDigitalPayment = await updateDigitalPayment(
             digitalPaymentBody,
           )
+
           if (editDigitalPayment.message === "payment updated successfully") {
             success = true
           } else {
             success = false
           }
-          // editar
+          //  editar
         } else {
           // crear
           const digitalPaymentBody = {
@@ -269,11 +263,12 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             user_id: paymentUserSelected.id,
             user_name: paymentUserSelected.display_name,
             date: `${day}-${month}-${year}`,
-            month: months.filter(m => m.id === today.getMonth() + 1)[0]
+            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
               .display_name,
-            month_id: today.getMonth() + 1,
+            month_id: parseInt(`${month}`, 10),
             total_profit: finalPrice,
           }
+
           const createDigital = await createDigitalPayment(digitalPaymentBody)
 
           if (createDigital.message === "payment created successfully") {
@@ -302,6 +297,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               : combos[0].price_mp,
           payment_method_id: paymentMethodSelected,
         }
+
         const createBoulderPurchaseCall = await createBoulderPurchase(
           boulderPurchaseBody,
         )
@@ -341,42 +337,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           profit: finalProfit,
           payment_method_id: paymentMethodSelected,
         }
-        const createBoulderPurchaseCall = await createBoulderPurchase(
-          boulderPurchaseBody,
-        )
-        success =
-          createBoulderPurchaseCall.message ===
-          "bouderPayment created successfully"
-      }
-      if (amountOfClases !== 0 && amountOfClases !== undefined) {
-        // crear boulder payment para clases
-        let finalProfit = 0
-        if (amountOfClases === 4) {
-          finalProfit =
-            paymentMethodSelected === 1
-              ? prices[4].price_cash
-              : prices[4].price_mp
-        } else if (amountOfClases === 8) {
-          finalProfit =
-            paymentMethodSelected === 1
-              ? prices[5].price_cash
-              : prices[5].price_mp
-        } else {
-          finalProfit =
-            paymentMethodSelected === 1
-              ? amountOfClases * prices[3].price_cash
-              : amountOfClases * prices[3].price_mp
-        }
 
-        const boulderPurchaseBody = {
-          id: 0,
-          date: `${day}-${month}-${year}`,
-          item_id: 4,
-          item_name: "Clases",
-          amount_of_items: amountOfClases,
-          profit: finalProfit,
-          payment_method_id: paymentMethodSelected,
-        }
         const createBoulderPurchaseCall = await createBoulderPurchase(
           boulderPurchaseBody,
         )

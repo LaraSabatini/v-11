@@ -1,6 +1,5 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-console */
 import React, { useState, useContext, useEffect } from "react"
 // SERVICES
 import { searchPartner } from "services/Partners/Partner.service"
@@ -86,6 +85,7 @@ const CreatePurchaseModal = ({
     trainerSelected,
     setTrainerSelected,
     paymentUserSelected,
+    identificationError,
   } = useContext(Clases)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
@@ -122,7 +122,8 @@ const CreatePurchaseModal = ({
     shift: string
   }) => {
     const newArrayOfDates = datesSelected.filter(
-      lessonDate => lessonDate !== lesson,
+      (lessonDate: { id: number; date: string; shift: "AM" | "PM" }) =>
+        lessonDate !== lesson,
     )
     setDatesSelected(newArrayOfDates)
   }
@@ -205,7 +206,7 @@ const CreatePurchaseModal = ({
       },
     ]
 
-    if (clientSelected.free_pass === 1) {
+    if (clientSelected !== null && clientSelected.free_pass === 1) {
       const checkPayment = await getPartnerPaymentsById(clientSelected.id)
 
       const expirationDate =
@@ -256,8 +257,9 @@ const CreatePurchaseModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentMethodSelected, paid])
 
-  const selectedIsRegisteredOrNot = clientIsRegistered !== null
-  const selectedClient = clientIsRegistered && clientSelected !== null
+  const selectedClient = clientIsRegistered
+    ? clientSelected !== null
+    : clientSelected === null
   const selectedAmountOfLessons = amountOfLessons > 0
   const selectedTrainer = trainerSelected !== null
   const selectedAmount = datesSelected.length === amountOfLessons
@@ -274,14 +276,33 @@ const CreatePurchaseModal = ({
     payment = true
   }
 
-  const canExecute =
-    selectedIsRegisteredOrNot &&
+  const partnerDataFilled =
+    newPartnerData.name !== "" &&
+    newPartnerData.last_name !== "" &&
+    newPartnerData.identification_number !== "" &&
+    newPartnerData.membership_start_date !== ""
+
+  const conditionsForClientRegistered =
+    clientIsRegistered &&
     selectedClient &&
     selectedAmountOfLessons &&
     selectedTrainer &&
     selectedAmount &&
     paid !== null &&
     payment
+
+  const conditionsForClientNotRegistered =
+    selectedAmountOfLessons &&
+    selectedTrainer &&
+    selectedAmount &&
+    paid !== null &&
+    payment &&
+    !identificationError &&
+    partnerDataFilled
+
+  const canExecute = clientIsRegistered
+    ? conditionsForClientRegistered
+    : conditionsForClientNotRegistered
 
   return (
     <ModalForm
@@ -397,6 +418,8 @@ const CreatePurchaseModal = ({
                 required
                 type="text"
                 width={200}
+                backError={identificationError}
+                backErrorMessage="Hay un cliente registrado con este DNI"
                 onChange={e => {
                   setNewPartnerData({
                     ...newPartnerData,
