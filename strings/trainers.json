@@ -41,6 +41,9 @@
             "title": "UPS!",
             "content": "Ha ocurrido un error al almacenar la clase, por favor intenta nuevamente o comunicate con el admin."
         }
-        
+    },
+    "executePayment": {
+        "title": "Ejecutar pago",
+        "pay": "Pagar"
     }
 }
