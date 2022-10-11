@@ -4,18 +4,18 @@ import { useRouter } from "next/router"
 import getTrainers from "services/Trainers/GetTrainers.service"
 import { getPrices } from "services/Partners/Prices.service"
 import { createLessonPurchase } from "services/Trainers/LessonsPurchased.service"
-import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
-import { createDigitalPayment } from "services/Finances/DigitalPayments.service"
+// import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
+// import { createDigitalPayment } from "services/Finances/DigitalPayments.service"
 import {
   createPartner,
   searchPartner,
-  editPartner,
+  // editPartner,
 } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
 import texts from "strings/trainers.json"
 import { Clases } from "contexts/Clases"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-import { day, month, year, months } from "const/fixedVariables"
+// import { day, month, year, months } from "const/fixedVariables"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
@@ -34,7 +34,7 @@ import {
 
 function TrainersView() {
   const {
-    purchasesSelected,
+    purchaseSelected,
     setTrainersList,
     setPrices,
     clientIsRegistered,
@@ -53,7 +53,7 @@ function TrainersView() {
     trainerSelected,
     finalPrice,
     paymentMethodSelected,
-    paymentUserSelected,
+    // paymentUserSelected,
     newPartnerData,
     setIdentificationError,
     cleanStates,
@@ -93,7 +93,9 @@ function TrainersView() {
 
       const body: ClasesPurchasedInterface = {
         id: 0,
-        lesson_date: datesSelected[i].date,
+        lesson_date: `${datesSelected[i].date.slice(0, 2)}-${datesSelected[
+          i
+        ].date.slice(3, 5)}-${datesSelected[i].date.slice(6, 10)}`,
         shift: datesSelected[i].shift,
         partner_id: partnerId,
         partner_name: partnerName,
@@ -102,6 +104,10 @@ function TrainersView() {
         trainer_name: trainerSelected.display_name,
         week_id: weekNumber,
         paid: paid ? "SI" : "NO",
+        day_id: currentDate.getDay(),
+        final_price: finalPrice / amountOfLessons,
+        payment_method_id:
+          paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
       }
 
       // eslint-disable-next-line no-await-in-loop
@@ -138,70 +144,67 @@ function TrainersView() {
         clientSelected.last_name,
       )
       success = pur
-      if (paid) {
-        const boulderPurchaseBody: {
-          id: number
-          date: string
-          item_id: number
-          item_name: string
-          amount_of_items: number
-          profit: number
-          payment_method_id: number
-        } = {
-          id: 0,
-          date: `${day}-${month}-${year}`,
-          item_id: 4,
-          item_name: "Clases",
-          amount_of_items: amountOfLessons,
-          profit: finalPrice,
-          payment_method_id: paymentMethodSelected.id,
-        }
-        const createBoulderPurchaseCall = await createBoulderPurchase(
-          boulderPurchaseBody,
-        )
-        success =
-          createBoulderPurchaseCall.message ===
-          "bouderPayment created successfully"
-
-        // create boulder purchase
-        if (paymentMethodSelected.id === 2) {
-          const digitalPaymentBody: {
-            id: number
-            user_id: number
-            user_name: string
-            date: string
-            month: string
-            month_id: number
-            total_profit: number
-          } = {
-            id: 0,
-            user_id: paymentUserSelected.id,
-            user_name: paymentUserSelected.display_name,
-            date: `${day}-${month}-${year}`,
-            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-              .display_name,
-            month_id: parseInt(`${month}`, 10),
-            total_profit: finalPrice,
-          }
-          const createDigitalPaymentCall = await createDigitalPayment(
-            digitalPaymentBody,
-          )
-          success =
-            createDigitalPaymentCall.message === "payment created successfully"
-        }
-      }
+      // if (paid) {
+      //   const boulderPurchaseBody: {
+      //     id: number
+      //     date: string
+      //     item_id: number
+      //     item_name: string
+      //     amount_of_items: number
+      //     profit: number
+      //     payment_method_id: number
+      //   } = {
+      //     id: 0,
+      //     date: `${day}-${month}-${year}`,
+      //     item_id: 4,
+      //     item_name: "Clases",
+      //     amount_of_items: amountOfLessons,
+      //     profit: finalPrice,
+      //     payment_method_id: paymentMethodSelected.id,
+      //   }
+      //   const createBoulderPurchaseCall = await createBoulderPurchase(
+      //     boulderPurchaseBody,
+      //   )
+      //   success =
+      //     createBoulderPurchaseCall.message ===
+      //     "bouderPayment created successfully"
+      // create boulder purchase
+      // if (paymentMethodSelected.id === 2) {
+      //   const digitalPaymentBody: {
+      //     id: number
+      //     user_id: number
+      //     user_name: string
+      //     date: string
+      //     month: string
+      //     month_id: number
+      //     total_profit: number
+      //   } = {
+      //     id: 0,
+      //     user_id: paymentUserSelected.id,
+      //     user_name: paymentUserSelected.display_name,
+      //     date: `${day}-${month}-${year}`,
+      //     month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+      //       .display_name,
+      //     month_id: parseInt(`${month}`, 10),
+      //     total_profit: finalPrice,
+      //   }
+      //   const createDigitalPaymentCall = await createDigitalPayment(
+      //     digitalPaymentBody,
+      //   )
+      //   success =
+      //     createDigitalPaymentCall.message === "payment created successfully"
+      // }
+      // }
     } else {
       const seeDuplicated = await searchPartner(
         newPartnerData.identification_number,
         1,
       )
-
       if (seeDuplicated.data.length > 0) {
         setIdentificationError(true)
       } else {
         setIdentificationError(false)
         const createPartnerCall = await createPartner(newPartnerData)
-
         if (createPartnerCall.message === "partner created successfully") {
           const pur = await createLessonPurchaseFunc(
             createPartnerCall.partnerId,
@@ -213,14 +216,14 @@ function TrainersView() {
       }
     }
 
-    if (clientSelected.is_student === "NO") {
-      const bodyEditPartner = {
-        ...clientSelected,
-        is_student: "SI",
-      }
-      const editPartnerCall = await editPartner(bodyEditPartner)
-      success = editPartnerCall.message === "partner updated successfully"
-    }
+    // if (clientSelected.is_student === "NO") {
+    //   const bodyEditPartner = {
+    //     ...clientSelected,
+    //     is_student: "SI",
+    //   }
+    //   const editPartnerCall = await editPartner(bodyEditPartner)
+    //   success = editPartnerCall.message === "partner updated successfully"
+    // }
 
     if (success) {
       setModalSuccess({
@@ -229,6 +232,7 @@ function TrainersView() {
         title: `${texts.createPruchase.successModal.title}`,
         content: `${texts.createPruchase.successModal.content}`,
       })
+      setCreateLessonPurchaseView(false)
     } else {
       setModalError({
         status: "alert",
@@ -236,6 +240,7 @@ function TrainersView() {
         title: `${texts.createPruchase.errorModal.title}`,
         content: `${texts.createPruchase.errorModal.content}`,
       })
+      setCreateLessonPurchaseView(false)
     }
   }
 
@@ -282,9 +287,9 @@ function TrainersView() {
         {router.query.calendar === "true" && <CalendarView />}
         <ButtonContainer>
           <EditButton
-            disabled={purchasesSelected !== 0}
+            disabled={purchaseSelected === null}
             onClick={() => {
-              if (purchasesSelected !== 0) {
+              if (purchaseSelected === null) {
                 setEditLessonDateView(true)
               }
             }}
