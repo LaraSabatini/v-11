@@ -143,3 +143,13 @@ export const shifts = [
   { id: 1, display_name: "AM" },
   { id: 2, display_name: "PM" },
 ]
+
+export const daysOfTheWeek = [
+  { id: 1, display_name: "LUNES" },
+  { id: 2, display_name: "MARTES" },
+  { id: 3, display_name: "MIERCOLES" },
+  { id: 4, display_name: "JUEVES" },
+  { id: 5, display_name: "VIERNES" },
+  { id: 6, display_name: "SABADO" },
+  { id: 7, display_name: "DOMINGO" },
+]
