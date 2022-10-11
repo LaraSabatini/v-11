@@ -15,8 +15,6 @@ export const Clases = createContext({
   setCurrentWeekNumber: null,
   weekNumberSelected: null,
   setWeekNumberSelected: null,
-  purchasesSelected: null,
-  setPurchasesSelected: null,
   newPurchases: null,
   setNewPurchases: null,
   clientRef: null,
@@ -59,6 +57,8 @@ export const Clases = createContext({
   modalError: null,
   setModalError: null,
   cleanStates: null,
+  purchaseSelected: null,
+  setPurchaseSelected: null,
 })
 
 const ClasesProvider = ({ children }) => {
@@ -72,8 +72,6 @@ const ClasesProvider = ({ children }) => {
   const [weekNumberSelected, setWeekNumberSelected] = useState<number | null>(
     null,
   )
-
-  const [purchasesSelected, setPurchasesSelected] = useState<number[]>([])
 
   const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
 
@@ -152,7 +150,15 @@ const ClasesProvider = ({ children }) => {
     setClientSelected(null)
     setFinalPrice(0)
     setClientIsRegistered(null)
+    setModalSuccess(null)
+    setModalError(null)
   }
+
+  // CALENDAR VIEW ********************************
+  const [
+    purchaseSelected,
+    setPurchaseSelected,
+  ] = useState<ClasesPurchasedInterface>(null)
 
   return (
     <Clases.Provider
@@ -163,8 +169,6 @@ const ClasesProvider = ({ children }) => {
         setCurrentWeekNumber,
         weekNumberSelected,
         setWeekNumberSelected,
-        purchasesSelected,
-        setPurchasesSelected,
         newPurchases,
         setNewPurchases,
         clientRef,
@@ -207,6 +211,8 @@ const ClasesProvider = ({ children }) => {
         modalError,
         setModalError,
         cleanStates,
+        purchaseSelected,
+        setPurchaseSelected,
       }}
     >
       {children}
