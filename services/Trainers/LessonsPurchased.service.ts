@@ -50,6 +50,9 @@ export const createLessonPurchase = async (body: {
   trainer_name: string
   week_id: number
   paid: "SI" | "NO"
+  day_id: number
+  final_price: number
+  payment_method_id: number
 }) => {
   const axiosHeader = {
     headers: {
@@ -81,6 +84,9 @@ export const editLessonDate = async (body: {
   trainer_name: string
   week_id: number
   paid: "SI" | "NO"
+  day_id: number
+  final_price: number
+  payment_method_id: number
 }) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/lessonsPurchased/${body.id}`,
