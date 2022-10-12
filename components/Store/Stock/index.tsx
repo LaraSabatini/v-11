@@ -15,16 +15,17 @@ import ModalAlert from "components/UI/ModalAlert"
 import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextButton from "components/UI/TextButton"
+import TextField from "components/UI/TextField"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
 import columns from "./const/content"
-import Input from "../UI/Input"
 import {
   Container,
   ButtonsContainer,
   Content,
   AutocompleteContainer,
   ErrorMessage,
+  TextFieldContainer,
 } from "./styles"
 
 const Stock = () => {
@@ -69,7 +70,18 @@ const Stock = () => {
 
       const rowsCleaned: RowsInterface[] = []
 
-      data.data.map((product: ProductInterface) =>
+      data.data.map((product: ProductInterface) => {
+        const marginString = `${product.margin}`
+        const arrOfMargin = marginString.split(".")
+        const first = arrOfMargin[0]
+        let finalMargin = 0
+        if (arrOfMargin.length > 1) {
+          const second = arrOfMargin[1].slice(0, 2)
+          finalMargin = parseFloat(`${first}.${second}`)
+        } else {
+          finalMargin = parseInt(first, 10)
+        }
+
         rowsCleaned.push({
           id: product.id,
           item: product.name,
@@ -81,12 +93,13 @@ const Stock = () => {
           )[0]?.name,
           stock: product.stock,
           price: product.price,
-          margin: product.margin,
+          margin: finalMargin,
           cost: product.cost,
           sales_contact_name: product.sales_contact_name,
           sales_contact_information: product.sales_contact_information,
-        }),
-      )
+        })
+        return 0
+      })
 
       setRows({
         success: true,
@@ -97,7 +110,17 @@ const Stock = () => {
       setProductsList(search.data)
       const rowsCleaned: RowsInterface[] = []
 
-      search.data.map((product: ProductInterface) =>
+      search.data.map((product: ProductInterface) => {
+        const marginString = `${product.margin}`
+        const arrOfMargin = marginString.split(".")
+        const first = arrOfMargin[0]
+        let finalMargin = 0
+        if (arrOfMargin.length > 1) {
+          const second = arrOfMargin[1].slice(0, 2)
+          finalMargin = parseFloat(`${first}.${second}`)
+        } else {
+          finalMargin = parseInt(first, 10)
+        }
         rowsCleaned.push({
           id: product.id,
           item: product.name,
@@ -109,12 +132,13 @@ const Stock = () => {
           )[0]?.name,
           stock: product.stock,
           price: product.price,
-          margin: product.margin,
+          margin: finalMargin,
           cost: product.cost,
           sales_contact_name: product.sales_contact_name,
           sales_contact_information: product.sales_contact_information,
-        }),
-      )
+        })
+        return 0
+      })
 
       setRows({
         success: true,
@@ -168,11 +192,15 @@ const Stock = () => {
     newSetOfRows[getIndexOfRow] = {
       id: rows.rows[getIndexOfRow].id,
       item: (
-        <Input
-          width={150}
-          value={newValues.name || ""}
-          onChange={e => setNewValues({ ...newValues, name: e.target.value })}
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={150}
+            value={newValues.name || ""}
+            onChange={e => setNewValues({ ...newValues, name: e.target.value })}
+          />
+        </TextFieldContainer>
       ),
       brand: (
         <AutocompleteContainer>
@@ -208,50 +236,79 @@ const Stock = () => {
         </AutocompleteContainer>
       ),
       stock: (
-        <Input
-          value={newValues.stock || ""}
-          onChange={e =>
-            setNewValues({ ...newValues, stock: parseInt(e.target.value, 10) })
-          }
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={60}
+            value={`${newValues.stock}` || ""}
+            onChange={e =>
+              setNewValues({
+                ...newValues,
+                stock: parseInt(e.target.value, 10),
+              })
+            }
+          />
+        </TextFieldContainer>
       ),
-      price: (newValues.margin * newValues.cost) / 100 + newValues.cost,
-      margin: (
-        <Input
-          value={newValues.margin || ""}
-          onChange={e => {
-            setNewValues({ ...newValues, margin: parseInt(e.target.value, 10) })
-          }}
-        />
+      margin: newValues.price - newValues.cost,
+      price: (
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={70}
+            value={`${newValues.price}` || ""}
+            onChange={e =>
+              setNewValues({
+                ...newValues,
+                price: parseFloat(e.target.value),
+              })
+            }
+          />
+        </TextFieldContainer>
       ),
       cost: (
-        <Input
-          value={newValues.cost || ""}
-          onChange={e => {
-            setNewValues({ ...newValues, cost: parseInt(e.target.value, 10) })
-          }}
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={70}
+            value={`${newValues.cost}` || ""}
+            onChange={e => {
+              setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
+            }}
+          />
+        </TextFieldContainer>
       ),
       sales_contact_name: (
-        <Input
-          width={150}
-          value={newValues.sales_contact_name || ""}
-          onChange={e =>
-            setNewValues({ ...newValues, sales_contact_name: e.target.value })
-          }
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={150}
+            value={newValues.sales_contact_name || ""}
+            onChange={e =>
+              setNewValues({ ...newValues, sales_contact_name: e.target.value })
+            }
+          />
+        </TextFieldContainer>
       ),
       sales_contact_information: (
-        <Input
-          width={120}
-          value={newValues.sales_contact_information || ""}
-          onChange={e =>
-            setNewValues({
-              ...newValues,
-              sales_contact_information: e.target.value,
-            })
-          }
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={120}
+            value={newValues.sales_contact_information || ""}
+            onChange={e =>
+              setNewValues({
+                ...newValues,
+                sales_contact_information: e.target.value,
+              })
+            }
+          />
+        </TextFieldContainer>
       ),
     }
     setRows({
@@ -309,8 +366,8 @@ const Stock = () => {
       brand_id: newValues.brand_id,
       category_id: newValues.category_id,
       stock: newValues.stock,
-      price: (newValues.margin * newValues.cost) / 100 + newValues.cost,
-      margin: newValues.margin,
+      price: newValues.price,
+      margin: newValues.price - newValues.cost,
       cost: newValues.cost,
       sales_contact_name: newValues.sales_contact_name,
       sales_contact_information: newValues.sales_contact_information,

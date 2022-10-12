@@ -33,6 +33,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
     setAutoCompleteCategoriesValues,
     autoCompleteBrandsValues,
     setAutoCompleteBrandsValues,
+    priceRef,
   } = useContext(StoreContext)
   const [brandSelected, setBrandSelected] = useState<string>("")
   const [newProductData, setNewProductData] = useState<ProductInterface>({
@@ -70,7 +71,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
     await nameRef.current?.focus()
     await brandsRef.current?.focus()
     await costRef.current?.focus()
-    await marginRef.current?.focus()
+    await priceRef.current?.focus()
     await categoriesRef.current?.focus()
     await nameRef.current?.focus()
 
@@ -81,7 +82,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
       categoriesRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       costRef.current.attributes.getNamedItem("data-error").value === "false" &&
-      marginRef.current.attributes.getNamedItem("data-error").value === "false"
+      priceRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
       const body = {
         ...newProductData,
@@ -109,21 +110,20 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
   }
 
   // calculate price by cost & margin
-  const calculatePrice = () => {
-    const stringMargin = `${newProductData.margin}`
+  const calculateMargin = () => {
     const stringCost = `${newProductData.cost}`
-    const margin = parseInt(stringMargin, 10)
-    const cost = parseInt(stringCost, 10)
-    const porcentaje = (margin * cost) / 100
-    const total = cost + porcentaje
+    const stringPrice = `${newProductData.price}`
+    const cost = parseFloat(stringCost)
+    const price = parseFloat(stringPrice)
+    const porcentaje = price - cost
 
-    setNewProductData({ ...newProductData, price: total })
+    setNewProductData({ ...newProductData, margin: porcentaje })
   }
 
   useEffect(() => {
-    calculatePrice()
+    calculateMargin()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newProductData.margin, newProductData.cost])
+  }, [newProductData.price, newProductData.cost])
 
   useEffect(() => {
     fillAutocompletes()
@@ -168,31 +168,39 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
             required
             label={texts.create.cost}
             width={118}
-            type="number"
+            type="text"
             reference={costRef}
-            onChange={e =>
-              setNewProductData({ ...newProductData, cost: e.target.value })
-            }
+            onChange={e => {
+              setNewProductData({
+                ...newProductData,
+                cost: parseFloat(e.target.value),
+              })
+            }}
           />
+
           <TextField
+            width={115}
             required
-            label={texts.create.margin}
+            label={texts.create.price}
             type="number"
-            width={118}
-            reference={marginRef}
+            reference={priceRef}
             onChange={e =>
-              setNewProductData({ ...newProductData, margin: e.target.value })
+              setNewProductData({
+                ...newProductData,
+                price: parseFloat(e.target.value),
+              })
             }
           />
           <TextField
             disabled
             disabledAutocompleted
-            width={115}
-            label={texts.create.price}
-            type="number"
+            label={texts.create.margin}
+            type="text"
+            width={118}
+            reference={marginRef}
             value={
               // eslint-disable-next-line no-restricted-globals
-              isNaN(newProductData.price) ? "0" : `${newProductData.price}`
+              isNaN(newProductData.margin) ? "0" : `${newProductData.margin}`
             }
           />
         </HorizontalGroup>

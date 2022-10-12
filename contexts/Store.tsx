@@ -60,6 +60,7 @@ export const StoreContext = createContext({
   setPaymentMethodSelected: null,
   paymentUserSelected: null,
   setPaymentUserSelected: null,
+  priceRef: null,
 })
 
 const StoreProvider = ({ children }) => {
@@ -124,6 +125,7 @@ const StoreProvider = ({ children }) => {
   const costRef = useRef(null)
   const marginRef = useRef(null)
   const stockRef = useRef(null)
+  const priceRef = useRef(null)
 
   const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
   const [
@@ -187,6 +189,7 @@ const StoreProvider = ({ children }) => {
         setPaymentMethodSelected,
         paymentUserSelected,
         setPaymentUserSelected,
+        priceRef,
       }}
     >
       {children}

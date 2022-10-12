@@ -6,12 +6,7 @@ import ProductInterface from "interfaces/store/ProductInterface"
 // COMPONENTS & STYLING
 import HistoryCard from "./ProductCard"
 import { FinalProfit } from "../BoulderView/styles"
-import {
-  Container,
-  CardsContainer,
-  // CajaTotal,
-  ProfitsContainer,
-} from "./styles"
+import { Container, CardsContainer, ProfitsContainer } from "./styles"
 
 const ProductsView = () => {
   const { productsPurchasedByDate, productList } = useContext(Finances)
@@ -41,15 +36,6 @@ const ProductsView = () => {
   return (
     <Container>
       <ProfitsContainer>
-        {/* <CajaTotal>
-          <span className="title">Caja:</span>
-          <p>
-            <span>Efectivo:</span> <b>$ {profitsCash}</b>
-          </p>
-          <p>
-            <span>Mercado Pago:</span> <b>$ {profitsMP}</b>
-          </p>
-        </CajaTotal> */}
         <FinalProfit>
           <p>
             <span>Efectivo:</span> <b>$ {profitsCash}</b>

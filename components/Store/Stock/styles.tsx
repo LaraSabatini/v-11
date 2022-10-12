@@ -20,6 +20,10 @@ const AutocompleteContainer = styled.div`
   margin-top: 33px;
 `
 
+const TextFieldContainer = styled.div`
+  margin-top: 33px;
+`
+
 const ErrorMessage = styled.p`
   color: ${theme.colors.danger};
   position: absolute;
@@ -31,4 +35,5 @@ export {
   ButtonsContainer,
   AutocompleteContainer,
   ErrorMessage,
+  TextFieldContainer,
 }
