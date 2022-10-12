@@ -215,12 +215,12 @@ const Stock = () => {
           }
         />
       ),
-      price: (newValues.margin * newValues.cost) / 100 + newValues.cost,
-      margin: (
+      margin: (newValues.cost * 100) / newValues.price,
+      price: (
         <Input
-          value={newValues.margin || ""}
+          value={newValues.price || ""}
           onChange={e => {
-            setNewValues({ ...newValues, margin: parseInt(e.target.value, 10) })
+            setNewValues({ ...newValues, price: parseFloat(e.target.value) })
           }}
         />
       ),
@@ -228,7 +228,7 @@ const Stock = () => {
         <Input
           value={newValues.cost || ""}
           onChange={e => {
-            setNewValues({ ...newValues, cost: parseInt(e.target.value, 10) })
+            setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
           }}
         />
       ),
@@ -309,8 +309,8 @@ const Stock = () => {
       brand_id: newValues.brand_id,
       category_id: newValues.category_id,
       stock: newValues.stock,
-      price: (newValues.margin * newValues.cost) / 100 + newValues.cost,
-      margin: newValues.margin,
+      price: newValues.price,
+      margin: (newValues.cost * 100) / newValues.price,
       cost: newValues.cost,
       sales_contact_name: newValues.sales_contact_name,
       sales_contact_information: newValues.sales_contact_information,
