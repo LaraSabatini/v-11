@@ -70,7 +70,18 @@ const Stock = () => {
 
       const rowsCleaned: RowsInterface[] = []
 
-      data.data.map((product: ProductInterface) =>
+      data.data.map((product: ProductInterface) => {
+        const marginString = `${product.margin}`
+        const arrOfMargin = marginString.split(".")
+        const first = arrOfMargin[0]
+        let finalMargin = 0
+        if (arrOfMargin.length > 1) {
+          const second = arrOfMargin[1].slice(0, 2)
+          finalMargin = parseFloat(`${first}.${second}`)
+        } else {
+          finalMargin = parseInt(first, 10)
+        }
+
         rowsCleaned.push({
           id: product.id,
           item: product.name,
@@ -82,12 +93,13 @@ const Stock = () => {
           )[0]?.name,
           stock: product.stock,
           price: product.price,
-          margin: product.margin,
+          margin: finalMargin,
           cost: product.cost,
           sales_contact_name: product.sales_contact_name,
           sales_contact_information: product.sales_contact_information,
-        }),
-      )
+        })
+        return 0
+      })
 
       setRows({
         success: true,
@@ -98,7 +110,17 @@ const Stock = () => {
       setProductsList(search.data)
       const rowsCleaned: RowsInterface[] = []
 
-      search.data.map((product: ProductInterface) =>
+      search.data.map((product: ProductInterface) => {
+        const marginString = `${product.margin}`
+        const arrOfMargin = marginString.split(".")
+        const first = arrOfMargin[0]
+        let finalMargin = 0
+        if (arrOfMargin.length > 1) {
+          const second = arrOfMargin[1].slice(0, 2)
+          finalMargin = parseFloat(`${first}.${second}`)
+        } else {
+          finalMargin = parseInt(first, 10)
+        }
         rowsCleaned.push({
           id: product.id,
           item: product.name,
@@ -110,12 +132,13 @@ const Stock = () => {
           )[0]?.name,
           stock: product.stock,
           price: product.price,
-          margin: product.margin,
+          margin: finalMargin,
           cost: product.cost,
           sales_contact_name: product.sales_contact_name,
           sales_contact_information: product.sales_contact_information,
-        }),
-      )
+        })
+        return 0
+      })
 
       setRows({
         success: true,
