@@ -4,6 +4,7 @@ import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.servic
 import {
   getByPartnerAndPaid,
   editLesson,
+  deletePurchase,
 } from "services/Trainers/LessonsPurchased.service"
 import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
 import {
@@ -312,9 +313,31 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
     }
   }
 
-  const removePurchases = () => {
-    // eslint-disable-next-line no-console
-    console.log("removePurchases")
+  const removePurchases = async () => {
+    let success: boolean = false
+    // deletePurchase
+    for (let i = 0; i < lessonsSelectedToPay.length; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      const deleteCall = await deletePurchase(lessonsSelectedToPay[i].id)
+      success = deleteCall.message === "purchase deleted successfully"
+    }
+
+    if (success) {
+      setModalSuccess({
+        status: "success",
+        icon: "IconCheckModal",
+        title: "Excelente!",
+        content: "Se han eliminado las clases reservadas exitosamente.",
+      })
+      cancelPayment()
+    } else {
+      setModalError({
+        status: "alert",
+        icon: "IconExclamation",
+        title: "UPS!",
+        content: "Ha ocurrido un error al borrar las reservas.",
+      })
+    }
   }
 
   return (
@@ -399,9 +422,9 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
               status: `alert`,
               icon: `IconAlert`,
               title:
-                "Estas seguro de que deseas eliminar los registros de las siguientes compras?",
+                "Estas seguro de que deseas eliminar las clases reservadas?",
               content: `${lessonsSelectedToPay.map(
-                lesson => lesson.lesson_date,
+                lesson => ` ${lesson.lesson_date}`,
               )}`,
             })
           }
