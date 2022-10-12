@@ -33,6 +33,7 @@ const ProductsView = ({ data, goPrev, goNext }: ProductListInterface) => {
                 id={product.id}
                 margin={product.margin}
                 cost={product.cost}
+                brand={product.brand_id}
               />
             ))}
         </ProductsContainer>

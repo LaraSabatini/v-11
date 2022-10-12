@@ -27,6 +27,7 @@ const Product = ({
   id,
   cost,
   margin,
+  brand,
 }: ProductCardInterface) => {
   const {
     setPurchase,
@@ -161,7 +162,7 @@ const Product = ({
 
   return (
     <ProductCard>
-      {category_id === 1 && (
+      {category_id === 1 && brand !== 12 && brand !== 11 && (
         <img className="zapas" src="/beer.png" alt="beer" />
       )}
       {category_id === 4 && (
@@ -179,6 +180,12 @@ const Product = ({
         <ComponentContainerZapas>
           <Zapas />
         </ComponentContainerZapas>
+      )}
+      {category_id === 1 && brand === 12 && (
+        <img className="coca" src="/coca.png" alt="beer" />
+      )}
+      {category_id === 1 && brand === 11 && (
+        <img className="powerade" src="/powerade.png" alt="beer" />
       )}
       {/* merch */}
       <Description>

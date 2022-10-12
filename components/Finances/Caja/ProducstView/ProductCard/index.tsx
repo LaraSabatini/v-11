@@ -50,7 +50,7 @@ const HistoryCard = ({
             <p className="profits">
               Ganancias:
               <span>
-                ${finalProfit} <p>({margin}%)</p>
+                ${finalProfit} <p>(${margin})</p>
               </span>
             </p>
             <HorizontalGroup>

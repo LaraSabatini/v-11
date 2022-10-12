@@ -115,7 +115,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
     const stringPrice = `${newProductData.price}`
     const cost = parseFloat(stringCost)
     const price = parseFloat(stringPrice)
-    const porcentaje = (cost * 100) / price
+    const porcentaje = price - cost
 
     setNewProductData({ ...newProductData, margin: porcentaje })
   }

@@ -9,7 +9,7 @@ const columns: {
   { id: 3, field: "category", header_name: "Categoria", width: "m" },
   { id: 4, field: "stock", header_name: "Stock", width: "s" },
   { id: 5, field: "price", header_name: "Precio", width: "s" },
-  { id: 6, field: "margin", header_name: "Margen (%)", width: "s" },
+  { id: 6, field: "margin", header_name: "Ganancia ($)", width: "s" },
   { id: 7, field: "cost", header_name: "Costo", width: "s" },
   {
     id: 8,

@@ -17,13 +17,21 @@ const ProductCard = styled.div`
   }
 
   .monster {
-    width: 50px;
+    width: 65px;
   }
 
   .calendar {
     width: 103px;
     height: 95px;
     margin-top: 25px;
+  }
+
+  .coca {
+    width: 80px;
+  }
+
+  .powerade {
+    width: 70px;
   }
 `
 
