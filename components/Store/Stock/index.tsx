@@ -15,16 +15,17 @@ import ModalAlert from "components/UI/ModalAlert"
 import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextButton from "components/UI/TextButton"
+import TextField from "components/UI/TextField"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
 import columns from "./const/content"
-import Input from "../UI/Input"
 import {
   Container,
   ButtonsContainer,
   Content,
   AutocompleteContainer,
   ErrorMessage,
+  TextFieldContainer,
 } from "./styles"
 
 const Stock = () => {
@@ -168,11 +169,15 @@ const Stock = () => {
     newSetOfRows[getIndexOfRow] = {
       id: rows.rows[getIndexOfRow].id,
       item: (
-        <Input
-          width={150}
-          value={newValues.name || ""}
-          onChange={e => setNewValues({ ...newValues, name: e.target.value })}
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={150}
+            value={newValues.name || ""}
+            onChange={e => setNewValues({ ...newValues, name: e.target.value })}
+          />
+        </TextFieldContainer>
       ),
       brand: (
         <AutocompleteContainer>
@@ -208,50 +213,79 @@ const Stock = () => {
         </AutocompleteContainer>
       ),
       stock: (
-        <Input
-          value={newValues.stock || ""}
-          onChange={e =>
-            setNewValues({ ...newValues, stock: parseInt(e.target.value, 10) })
-          }
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={60}
+            value={`${newValues.stock}` || ""}
+            onChange={e =>
+              setNewValues({
+                ...newValues,
+                stock: parseInt(e.target.value, 10),
+              })
+            }
+          />
+        </TextFieldContainer>
       ),
-      margin: (newValues.cost * 100) / newValues.price,
+      margin: newValues.price - newValues.cost,
       price: (
-        <Input
-          value={newValues.price || ""}
-          onChange={e => {
-            setNewValues({ ...newValues, price: parseFloat(e.target.value) })
-          }}
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={70}
+            value={`${newValues.price}` || ""}
+            onChange={e =>
+              setNewValues({
+                ...newValues,
+                price: parseFloat(e.target.value),
+              })
+            }
+          />
+        </TextFieldContainer>
       ),
       cost: (
-        <Input
-          value={newValues.cost || ""}
-          onChange={e => {
-            setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
-          }}
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={70}
+            value={`${newValues.cost}` || ""}
+            onChange={e => {
+              setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
+            }}
+          />
+        </TextFieldContainer>
       ),
       sales_contact_name: (
-        <Input
-          width={150}
-          value={newValues.sales_contact_name || ""}
-          onChange={e =>
-            setNewValues({ ...newValues, sales_contact_name: e.target.value })
-          }
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={150}
+            value={newValues.sales_contact_name || ""}
+            onChange={e =>
+              setNewValues({ ...newValues, sales_contact_name: e.target.value })
+            }
+          />
+        </TextFieldContainer>
       ),
       sales_contact_information: (
-        <Input
-          width={120}
-          value={newValues.sales_contact_information || ""}
-          onChange={e =>
-            setNewValues({
-              ...newValues,
-              sales_contact_information: e.target.value,
-            })
-          }
-        />
+        <TextFieldContainer>
+          <TextField
+            label=""
+            type="text"
+            width={120}
+            value={newValues.sales_contact_information || ""}
+            onChange={e =>
+              setNewValues({
+                ...newValues,
+                sales_contact_information: e.target.value,
+              })
+            }
+          />
+        </TextFieldContainer>
       ),
     }
     setRows({
@@ -310,7 +344,7 @@ const Stock = () => {
       category_id: newValues.category_id,
       stock: newValues.stock,
       price: newValues.price,
-      margin: (newValues.cost * 100) / newValues.price,
+      margin: newValues.price - newValues.cost,
       cost: newValues.cost,
       sales_contact_name: newValues.sales_contact_name,
       sales_contact_information: newValues.sales_contact_information,
