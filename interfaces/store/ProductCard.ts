@@ -5,4 +5,5 @@ export default interface ProductCardInterface {
   id: number
   cost: number
   margin: number
+  brand?: number
 }
