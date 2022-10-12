@@ -26,6 +26,19 @@ export const getLessonsByWeek = async (week_id: number) => {
   return res.data
 }
 
+export const getByPartnerAndPaid = async (id: number) => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.get(
+    `https://v-11-backend.vercel.app/lessonsPurchased/partner-paid/id=${id}&paid=NO`,
+    axiosHeader,
+  )
+  return res.data
+}
+
 export const getLessonsByDateAndShift = async (date: string, shift: string) => {
   const axiosHeader = {
     headers: {
@@ -73,7 +86,7 @@ export const createLessonPurchase = async (body: {
   return data
 }
 
-export const editLessonDate = async (body: {
+export const editLesson = async (body: {
   id: number
   lesson_date: string
   shift: "AM" | "PM"
@@ -96,6 +109,19 @@ export const editLessonDate = async (body: {
         "Content-Type": "application/json",
       },
     },
+  )
+  return res.data
+}
+
+export const deletePurchase = async (id: number) => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.delete(
+    `https://v-11-backend.vercel.app/lessonsPurchased/${id}`,
+    axiosHeader,
   )
   return res.data
 }

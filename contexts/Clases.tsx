@@ -59,6 +59,8 @@ export const Clases = createContext({
   cleanStates: null,
   purchaseSelected: null,
   setPurchaseSelected: null,
+  triggerListUpdate: null,
+  setTriggerListUpdate: null,
 })
 
 const ClasesProvider = ({ children }) => {
@@ -141,6 +143,8 @@ const ClasesProvider = ({ children }) => {
 
   const [identificationError, setIdentificationError] = useState<boolean>(false)
 
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
+
   const cleanStates = () => {
     setNewPurchases(null)
     setAmountOfLessons(0)
@@ -152,6 +156,7 @@ const ClasesProvider = ({ children }) => {
     setClientIsRegistered(null)
     setModalSuccess(null)
     setModalError(null)
+    setTriggerListUpdate(triggerListUpdate + 1)
   }
 
   // CALENDAR VIEW ********************************
@@ -213,6 +218,8 @@ const ClasesProvider = ({ children }) => {
         cleanStates,
         purchaseSelected,
         setPurchaseSelected,
+        triggerListUpdate,
+        setTriggerListUpdate,
       }}
     >
       {children}

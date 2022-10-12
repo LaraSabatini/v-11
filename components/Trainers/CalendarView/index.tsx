@@ -28,6 +28,8 @@ const CalendarView = () => {
     setPurchaseSelected,
     setPaymentMethodSelected,
     setPaymentUserSelected,
+    setFinalPrice,
+    triggerListUpdate,
   } = useContext(Clases)
 
   const [cleanedLessons, setCleanedLessons] = useState<{
@@ -112,10 +114,7 @@ const CalendarView = () => {
     )
     const weekNumber = Math.ceil(days / 7)
 
-    // setCurrentWeekNumber(weekNumber)
     setWeekNumberSelected(weekNumber)
-
-    // getDayOfWeek(weekNumber, 2022)
   }
 
   const getLessonsData = async () => {
@@ -199,7 +198,7 @@ const CalendarView = () => {
       getLessonsData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [weekNumberSelected])
+  }, [weekNumberSelected, triggerListUpdate])
 
   const [modalMakeAPayment, setModalMakeAPayment] = useState<boolean>(false)
 
@@ -286,7 +285,6 @@ const CalendarView = () => {
           <ColumnTitle>
             <p>
               {daysOfTheWeek[1].display_name}
-
               <span>
                 {weekDays[1]}/{month}/{year}
               </span>
@@ -430,6 +428,7 @@ const CalendarView = () => {
               setPaymentMethodSelected(null)
               setPaymentUserSelected(null)
               setPurchaseSelected(null)
+              setFinalPrice(0)
             }}
           />
         )}
