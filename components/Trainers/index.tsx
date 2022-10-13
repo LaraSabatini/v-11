@@ -317,9 +317,7 @@ function TrainersView() {
                 : `${texts.calendar}`}
             </span>
           </div>
-          {router.query.students === "true" && <p>search bar</p>}
         </Title>
-        {router.query.students === "true" && <p>ALUMNOS CARDS</p>}
         {router.query.calendar === "true" && <CalendarView />}
         <ButtonContainer>
           <EditButton
