@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import { PartnersContext } from "contexts/Partners"
 import { StoreContext } from "contexts/Store"
-import texts from "strings/general.json"
+import generalTexts from "strings/general.json"
 import Tooltip from "components/UI/Tooltip"
 import LogOut from "./LogOut"
 import {
@@ -47,7 +47,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 5) === "home"}
           >
-            {texts.sections.home}
+            {generalTexts.sections.home}
             {clientsMenuOpen && (
               <ClientsMenu>
                 <SubButton
@@ -68,7 +68,7 @@ function Header() {
                     }
                   }}
                 >
-                  Clientes
+                  {generalTexts.sections.home}
                 </SubButton>
                 <SubButton
                   selectedSection={router.query.prices === "true"}
@@ -102,7 +102,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 9) === "trainers"}
           >
-            {texts.sections.trainers}
+            {generalTexts.sections.trainers}
             {trainersMenuOpen && (
               <ClientsMenu>
                 <SubButton
@@ -132,7 +132,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 6) === "store"}
           >
-            {texts.sections.store}
+            {generalTexts.sections.store}
             {storeMenuOpen && (
               <ClientsMenu>
                 <SubButton
@@ -148,7 +148,7 @@ function Header() {
                     }
                   }}
                 >
-                  Tienda
+                  {generalTexts.sections.store}
                 </SubButton>
                 <SubButton
                   selectedSection={router.query.stock === "true"}
@@ -177,7 +177,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 9) === "finances"}
           >
-            {texts.sections.finances}
+            {generalTexts.sections.finances}
 
             {financesMenuOpen && (
               <ClientsMenu>

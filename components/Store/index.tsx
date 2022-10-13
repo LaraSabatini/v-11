@@ -7,6 +7,7 @@ import getBrands from "services/Store/getBrands.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import texts from "strings/store.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Tooptip from "components/UI/Tooltip"
@@ -103,7 +104,13 @@ function StoreView() {
         <HeadContent>
           <Title>
             {texts.title}{" "}
-            <span> / {router.query.store === "true" ? "Tienda" : "Stock"}</span>
+            <span>
+              {" "}
+              /{" "}
+              {router.query.store === "true"
+                ? `${generalTexts.sections.store}`
+                : "Stock"}
+            </span>
           </Title>
           <Filters />
           {router.query.stock === "true" && (

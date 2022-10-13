@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 // SERVICES
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
-import texts from "strings/partners.json"
+import partnerTexts from "strings/partners.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 // COMPONENTS & STYLING
 import theme from "theme/index"
@@ -73,10 +73,10 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
                   <PartnerNumber>N°: {partner.id}</PartnerNumber>
                   <Tags>
                     {partner.is_student === "SI" && (
-                      <Student>{texts.student}</Student>
+                      <Student>{partnerTexts.student}</Student>
                     )}
                     {partner.free_pass !== 0 && (
-                      <FreePass>{texts.free_pass}</FreePass>
+                      <FreePass>{partnerTexts.free_pass}</FreePass>
                     )}
                     {partner.free_pass === 0 && partner.is_student === "NO" && (
                       <Day>Dia</Day>
@@ -90,7 +90,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
               )
             })
           ) : (
-            <NoPartnersView>{texts.no_more}</NoPartnersView>
+            <NoPartnersView>{partnerTexts.no_more}</NoPartnersView>
           )}
         </ListContainer>
       </ScrollView>
@@ -105,7 +105,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
             }
           }}
         >
-          <Tooltip title={texts.prev}>
+          <Tooltip title={partnerTexts.prev}>
             <Icon icon="IconArrowLeft" />
           </Tooltip>
         </Navigate>
@@ -120,7 +120,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
             }
           }}
         >
-          <Tooltip title={texts.next} placement="top-start">
+          <Tooltip title={partnerTexts.next} placement="top-start">
             <Icon icon="IconArrowRight" />
           </Tooltip>
         </Navigate>

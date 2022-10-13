@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, RefObject } from "react"
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
+import inputTexts from "strings/inputMessages.json"
 import CalendarMonthOfYear from "./CalendarMonthOfYear"
 import ErrorMessage from "../ErrorMessage"
 import {
@@ -100,9 +101,7 @@ const InputCalendar = ({
    * when an incorrect date format is placed or the input calendar field is required
    */
 
-  //   const [requiredInputCalendar, setRequiredInputCalendar] = useState("")
-  const requiredInputCalendar = "Este campo es requerido"
-  //   const [regexDate, setRegexDate] = useState("")
+  const requiredInputCalendar = `${inputTexts.isRequired}`
   const regexDate = "error regex"
 
   const response = {

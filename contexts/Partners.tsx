@@ -1,4 +1,5 @@
 import { createContext, useState, useRef } from "react"
+import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import PricesInterface from "interfaces/partners/PricesInterface"
@@ -98,7 +99,7 @@ const PartnersProvider = ({ children }) => {
     section: string
     id: number
   }>({
-    section: "Clientes",
+    section: `${generalTexts.sections.home}`,
     id: 1,
   })
 

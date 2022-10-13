@@ -2,6 +2,7 @@ import React from "react"
 import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
 import WorkingHoursProvider from "contexts/WorkingHours"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
 import Bills from "./Bills"
@@ -20,7 +21,7 @@ const FinancesView = () => {
       <Content>
         <HeadContent>
           <Title>
-            Finanzas{" "}
+            {generalTexts.sections.finances}
             <span>
               {" "}
               / {router.query.billing === "true" && "Facturacion Boulder"}

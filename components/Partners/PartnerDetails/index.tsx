@@ -5,7 +5,7 @@ import getUsers from "services/Users/GetUsers.service"
 import { PartnersContext } from "contexts/Partners"
 import UserInterface from "interfaces/users/UserInterface"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import texts from "strings/partners.json"
+import partnerTexts from "strings/partners.json"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
@@ -46,7 +46,7 @@ const PartnerDetails = () => {
   return (
     <Container>
       <Title>
-        {texts.details}
+        {partnerTexts.details}
         <IconContainer
           onClick={() => {
             if (hasChanges) {

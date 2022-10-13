@@ -6,6 +6,7 @@ import { PartnersContext } from "contexts/Partners"
 import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
 import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
+import partnerTexts from "strings/partners.json"
 // COMPONENTS & STYLING
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
@@ -194,7 +195,7 @@ const MakePayment = () => {
       <div style={{ display: "flex", gap: "10px" }}>
         <CheckboxContainer>
           <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
-          <p>Pase libre</p>
+          <p>{partnerTexts.create.free_pass}</p>
         </CheckboxContainer>
         {paidTimeUnit.id === 1 && (
           <CheckboxContainer>
@@ -204,7 +205,7 @@ const MakePayment = () => {
               onChange={() => setUsesDay(!usesDay)}
               idParam="use-day"
             />
-            <p>Usa dia hoy</p>
+            <p>{partnerTexts.usesDay}</p>
           </CheckboxContainer>
         )}
       </div>

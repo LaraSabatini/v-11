@@ -3,6 +3,35 @@
         "home": "Clientes",
         "trainers": "Profesores",
         "store": "Tienda",
-        "finances": "Finanzas"
-    }
+        "finances": "Finanzas",
+        "prices": "Precios"
+    },
+    "actions": {
+        "delete": "Borrar",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "save": "Guardar",
+        "discardChanges": "Descartar cambios",
+        "create": "Crear",
+        "next": "Siguiente",
+        "removeRecord": "Eliminar"
+    },
+    "labels": {
+        "email": "Email",
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "birthDate": "Fecha de nacimiento",
+        "trainer": "Profesor",
+        "identificationNumber": "N° de documento:",
+        "phoneNumber": "N° de telefono"
+    },
+    "modalTitles": {
+        "success": "Excelente!",
+        "error": "UPS!"
+    },
+    "payments": {
+        "cash": "Efectivo"
+    },
+    "yes": "SI",
+    "no": "NO"
 }

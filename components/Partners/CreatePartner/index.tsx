@@ -12,7 +12,8 @@ import {
 import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
-import texts from "strings/partners.json"
+import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import {
@@ -351,15 +352,15 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: `${texts.create.success.title}`,
-        content: `${texts.create.success.content}`,
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${partnerTexts.create.success.content}`,
       })
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: `${texts.create.error.title}`,
-        content: `${texts.create.error.content}`,
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${partnerTexts.create.error.content}`,
       })
     }
   }
@@ -379,9 +380,17 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
 
   return (
     <ModalForm
-      title={view === 1 ? "Crear socio" : "Pago"}
-      cancelButtonContent="Cancelar"
-      submitButtonContent={view === 1 ? "Siguiente" : "Crear"}
+      title={
+        view === 1
+          ? `${partnerTexts.create.title}`
+          : `${partnerTexts.create.payment}`
+      }
+      cancelButtonContent={generalTexts.actions.cancel}
+      submitButtonContent={
+        view === 1
+          ? `${generalTexts.actions.next}`
+          : `${generalTexts.actions.create}`
+      }
       submit={view === 1 ? handleCreate : finalizeCreate}
       cancelFunction={cancelCreate}
     >
@@ -391,7 +400,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             <TextField
               required
               width={180}
-              label={texts.create.name}
+              label={generalTexts.labels.name}
               type="text"
               reference={nameRef}
               onChange={e => {
@@ -401,7 +410,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             <TextField
               required
               width={180}
-              label={texts.create.last_name}
+              label={generalTexts.labels.lastName}
               type="text"
               reference={lastNameRef}
               onChange={e => {
@@ -415,11 +424,13 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           <HorizontalGroup>
             <TextField
               width={180}
-              label={texts.create.identification}
+              label={generalTexts.labels.identificationNumber}
               type="text"
               required
               backError={partnerDuplicated}
-              backErrorMessage={partnerDuplicated && "El socio ya existe"}
+              backErrorMessage={
+                partnerDuplicated && `${partnerTexts.partnerAlreadyExists}`
+              }
               reference={identificationRef}
               onChange={e =>
                 setNewPartnerData({
@@ -430,7 +441,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             />
             <InputCalendar
               width={180}
-              label={texts.create.birth_date}
+              label={generalTexts.labels.birthDate}
               reference={birthDateRef}
               onChange={e =>
                 setNewPartnerData({
@@ -443,7 +454,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           <HorizontalGroup>
             <TextField
               width={180}
-              label={texts.create.email}
+              label={generalTexts.labels.email}
               type="email"
               reference={emailRef}
               onChange={e =>
@@ -456,7 +467,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             <TextField
               width={180}
               required={wantsSubscription}
-              label="N° de telefono"
+              label={generalTexts.labels.phoneNumber}
               type="text"
               reference={phoneRef}
               onChange={e =>

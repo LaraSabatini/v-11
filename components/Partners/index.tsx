@@ -8,7 +8,8 @@ import {
   getFreePassPartners,
 } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import texts from "strings/partners.json"
+import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
 // COMPONENTS & STYLING
 import theme from "theme/index"
@@ -115,10 +116,13 @@ function PartnersView() {
       <Content>
         <HeadContent>
           <Title>
-            {texts.title}{" "}
+            {generalTexts.sections.home}{" "}
             <span>
               {" "}
-              / {router.query.prices === "true" ? "Precios" : "Clientes"}
+              /{" "}
+              {router.query.prices === "true"
+                ? `${generalTexts.sections.prices}`
+                : `${generalTexts.sections.home}`}
             </span>
           </Title>
           {router.query.clients === "true" && <Filters />}
@@ -154,7 +158,7 @@ function PartnersView() {
         {router.query.prices === "true" && <Prices />}
         {router.query.clients === "true" && (
           <MainButton>
-            <Tooptip title={texts.mainButton}>
+            <Tooptip title={partnerTexts.mainButton}>
               <AddPartner
                 onClick={() => {
                   if (hasChanges) {

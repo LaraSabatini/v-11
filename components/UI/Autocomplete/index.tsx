@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
 import Icon from "components/UI/Assets/Icon"
+import inputTexts from "strings/inputMessages.json"
 import {
   Container,
   Label,
@@ -51,8 +52,8 @@ const Autocomplete = React.forwardRef<HTMLInputElement, InputSelectType>(
     const [startValidation, setStartValidation] = useState(false)
     const [error, setError] = useState(false)
     const [errorMessage, setErrorMessage] = useState("")
-    const noCoincidences = "No hay coincidencias"
-    const requiredField = "Este campo es requerido"
+    const noCoincidences = `${inputTexts.no_coincidences}`
+    const requiredField = `${inputTexts.isRequired}`
     const [selectedId, setSelectedId] = useState<number | null>(null)
 
     // Open the options

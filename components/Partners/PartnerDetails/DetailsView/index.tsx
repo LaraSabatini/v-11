@@ -18,7 +18,8 @@ import { months, today, day, month, year } from "const/fixedVariables"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PartnersContext } from "contexts/Partners"
-import texts from "strings/partners.json"
+import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
@@ -181,8 +182,8 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       setModalErrorAddDays({
         status: "alert",
         icon: "IconExclamation",
-        title: `${texts.cannotAddDays.title}`,
-        content: `${texts.cannotAddDays.content}`,
+        title: `${partnerTexts.cannotAddDays.title}`,
+        content: `${partnerTexts.cannotAddDays.content}`,
       })
       cleanStates()
     }
@@ -327,15 +328,15 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: `${texts.updatePaymentSuccess.title}`,
-        content: `${texts.updatePaymentSuccess.content}`,
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${partnerTexts.updatePaymentSuccess.content}`,
       })
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: `${texts.updatePaymentError.title}`,
-        content: `${texts.updatePaymentError.content}`,
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${partnerTexts.updatePaymentError.content}`,
       })
     }
   }
@@ -400,7 +401,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         time_paid_unit: 0,
         clases_paid: 0,
         payment_method_id: 0,
-        payment_method_name: "Efectivo",
+        payment_method_name: `${generalTexts.payments.cash}`,
         price_paid: 0,
         date: "",
         payment_expire_date: "",
@@ -443,26 +444,26 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           message={{
             status: "alert",
             icon: "IconExclamation",
-            title: `${texts.deleteWarning.title}`,
-            content: `${texts.deleteWarning.content}`,
+            title: `${partnerTexts.deleteWarning.title}`,
+            content: `${partnerTexts.deleteWarning.content}`,
           }}
           closeModal={() => setSafeModal(false)}
           closeRefresh={() => setSafeModal(false)}
-          mainButtonContent={texts.delete}
-          secondButtonContent={texts.cancel}
+          mainButtonContent={generalTexts.actions.delete}
+          secondButtonContent={generalTexts.actions.cancel}
           mainAction={deletePartnerFunction}
           isNotice
         />
       )}
       <div>
         <PartnerData>
-          <p>{texts.full_name}</p>
+          <p>{partnerTexts.full_name}</p>
           {partnerInfo?.name} {partnerInfo?.last_name}
         </PartnerData>
 
         {partnerInfo?.email !== "" ? (
           <PartnerData>
-            <p>{texts.email}</p>
+            <p>{generalTexts.labels.email}</p>
             {partnerInfo?.email}
           </PartnerData>
         ) : (
@@ -471,7 +472,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
         {partnerInfo?.phone !== "" ? (
           <PartnerData>
-            <p>N° de telefono:</p>
+            <p>{generalTexts.labels.phoneNumber}</p>
             {partnerInfo?.phone}
           </PartnerData>
         ) : (
@@ -480,7 +481,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
         {partnerInfo?.identification_number !== "" ? (
           <PartnerData>
-            <p>{texts.identification}</p>
+            <p>{generalTexts.labels.identificationNumber}</p>
             {partnerInfo?.identification_number}
           </PartnerData>
         ) : (
@@ -488,19 +489,19 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         )}
 
         <PartnerData>
-          <p>{texts.member_since}</p>
+          <p>{partnerTexts.member_since}</p>
           {partnerInfo?.membership_start_date}
         </PartnerData>
 
         {initialPayment !== undefined &&
           initialPayment.payment_expire_date !== "" && (
             <PartnerData>
-              <p>Vencimiento de pago</p>
+              <p>{partnerTexts.paymentExpires}</p>
               {initialPayment.payment_expire_date}
             </PartnerData>
           )}
 
-        {partnerInfo?.is_student === "SI" ? (
+        {/* {partnerInfo?.is_student === `${generalTexts.yes}` ? (
           <PartnerData>
             <p>{texts.trainer}</p>
             {initialPayment?.days_and_hours.includes("1") ||
@@ -514,10 +515,10 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           </PartnerData>
         ) : (
           <></>
-        )}
+        )} */}
 
         <PartnerData>
-          <p>Dias restantes</p>
+          <p>{partnerTexts.remainingDays}</p>
           <DaysLeft>
             <button
               className="remove"
@@ -540,11 +541,11 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
       <ButtonContainer>
         <RemoveButton type="button" onClick={() => setSafeModal(true)}>
-          Eliminar
+          {generalTexts.actions.removeRecord}
         </RemoveButton>
         {changes === false && (
           <TextButton
-            content={texts.updatePayment}
+            content={partnerTexts.updatePayment}
             cta
             onClick={() => {
               setNewValues({
@@ -570,7 +571,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         {changes && (
           <>
             <TextButton
-              content={texts.cancel}
+              content={generalTexts.actions.cancel}
               onClick={() => {
                 setChanges(false)
                 setVariableValues([
@@ -579,7 +580,11 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
                 ])
               }}
             />
-            <TextButton cta content={texts.confirm} onClick={excecuteChanges} />
+            <TextButton
+              cta
+              content={generalTexts.actions.confirm}
+              onClick={excecuteChanges}
+            />
           </>
         )}
       </ButtonContainer>
