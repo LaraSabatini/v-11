@@ -26,14 +26,14 @@ export const getLessonsByWeek = async (week_id: number) => {
   return res.data
 }
 
-export const getByPartnerAndPaid = async (id: number) => {
+export const getByPartnerAndPaid = async (id: number, paid: "SI" | "NO") => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
     },
   }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/lessonsPurchased/partner-paid/id=${id}&paid=NO`,
+    `https://v-11-backend.vercel.app/lessonsPurchased/partner-paid/id=${id}&paid=${paid}`,
     axiosHeader,
   )
   return res.data

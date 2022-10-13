@@ -325,7 +325,7 @@ function TrainersView() {
           <EditButton
             disabled={purchaseSelected === null}
             onClick={() => {
-              if (purchaseSelected === null) {
+              if (purchaseSelected !== null) {
                 setEditLessonDateView(true)
               }
             }}
@@ -337,7 +337,9 @@ function TrainersView() {
           </PurchaseButton>
         </ButtonContainer>
 
-        {editLessonDateView && <EditLessonDate />}
+        {editLessonDateView && (
+          <EditLessonDate cancelEdit={() => setEditLessonDateView(false)} />
+        )}
         {createLessonPurchaseView && (
           <CreatePurchaseModal
             handleCreatePurchase={executePurchase}

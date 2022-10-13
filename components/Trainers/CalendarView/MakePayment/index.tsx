@@ -195,7 +195,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
   }
 
   const checkTypeOfPayment = async () => {
-    const checkListOfToPay = await getByPartnerAndPaid(data.partner_id)
+    const checkListOfToPay = await getByPartnerAndPaid(data.partner_id, "NO")
     setListOfLessonsToPay(checkListOfToPay.data)
     setLessonsSelectedToPay([data])
 
