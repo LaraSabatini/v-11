@@ -153,3 +153,85 @@ export const daysOfTheWeek = [
   { id: 6, display_name: "SABADO" },
   { id: 7, display_name: "DOMINGO" },
 ]
+
+export const daysOfWeekAv = [
+  {
+    id: 1,
+    display_name: "L",
+  },
+  {
+    id: 2,
+    display_name: "M",
+  },
+  {
+    id: 3,
+    display_name: "X",
+  },
+  {
+    id: 4,
+    display_name: "J",
+  },
+  {
+    id: 5,
+    display_name: "V",
+  },
+  {
+    id: 6,
+    display_name: "S",
+  },
+  {
+    id: 7,
+    display_name: "D",
+  },
+]
+
+export const abbreviatedMonth = [
+  {
+    id: 1,
+    display_name: "Ene",
+  },
+  {
+    id: 2,
+    display_name: "Feb",
+  },
+  {
+    id: 3,
+    display_name: "Mar",
+  },
+  {
+    id: 4,
+    display_name: "Abr",
+  },
+  {
+    id: 5,
+    display_name: "May",
+  },
+  {
+    id: 6,
+    display_name: "Jun",
+  },
+  {
+    id: 7,
+    display_name: "Jul",
+  },
+  {
+    id: 8,
+    display_name: "Ago",
+  },
+  {
+    id: 9,
+    display_name: "Sept",
+  },
+  {
+    id: 10,
+    display_name: "Oct",
+  },
+  {
+    id: 11,
+    display_name: "Nov",
+  },
+  {
+    id: 12,
+    display_name: "Dic",
+  },
+]

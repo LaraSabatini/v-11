@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, RefObject } from "react"
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
 import inputTexts from "strings/inputMessages.json"
+import { daysOfWeekAv, months, abbreviatedMonth } from "const/fixedVariables"
 import CalendarMonthOfYear from "./CalendarMonthOfYear"
 import ErrorMessage from "../ErrorMessage"
 import {
@@ -102,13 +103,13 @@ const InputCalendar = ({
    */
 
   const requiredInputCalendar = `${inputTexts.isRequired}`
-  const regexDate = "error regex"
+  const regexDate = ""
 
   const response = {
     isRequired: requiredInputCalendar,
     hasRegExDate: regexDate,
-    maxLimit: "Debes elegir una fecha anterior",
-    minLimit: "Debes elegir una fecha posterior",
+    maxLimit: `${inputTexts.calendar.maxLimit}`,
+    minLimit: `${inputTexts.calendar.maxLimit}`,
   }
 
   /**
@@ -136,137 +137,6 @@ const InputCalendar = ({
    * months of the year and abbreviated months on the screen ; region/language and placeholder
    */
 
-  const daysOfWeek = [
-    {
-      id: 1,
-      display_name: "L",
-    },
-    {
-      id: 2,
-      display_name: "M",
-    },
-    {
-      id: 3,
-      display_name: "X",
-    },
-    {
-      id: 4,
-      display_name: "J",
-    },
-    {
-      id: 5,
-      display_name: "V",
-    },
-    {
-      id: 6,
-      display_name: "S",
-    },
-    {
-      id: 7,
-      display_name: "D",
-    },
-  ]
-  //   const [monthOfYear, setMonthOfYear] = useState([])
-  const monthOfYear = [
-    {
-      id: 1,
-      display_name: "Enero",
-    },
-    {
-      id: 2,
-      display_name: "Febrero",
-    },
-    {
-      id: 3,
-      display_name: "Marzo",
-    },
-    {
-      id: 4,
-      display_name: "Abril",
-    },
-    {
-      id: 5,
-      display_name: "Mayo",
-    },
-    {
-      id: 6,
-      display_name: "Junio",
-    },
-    {
-      id: 7,
-      display_name: "Julio",
-    },
-    {
-      id: 8,
-      display_name: "Agosto",
-    },
-    {
-      id: 9,
-      display_name: "Septiembre",
-    },
-    {
-      id: 10,
-      display_name: "Octubre",
-    },
-    {
-      id: 11,
-      display_name: "Noviembre",
-    },
-    {
-      id: 12,
-      display_name: "Diciembre",
-    },
-  ]
-  const abbreviatedMonth = [
-    {
-      id: 1,
-      display_name: "Ene",
-    },
-    {
-      id: 2,
-      display_name: "Feb",
-    },
-    {
-      id: 3,
-      display_name: "Mar",
-    },
-    {
-      id: 4,
-      display_name: "Abr",
-    },
-    {
-      id: 5,
-      display_name: "May",
-    },
-    {
-      id: 6,
-      display_name: "Jun",
-    },
-    {
-      id: 7,
-      display_name: "Jul",
-    },
-    {
-      id: 8,
-      display_name: "Ago",
-    },
-    {
-      id: 9,
-      display_name: "Sept",
-    },
-    {
-      id: 10,
-      display_name: "Oct",
-    },
-    {
-      id: 11,
-      display_name: "Nov",
-    },
-    {
-      id: 12,
-      display_name: "Dic",
-    },
-  ]
   const region = "region"
   const placeholder = "01/01/2000"
 
@@ -633,7 +503,7 @@ const InputCalendar = ({
                   />
                 </CalendarButton>
                 <CalendarHeaderTitle onClick={toggleMonthYear}>
-                  {`${monthOfYear[month].display_name} ${yearGo}`}
+                  {`${months[month].display_name} ${yearGo}`}
                 </CalendarHeaderTitle>
                 <CalendarButton
                   onClick={(e: any) => {
@@ -649,7 +519,7 @@ const InputCalendar = ({
               </CalendarHeader>
               <CalendarBody>
                 <CalendarDayWeekContainer>
-                  {daysOfWeek.map(d => (
+                  {daysOfWeekAv.map(d => (
                     <CalendarDayWeek key={d.id}>
                       {d.display_name}
                     </CalendarDayWeek>
