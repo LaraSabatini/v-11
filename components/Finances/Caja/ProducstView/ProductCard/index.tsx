@@ -19,6 +19,7 @@ const HistoryCard = ({
   final_sells,
   amount,
   type,
+  brand_id,
   price,
   payment,
   id,
@@ -49,9 +50,14 @@ const HistoryCard = ({
     <>
       {id !== 1 && id !== 2 && id !== 3 && (
         <Card>
-          {type === 1 && <img className="zapas" src="/beer.png" alt="beer" />}
+          {type === 1 && brand_id !== 12 && brand_id !== 11 && (
+            <img className="zapas" src="/beer.png" alt="beer" />
+          )}
           {type === 4 && (
             <img className="monster" src="/monster.webp" alt="beer" />
+          )}
+          {type === 5 && (
+            <img className="calendar" src="/calendar.png" alt="beer" />
           )}
           {type === 2 && (
             <ComponentContainer>
@@ -62,6 +68,12 @@ const HistoryCard = ({
             <ComponentContainerZapas>
               <Zapas />
             </ComponentContainerZapas>
+          )}
+          {type === 1 && brand_id === 12 && (
+            <img className="coca" src="/coca.png" alt="beer" />
+          )}
+          {type === 1 && brand_id === 11 && (
+            <img className="powerade" src="/powerade.png" alt="beer" />
           )}
           <Description>
             <p className="name">
