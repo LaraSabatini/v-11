@@ -74,12 +74,18 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
         10,
       )}-${dateSelected.date.slice(3, 5)}-${dateSelected.date.slice(0, 2)}`
       const currentDate = new Date(lessonDay)
+      const startDate = new Date(currentDate.getFullYear(), 0, 1)
+      const days = Math.floor(
+        (currentDate.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000),
+      )
+      const weekNumber = Math.ceil(days / 7)
 
       const editLessonBody = {
         ...purchaseSelected,
         lesson_date: dateSelected.date,
         shift: dateSelected.shift,
         day_id: currentDate.getDay(),
+        week_id: weekNumber,
       }
 
       const editLessonCall = await editLesson(editLessonBody)
