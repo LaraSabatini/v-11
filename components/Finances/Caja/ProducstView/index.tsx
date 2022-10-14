@@ -58,6 +58,12 @@ const ProductsView = () => {
                       product.id === purchase.product_id,
                   )[0].margin
                 }
+                brand_id={
+                  productList.filter(
+                    (product: ProductInterface) =>
+                      product.id === purchase.product_id,
+                  )[0].brand_id
+                }
                 cost={
                   productList.filter(
                     (product: ProductInterface) =>
