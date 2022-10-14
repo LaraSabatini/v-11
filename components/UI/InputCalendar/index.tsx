@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, RefObject } from "react"
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
 import inputTexts from "strings/inputMessages.json"
-import { daysOfWeekAv, months, abbreviatedMonth } from "const/fixedVariables"
+import { daysOfWeekAv, months, abbreviatedMonth } from "const/time"
 import CalendarMonthOfYear from "./CalendarMonthOfYear"
 import ErrorMessage from "../ErrorMessage"
 import {

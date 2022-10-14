@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react"
 import { searchByDate } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
-import { paymentUsers } from "const/fixedVariables"
+import { paymentUsers } from "const/finances"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 // COMPONENTS & STYLING
 import { MainContainer, CardContainer, Card, User } from "./styles"

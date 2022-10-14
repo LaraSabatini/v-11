@@ -3,7 +3,7 @@ import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases
 import ProductInterface from "interfaces/store/ProductInterface"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import MPUserPayment from "interfaces/finances/MPUserPayments"
-import { day, month, year } from "const/fixedVariables"
+import { day, month, year } from "const/time"
 
 export const Finances = createContext({
   cajaFilterSelected: null,

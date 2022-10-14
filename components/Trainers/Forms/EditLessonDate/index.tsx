@@ -8,7 +8,7 @@ import {
 // DATA STORAGE & TYPES
 import { Clases } from "contexts/Clases"
 import generalTexts from "strings/general.json"
-import { shifts, day, month, year } from "const/fixedVariables"
+import { shifts, day, month, year } from "const/time"
 import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING

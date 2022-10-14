@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { getLessonsByWeek } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { Clases } from "contexts/Clases"
-import { today, month, year, daysOfTheWeek, shifts } from "const/fixedVariables"
+import { today, month, year, daysOfTheWeek, shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import Pagination from "components/UI/Pagination"

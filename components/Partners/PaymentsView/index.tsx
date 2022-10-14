@@ -9,7 +9,7 @@ import {
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PaymentsHistory } from "contexts/PaymentsHistory"
 import { PartnersContext } from "contexts/Partners"
-import { timeUnits } from "const/fixedVariables"
+import { timeUnits } from "const/time"
 import DataTable from "components/UI/DataTable"
 import columns from "./const/content"
 // COMPONENTS & STYLING

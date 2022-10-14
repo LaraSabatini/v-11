@@ -18,7 +18,8 @@ import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
 import ProductInterface from "interfaces/store/ProductInterface"
-import { paymentUsers, months, day, month, year } from "const/fixedVariables"
+import { paymentUsers } from "const/finances"
+import { months, day, month, year } from "const/time"
 import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
@@ -296,7 +297,7 @@ const Receipt = () => {
         {paymentMethodSelected === 2 && (
           <Autocomplete
             required
-            label={storeTexts.purchase.user}
+            label={generalTexts.payments.digital_user}
             width={150}
             options={paymentUsers}
             ref={paymentUserRef}

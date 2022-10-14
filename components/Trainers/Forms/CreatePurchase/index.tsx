@@ -6,15 +6,9 @@ import { searchPartner } from "services/Partners/Partner.service"
 import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
 import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import {
-  yesOrNoArr,
-  shifts,
-  day,
-  month,
-  year,
-  paymentMethods,
-  paymentUsers,
-} from "const/fixedVariables"
+import { paymentMethods, paymentUsers } from "const/finances"
+import { yesOrNoArr } from "const/fixedVariables"
+import { shifts, day, month, year } from "const/time"
 import { Clases } from "contexts/Clases"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import trainerTexts from "strings/trainers.json"

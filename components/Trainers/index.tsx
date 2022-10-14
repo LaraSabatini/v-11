@@ -21,7 +21,7 @@ import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
 import { Clases } from "contexts/Clases"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-import { day, month, year, months } from "const/fixedVariables"
+import { day, month, year, months } from "const/time"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"

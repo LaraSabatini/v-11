@@ -14,14 +14,8 @@ import {
 } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
 import { Clases } from "contexts/Clases"
-import {
-  paymentMethods,
-  paymentUsers,
-  day,
-  month,
-  year,
-  months,
-} from "const/fixedVariables"
+import { paymentMethods, paymentUsers } from "const/finances"
+import { day, month, year, months } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"

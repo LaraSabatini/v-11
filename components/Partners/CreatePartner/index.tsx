@@ -16,14 +16,8 @@ import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
-import {
-  paymentMethods,
-  months,
-  today,
-  day,
-  month,
-  year,
-} from "const/fixedVariables"
+import { paymentMethods } from "const/finances"
+import { months, today, day, month, year } from "const/time"
 // COMPONENTS
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"

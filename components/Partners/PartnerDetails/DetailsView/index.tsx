@@ -14,7 +14,7 @@ import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service
 import { getPrices } from "services/Partners/Prices.service"
 import { deletePartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import { months, today, day, month, year } from "const/fixedVariables"
+import { months, today, day, month, year } from "const/time"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PartnersContext } from "contexts/Partners"
