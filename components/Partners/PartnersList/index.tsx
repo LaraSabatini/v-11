@@ -4,6 +4,7 @@ import React, { useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
+import yesOrNoArr from "const/fixedVariables"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 // COMPONENTS & STYLING
 import theme from "theme/index"
@@ -73,15 +74,18 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
                   </Name>
                   <PartnerNumber>N°: {partner.id}</PartnerNumber>
                   <Tags>
-                    {partner.is_student === "SI" && (
+                    {partner.is_student ===
+                      `${yesOrNoArr[0].display_name.toUpperCase()}` && (
                       <Student>{partnerTexts.student}</Student>
                     )}
                     {partner.free_pass !== 0 && (
                       <FreePass>{partnerTexts.free_pass}</FreePass>
                     )}
-                    {partner.free_pass === 0 && partner.is_student === "NO" && (
-                      <Day>Dia</Day>
-                    )}
+                    {partner.free_pass === 0 &&
+                      partner.is_student ===
+                        `${yesOrNoArr[1].display_name.toUpperCase()}` && (
+                        <Day>Dia</Day>
+                      )}
                   </Tags>
 
                   <IconContainer active={partnerSelected === partner.id}>

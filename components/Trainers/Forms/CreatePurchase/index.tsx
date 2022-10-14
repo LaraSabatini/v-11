@@ -7,7 +7,7 @@ import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.servic
 import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { paymentMethods, paymentUsers } from "const/finances"
-import { yesOrNoArr } from "const/fixedVariables"
+import yesOrNoArr from "const/fixedVariables"
 import { shifts, day, month, year } from "const/time"
 import { Clases } from "contexts/Clases"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
@@ -414,7 +414,7 @@ const CreatePurchaseModal = ({
                 type="text"
                 width={200}
                 backError={identificationError}
-                backErrorMessage="Hay un cliente registrado con este DNI"
+                backErrorMessage={trainerTexts.createPurchase.errorMessage}
                 onChange={e => {
                   setNewPartnerData({
                     ...newPartnerData,

@@ -55,7 +55,6 @@ const Caja = () => {
 
     setBoulderProductsPurchasedByDate(filterBoulderProducts)
 
-    // TRAE TODO TIPO DE PAGO MENOS partner_id === 258
     const getBoulderPaymentsCall = await getBoulderPurchaseByDate(
       cajaDateSelected,
     )
@@ -68,9 +67,6 @@ const Caja = () => {
     const digitalPaymentByDateCall = await searchByDate(cajaDateSelected)
 
     setDigitalPaymentsList(digitalPaymentByDateCall.data)
-
-    // console.log("productPurchasesCall", productPurchasesCall.data)
-    // console.log("getBoulderPaymentsCall", getBoulderPaymentsCall.data)
 
     // CASH EARNIGS => STORE
     const cashEarningsFromStore = productPurchasesCall.data.filter(

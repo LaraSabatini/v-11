@@ -87,7 +87,7 @@ const MakePayment = () => {
     <Form>
       <HorizontalGroup>
         <Autocomplete
-          label="Combo"
+          label={partnerTexts.combo}
           width={180}
           options={combosAutocomplete}
           ref={comboRef}
@@ -96,7 +96,7 @@ const MakePayment = () => {
           }}
         />
         <TextField
-          label="Precio x Combo"
+          label={partnerTexts.combo_price}
           type="number"
           disabledAutocompleted
           disabled
@@ -120,7 +120,7 @@ const MakePayment = () => {
         <SubContainer>
           <TextField
             width={60}
-            label="Tiempo"
+            label={partnerTexts.time}
             type="number"
             reference={paidTimeRef}
             value={paidTime}
@@ -155,7 +155,7 @@ const MakePayment = () => {
       <HorizontalGroup>
         <Autocomplete
           required
-          label="Metodo de pago"
+          label={partnerTexts.payment_method}
           width={150}
           options={paymentMethods}
           setValue={
@@ -172,7 +172,7 @@ const MakePayment = () => {
           }}
         />
         <TextField
-          label="Precio final"
+          label={partnerTexts.final_price}
           type="text"
           disabledAutocompleted
           disabled

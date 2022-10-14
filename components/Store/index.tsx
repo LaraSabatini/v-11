@@ -19,15 +19,12 @@ import ProductsView from "./Store/ProductList"
 import Receipt from "./Store/Receipt"
 import CreateProductForm from "./CreateProductForm"
 import Filters from "./Store/Filters"
-// import Purchases from "./Purchases"
 import Stock from "./Stock"
 import {
   Container,
   Content,
   Title,
   HeadContent,
-  // SectionsButtons,
-  // Section,
   CreateProduct,
   MainButton,
   ProductsAndReceiptContainer,

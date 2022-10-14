@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 // SERVICES
@@ -22,6 +21,7 @@ import generalTexts from "strings/general.json"
 import { Clases } from "contexts/Clases"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import { day, month, year, months } from "const/time"
+import yesOrNoArr from "const/fixedVariables"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
@@ -109,7 +109,9 @@ function TrainersView() {
         trainer_id: trainerSelected.id,
         trainer_name: trainerSelected.display_name,
         week_id: weekNumber,
-        paid: paid ? "SI" : "NO",
+        paid: paid
+          ? `${yesOrNoArr[0].display_name}`
+          : `${yesOrNoArr[1].display_name}`,
         day_id: currentDate.getDay(),
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
@@ -144,10 +146,10 @@ function TrainersView() {
     await clientRef.current?.focus()
 
     if (clientIsRegistered) {
-      if (clientSelected.is_student === "NO") {
+      if (clientSelected.is_student === `${yesOrNoArr[1].display_name}`) {
         const bodyEditPartner = {
           ...clientSelected,
-          is_student: "SI",
+          is_student: `${yesOrNoArr[0].display_name}`,
         }
 
         const editPartnerCall = await editPartner(bodyEditPartner)
@@ -195,7 +197,7 @@ function TrainersView() {
         id: 0,
         date: `${day}-${month}-${year}`,
         item_id: 4,
-        item_name: "Clases",
+        item_name: `${trainerTexts.lessons}`,
         amount_of_items: amountOfLessons,
         profit: finalPrice,
         payment_method_id: paymentMethodSelected.id,

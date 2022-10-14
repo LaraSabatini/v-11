@@ -15,6 +15,14 @@
     "usesDay": "Usa dia hoy",
     "paymentExpires": "Vencimiento de pago",
     "remainingDays": "Dias restantes",
+    "combo": "Combo",
+    "day": "Dia",
+    "month": "Mes",
+    "combo_price": "Precio x Combo",
+    "time": "Tiempo",
+    "payment_method": "Metodo de pago",
+    "final_price": "Precio final",
+    "wants_sub": "Desea recibir noticias",
     "create": {
         "title": "Crear socio",
         "payment": "Pago",
@@ -32,6 +40,15 @@
         },
         "error": {
             "content": "Hubo un error al editar el socio, por favor intentalo nuevamente o comunicate con el admin."
+        },
+        "title": "Editar pago"
+    },
+    "delete": {
+        "success": {
+            "content": "El socio se ha eliminado correctamente."
+        },
+        "error": {
+            "content": "Hubo un error al eliminar el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
     },
     "cannotAddDays": {

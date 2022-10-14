@@ -192,8 +192,8 @@ const Receipt = () => {
       const paymentBody = {
         id: 0,
         partner_id: 258,
-        partner_name: "Pase diario",
-        partner_last_name: "No borrar",
+        partner_name: `${storeTexts.daily_pass}`,
+        partner_last_name: `${storeTexts.do_not_delete}`,
         combo: 0,
         time_paid: checkIfProductsAreDailyPass[0].product_amount,
         time_paid_unit: 1,
@@ -201,7 +201,9 @@ const Receipt = () => {
         payment_method_id:
           checkIfProductsAreDailyPass[0].product_id === 1 ? 1 : 2,
         payment_method_name:
-          checkIfProductsAreDailyPass[0].product_id === 1 ? "Efectivo" : "MP",
+          checkIfProductsAreDailyPass[0].product_id === 1
+            ? `${generalTexts.payments.cash}`
+            : `${generalTexts.payments.digital_abv}`,
         price_paid: checkIfProductsAreDailyPass[0].final_price,
         date: `${day}-${month}-${year}`,
         payment_expire_date: "",

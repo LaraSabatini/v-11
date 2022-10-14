@@ -37,8 +37,10 @@
     "payments": {
         "cash": "Efectivo",
         "digital": "Mercado Pago",
+        "digital_abv": "MP",
         "price": "Precio",
-        "digital_user": "MP User"
+        "digital_user": "MP User",
+        "cost": "Costo"
     },
     "yes": "SI",
     "no": "NO",

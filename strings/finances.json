@@ -2,5 +2,17 @@
     "boulderEarnings": "Facturacion boulder",
     "bills": "Gastos",
     "workingHours": "Horas de trabajo",
-    "earnings": "Ingresos"
+    "earnings": "Ingresos",
+    "day_pass": "Pase Diario",
+    "month": "Mes",
+    "combo": "Combo",
+    "lessons": "Clases",
+    "day": "Dia",
+    "shoes": "Alquiler zapatillas",
+    "sold_pases": "Pases vendidos",
+    "through_store": "Por tienda",
+    "through_clients": "Por clientes",
+    "sells": "Ventas",
+    "units_lend": "Unidades alquiladas",
+    "profits": "Ganancias"
 }

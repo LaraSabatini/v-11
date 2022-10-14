@@ -26,7 +26,10 @@ export const getLessonsByWeek = async (week_id: number) => {
   return res.data
 }
 
-export const getByPartnerAndPaid = async (id: number, paid: "SI" | "NO") => {
+export const getByPartnerAndPaid = async (
+  id: number,
+  paid: "SI" | "NO" | string,
+) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -62,7 +65,7 @@ export const createLessonPurchase = async (body: {
   trainer_id: number
   trainer_name: string
   week_id: number
-  paid: "SI" | "NO"
+  paid: "SI" | "NO" | string
   day_id: number
   final_price: number
   payment_method_id: number

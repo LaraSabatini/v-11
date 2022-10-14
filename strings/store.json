@@ -4,6 +4,8 @@
     "purchases": "Historial de compras",
     "stock": "Stock",
     "mainButton": "Crear producto",
+    "daily_pass": "Pase diario",
+    "do_not_delete": "No borrar",
     "create": {
         "title": "Crear producto",
         "cost": "Costo",

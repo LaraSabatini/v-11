@@ -4,6 +4,7 @@ import { getPrices, editPrices } from "services/Partners/Prices.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import PricesInterface from "interfaces/partners/PricesInterface"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import {
@@ -120,12 +121,12 @@ const Prices = () => {
           <TextButton
             disabled={activeRow === null}
             onClick={cancelChanges}
-            content="cancelar"
+            content={generalTexts.actions.cancel}
           />
           <TextButton
             disabled={activeRow === null}
             onClick={saveChanges}
-            content="guardar"
+            content={generalTexts.actions.save}
             cta
           />
         </ButtonContainer>

@@ -35,25 +35,16 @@ const SectionButtons = () => {
           if (hasChanges) {
             setModalHasChanges(true)
           } else {
-            setSectionSelected({ section: "Precios", id: 3 })
+            setSectionSelected({
+              section: `${generalTexts.sections.prices}`,
+              id: 3,
+            })
           }
         }}
         selected={sectionSelected.id === 3}
       >
         Precios
       </Section>
-      {/* <Section
-        onClick={() => {
-          if (hasChanges) {
-            setModalHasChanges(true)
-          } else {
-            setSectionSelected({ section: "Historial de pagos", id: 4 })
-          }
-        }}
-        selected={sectionSelected.id === 4}
-      >
-        Historial de pagos
-      </Section> */}
     </SectionsButtons>
   )
 }

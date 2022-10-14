@@ -151,7 +151,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           paidTimeUnit?.id !== 1
             ? 1
             : 0,
-        is_student: "NO",
+        is_student: `${generalTexts.no.toUpperCase()}`,
       }
       // CREAR SOCIO
       const apiValidation = await createPartner(body)
@@ -284,7 +284,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           id: 0,
           date: `${day}-${month}-${year}`,
           item_id: 1,
-          item_name: "Combo",
+          item_name: `${partnerTexts.combo}`,
           amount_of_items: 1,
           profit:
             paymentMethodSelected === 1
@@ -327,7 +327,10 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           id: 0,
           date: `${day}-${month}-${year}`,
           item_id: paidTimeUnit.id === 1 ? 2 : 3,
-          item_name: paidTimeUnit.id === 1 ? "Dia" : "Mes",
+          item_name:
+            paidTimeUnit.id === 1
+              ? `${partnerTexts.day}`
+              : `${partnerTexts.month}`,
           amount_of_items: paidTime,
           profit: finalProfit,
           payment_method_id: paymentMethodSelected,
@@ -487,7 +490,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
               checked={wantsSubscription}
               idParam="subs"
             />
-            <p>Desea recibir noticias</p>
+            <p>{partnerTexts.wants_sub}</p>
           </CheckboxContainer>
         </Form>
       )}

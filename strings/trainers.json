@@ -17,6 +17,7 @@
         "paysNow": "Paga ahora?",
         "paymentMethod": "Metodo de pago",
         "total": "TOTAL:",
+        "errorMessage": "Hay un cliente registrado con este DNI",
         "warningMessage": "El cupo de la fecha y turno seleccionados esta lleno, por favor intenta con otro turno o fecha.",
         "successModal": {
             "content": "La clase se ha creado exitosamente"
@@ -27,5 +28,17 @@
     },
     "executePayment": {
         "title": "Ejecutar pago"
+    },
+    "edit": {
+        "title": "Editar fecha de clase",
+        "change_date": "Fecha a modificar:",
+        "reserved_lessons": "Clases reservadas:",
+        "new_date": "Nueva fecha",
+        "successModal": {
+            "content": "Se ha modificado la fecha de la clase."
+        },
+        "errorModal": {
+            "content": "Ha ocurrido un error al modificar la fecha de la clase."
+        }
     }
 }

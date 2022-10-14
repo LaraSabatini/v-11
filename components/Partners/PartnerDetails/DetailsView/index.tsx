@@ -20,6 +20,8 @@ import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
+import financesTexts from "strings/finances.json"
+
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
@@ -65,7 +67,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
   const [updatePaymentModal, setUpdatePaymentModal] = useState<boolean>(false)
   const [changes, setChanges] = useState<boolean>(false)
   const [variableValues, setVariableValues] = useState([
-    { name: "clases", value: 0 },
+    { name: "lessons", value: 0 },
     { name: "days", value: 0 },
   ])
 
@@ -78,16 +80,15 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: "Excelente!",
-        content: "El socio se ha eliminado correctamente",
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${partnerTexts.delete.success.content}`,
       })
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: "UPS!",
-        content:
-          "Ha ocurrido un error al eliminar el socio, por favor intentalo nuevamente o comunicate con el admin.",
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${partnerTexts.delete.error.content}`,
       })
     }
   }
@@ -104,7 +105,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         id: 0,
         date: `${day}-${month}-${year}`,
         item_id: 1,
-        item_name: "Combo",
+        item_name: `${financesTexts.combo}`,
         amount_of_items: 1,
         profit:
           paymentMethodSelected === 1
@@ -139,7 +140,10 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         id: 0,
         date: `${day}-${month}-${year}`,
         item_id: paidTimeUnit.id === 1 ? 2 : 3,
-        item_name: paidTimeUnit.id === 1 ? "Dia" : "Mes",
+        item_name:
+          paidTimeUnit.id === 1
+            ? `${financesTexts.day}`
+            : `${financesTexts.month}`,
         amount_of_items: paidTime,
         profit: finalProfit,
         payment_method_id: paymentMethodSelected,
@@ -381,7 +385,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     if (data.data.length > 0) {
       setInitialPayment(data.data[data.data.length - 1]) // ACA SETEAR AL ULTIMO
       setVariableValues([
-        { name: "clases", value: data.data[data.data.length - 1].clases_paid },
+        { name: "lessons", value: data.data[data.data.length - 1].clases_paid },
         {
           name: "days",
           value:
@@ -408,7 +412,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         days_and_hours: "",
       })
       setVariableValues([
-        { name: "clases", value: 0 },
+        { name: "lessons", value: 0 },
         {
           name: "days",
           value: 0,
@@ -501,22 +505,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             </PartnerData>
           )}
 
-        {/* {partnerInfo?.is_student === `${generalTexts.yes}` ? (
-          <PartnerData>
-            <p>{texts.trainer}</p>
-            {initialPayment?.days_and_hours.includes("1") ||
-            initialPayment?.days_and_hours.includes("2") ||
-            initialPayment?.days_and_hours.includes("3") ||
-            initialPayment?.days_and_hours.includes("4") ? (
-              <p>Guillermo</p>
-            ) : (
-              <p>Joaco</p>
-            )}
-          </PartnerData>
-        ) : (
-          <></>
-        )} */}
-
         <PartnerData>
           <p>{partnerTexts.remainingDays}</p>
           <DaysLeft>
@@ -527,7 +515,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
                 setChangedDays(true)
                 setChanges(true)
                 setVariableValues([
-                  { name: "clases", value: variableValues[0].value },
+                  { name: "lessons", value: variableValues[0].value },
                   { name: "days", value: variableValues[1].value - 1 },
                 ])
               }}
@@ -575,7 +563,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
               onClick={() => {
                 setChanges(false)
                 setVariableValues([
-                  { name: "clases", value: initialPayment.clases_paid },
+                  { name: "lessons", value: initialPayment.clases_paid },
                   { name: "days", value: initialPayment.time_paid },
                 ])
               }}
