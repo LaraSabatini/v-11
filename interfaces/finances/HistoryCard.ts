@@ -3,6 +3,7 @@ export default interface HistoryCardInterface {
   margin: number
   cost: number
   final_sells: number
+  brand_id: number
   amount: number
   type: number
   price: number
