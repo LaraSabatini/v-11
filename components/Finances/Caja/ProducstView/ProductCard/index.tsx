@@ -25,6 +25,26 @@ const HistoryCard = ({
 }: HistoryCardInterface) => {
   const finalProfit = final_sells - cost * amount
 
+  const splittedProfit = `${finalProfit}`.split(".")
+
+  let finalProfitString = ""
+
+  if (splittedProfit.length > 1) {
+    finalProfitString = `${splittedProfit[0]}.${splittedProfit[1].slice(0, 2)}`
+  } else {
+    finalProfitString = `${splittedProfit[0]}`
+  }
+
+  const splittedMargin = `${margin}`.split(".")
+
+  let marginString = ""
+
+  if (splittedMargin.length > 1) {
+    marginString = `${splittedMargin[0]}.${splittedMargin[1].slice(0, 2)}`
+  } else {
+    marginString = `${splittedMargin[0]}`
+  }
+
   return (
     <>
       {id !== 1 && id !== 2 && id !== 3 && (
@@ -50,7 +70,7 @@ const HistoryCard = ({
             <p className="profits">
               Ganancias:
               <span>
-                ${finalProfit} <p>(${margin})</p>
+                ${finalProfitString} <p>(${marginString})</p>
               </span>
             </p>
             <HorizontalGroup>
