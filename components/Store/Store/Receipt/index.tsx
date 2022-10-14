@@ -15,7 +15,8 @@ import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { editProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
-import texts from "strings/store.json"
+import storeTexts from "strings/store.json"
+import generalTexts from "strings/general.json"
 import ProductInterface from "interfaces/store/ProductInterface"
 import { paymentUsers, months, day, month, year } from "const/fixedVariables"
 import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
@@ -215,16 +216,16 @@ const Receipt = () => {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: `${texts.purchase.success.title}`,
-        content: `${texts.purchase.success.content}`,
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${storeTexts.purchase.success.content}`,
       })
       cleanInitialStates()
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: `${texts.purchase.error.title}`,
-        content: `${texts.purchase.error.content}`,
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${storeTexts.purchase.error.content}`,
       })
       cleanInitialStates()
     }
@@ -244,7 +245,7 @@ const Receipt = () => {
 
   return (
     <ReceiptContainer>
-      <Title>{texts.purchase.receipt}</Title>
+      <Title>{storeTexts.purchase.receipt}</Title>
       <Products>
         <ScrollView height={190}>
           {purchase &&
@@ -273,7 +274,7 @@ const Receipt = () => {
                 setPaymentUserSelected(null)
               }}
             />
-            <span>{texts.cash}</span>
+            <span>{generalTexts.payments.cash}</span>
           </RadioContainer>
           <RadioContainer>
             <RadioButton
@@ -289,13 +290,13 @@ const Receipt = () => {
                 setPaymentMethodSelected(2)
               }}
             />
-            <span>{texts.mp}</span>
+            <span>{generalTexts.payments.digital}</span>
           </RadioContainer>
         </RadioButtonsContainer>
         {paymentMethodSelected === 2 && (
           <Autocomplete
             required
-            label={texts.purchase.user}
+            label={storeTexts.purchase.user}
             width={150}
             options={paymentUsers}
             ref={paymentUserRef}
@@ -306,16 +307,19 @@ const Receipt = () => {
         )}
       </PaymentMethods>
       <Total>
-        {texts.purchase.total}
+        {storeTexts.purchase.total}
         <span>$ {finalPrice}</span>
       </Total>
       <ButtonContainer>
-        <TextButton onClick={cleanPurchase} content={texts.purchase.cancel} />
+        <TextButton
+          onClick={cleanPurchase}
+          content={generalTexts.actions.cancel}
+        />
         <TextButton
           onClick={executePurchase}
           cta
           disabled={paymentMethodSelected === 2 && paymentUserSelected === null}
-          content={texts.purchase.execute}
+          content={storeTexts.purchase.execute}
         />
       </ButtonContainer>
     </ReceiptContainer>

@@ -14,7 +14,8 @@
         "discardChanges": "Descartar cambios",
         "create": "Crear",
         "next": "Siguiente",
-        "removeRecord": "Eliminar"
+        "removeRecord": "Eliminar",
+        "pay": "Pagar"
     },
     "labels": {
         "email": "Email",
@@ -27,11 +28,23 @@
     },
     "modalTitles": {
         "success": "Excelente!",
-        "error": "UPS!"
+        "error": "UPS!",
+        "discard": "¿Deseas descartar los cambios realizados?"
+    },
+    "modalContent": {
+        "discard": "Si descartas los cambios no se guardara tu progreso"
     },
     "payments": {
-        "cash": "Efectivo"
+        "cash": "Efectivo",
+        "digital": "Mercado Pago",
+        "price": "Precio",
+        "digital_user": "MP User"
     },
     "yes": "SI",
-    "no": "NO"
+    "no": "NO",
+    "all": "Todos",
+    "pagination": {
+        "next": "Siguiente pagina",
+        "prev": "Pagina previa"
+    }
 }

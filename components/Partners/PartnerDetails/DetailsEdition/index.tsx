@@ -139,8 +139,8 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           message={{
             status: `alert`,
             icon: `IconAlert`,
-            title: `${partnerTexts.modal_changes.title}`,
-            content: `${partnerTexts.modal_changes.content}`,
+            title: `${generalTexts.modalTitles.discard}`,
+            content: `${generalTexts.modalContent.discard}`,
           }}
           closeModal={cancelDiscard}
           closeRefresh={cancelDiscard}

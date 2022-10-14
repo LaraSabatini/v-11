@@ -7,6 +7,7 @@ import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
 import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
@@ -170,7 +171,7 @@ const EditPayment = ({
               }}
             />
             <Autocomplete
-              label="Unidad"
+              label={partnerTexts.create.unit}
               required={paidTime !== 0 && paidTime !== ""}
               width={115}
               options={timeUnits}
@@ -267,7 +268,7 @@ const EditPayment = ({
           <HorizontalGroup>
             <Autocomplete
               required
-              label="MP User"
+              label={generalTexts.payments.digital_user}
               width={150}
               options={paymentUsers}
               ref={paymentUserRef}
@@ -290,7 +291,7 @@ const EditPayment = ({
                 onChange={() => setUsesDay(!usesDay)}
                 idParam="use-day"
               />
-              <p>Usa dia hoy</p>
+              <p>{partnerTexts.usesDay}</p>
             </CheckboxContainer>
           )}
         </div>

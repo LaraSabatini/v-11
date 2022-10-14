@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { PartnersContext } from "contexts/Partners"
 import { StoreContext } from "contexts/Store"
 import generalTexts from "strings/general.json"
+import trainerTexts from "strings/trainers.json"
 import Tooltip from "components/UI/Tooltip"
 import LogOut from "./LogOut"
 import {
@@ -118,7 +119,7 @@ function Header() {
                     }
                   }}
                 >
-                  Calendario de clases
+                  {trainerTexts.calendar}
                 </SubButton>
               </ClientsMenu>
             )}

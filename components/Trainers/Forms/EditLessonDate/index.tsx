@@ -7,11 +7,10 @@ import {
 } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { Clases } from "contexts/Clases"
-import texts from "strings/trainers.json"
+import generalTexts from "strings/general.json"
 import { shifts, day, month, year } from "const/fixedVariables"
 import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import ModalForm from "components/UI/ModalForm"
@@ -172,8 +171,8 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
   return (
     <ModalForm
       title="Editar fecha de clase"
-      cancelButtonContent={texts.cancel}
-      submitButtonContent={texts.executePayment.pay}
+      cancelButtonContent={generalTexts.actions.cancel}
+      submitButtonContent={generalTexts.actions.pay}
       submit={handleEdit}
       cancelFunction={cancelEdit}
     >

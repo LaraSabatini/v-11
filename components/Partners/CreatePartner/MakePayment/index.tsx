@@ -7,6 +7,7 @@ import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
 import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
@@ -133,7 +134,7 @@ const MakePayment = () => {
             }}
           />
           <Autocomplete
-            label="Unidad"
+            label={partnerTexts.create.unit}
             required={paidTime !== 0 && paidTime !== ""}
             width={115}
             options={timeUnits}
@@ -182,7 +183,7 @@ const MakePayment = () => {
         <HorizontalGroup>
           <Autocomplete
             required
-            label="MP User"
+            label={generalTexts.payments.digital_user}
             width={150}
             options={paymentUsers}
             ref={paymentUserRef}
@@ -195,7 +196,7 @@ const MakePayment = () => {
       <div style={{ display: "flex", gap: "10px" }}>
         <CheckboxContainer>
           <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
-          <p>{partnerTexts.create.free_pass}</p>
+          <p>{partnerTexts.free_pass}</p>
         </CheckboxContainer>
         {paidTimeUnit.id === 1 && (
           <CheckboxContainer>

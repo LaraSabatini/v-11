@@ -6,7 +6,7 @@ import getCategories from "services/Store/getCategories.service"
 import getBrands from "services/Store/getBrands.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
-import texts from "strings/store.json"
+import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import theme from "theme/index"
@@ -103,13 +103,13 @@ function StoreView() {
       <Content>
         <HeadContent>
           <Title>
-            {texts.title}{" "}
+            {generalTexts.sections.store}{" "}
             <span>
               {" "}
               /{" "}
               {router.query.store === "true"
                 ? `${generalTexts.sections.store}`
-                : "Stock"}
+                : `${storeTexts.stock}`}
             </span>
           </Title>
           <Filters />
@@ -140,7 +140,7 @@ function StoreView() {
         {router.query.stock === "true" && <Stock />}
         {(router.query.store === "true" || router.query.stock === "true") && (
           <MainButton>
-            <Tooptip title={texts.mainButton}>
+            <Tooptip title={storeTexts.mainButton}>
               <CreateProduct
                 onClick={() => {
                   if (stockChanges) {

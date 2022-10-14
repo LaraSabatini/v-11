@@ -17,7 +17,8 @@ import {
   editPartner,
 } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import texts from "strings/trainers.json"
+import trainerTexts from "strings/trainers.json"
+import generalTexts from "strings/general.json"
 import { Clases } from "contexts/Clases"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import { day, month, year, months } from "const/fixedVariables"
@@ -265,16 +266,16 @@ function TrainersView() {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: `${texts.createPruchase.successModal.title}`,
-        content: `${texts.createPruchase.successModal.content}`,
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${trainerTexts.createPurchase.successModal.content}`,
       })
       setCreateLessonPurchaseView(false)
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: `${texts.createPruchase.errorModal.title}`,
-        content: `${texts.createPruchase.errorModal.content}`,
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${trainerTexts.createPurchase.errorModal.content}`,
       })
       setCreateLessonPurchaseView(false)
     }
@@ -308,13 +309,13 @@ function TrainersView() {
       <Container>
         <Title>
           <div>
-            {texts.trainers}
+            {generalTexts.sections.trainers}
             <span>
               {" "}
               /{" "}
               {router.query.students === "true"
-                ? `${texts.students}`
-                : `${texts.calendar}`}
+                ? `${trainerTexts.students}`
+                : `${trainerTexts.calendar}`}
             </span>
           </div>
         </Title>

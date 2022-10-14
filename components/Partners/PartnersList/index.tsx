@@ -3,6 +3,7 @@ import React, { useContext } from "react"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 // COMPONENTS & STYLING
 import theme from "theme/index"
@@ -105,7 +106,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
             }
           }}
         >
-          <Tooltip title={partnerTexts.prev}>
+          <Tooltip title={generalTexts.pagination.prev}>
             <Icon icon="IconArrowLeft" />
           </Tooltip>
         </Navigate>
@@ -120,7 +121,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
             }
           }}
         >
-          <Tooltip title={partnerTexts.next} placement="top-start">
+          <Tooltip title={generalTexts.pagination.next} placement="top-start">
             <Icon icon="IconArrowRight" />
           </Tooltip>
         </Navigate>

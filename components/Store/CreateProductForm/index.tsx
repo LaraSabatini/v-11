@@ -3,7 +3,8 @@ import React, { useContext, useState, useEffect } from "react"
 import { createProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
-import texts from "strings/store.json"
+import storeTexts from "strings/store.json"
+import generalTexts from "strings/general.json"
 import ProductInterface from "interfaces/store/ProductInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 import OptionsInterface from "interfaces/store/OptionsInterface"
@@ -94,16 +95,16 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",
-          title: `${texts.create.success.title}`,
-          content: `${texts.create.success.content}`,
+          title: `${generalTexts.modalTitles.success}`,
+          content: `${storeTexts.create.success.content}`,
         })
         cancelCreate()
       } else {
         setModalError({
           status: "alert",
           icon: "IconExclamation",
-          title: `${texts.create.error.title}`,
-          content: `${texts.create.error.content}`,
+          title: `${generalTexts.modalTitles.error}`,
+          content: `${storeTexts.create.error.content}`,
         })
       }
     }
@@ -132,9 +133,9 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
 
   return (
     <ModalForm
-      title={texts.create.title}
-      cancelButtonContent={texts.create.cancel}
-      submitButtonContent={texts.create.submit}
+      title={storeTexts.create.title}
+      cancelButtonContent={generalTexts.actions.cancel}
+      submitButtonContent={generalTexts.actions.create}
       submit={handleCreate}
       cancelFunction={cancelCreate}
     >
@@ -142,7 +143,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         <HorizontalGroup>
           <TextField
             required
-            label={texts.create.name}
+            label={generalTexts.labels.name}
             width={180}
             type="text"
             reference={nameRef}
@@ -152,7 +153,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           />
           <Autocomplete
             required
-            label={texts.brand}
+            label={storeTexts.brand}
             width={180}
             options={autoCompleteBrandsValues}
             ref={brandsRef}
@@ -166,7 +167,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         <HorizontalGroup>
           <TextField
             required
-            label={texts.create.cost}
+            label={storeTexts.create.cost}
             width={118}
             type="text"
             reference={costRef}
@@ -181,7 +182,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           <TextField
             width={115}
             required
-            label={texts.create.price}
+            label={generalTexts.payments.price}
             type="number"
             reference={priceRef}
             onChange={e =>
@@ -194,7 +195,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           <TextField
             disabled
             disabledAutocompleted
-            label={texts.create.margin}
+            label={storeTexts.create.margin}
             type="text"
             width={118}
             reference={marginRef}
@@ -207,7 +208,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         <HorizontalGroup>
           <Autocomplete
             required
-            label={texts.create.category}
+            label={storeTexts.create.category}
             width={200}
             options={autoCompleteCategoriesValues}
             ref={categoriesRef}
@@ -217,7 +218,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
           />
           <TextField
             required
-            label={texts.stock}
+            label={storeTexts.stock}
             type="number"
             width={160}
             reference={stockRef}
@@ -231,7 +232,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
         </HorizontalGroup>
         <HorizontalGroup>
           <TextField
-            label={texts.create.seller}
+            label={storeTexts.create.seller}
             type="text"
             width={180}
             onChange={e =>
@@ -242,7 +243,7 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
             }
           />
           <TextField
-            label={texts.create.sellerContact}
+            label={storeTexts.create.sellerContact}
             type="text"
             width={180}
             onChange={e =>

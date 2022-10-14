@@ -8,31 +8,21 @@
     "member_since": "Miembro desde:",
     "payment_is_active": "El pago esta activo:",
     "created_by": "Creado por:",
-    "trainer": "Profesor:",
     "not_trainer": "No tiene",
-    "next": "Siguiente pagina",
-    "prev": "Pagina previa",
     "no_more": "No hay mas socios en la lista",
     "partnerAlreadyExists": "El socio ya existe",
     "updatePayment": "Actualizar pago",
     "usesDay": "Usa dia hoy",
     "paymentExpires": "Vencimiento de pago",
     "remainingDays": "Dias restantes",
-    "modal_changes": {
-        "title": "¿Deseas descartar los cambios realizados?",
-        "content": "Si descartas los cambios no se guardara tu progreso"
-    },
     "create": {
         "title": "Crear socio",
         "payment": "Pago",
-        "free_pass": "Pase libre",
         "unit": "Unidad",
         "success": {
-            "title": "Excelente!",
             "content": "El socio ha sido creado exitosamente."
         },
         "error": {
-            "title": "UPS!",
             "content": "Hubo un error al crear el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
     }, 

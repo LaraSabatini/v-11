@@ -1,49 +1,31 @@
 {
     "students": "Alumnos",
     "calendar": "Calendario de clases",
-    "trainers": "Profesores",
-    "all": "Todos",
     "lessons": "clases",
     "days": "Dias:",
-    "cancel": "Cancelar",
-    "save": "Guardar",
     "lessonsLeft": "Clases restantes:",
-    "createPruchase": {
+    "createPurchase": {
         "title": "Comprar Clase",
-        "createButton": "Crear",
         "registeredLabel": "La persona esta ingresada al sistema?",
         "search": "Busqueda",
         "searchDescription": "Los parametros de busqueda son: Nombre, Apellido, DNI",
         "results": "Clientes encontrados:",
-        "register": {
-            "name": "Nombre",
-            "lastName": "Apellido",
-            "identification": "N° de documento",
-            "birthDate": "Fecha de nacimiento",
-            "email": "Email",
-            "phone": "N° de telefono"
-        },
         "amountOfLessons": "Cantidad de clases",
-        "trainer": "Profesor",
         "lessonsDate": "Fecha de clase",
         "shift": "Turno",
         "datesSelected": "Fechas seleccionadas",
         "paysNow": "Paga ahora?",
         "paymentMethod": "Metodo de pago",
-        "digitalUser": "MP User",
         "total": "TOTAL:",
         "warningMessage": "El cupo de la fecha y turno seleccionados esta lleno, por favor intenta con otro turno o fecha.",
         "successModal": {
-            "title": "Excelente!",
             "content": "La clase se ha creado exitosamente"
         },
         "errorModal": {
-            "title": "UPS!",
             "content": "Ha ocurrido un error al almacenar la clase, por favor intenta nuevamente o comunicate con el admin."
         }
     },
     "executePayment": {
-        "title": "Ejecutar pago",
-        "pay": "Pagar"
+        "title": "Ejecutar pago"
     }
 }
