@@ -7,6 +7,7 @@ import { searchByDate } from "services/Finances/DigitalPayments.service"
 import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
+import generalTexts from "strings/general.json"
 // import PaymentInterface from "interfaces/partners/PaymentInterface"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 // COMPONENTS & STYLING
@@ -117,10 +118,12 @@ const Caja = () => {
       {cajaFilterSelected.id === 4 && (
         <TotalEarnings>
           <p>
-            <span>EFECTIVO:</span> <b>$ {totalEarnings.cash}</b>
+            <span>{generalTexts.payments.cash}.toUpperCase():</span>{" "}
+            <b>$ {totalEarnings.cash}</b>
           </p>
           <p>
-            <span>MERCADO PAGO:</span> <b>$ {totalEarnings.mp}</b>
+            <span>{generalTexts.payments.digital}.toUpperCase():</span>{" "}
+            <b>$ {totalEarnings.mp}</b>
           </p>
         </TotalEarnings>
       )}

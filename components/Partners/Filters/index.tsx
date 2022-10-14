@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
-import { clientFilters } from "const/fixedVariables"
+import clientFilters from "const/partners"
 // COMPONENTS & STYLING
 import { FiltersContainer, Filter } from "../styles"
 
