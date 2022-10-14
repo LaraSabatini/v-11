@@ -5,6 +5,8 @@ const Container = styled.div`
   width: 90%;
   margin: 0 auto;
   padding-top: 30px;
+  position: relative;
+  height: 83vh;
 `
 
 const Title = styled.h4`
@@ -24,87 +26,41 @@ const Title = styled.h4`
   }
 `
 
-const SectionsButtons = styled.div`
+const ButtonContainer = styled.div`
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-`
-
-const Section = styled.button<{ selected: boolean }>`
-  font-family: ${theme.fonts.primary};
-  border: 1px solid ${theme.colors.grey_lighter};
-  background: none;
-  padding: 10px;
-  border-radius: 5px;
-  cursor: pointer;
-
-  ${props =>
-    props.selected &&
-    css`
-      font-weight: ${theme.fontWeights.semiBlack};
-      border: 1px solid ${theme.colors.black};
-    `};
-`
-
-const CardsContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
   gap: 20px;
-  margin-top: 20px;
-  margin-left: 10px;
-  padding-bottom: 10px;
-`
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 
-const ScheduleHelper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 10px;
-  font-family: ${theme.fonts.primary};
-
-  div {
+  button {
     display: flex;
-    gap: 15px;
-    border: 2px solid ${theme.colors.primary};
-    padding: 10px;
-    border-radius: 10px;
-
-    p {
-      margin: 0;
-    }
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   }
 `
 
-const FiltersContainer = styled.div`
-  display: flex;
-  gap: 10px;
+const PurchaseButton = styled.button`
+  background-color: ${theme.colors.primary};
+  cursor: pointer;
 `
 
-const FilterButton = styled.button<{ selected }>`
-  background: none;
-  border: none;
-  outline: none;
-  padding: 5px;
-  font-family: ${theme.fonts.primary};
-  font-weight: ${theme.fontWeights.light};
+const EditButton = styled.button<{ disabled: boolean }>`
+  background-color: ${theme.colors.secondary};
   cursor: pointer;
 
   ${props =>
-    props.selected &&
+    props.disabled &&
     css`
-      background-color: ${theme.colors.primary_light};
-      border-radius: 5px;
-      color: white;
+      opacity: 0.7;
+      cursor: not-allowed;
     `};
 `
 
-export {
-  Container,
-  Title,
-  SectionsButtons,
-  Section,
-  CardsContainer,
-  ScheduleHelper,
-  FiltersContainer,
-  FilterButton,
-}
+export { Container, Title, PurchaseButton, ButtonContainer, EditButton }

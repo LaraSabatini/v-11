@@ -48,7 +48,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     comboSelected,
     finalPrice,
     paidTimeUnit,
-    scheduleSelected,
     paidTimeUnitRef,
     paymentRef,
     setModalErrorAddDays,
@@ -70,7 +69,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
   ])
 
   const [changedDays, setChangedDays] = useState<boolean>(false)
-  const [changedClases, setChangedClases] = useState<boolean>(false)
 
   const deletePartnerFunction = async () => {
     const deletion = await deletePartner(partnerInfo.id)
@@ -113,6 +111,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             : combos[0].price_mp,
         payment_method_id: paymentMethodSelected,
       }
+
       const createBoulderPurchaseCall = await createBoulderPurchase(
         boulderPurchaseBody,
       )
@@ -144,42 +143,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         profit: finalProfit,
         payment_method_id: paymentMethodSelected,
       }
-      const createBoulderPurchaseCall = await createBoulderPurchase(
-        boulderPurchaseBody,
-      )
-      success =
-        createBoulderPurchaseCall.message ===
-        "bouderPayment created successfully"
-    }
-    if (newValues.clases_paid !== 0) {
-      // crear boulder payment para clases
-      let finalProfit = 0
-      if (newValues.clases_paid === 4) {
-        finalProfit =
-          paymentMethodSelected === 1
-            ? prices[4].price_cash
-            : prices[4].price_mp
-      } else if (newValues.clases_paid === 8) {
-        finalProfit =
-          paymentMethodSelected === 1
-            ? prices[5].price_cash
-            : prices[5].price_mp
-      } else {
-        finalProfit =
-          paymentMethodSelected === 1
-            ? newValues.clases_paid * prices[3].price_cash
-            : newValues.clases_paid * prices[3].price_mp
-      }
 
-      const boulderPurchaseBody = {
-        id: 0,
-        date: `${day}-${month}-${year}`,
-        item_id: 4,
-        item_name: "Clases",
-        amount_of_items: newValues.clases_paid,
-        profit: finalProfit,
-        payment_method_id: paymentMethodSelected,
-      }
       const createBoulderPurchaseCall = await createBoulderPurchase(
         boulderPurchaseBody,
       )
@@ -217,35 +181,12 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       setModalErrorAddDays({
         status: "alert",
         icon: "IconExclamation",
-        title: "No se puede realizar esta accion",
-        content:
-          "Esta accion no se puede realizar porque el socio cuenta con un abono activo",
+        title: `${texts.cannotAddDays.title}`,
+        content: `${texts.cannotAddDays.content}`,
       })
       cleanStates()
     }
     if (canAddDays) {
-      let daysAndHours: any
-      // si no hay y seleccionaron
-      if (
-        (initialPayment.days_and_hours === "" && scheduleSelected.length > 0) ||
-        (initialPayment.days_and_hours !== "" && scheduleSelected.length > 0)
-      ) {
-        daysAndHours = scheduleSelected
-      } else if (
-        // si hay y no seleccionaron
-        initialPayment.days_and_hours !== "" &&
-        scheduleSelected.length === 0
-      ) {
-        daysAndHours = initialPayment.days_and_hours
-      } else if (
-        // si no hay ninguno
-        initialPayment.days_and_hours === "" &&
-        scheduleSelected.length === 0
-      ) {
-        // evaluar si son iguales
-        daysAndHours = ""
-      }
-
       let finalTime = 0
       if (paidTime !== null && paidTime !== 0) {
         if (usesDay) {
@@ -270,7 +211,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           (comboSelected !== null && comboSelected !== undefined)
             ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
             : "",
-        days_and_hours: daysAndHours,
+        days_and_hours: "",
         date: `${day}-${month}-${year}`,
       }
 
@@ -307,8 +248,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           (comboSelected !== null && comboSelected !== undefined)
             ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
             : "",
-        days_and_hours:
-          scheduleSelected.length > 0 ? `${scheduleSelected}` : "",
+        days_and_hours: "",
         date: `${day}-${month}-${year}`,
       }
 
@@ -350,6 +290,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           month_id: searchIfExists.data[0].month_id,
           total_profit: searchIfExists.data[0].total_profit + finalPrice,
         }
+
         const editDigitalPayment = await updateDigitalPayment(
           digitalPaymentBody,
         )
@@ -371,6 +312,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           month_id: parseInt(`${month}`, 10),
           total_profit: finalPrice,
         }
+
         const createDigital = await createDigitalPayment(digitalPaymentBody)
 
         if (createDigital.message === "payment created successfully") {
@@ -385,19 +327,16 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: "Excelente!",
-        content: "El pago ha sido actualizado correctamente",
+        title: `${texts.updatePaymentSuccess.title}`,
+        content: `${texts.updatePaymentSuccess.content}`,
       })
-      // cleanStates()
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: "UPS!",
-        content:
-          "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin.",
+        title: `${texts.updatePaymentError.title}`,
+        content: `${texts.updatePaymentError.content}`,
       })
-      // cleanStates()
     }
   }
 
@@ -410,6 +349,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             ...initialPayment,
             time_paid: variableValues[1].value,
           }
+
           const edit = await editPartnerPayment(body)
           if (edit.message === "payment updated successfully") {
             success = true
@@ -427,31 +367,9 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         }
       }
     }
-    if (changedClases) {
-      if (variableValues[0].value > 0) {
-        const body = {
-          ...initialPayment,
-          clases_paid: variableValues[0].value,
-        }
-        const edit = await editPartnerPayment(body)
-        if (edit.message === "payment updated successfully") {
-          success = true
-        }
-      } else {
-        const body = {
-          ...initialPayment,
-          clases_paid: 0,
-        }
-        const edit = await editPartnerPayment(body)
-        if (edit.message === "payment updated successfully") {
-          success = true
-        }
-      }
-    }
 
     if (success) {
       setChangedDays(false)
-      setChangedClases(false)
       setChanges(false)
     }
   }
@@ -469,6 +387,30 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             data.data[data.data.length - 1].time_paid_unit === 1
               ? data.data[data.data.length - 1].time_paid
               : 0,
+        },
+      ])
+    } else {
+      setInitialPayment({
+        id: 0,
+        partner_id: partnerInfo.id,
+        partner_name: partnerInfo.name,
+        partner_last_name: partnerInfo.last_name,
+        combo: 0,
+        time_paid: 0,
+        time_paid_unit: 0,
+        clases_paid: 0,
+        payment_method_id: 0,
+        payment_method_name: "Efectivo",
+        price_paid: 0,
+        date: "",
+        payment_expire_date: "",
+        days_and_hours: "",
+      })
+      setVariableValues([
+        { name: "clases", value: 0 },
+        {
+          name: "days",
+          value: 0,
         },
       ])
     }
@@ -501,14 +443,13 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           message={{
             status: "alert",
             icon: "IconExclamation",
-            title: "Estas seguro de que deseas eliminar al cliente?",
-            content:
-              "Si lo eliminas se borraran todos los registros de la base de datos",
+            title: `${texts.deleteWarning.title}`,
+            content: `${texts.deleteWarning.content}`,
           }}
           closeModal={() => setSafeModal(false)}
           closeRefresh={() => setSafeModal(false)}
-          mainButtonContent="Borrar"
-          secondButtonContent="Cancelar"
+          mainButtonContent={texts.delete}
+          secondButtonContent={texts.cancel}
           mainAction={deletePartnerFunction}
           isNotice
         />
@@ -595,30 +536,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             <p className="number">{variableValues[1].value}</p>
           </DaysLeft>
         </PartnerData>
-
-        <PartnerData>
-          <p>Clases restantes</p>
-          <DaysLeft>
-            <button
-              className="remove"
-              type="button"
-              onClick={() => {
-                setChangedClases(true)
-                setChanges(true)
-                setVariableValues([
-                  { name: "clases", value: variableValues[0].value - 1 },
-                  {
-                    name: "days",
-                    value: variableValues[1].value,
-                  },
-                ])
-              }}
-            >
-              <Icon icon="IconLess" />
-            </button>
-            <p>{variableValues[0].value}</p>
-          </DaysLeft>
-        </PartnerData>
       </div>
 
       <ButtonContainer>
@@ -627,7 +544,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         </RemoveButton>
         {changes === false && (
           <TextButton
-            content="Actualizar pago"
+            content={texts.updatePayment}
             cta
             onClick={() => {
               setNewValues({
@@ -653,7 +570,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         {changes && (
           <>
             <TextButton
-              content="Cancelar"
+              content={texts.cancel}
               onClick={() => {
                 setChanges(false)
                 setVariableValues([
@@ -662,7 +579,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
                 ])
               }}
             />
-            <TextButton cta content="confirmar" onClick={excecuteChanges} />
+            <TextButton cta content={texts.confirm} onClick={excecuteChanges} />
           </>
         )}
       </ButtonContainer>

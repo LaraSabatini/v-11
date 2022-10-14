@@ -96,6 +96,19 @@ export const searchPartner = async (search: string, page: number) => {
   return res.data
 }
 
+export const searchPartnerById = async (id: number) => {
+  const axiosHeader = {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  }
+  const res = await axios.get(
+    `https://v-11-backend.vercel.app/partners/by-id/${id}`,
+    axiosHeader,
+  )
+  return res.data
+}
+
 export const getStudents = async (page: number) => {
   const axiosHeader = {
     headers: {

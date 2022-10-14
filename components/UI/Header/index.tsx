@@ -106,21 +106,6 @@ function Header() {
             {trainersMenuOpen && (
               <ClientsMenu>
                 <SubButton
-                  type="button"
-                  selectedSection={router.query.students === "true"}
-                  onClick={() => {
-                    if (router.asPath === "/home" && hasChanges) {
-                      setModalHasChanges(true)
-                    } else if (router.asPath === "/store" && stockChanges) {
-                      setModalStockHasChanges(true)
-                    } else {
-                      router.replace("/trainers?students=true")
-                    }
-                  }}
-                >
-                  Alumnos
-                </SubButton>
-                <SubButton
                   selectedSection={router.query.calendar === "true"}
                   type="button"
                   onClick={() => {

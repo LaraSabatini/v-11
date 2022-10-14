@@ -9,7 +9,6 @@ import CombosInterface from "interfaces/partners/CombosInterface"
 // COMPONENTS & STYLING
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
-import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import Checkbox from "components/UI/Checkbox"
 // import InputCalendar from "components/UI/InputCalendar"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
@@ -20,13 +19,11 @@ const MakePayment = () => {
     paidTimeUnitRef,
     paidTimeRef,
     comboRef,
-    clasesRef,
     paymentRef,
     setPaidTime,
     setPaidTimeUnit,
     combos,
     setComboSelected,
-    setAmountOfClases,
     isChecked,
     setIsChecked,
     comboSelected,
@@ -37,8 +34,6 @@ const MakePayment = () => {
     paymentMethodSelected,
     setPaymentMethodSelected,
     setScheduleList,
-    scheduleList,
-    setScheduleSelected,
     calculatePrice,
     usesDay,
     setUsesDay,
@@ -153,67 +148,6 @@ const MakePayment = () => {
             }}
           />
         </SubContainer>
-        <TextField
-          width={100}
-          label="Clases"
-          type="number"
-          reference={clasesRef}
-          onChange={e => {
-            const number = parseInt(e.target.value, 10)
-            // eslint-disable-next-line no-restricted-globals
-            if (isNaN(number)) {
-              setAmountOfClases(0)
-            } else {
-              setAmountOfClases(number)
-            }
-          }}
-        />
-      </HorizontalGroup>
-      <HorizontalGroup>
-        {/* ACA ************************************** */}
-        {/* <CalendarContainer>
-          {amountOfClases > 0 &&
-            [...Array(amountOfClases)].map(amount => (
-              <div className="inputs">
-                <InputCalendar
-                  width={150}
-                  key={amount}
-                  reference={calendarRef}
-                  label="Fecha"
-                  required
-                />
-                <Autocomplete
-                  label="Turno"
-                  required
-                  width={110}
-                  options={[
-                    { id: 1, display_name: "AM" },
-                    { id: 2, display_name: "PM" },
-                  ]}
-                  // ref={comboRef}
-                  // onChangeProps={(e: { id: number; display_name: string }) => {
-                  //   setComboSelected(e.id)
-                  // }}
-                />
-              </div>
-            ))}
-        </CalendarContainer> */}
-        <ComboBoxSelect
-          required={
-            amountOfClases !== undefined &&
-            amountOfClases !== 0 &&
-            amountOfClases !== ""
-          }
-          onChange={e => {
-            const ids = []
-            e.map(data => ids.push(data.id))
-            setScheduleSelected(ids)
-          }}
-          options={scheduleList}
-          width={290}
-          label="Dias y Horarios"
-          optionsList="single"
-        />
       </HorizontalGroup>
       <HorizontalGroup>
         <Autocomplete

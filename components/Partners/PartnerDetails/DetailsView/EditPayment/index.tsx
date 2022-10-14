@@ -11,7 +11,7 @@ import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
-import ComboBoxSelect from "components/UI/ComboBoxSelect"
+// import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import {
   HorizontalGroup,
   SubContainer,
@@ -40,9 +40,9 @@ const EditPayment = ({
     paidTimeUnitRef,
     setPaidTimeUnit,
     setIsChecked,
-    clasesRef,
-    setAmountOfClases,
-    amountOfClases,
+    // clasesRef,
+    // setAmountOfClases,
+    // amountOfClases,
     setComboSelected,
     paymentRef,
     setPaymentMethodSelected,
@@ -51,8 +51,8 @@ const EditPayment = ({
     paymentMethodSelected,
     paidTimeUnit,
     setScheduleList,
-    setScheduleSelected,
-    scheduleList,
+    // setScheduleSelected,
+    // scheduleList,
     combos,
     setNewValues,
     newValues,
@@ -89,7 +89,7 @@ const EditPayment = ({
     paidTime,
     paymentMethodSelected,
     comboSelected,
-    amountOfClases,
+    // amountOfClases,
   ])
 
   const combosAutocomplete = []
@@ -192,7 +192,7 @@ const EditPayment = ({
               }}
             />
           </SubContainer>
-          <TextField
+          {/* <TextField
             width={100}
             label="Clases"
             type="number"
@@ -209,9 +209,9 @@ const EditPayment = ({
                 setNewValues({ ...newValues, clases_paid: number })
               }
             }}
-          />
+          /> */}
         </HorizontalGroup>
-        <HorizontalGroup>
+        {/* <HorizontalGroup>
           <ComboBoxSelect
             required={
               amountOfClases !== undefined &&
@@ -228,7 +228,7 @@ const EditPayment = ({
             label="Dias y Horarios"
             optionsList="single"
           />
-        </HorizontalGroup>
+        </HorizontalGroup> */}
         <HorizontalGroup>
           <Autocomplete
             required
