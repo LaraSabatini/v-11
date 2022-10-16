@@ -114,11 +114,11 @@ const Caja = () => {
       {cajaFilterSelected.id === 4 && (
         <TotalEarnings>
           <p>
-            <span>{generalTexts.payments.cash}.toUpperCase():</span>{" "}
+            <span>{generalTexts.payments.cash.toUpperCase()}:</span>{" "}
             <b>$ {totalEarnings.cash}</b>
           </p>
           <p>
-            <span>{generalTexts.payments.digital}.toUpperCase():</span>{" "}
+            <span>{generalTexts.payments.digital.toUpperCase()}:</span>{" "}
             <b>$ {totalEarnings.mp}</b>
           </p>
         </TotalEarnings>

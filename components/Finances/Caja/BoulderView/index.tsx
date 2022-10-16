@@ -207,7 +207,7 @@ const BoulderView = () => {
       </FinalProfit>
       <CardsContainer>
         <Card>
-          <Title>{financesTexts.day_pass}.toUpperCase()</Title>
+          <Title>{financesTexts.day_pass.toUpperCase()}</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}
@@ -234,7 +234,7 @@ const BoulderView = () => {
           </Earnings>
         </Card>
         <Card>
-          <Title>{financesTexts.month}.toUpperCase()</Title>
+          <Title>{financesTexts.month.toUpperCase()}</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}
@@ -253,7 +253,7 @@ const BoulderView = () => {
           </Earnings>
         </Card>
         <Card>
-          <Title>{financesTexts.combo}.toUpperCase()</Title>
+          <Title>{financesTexts.combo.toUpperCase()}</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}
@@ -272,7 +272,7 @@ const BoulderView = () => {
           </Earnings>
         </Card>
         <Card>
-          <Title>{financesTexts.lessons}.toUpperCase()</Title>
+          <Title>{financesTexts.lessons.toUpperCase()}</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}
@@ -291,7 +291,7 @@ const BoulderView = () => {
           </Earnings>
         </Card>
         <Card>
-          <Title className="shoes">{financesTexts.shoes}.toUpperCase()</Title>
+          <Title className="shoes">{financesTexts.shoes.toUpperCase()}</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}
