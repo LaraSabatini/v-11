@@ -198,7 +198,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             paidTimeUnit !== undefined && paidTimeUnit?.id !== null
               ? paidTimeUnit.id
               : "",
-          clases_paid: 0,
+          // clases_paid: 0,
           payment_method_id: paymentMethodSelected,
           payment_method_name: paymentMethods.filter(
             pm => pm.id === paymentMethodSelected,
@@ -210,7 +210,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             (comboSelected !== null && comboSelected !== undefined)
               ? `${finalExpireDay}-${finalExpireMonth}-${expireYear}`
               : "",
-          days_and_hours: "",
+          // days_and_hours: "",
         }
 
         const createPaymentCall = await createPartnerPayment(paymentBody)

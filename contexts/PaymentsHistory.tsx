@@ -1,5 +1,4 @@
 import { createContext, useState } from "react"
-// import BoulderPaymentInterface from "interfaces/partners/BoulderPaymentInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 
 export const PaymentsHistory = createContext({

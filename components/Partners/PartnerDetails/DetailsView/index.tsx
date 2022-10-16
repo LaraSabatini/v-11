@@ -67,7 +67,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
   const [updatePaymentModal, setUpdatePaymentModal] = useState<boolean>(false)
   const [changes, setChanges] = useState<boolean>(false)
   const [variableValues, setVariableValues] = useState([
-    { name: "lessons", value: 0 },
+    // { name: "lessons", value: 0 },
     { name: "days", value: 0 },
   ])
 
@@ -205,7 +205,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
       const body = {
         ...newValues,
-        clases_paid: initialPayment.clases_paid + newValues.clases_paid,
+        // clases_paid: initialPayment.clases_paid + newValues.clases_paid,
         time_paid:
           paidTimeUnit.id === 1
             ? finalTime + initialPayment.time_paid
@@ -216,7 +216,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           (comboSelected !== null && comboSelected !== undefined)
             ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
             : "",
-        days_and_hours: "",
+        // days_and_hours: "",
         date: `${day}-${month}-${year}`,
       }
 
@@ -253,7 +253,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           (comboSelected !== null && comboSelected !== undefined)
             ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
             : "",
-        days_and_hours: "",
+        // days_and_hours: "",
         date: `${day}-${month}-${year}`,
       }
 
@@ -385,7 +385,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     if (data.data.length > 0) {
       setInitialPayment(data.data[data.data.length - 1]) // ACA SETEAR AL ULTIMO
       setVariableValues([
-        { name: "lessons", value: data.data[data.data.length - 1].clases_paid },
+        // { name: "lessons", value: data.data[data.data.length - 1].clases_paid },
         {
           name: "days",
           value:
@@ -403,16 +403,16 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         combo: 0,
         time_paid: 0,
         time_paid_unit: 0,
-        clases_paid: 0,
+        // clases_paid: 0,
         payment_method_id: 0,
         payment_method_name: `${generalTexts.payments.cash}`,
         price_paid: 0,
         date: "",
         payment_expire_date: "",
-        days_and_hours: "",
+        // days_and_hours: "",
       })
       setVariableValues([
-        { name: "lessons", value: 0 },
+        // { name: "lessons", value: 0 },
         {
           name: "days",
           value: 0,
@@ -515,7 +515,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
                 setChangedDays(true)
                 setChanges(true)
                 setVariableValues([
-                  { name: "lessons", value: variableValues[0].value },
+                  // { name: "lessons", value: variableValues[0].value },
                   { name: "days", value: variableValues[1].value - 1 },
                 ])
               }}
@@ -550,7 +550,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
                 price_paid: 0,
                 date: "",
                 payment_expire_date: "",
-                days_and_hours: "",
+                // days_and_hours: "",
               })
               setUpdatePaymentModal(true)
             }}
@@ -563,7 +563,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
               onClick={() => {
                 setChanges(false)
                 setVariableValues([
-                  { name: "lessons", value: initialPayment.clases_paid },
+                  // { name: "lessons", value: initialPayment.clases_paid },
                   { name: "days", value: initialPayment.time_paid },
                 ])
               }}
