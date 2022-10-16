@@ -1,17 +1,7 @@
 import axios from "axios"
+import ProductInterface from "interfaces/store/ProductInterface"
 
-export const createProduct = async (body: {
-  id: number
-  name: string
-  brand_id: number
-  stock: number
-  price: number
-  margin: number
-  cost: number
-  sales_contact_name: string
-  sales_contact_information: string
-  category_id: number
-}) => {
+export const createProduct = async (body: ProductInterface) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -31,18 +21,7 @@ export const createProduct = async (body: {
   return data
 }
 
-export const editProduct = async (body: {
-  id: number
-  name: string
-  brand_id: number
-  category_id: number
-  stock: number
-  price: number
-  margin: number
-  cost: number
-  sales_contact_name: string
-  sales_contact_information: string
-}) => {
+export const editProduct = async (body: ProductInterface) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/products/${body.id}`,
     body,

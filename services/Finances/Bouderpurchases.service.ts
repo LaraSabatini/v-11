@@ -1,4 +1,5 @@
 import axios from "axios"
+import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 
 export const getBoulderPurchaseByDate = async (date: string) => {
   const axiosHeader = {
@@ -13,15 +14,9 @@ export const getBoulderPurchaseByDate = async (date: string) => {
   return res.data
 }
 
-export const createBoulderPurchase = async (body: {
-  id: number
-  date: string
-  item_id: number
-  item_name: string
-  amount_of_items: number
-  profit: number
-  payment_method_id: number
-}) => {
+export const createBoulderPurchase = async (
+  body: PartnerPaymentsHistoryInterface,
+) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",

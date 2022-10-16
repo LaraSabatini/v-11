@@ -1,4 +1,5 @@
 import axios from "axios"
+import MPUserPayment from "interfaces/finances/MPUserPayments"
 
 export const getAllDigitalPayments = async (page: number) => {
   const axiosHeader = {
@@ -65,15 +66,7 @@ export const searchByDate = async (date: string) => {
   return res.data
 }
 
-export const createDigitalPayment = async (body: {
-  id: number
-  user_id: number
-  user_name: string
-  date: string
-  month: string
-  month_id: number
-  total_profit: number
-}) => {
+export const createDigitalPayment = async (body: MPUserPayment) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -93,15 +86,7 @@ export const createDigitalPayment = async (body: {
   return data
 }
 
-export const updateDigitalPayment = async (body: {
-  id: number
-  user_id: number
-  user_name: string
-  date: string
-  month: string
-  month_id: number
-  total_profit: number
-}) => {
+export const updateDigitalPayment = async (body: MPUserPayment) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/digitalPayments/${body.id}`,
     body,
