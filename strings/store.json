@@ -1,33 +1,22 @@
 {
-    "title": "Tienda",
     "type": "Tipo",
     "brand": "Marca",
-    "sells": "Tienda",
     "purchases": "Historial de compras",
     "stock": "Stock",
     "mainButton": "Crear producto",
-    "all": "Todos",
-    "next": "Siguiente pagina",
-    "prev": "Pagina previa",
-    "cash": "Efectivo",
-    "mp": "Mercado Pago",
+    "daily_pass": "Pase diario",
+    "do_not_delete": "No borrar",
     "create": {
         "title": "Crear producto",
-        "cancel": "Cancelar",
-        "submit": "Crear",
-        "name": "Nombre",
         "cost": "Costo",
         "margin": "Ganancia",
-        "price": "Precio",
         "category": "Categoria",
         "seller": "Vendedor",
         "sellerContact": "Contacto vendedor",
         "success": {
-            "title": "Excelente!",
             "content":"El producto ha sido creado exitosamente."
         },
         "error": {
-            "title": "UPS!",
             "content": "Hubo un error al crear el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
     },
@@ -35,26 +24,15 @@
         "receipt": "Recibo",
         "total": "Total:",
         "execute": "Realizar",
-        "cancel": "Cancelar",
-        "user": "MP User",
         "disabled": "Deshabilitado",
         "success": {
-            "title": "Excelente!",
             "content":"La compra se realizo con exito."
         },
         "error": {
-            "title": "UPS!",
             "content": "Hubo un error al realizar la compra, por favor intenta nuevamente o contactate con el admin."
         }
     },
     "stockSection": {
-        "errorMessage": "*Completa todos los campos requeridos",
-        "changesModal": {
-            "title": "¿Deseas descartar los cambios realizados?",
-            "content": "Si descartas los cambios no se guardara tu progreso" 
-        },
-        "cancel": "Cancelar",
-        "discard": "Descartar",
-        "save": "Guardar"
+        "errorMessage": "*Completa todos los campos requeridos"
     }
 }

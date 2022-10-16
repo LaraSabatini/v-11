@@ -1,4 +1,5 @@
 import axios from "axios"
+import WorkingHoursInterface from "interfaces/finances/WorkingHours"
 
 export const getAllWorkingHours = async (page: number) => {
   const axiosHeader = {
@@ -26,15 +27,7 @@ export const getByWeek = async (week_id: number, page: number) => {
   return res.data
 }
 
-export const createWorkingHours = async (body: {
-  id: number
-  date: string
-  user_id: number
-  user_name: string
-  working_hours_range: string
-  amount_of_hours_worked: number
-  week_id: number
-}) => {
+export const createWorkingHours = async (body: WorkingHoursInterface) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -54,15 +47,7 @@ export const createWorkingHours = async (body: {
   return data
 }
 
-export const updateWorkingHours = async (body: {
-  id: number
-  date: string
-  user_id: number
-  user_name: string
-  working_hours_range: string
-  amount_of_hours_worked: number
-  week_id: number
-}) => {
+export const updateWorkingHours = async (body: WorkingHoursInterface) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/workingHours/${body.id}`,
     body,

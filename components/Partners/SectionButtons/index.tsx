@@ -1,5 +1,6 @@
 import React, { useContext } from "react"
 // DATA STORAGE & TYPES
+import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
 // COMPONENTS & STYLING
 import { SectionsButtons, Section } from "./styles"
@@ -18,12 +19,15 @@ const SectionButtons = () => {
           if (hasChanges) {
             setModalHasChanges(true)
           } else {
-            setSectionSelected({ section: "Clientes", id: 1 })
+            setSectionSelected({
+              section: `${generalTexts.sections.home}`,
+              id: 1,
+            })
           }
         }}
         selected={sectionSelected.id === 1}
       >
-        Clientes
+        {generalTexts.sections.home}
       </Section>
 
       <Section
@@ -31,25 +35,16 @@ const SectionButtons = () => {
           if (hasChanges) {
             setModalHasChanges(true)
           } else {
-            setSectionSelected({ section: "Precios", id: 3 })
+            setSectionSelected({
+              section: `${generalTexts.sections.prices}`,
+              id: 3,
+            })
           }
         }}
         selected={sectionSelected.id === 3}
       >
         Precios
       </Section>
-      {/* <Section
-        onClick={() => {
-          if (hasChanges) {
-            setModalHasChanges(true)
-          } else {
-            setSectionSelected({ section: "Historial de pagos", id: 4 })
-          }
-        }}
-        selected={sectionSelected.id === 4}
-      >
-        Historial de pagos
-      </Section> */}
     </SectionsButtons>
   )
 }

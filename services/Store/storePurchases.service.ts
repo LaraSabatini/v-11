@@ -1,4 +1,5 @@
 import axios from "axios"
+import StorePurchaseInterface from "interfaces/store/StorePurchase"
 
 export const getProductPurchases = async (page: number) => {
   const axiosHeader = {
@@ -43,15 +44,7 @@ export const getStorePurchasesByDate = async (date: string) => {
   return res.data
 }
 
-export const createStorePurchase = async (body: {
-  id: number
-  product_id: number
-  product_name: string
-  amount_of_items: number
-  profit: number
-  payment_method_id: number
-  date: string
-}) => {
+export const createStorePurchase = async (body: StorePurchaseInterface) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -71,15 +64,7 @@ export const createStorePurchase = async (body: {
   return data
 }
 
-export const editStorePurchase = async (body: {
-  id: number
-  product_id: number
-  product_name: string
-  amount_of_items: number
-  profit: number
-  payment_method_id: number
-  date: string
-}) => {
+export const editStorePurchase = async (body: StorePurchaseInterface) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/storePayments/${body.id}`,
     body,

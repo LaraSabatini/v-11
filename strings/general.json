@@ -3,6 +3,50 @@
         "home": "Clientes",
         "trainers": "Profesores",
         "store": "Tienda",
-        "finances": "Finanzas"
+        "finances": "Finanzas",
+        "prices": "Precios"
+    },
+    "actions": {
+        "delete": "Borrar",
+        "cancel": "Cancelar",
+        "confirm": "Confirmar",
+        "save": "Guardar",
+        "discardChanges": "Descartar cambios",
+        "create": "Crear",
+        "next": "Siguiente",
+        "removeRecord": "Eliminar",
+        "pay": "Pagar"
+    },
+    "labels": {
+        "email": "Email",
+        "name": "Nombre",
+        "lastName": "Apellido",
+        "birthDate": "Fecha de nacimiento",
+        "trainer": "Profesor",
+        "identificationNumber": "N° de documento:",
+        "phoneNumber": "N° de telefono"
+    },
+    "modalTitles": {
+        "success": "Excelente!",
+        "error": "UPS!",
+        "discard": "¿Deseas descartar los cambios realizados?"
+    },
+    "modalContent": {
+        "discard": "Si descartas los cambios no se guardara tu progreso"
+    },
+    "payments": {
+        "cash": "Efectivo",
+        "digital": "Mercado Pago",
+        "digital_abv": "MP",
+        "price": "Precio",
+        "digital_user": "MP User",
+        "cost": "Costo"
+    },
+    "yes": "SI",
+    "no": "NO",
+    "all": "Todos",
+    "pagination": {
+        "next": "Siguiente pagina",
+        "prev": "Pagina previa"
     }
 }

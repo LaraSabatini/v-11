@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import { getLessonsByWeek } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Clases } from "contexts/Clases"
-import { today, month, year, daysOfTheWeek, shifts } from "const/fixedVariables"
+import { Lessons } from "@contexts/LessonsContext"
+import { today, month, year, daysOfTheWeek, shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import Pagination from "components/UI/Pagination"
@@ -30,7 +30,7 @@ const CalendarView = () => {
     setPaymentUserSelected,
     setFinalPrice,
     triggerListUpdate,
-  } = useContext(Clases)
+  } = useContext(Lessons)
 
   const [cleanedLessons, setCleanedLessons] = useState<{
     monday: {

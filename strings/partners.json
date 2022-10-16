@@ -1,70 +1,54 @@
 {
-    "title": "Clientes",
     "mainButton": "Crear partner",
     "student": "Alumno",
     "free_pass": "Pase Libre",
-    "active_payment": "Pago activo",
-    "expired_payment": "Pago vencido",
     "details": "Detalles",
     "partner_number": "N° de socio:",
     "full_name": "Nombre completo:",
-    "email": "Email:",
-    "identification": "N° de documento:",
     "member_since": "Miembro desde:",
-    "member_expire": "Vencimiento de membresia:",
-    "paid_time": "Tiempo abonado:",
     "payment_is_active": "El pago esta activo:",
     "created_by": "Creado por:",
-    "trainer": "Profesor:",
     "not_trainer": "No tiene",
-    "yes": "Si",
-    "no": "No",
-    "next": "Siguiente pagina",
-    "prev": "Pagina previa",
     "no_more": "No hay mas socios en la lista",
-    "delete": "Borrar",
-    "cancel": "Cancelar",
+    "partnerAlreadyExists": "El socio ya existe",
     "updatePayment": "Actualizar pago",
-    "confirm": "Confirmar",
-    "modal_changes": {
-        "title": "¿Deseas descartar los cambios realizados?",
-        "content": "Si descartas los cambios no se guardara tu progreso",
-        "main_button": "Descartar cambios",
-        "cancel_button": "Cancelar"
-    },
+    "usesDay": "Usa dia hoy",
+    "paymentExpires": "Vencimiento de pago",
+    "remainingDays": "Dias restantes",
+    "combo": "Combo",
+    "day": "Dia",
+    "month": "Mes",
+    "combo_price": "Precio x Combo",
+    "time": "Tiempo",
+    "payment_method": "Metodo de pago",
+    "final_price": "Precio final",
+    "wants_sub": "Desea recibir noticias",
     "create": {
         "title": "Crear socio",
-        "cancel_button": "Cancelar",
-        "submit_button": "Crear",
-        "name": "Nombre",
-        "last_name": "Apellido",
-        "identification": "N° de documento",
-        "birth_date": "Fecha de nacimiento",
-        "email": "Email",
-        "paid_time": "Tiempo",
-        "trainer": "Profesor",
-        "free_pass": "Pase libre",
+        "payment": "Pago",
         "unit": "Unidad",
         "success": {
-            "title": "Excelente!",
             "content": "El socio ha sido creado exitosamente."
         },
         "error": {
-            "title": "UPS!",
             "content": "Hubo un error al crear el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
     }, 
     "edit": {
-        "member_since": "Miembro desde",
-        "save": "Guardar",
-        "cancel": "Cancelar",
         "success": {
-            "title": "Excelente!",
             "content": "El socio ha sido editado exitosamente."
         },
         "error": {
-            "title": "UPS!",
             "content": "Hubo un error al editar el socio, por favor intentalo nuevamente o comunicate con el admin."
+        },
+        "title": "Editar pago"
+    },
+    "delete": {
+        "success": {
+            "content": "El socio se ha eliminado correctamente."
+        },
+        "error": {
+            "content": "Hubo un error al eliminar el socio, por favor intentalo nuevamente o comunicate con el admin."
         }
     },
     "cannotAddDays": {
@@ -72,11 +56,9 @@
         "content": "Esta accion no se puede realizar porque el socio cuenta con un abono activo"
     },
     "updatePaymentSuccess": {
-        "title": "Excelente!",
         "content": "El pago ha sido actualizado correctamente"
     },
     "updatePaymentError": {
-        "title": "UPS!",
         "content": "El pago no se pudo procesar, por favor intentalo nuevamente o comunicate con el admin."
     },
     "deleteWarning": {

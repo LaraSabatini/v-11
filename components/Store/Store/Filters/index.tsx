@@ -2,7 +2,8 @@ import React, { useContext } from "react"
 import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
-import texts from "strings/store.json"
+import storeTexts from "strings/store.json"
+import generalTexts from "strings/general.json"
 import OptionsInterface from "interfaces/store/OptionsInterface"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
@@ -33,7 +34,7 @@ const Filters = () => {
           }}
         >
           <div className="select">
-            <p>{texts.type}</p>
+            <p>{storeTexts.type}</p>
             <IconContainer>
               <Icon icon="IconArrowLeft" />
             </IconContainer>
@@ -49,7 +50,9 @@ const Filters = () => {
                     {category.name}
                   </Option>
                 ))}
-              <Option onClick={() => selectFilter(null)}>{texts.all}</Option>
+              <Option onClick={() => selectFilter(null)}>
+                {generalTexts.all}
+              </Option>
             </Selector>
           )}
         </Select>

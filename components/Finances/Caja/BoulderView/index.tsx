@@ -3,6 +3,8 @@ import React, { useContext, useState, useEffect } from "react"
 import { Finances } from "contexts/Finances"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
+import financesTexts from "strings/finances.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import {
   Container,
@@ -69,7 +71,7 @@ const BoulderView = () => {
 
     const newArray = boulderPurchasesViewData
     newArray[0] = {
-      name: "Pase Diario",
+      name: `${financesTexts.day_pass}`,
       earnings_cash: individualEarningsCash + storeEarningsCash,
       earnings_mp: individualEarningsMP + storeEarningsMP,
       amount_of_days_sold: individualDaysSold + storeDaysSold,
@@ -111,28 +113,28 @@ const BoulderView = () => {
   const fillDataForOtherThanDays = () => {
     const forMonths = fillData(3)
     const forCombos = fillData(1)
-    const forClases = fillData(4)
+    const forLessons = fillData(4)
 
     const newArray = boulderPurchasesViewData
     newArray[1] = {
-      name: "Mes",
+      name: `${financesTexts.month}`,
       earnings_cash: forMonths.individualEarningsCash,
       earnings_mp: forMonths.individualEarningsMP,
       amount_of_months_sold: forMonths.individualUnitsSold,
     }
 
     newArray[2] = {
-      name: "Combo",
+      name: `${financesTexts.combo}`,
       earnings_cash: forCombos.individualEarningsCash,
       earnings_mp: forCombos.individualEarningsMP,
       amount_of_combos_sold: forCombos.individualUnitsSold,
     }
 
     newArray[3] = {
-      name: "Clases",
-      earnings_cash: forClases.individualEarningsCash,
-      earnings_mp: forClases.individualEarningsMP,
-      amount_of_lessons_sold: forClases.individualUnitsSold,
+      name: `${financesTexts.lessons}`,
+      earnings_cash: forLessons.individualEarningsCash,
+      earnings_mp: forLessons.individualEarningsMP,
+      amount_of_lessons_sold: forLessons.individualUnitsSold,
     }
 
     setBoulderPurchasesViewData(newArray)
@@ -160,7 +162,7 @@ const BoulderView = () => {
 
     const newArray = boulderPurchasesViewData
     newArray[4] = {
-      name: "Alquiler zapatillas",
+      name: `${financesTexts.shoes}`,
       earnings_cash: storeEarningsCash,
       earnings_mp: storeEarningsMP,
       amount_of_shoes_rented: storeShoesRented,
@@ -191,113 +193,118 @@ const BoulderView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boulderProductsPurchasedByDate, partnerPaymentsByDate])
 
-  /*
-    VISTA POR:
-    DIA           => (boulderProductsPurchasedByDate && partnerPaymentsByDate) || OK
-    MES           => (partnerPaymentsByDate)                                   || OK
-    COMBO         => (partnerPaymentsByDate)                                   || OK
-    CLASES        => (partnerPaymentsByDate)                                   || OK       
-    ZAPATILLAS    => (boulderProductsPurchasedByDate)                          || OK
-  */
-
   return (
     <Container>
       <FinalProfit>
         <p>
-          <span>Efectivo:</span> <b>$ {finalEargninsBoulder.cash}</b>
+          <span>{generalTexts.payments.cash}:</span>{" "}
+          <b>$ {finalEargninsBoulder.cash}</b>
         </p>
         <p>
-          <span>Mercado Pago:</span> <b>$ {finalEargninsBoulder.mp}</b>
+          <span>{generalTexts.payments.digital}:</span>{" "}
+          <b>$ {finalEargninsBoulder.mp}</b>
         </p>
       </FinalProfit>
       <CardsContainer>
         <Card>
-          <Title>PASE DIARIO</Title>
+          <Title>{financesTexts.day_pass}.toUpperCase()</Title>
           <Earnings>
             <p>
-              Efectivo: <b>$ {boulderPurchasesViewData[0].earnings_cash}</b>
+              {generalTexts.payments.cash}:{" "}
+              <b>$ {boulderPurchasesViewData[0].earnings_cash}</b>
             </p>
             <p>
-              MP: <b>$ {boulderPurchasesViewData[0].earnings_mp}</b>
+              {generalTexts.payments.digital}:{" "}
+              <b>$ {boulderPurchasesViewData[0].earnings_mp}</b>
             </p>
           </Earnings>
           <Earnings>
             <p>
-              Pases vendidos:{" "}
+              {financesTexts.sold_pases}:{" "}
               <b>{boulderPurchasesViewData[0].amount_of_days_sold}</b>
             </p>
           </Earnings>
           <Earnings>
             <p>
-              • Por tienda: <b>{daysPurchased.store}</b>
+              • {financesTexts.through_store}: <b>{daysPurchased.store}</b>
             </p>
             <p>
-              • Por clientes: <b>{daysPurchased.partner}</b>
-            </p>
-          </Earnings>
-        </Card>
-        <Card>
-          <Title>MES</Title>
-          <Earnings>
-            <p>
-              Efectivo: <b>$ {boulderPurchasesViewData[1].earnings_cash}</b>
-            </p>
-            <p>
-              MP: <b>$ {boulderPurchasesViewData[1].earnings_mp}</b>
-            </p>
-          </Earnings>
-          <Earnings>
-            <p>
-              Ventas: <b>{boulderPurchasesViewData[1].amount_of_months_sold}</b>
+              • {financesTexts.through_clients}: <b>{daysPurchased.partner}</b>
             </p>
           </Earnings>
         </Card>
         <Card>
-          <Title>COMBO</Title>
+          <Title>{financesTexts.month}.toUpperCase()</Title>
           <Earnings>
             <p>
-              Efectivo: <b>$ {boulderPurchasesViewData[2].earnings_cash}</b>
+              {generalTexts.payments.cash}:{" "}
+              <b>$ {boulderPurchasesViewData[1].earnings_cash}</b>
             </p>
             <p>
-              MP: <b>$ {boulderPurchasesViewData[2].earnings_mp}</b>
+              {generalTexts.payments.digital}:{" "}
+              <b>$ {boulderPurchasesViewData[1].earnings_mp}</b>
             </p>
           </Earnings>
           <Earnings>
             <p>
-              Ventas: <b>{boulderPurchasesViewData[2].amount_of_combos_sold}</b>
+              {financesTexts.sells}:{" "}
+              <b>{boulderPurchasesViewData[1].amount_of_months_sold}</b>
             </p>
           </Earnings>
         </Card>
         <Card>
-          <Title>CLASES</Title>
+          <Title>{financesTexts.combo}.toUpperCase()</Title>
           <Earnings>
             <p>
-              Efectivo: <b>$ {boulderPurchasesViewData[3].earnings_cash}</b>
+              {generalTexts.payments.cash}:{" "}
+              <b>$ {boulderPurchasesViewData[2].earnings_cash}</b>
             </p>
             <p>
-              MP: <b>$ {boulderPurchasesViewData[3].earnings_mp}</b>
+              {generalTexts.payments.digital}:{" "}
+              <b>$ {boulderPurchasesViewData[2].earnings_mp}</b>
             </p>
           </Earnings>
           <Earnings>
             <p>
-              Ventas:{" "}
+              {financesTexts.sells}:{" "}
+              <b>{boulderPurchasesViewData[2].amount_of_combos_sold}</b>
+            </p>
+          </Earnings>
+        </Card>
+        <Card>
+          <Title>{financesTexts.lessons}.toUpperCase()</Title>
+          <Earnings>
+            <p>
+              {generalTexts.payments.cash}:{" "}
+              <b>$ {boulderPurchasesViewData[3].earnings_cash}</b>
+            </p>
+            <p>
+              {generalTexts.payments.digital}:{" "}
+              <b>$ {boulderPurchasesViewData[3].earnings_mp}</b>
+            </p>
+          </Earnings>
+          <Earnings>
+            <p>
+              {financesTexts.sells}:{" "}
               <b>{boulderPurchasesViewData[3].amount_of_lessons_sold}</b>
             </p>
           </Earnings>
         </Card>
         <Card>
-          <Title className="shoes">ALQUILER ZAPATILLAS</Title>
+          <Title className="shoes">{financesTexts.shoes}.toUpperCase()</Title>
           <Earnings>
             <p>
-              Efectivo: <b>$ {boulderPurchasesViewData[4].earnings_cash}</b>
+              {generalTexts.payments.cash}:{" "}
+              <b>$ {boulderPurchasesViewData[4].earnings_cash}</b>
             </p>
             <p>
-              MP: <b>$ {boulderPurchasesViewData[4].earnings_mp}</b>
+              {generalTexts.payments.digital}:{" "}
+              <b>$ {boulderPurchasesViewData[4].earnings_mp}</b>
             </p>
           </Earnings>
           <Earnings>
             <p>
-              Unidades alquiladas:{" "}
+              {financesTexts.units_lend}:{" "}
               <b>{boulderPurchasesViewData[4].amount_of_shoes_rented}</b>
             </p>
           </Earnings>

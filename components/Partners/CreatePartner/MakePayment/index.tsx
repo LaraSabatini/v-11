@@ -3,9 +3,12 @@ import React, { useContext, useEffect } from "react"
 import { getSchedule } from "services/Trainers/Schedule.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
-import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
+import { paymentMethods, paymentUsers } from "const/finances"
+import { timeUnits } from "const/time"
 import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
+import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
@@ -30,7 +33,7 @@ const MakePayment = () => {
     paidTimeUnit,
     paidTime,
     finalPrice,
-    amountOfClases,
+    amountOfLessons,
     paymentMethodSelected,
     setPaymentMethodSelected,
     setScheduleList,
@@ -75,7 +78,7 @@ const MakePayment = () => {
     paidTime,
     paymentMethodSelected,
     comboSelected,
-    amountOfClases,
+    amountOfLessons,
   ])
 
   // const calendarRef = useRef(null)
@@ -84,7 +87,7 @@ const MakePayment = () => {
     <Form>
       <HorizontalGroup>
         <Autocomplete
-          label="Combo"
+          label={partnerTexts.combo}
           width={180}
           options={combosAutocomplete}
           ref={comboRef}
@@ -93,7 +96,7 @@ const MakePayment = () => {
           }}
         />
         <TextField
-          label="Precio x Combo"
+          label={partnerTexts.combo_price}
           type="number"
           disabledAutocompleted
           disabled
@@ -117,7 +120,7 @@ const MakePayment = () => {
         <SubContainer>
           <TextField
             width={60}
-            label="Tiempo"
+            label={partnerTexts.time}
             type="number"
             reference={paidTimeRef}
             value={paidTime}
@@ -132,7 +135,7 @@ const MakePayment = () => {
             }}
           />
           <Autocomplete
-            label="Unidad"
+            label={partnerTexts.create.unit}
             required={paidTime !== 0 && paidTime !== ""}
             width={115}
             options={timeUnits}
@@ -152,7 +155,7 @@ const MakePayment = () => {
       <HorizontalGroup>
         <Autocomplete
           required
-          label="Metodo de pago"
+          label={partnerTexts.payment_method}
           width={150}
           options={paymentMethods}
           setValue={
@@ -169,7 +172,7 @@ const MakePayment = () => {
           }}
         />
         <TextField
-          label="Precio final"
+          label={partnerTexts.final_price}
           type="text"
           disabledAutocompleted
           disabled
@@ -181,7 +184,7 @@ const MakePayment = () => {
         <HorizontalGroup>
           <Autocomplete
             required
-            label="MP User"
+            label={generalTexts.payments.digital_user}
             width={150}
             options={paymentUsers}
             ref={paymentUserRef}
@@ -194,7 +197,7 @@ const MakePayment = () => {
       <div style={{ display: "flex", gap: "10px" }}>
         <CheckboxContainer>
           <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
-          <p>Pase libre</p>
+          <p>{partnerTexts.free_pass}</p>
         </CheckboxContainer>
         {paidTimeUnit.id === 1 && (
           <CheckboxContainer>
@@ -204,7 +207,7 @@ const MakePayment = () => {
               onChange={() => setUsesDay(!usesDay)}
               idParam="use-day"
             />
-            <p>Usa dia hoy</p>
+            <p>{partnerTexts.usesDay}</p>
           </CheckboxContainer>
         )}
       </div>

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 // SERVICES
@@ -17,10 +16,12 @@ import {
   editPartner,
 } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import texts from "strings/trainers.json"
-import { Clases } from "contexts/Clases"
+import trainerTexts from "strings/trainers.json"
+import generalTexts from "strings/general.json"
+import { Lessons } from "@contexts/LessonsContext"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-import { day, month, year, months } from "const/fixedVariables"
+import { day, month, year, months } from "const/time"
+import yesOrNoArr from "const/fixedVariables"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
@@ -64,7 +65,7 @@ function TrainersView() {
     cleanStates,
     setModalSuccess,
     setModalError,
-  } = useContext(Clases)
+  } = useContext(Lessons)
   const router = useRouter()
 
   const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
@@ -108,7 +109,9 @@ function TrainersView() {
         trainer_id: trainerSelected.id,
         trainer_name: trainerSelected.display_name,
         week_id: weekNumber,
-        paid: paid ? "SI" : "NO",
+        paid: paid
+          ? `${yesOrNoArr[0].display_name}`
+          : `${yesOrNoArr[1].display_name}`,
         day_id: currentDate.getDay(),
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
@@ -143,10 +146,10 @@ function TrainersView() {
     await clientRef.current?.focus()
 
     if (clientIsRegistered) {
-      if (clientSelected.is_student === "NO") {
+      if (clientSelected.is_student === `${yesOrNoArr[1].display_name}`) {
         const bodyEditPartner = {
           ...clientSelected,
-          is_student: "SI",
+          is_student: `${yesOrNoArr[0].display_name}`,
         }
 
         const editPartnerCall = await editPartner(bodyEditPartner)
@@ -194,7 +197,7 @@ function TrainersView() {
         id: 0,
         date: `${day}-${month}-${year}`,
         item_id: 4,
-        item_name: "Clases",
+        item_name: `${trainerTexts.lessons}`,
         amount_of_items: amountOfLessons,
         profit: finalPrice,
         payment_method_id: paymentMethodSelected.id,
@@ -265,16 +268,16 @@ function TrainersView() {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: `${texts.createPruchase.successModal.title}`,
-        content: `${texts.createPruchase.successModal.content}`,
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${trainerTexts.createPurchase.successModal.content}`,
       })
       setCreateLessonPurchaseView(false)
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: `${texts.createPruchase.errorModal.title}`,
-        content: `${texts.createPruchase.errorModal.content}`,
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${trainerTexts.createPurchase.errorModal.content}`,
       })
       setCreateLessonPurchaseView(false)
     }
@@ -308,13 +311,13 @@ function TrainersView() {
       <Container>
         <Title>
           <div>
-            {texts.trainers}
+            {generalTexts.sections.trainers}
             <span>
               {" "}
               /{" "}
               {router.query.students === "true"
-                ? `${texts.students}`
-                : `${texts.calendar}`}
+                ? `${trainerTexts.students}`
+                : `${trainerTexts.calendar}`}
             </span>
           </div>
         </Title>

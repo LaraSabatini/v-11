@@ -1,6 +1,8 @@
 import React from "react"
 // DATA STORAGE & TYPES
 import HistoryCardInterface from "interfaces/finances/HistoryCard"
+import financesTexts from "strings/finances.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
@@ -80,23 +82,20 @@ const HistoryCard = ({
               {name} {payment === 1 ? "(FT)" : "(MP)"}
             </p>
             <p className="profits">
-              Ganancias:
+              {financesTexts.profits}:
               <span>
                 ${finalProfitString} <p>(${marginString})</p>
               </span>
             </p>
             <HorizontalGroup>
               <p className="cost">
-                Precio:
-                <span>${price}</span>
+                {generalTexts.payments.price}:<span>${price}</span>
               </p>
               <p className="cost">
-                Costo:
-                <span>${cost}</span>
+                {generalTexts.payments.cost}:<span>${cost}</span>
               </p>
               <p className="cost">
-                Ventas:
-                <span>{amount}u</span>
+                {financesTexts.sells}:<span>{amount}u</span>
               </p>
             </HorizontalGroup>
           </Description>

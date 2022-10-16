@@ -2,7 +2,10 @@ import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import { PartnersContext } from "contexts/Partners"
 import { StoreContext } from "contexts/Store"
-import texts from "strings/general.json"
+import generalTexts from "strings/general.json"
+import trainerTexts from "strings/trainers.json"
+import storeTexts from "strings/store.json"
+import financeTexts from "strings/finances.json"
 import Tooltip from "components/UI/Tooltip"
 import LogOut from "./LogOut"
 import {
@@ -47,7 +50,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 5) === "home"}
           >
-            {texts.sections.home}
+            {generalTexts.sections.home}
             {clientsMenuOpen && (
               <ClientsMenu>
                 <SubButton
@@ -68,7 +71,7 @@ function Header() {
                     }
                   }}
                 >
-                  Clientes
+                  {generalTexts.sections.home}
                 </SubButton>
                 <SubButton
                   selectedSection={router.query.prices === "true"}
@@ -88,7 +91,7 @@ function Header() {
                     }
                   }}
                 >
-                  Precios
+                  {generalTexts.sections.prices}
                 </SubButton>
               </ClientsMenu>
             )}
@@ -102,7 +105,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 9) === "trainers"}
           >
-            {texts.sections.trainers}
+            {generalTexts.sections.trainers}
             {trainersMenuOpen && (
               <ClientsMenu>
                 <SubButton
@@ -118,7 +121,7 @@ function Header() {
                     }
                   }}
                 >
-                  Calendario de clases
+                  {trainerTexts.calendar}
                 </SubButton>
               </ClientsMenu>
             )}
@@ -132,7 +135,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 6) === "store"}
           >
-            {texts.sections.store}
+            {generalTexts.sections.store}
             {storeMenuOpen && (
               <ClientsMenu>
                 <SubButton
@@ -148,7 +151,7 @@ function Header() {
                     }
                   }}
                 >
-                  Tienda
+                  {generalTexts.sections.store}
                 </SubButton>
                 <SubButton
                   selectedSection={router.query.stock === "true"}
@@ -163,7 +166,7 @@ function Header() {
                     }
                   }}
                 >
-                  Stock
+                  {storeTexts.stock}
                 </SubButton>
               </ClientsMenu>
             )}
@@ -177,7 +180,7 @@ function Header() {
             }}
             bold={router.asPath.substring(1, 9) === "finances"}
           >
-            {texts.sections.finances}
+            {generalTexts.sections.finances}
 
             {financesMenuOpen && (
               <ClientsMenu>
@@ -194,7 +197,7 @@ function Header() {
                     }
                   }}
                 >
-                  Facturacion Boulder
+                  {financeTexts.boulderEarnings}
                 </SubButton>
                 <SubButton
                   selectedSection={router.query.expenses === "true"}
@@ -209,7 +212,7 @@ function Header() {
                     }
                   }}
                 >
-                  Gastos
+                  {financeTexts.bills}
                 </SubButton>
                 <SubButton
                   selectedSection={router.query.workingHours === "true"}
@@ -224,7 +227,7 @@ function Header() {
                     }
                   }}
                 >
-                  Horas de trabajo
+                  {financeTexts.workingHours}
                 </SubButton>
                 <SubButton
                   selectedSection={router.query.earnings === "true"}
@@ -239,7 +242,7 @@ function Header() {
                     }
                   }}
                 >
-                  Ingresos
+                  {financeTexts.earnings}
                 </SubButton>
               </ClientsMenu>
             )}

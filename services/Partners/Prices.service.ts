@@ -1,4 +1,5 @@
 import axios from "axios"
+import PricesInterface from "interfaces/partners/PricesInterface"
 
 export const getPrices = async () => {
   const axiosHeader = {
@@ -13,12 +14,7 @@ export const getPrices = async () => {
   return res.data
 }
 
-export const editPrices = async (body: {
-  id: number
-  name: string
-  price_cash: number
-  price_mp: number
-}) => {
+export const editPrices = async (body: PricesInterface) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/prices/${body.id}`,
     body,

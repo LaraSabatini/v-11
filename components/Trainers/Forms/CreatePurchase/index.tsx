@@ -6,18 +6,13 @@ import { searchPartner } from "services/Partners/Partner.service"
 import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
 import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import {
-  yesOrNoArr,
-  shifts,
-  day,
-  month,
-  year,
-  paymentMethods,
-  paymentUsers,
-} from "const/fixedVariables"
-import { Clases } from "contexts/Clases"
+import { paymentMethods, paymentUsers } from "const/finances"
+import yesOrNoArr from "const/fixedVariables"
+import { shifts, day, month, year } from "const/time"
+import { Lessons } from "@contexts/LessonsContext"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import texts from "strings/trainers.json"
+import trainerTexts from "strings/trainers.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
@@ -86,7 +81,7 @@ const CreatePurchaseModal = ({
     setTrainerSelected,
     paymentUserSelected,
     identificationError,
-  } = useContext(Clases)
+  } = useContext(Lessons)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 
@@ -306,9 +301,9 @@ const CreatePurchaseModal = ({
 
   return (
     <ModalForm
-      title={texts.createPruchase.title}
-      cancelButtonContent={texts.cancel}
-      submitButtonContent={texts.createPruchase.createButton}
+      title={trainerTexts.createPurchase.title}
+      cancelButtonContent={generalTexts.actions.cancel}
+      submitButtonContent={generalTexts.actions.create}
       submit={handleCreatePurchase}
       cancelFunction={cancelCreatePurchase}
       disabledButton={!canExecute}
@@ -317,7 +312,7 @@ const CreatePurchaseModal = ({
         {/* START - CLIENT IS REGISTERED VALIDATION */}
         <HorizontalGroup>
           <Autocomplete
-            label={texts.createPruchase.registeredLabel}
+            label={trainerTexts.createPurchase.registeredLabel}
             required
             width={200}
             options={yesOrNoArr}
@@ -339,8 +334,8 @@ const CreatePurchaseModal = ({
               />
               <PopOverContainer>
                 <PopOver
-                  title={texts.createPruchase.search}
-                  description={texts.createPruchase.searchDescription}
+                  title={trainerTexts.createPurchase.search}
+                  description={trainerTexts.createPurchase.searchDescription}
                   view={popOverView}
                 />
               </PopOverContainer>
@@ -364,7 +359,7 @@ const CreatePurchaseModal = ({
         <Results>
           {searchValue !== "" && (
             <>
-              <p className="title">{texts.createPruchase.results}</p>
+              <p className="title">{trainerTexts.createPurchase.results}</p>
               <ScrollView height={150}>
                 {searchResults.length > 0 &&
                   searchResults.map((client: PartnerInterface) => (
@@ -393,7 +388,7 @@ const CreatePurchaseModal = ({
           <RegisterClientContainer>
             <HorizontalGroup>
               <TextField
-                label={texts.createPruchase.register.name}
+                label={generalTexts.labels.name}
                 required
                 type="text"
                 width={200}
@@ -402,7 +397,7 @@ const CreatePurchaseModal = ({
                 }}
               />
               <TextField
-                label={texts.createPruchase.register.lastName}
+                label={generalTexts.labels.lastName}
                 required
                 type="text"
                 width={200}
@@ -414,12 +409,12 @@ const CreatePurchaseModal = ({
                 }}
               />
               <TextField
-                label={texts.createPruchase.register.identification}
+                label={generalTexts.labels.identificationNumber}
                 required
                 type="text"
                 width={200}
                 backError={identificationError}
-                backErrorMessage="Hay un cliente registrado con este DNI"
+                backErrorMessage={trainerTexts.createPurchase.errorMessage}
                 onChange={e => {
                   setNewPartnerData({
                     ...newPartnerData,
@@ -430,7 +425,7 @@ const CreatePurchaseModal = ({
             </HorizontalGroup>
             <HorizontalGroup>
               <InputCalendar
-                label={texts.createPruchase.register.birthDate}
+                label={generalTexts.labels.birthDate}
                 reference={birthDateRef}
                 width={200}
                 onChange={e => {
@@ -441,7 +436,7 @@ const CreatePurchaseModal = ({
                 }}
               />
               <TextField
-                label={texts.createPruchase.register.email}
+                label={generalTexts.labels.email}
                 type="email"
                 width={200}
                 onChange={e => {
@@ -452,7 +447,7 @@ const CreatePurchaseModal = ({
                 }}
               />
               <TextField
-                label={texts.createPruchase.register.phone}
+                label={generalTexts.labels.phoneNumber}
                 type="text"
                 width={200}
                 onChange={e => {
@@ -472,7 +467,7 @@ const CreatePurchaseModal = ({
             <LessonsContainer>
               <LessonsSubGroup>
                 <TextField
-                  label={texts.createPruchase.amountOfLessons}
+                  label={trainerTexts.createPurchase.amountOfLessons}
                   type="number"
                   max={10}
                   width={100}
@@ -488,7 +483,7 @@ const CreatePurchaseModal = ({
                 />
                 <Autocomplete
                   width={200}
-                  label={texts.createPruchase.trainer}
+                  label={generalTexts.labels.trainer}
                   required
                   ref={trainerSelectedRef}
                   options={trainersList}
@@ -501,7 +496,7 @@ const CreatePurchaseModal = ({
 
               <LessonsSubGroup>
                 <InputCalendar
-                  label={texts.createPruchase.lessonsDate}
+                  label={trainerTexts.createPurchase.lessonsDate}
                   minCalendarDate={`${day}/${month}/${year}`}
                   valueCalendar={provisionalSelection.date}
                   required={datesSelected.length < amountOfLessons}
@@ -518,7 +513,7 @@ const CreatePurchaseModal = ({
                 <Autocomplete
                   setValue={provisionalSelection.shift}
                   width={110}
-                  label={texts.createPruchase.shift}
+                  label={trainerTexts.createPurchase.shift}
                   required={datesSelected.length < amountOfLessons}
                   ref={shiftRef}
                   options={shifts}
@@ -553,7 +548,9 @@ const CreatePurchaseModal = ({
               </LessonsSubGroup>
             </LessonsContainer>
             <LessonsPurchasedList>
-              <p className="title">{texts.createPruchase.datesSelected}</p>
+              <p className="title">
+                {trainerTexts.createPurchase.datesSelected}
+              </p>
               <ScrollView height={100}>
                 <div className="dates">
                   {datesSelected.length > 0 &&
@@ -574,14 +571,14 @@ const CreatePurchaseModal = ({
           </div>
         )}
         {cannotAddDate && (
-          <Warning>{texts.createPruchase.warningMessage}</Warning>
+          <Warning>{trainerTexts.createPurchase.warningMessage}</Warning>
         )}
         {amountOfLessons === 0 ||
           (datesSelected.length === amountOfLessons && (
             <LessonsSubGroup>
               <Autocomplete
                 options={yesOrNoArr}
-                label={texts.createPruchase.paysNow}
+                label={trainerTexts.createPurchase.paysNow}
                 required
                 ref={paysNowRef}
                 width={100}
@@ -596,7 +593,7 @@ const CreatePurchaseModal = ({
               {paid && (
                 <Autocomplete
                   options={paymentMethods}
-                  label={texts.createPruchase.paymentMethod}
+                  label={trainerTexts.createPurchase.paymentMethod}
                   required
                   ref={paymentMethodRef}
                   width={100}
@@ -612,7 +609,7 @@ const CreatePurchaseModal = ({
                 paymentMethodSelected.id === 2 && (
                   <Autocomplete
                     options={paymentUsers}
-                    label={texts.createPruchase.digitalUser}
+                    label={generalTexts.payments.digital_user}
                     required
                     ref={paymentUserRef}
                     width={150}
@@ -622,7 +619,7 @@ const CreatePurchaseModal = ({
                   />
                 )}
               <PriceContainer>
-                <p>{texts.createPruchase.total}</p>{" "}
+                <p>{trainerTexts.createPurchase.total}</p>{" "}
                 <p>
                   <b>${finalPrice}</b>
                 </p>

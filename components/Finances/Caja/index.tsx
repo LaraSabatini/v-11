@@ -7,6 +7,7 @@ import { searchByDate } from "services/Finances/DigitalPayments.service"
 import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
+import generalTexts from "strings/general.json"
 // import PaymentInterface from "interfaces/partners/PaymentInterface"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 // COMPONENTS & STYLING
@@ -54,7 +55,6 @@ const Caja = () => {
 
     setBoulderProductsPurchasedByDate(filterBoulderProducts)
 
-    // TRAE TODO TIPO DE PAGO MENOS partner_id === 258
     const getBoulderPaymentsCall = await getBoulderPurchaseByDate(
       cajaDateSelected,
     )
@@ -67,9 +67,6 @@ const Caja = () => {
     const digitalPaymentByDateCall = await searchByDate(cajaDateSelected)
 
     setDigitalPaymentsList(digitalPaymentByDateCall.data)
-
-    // console.log("productPurchasesCall", productPurchasesCall.data)
-    // console.log("getBoulderPaymentsCall", getBoulderPaymentsCall.data)
 
     // CASH EARNIGS => STORE
     const cashEarningsFromStore = productPurchasesCall.data.filter(
@@ -117,10 +114,12 @@ const Caja = () => {
       {cajaFilterSelected.id === 4 && (
         <TotalEarnings>
           <p>
-            <span>EFECTIVO:</span> <b>$ {totalEarnings.cash}</b>
+            <span>{generalTexts.payments.cash}.toUpperCase():</span>{" "}
+            <b>$ {totalEarnings.cash}</b>
           </p>
           <p>
-            <span>MERCADO PAGO:</span> <b>$ {totalEarnings.mp}</b>
+            <span>{generalTexts.payments.digital}.toUpperCase():</span>{" "}
+            <b>$ {totalEarnings.mp}</b>
           </p>
         </TotalEarnings>
       )}

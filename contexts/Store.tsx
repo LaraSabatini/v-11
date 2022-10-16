@@ -1,6 +1,6 @@
 import { createContext, useState, useRef } from "react"
 import ProductInterface from "interfaces/store/ProductInterface"
-import { day, month, year } from "const/fixedVariables"
+import { day, month, year } from "const/time"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 import OptionsInterface from "interfaces/store/OptionsInterface"
 import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"

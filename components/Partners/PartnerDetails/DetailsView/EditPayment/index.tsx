@@ -3,15 +3,17 @@ import React, { useContext, useEffect } from "react"
 import { getSchedule } from "services/Trainers/Schedule.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
-import { timeUnits, paymentMethods, paymentUsers } from "const/fixedVariables"
+import { paymentMethods, paymentUsers } from "const/finances"
+import { timeUnits } from "const/time"
 import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
+import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
-// import ComboBoxSelect from "components/UI/ComboBoxSelect"
 import {
   HorizontalGroup,
   SubContainer,
@@ -40,9 +42,6 @@ const EditPayment = ({
     paidTimeUnitRef,
     setPaidTimeUnit,
     setIsChecked,
-    // clasesRef,
-    // setAmountOfClases,
-    // amountOfClases,
     setComboSelected,
     paymentRef,
     setPaymentMethodSelected,
@@ -51,8 +50,6 @@ const EditPayment = ({
     paymentMethodSelected,
     paidTimeUnit,
     setScheduleList,
-    // setScheduleSelected,
-    // scheduleList,
     combos,
     setNewValues,
     newValues,
@@ -84,13 +81,7 @@ const EditPayment = ({
   useEffect(() => {
     calculatePrice()
     //   eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    paidTimeUnit,
-    paidTime,
-    paymentMethodSelected,
-    comboSelected,
-    // amountOfClases,
-  ])
+  }, [paidTimeUnit, paidTime, paymentMethodSelected, comboSelected])
 
   const combosAutocomplete = []
   combos.map((combo: CombosInterface) =>
@@ -103,15 +94,15 @@ const EditPayment = ({
   return (
     <>
       <ModalForm
-        title={`Editar Pago - ${partnerName} ${partnerLastName}`}
-        cancelButtonContent="Cancelar"
-        submitButtonContent="Confirmar"
+        title={`${partnerTexts.edit.title} - ${partnerName} ${partnerLastName}`}
+        cancelButtonContent={generalTexts.actions.cancel}
+        submitButtonContent={generalTexts.actions.confirm}
         submit={handleEdit}
         cancelFunction={cancelEdit}
       >
         <HorizontalGroup>
           <Autocomplete
-            label="Combo"
+            label={partnerTexts.combo}
             width={180}
             options={combosAutocomplete}
             setValue={
@@ -128,7 +119,7 @@ const EditPayment = ({
             }}
           />
           <TextField
-            label="Precio x Combo"
+            label={partnerTexts.combo_price}
             type="number"
             disabledAutocompleted
             disabled
@@ -152,7 +143,7 @@ const EditPayment = ({
           <SubContainer>
             <TextField
               width={60}
-              label="Tiempo"
+              label={partnerTexts.time}
               type="number"
               reference={paidTimeRef}
               value={`${newValues.time_paid}`}
@@ -169,7 +160,7 @@ const EditPayment = ({
               }}
             />
             <Autocomplete
-              label="Unidad"
+              label={partnerTexts.create.unit}
               required={paidTime !== 0 && paidTime !== ""}
               width={115}
               options={timeUnits}
@@ -192,47 +183,11 @@ const EditPayment = ({
               }}
             />
           </SubContainer>
-          {/* <TextField
-            width={100}
-            label="Clases"
-            type="number"
-            reference={clasesRef}
-            value={`${newValues.clases_paid}`}
-            onChange={e => {
-              const number = parseInt(e.target.value, 10)
-              // eslint-disable-next-line no-restricted-globals
-              if (isNaN(number)) {
-                setAmountOfClases(0)
-                setNewValues({ ...newValues, clases_paid: 0 })
-              } else {
-                setAmountOfClases(number)
-                setNewValues({ ...newValues, clases_paid: number })
-              }
-            }}
-          /> */}
         </HorizontalGroup>
-        {/* <HorizontalGroup>
-          <ComboBoxSelect
-            required={
-              amountOfClases !== undefined &&
-              amountOfClases !== 0 &&
-              amountOfClases !== ""
-            }
-            onChange={e => {
-              const ids = []
-              e.map(data => ids.push(data.id))
-              setScheduleSelected(ids)
-            }}
-            options={scheduleList}
-            width={290}
-            label="Dias y Horarios"
-            optionsList="single"
-          />
-        </HorizontalGroup> */}
         <HorizontalGroup>
           <Autocomplete
             required
-            label="Metodo de pago"
+            label={partnerTexts.payment_method}
             width={150}
             options={paymentMethods}
             setValue={
@@ -254,7 +209,7 @@ const EditPayment = ({
             }}
           />
           <TextField
-            label="Precio final"
+            label={partnerTexts.final_price}
             type="text"
             disabledAutocompleted
             disabled
@@ -266,7 +221,7 @@ const EditPayment = ({
           <HorizontalGroup>
             <Autocomplete
               required
-              label="MP User"
+              label={generalTexts.payments.digital_user}
               width={150}
               options={paymentUsers}
               ref={paymentUserRef}
@@ -279,7 +234,7 @@ const EditPayment = ({
         <div style={{ display: "flex", gap: "10px" }}>
           <CheckboxContainer>
             <Checkbox checked={isChecked} isDisabled idParam="free-pass" />
-            <p>Pase libre</p>
+            <p>{partnerTexts.free_pass}</p>
           </CheckboxContainer>
           {paidTimeUnit.id === 1 && (
             <CheckboxContainer>
@@ -289,7 +244,7 @@ const EditPayment = ({
                 onChange={() => setUsesDay(!usesDay)}
                 idParam="use-day"
               />
-              <p>Usa dia hoy</p>
+              <p>{partnerTexts.usesDay}</p>
             </CheckboxContainer>
           )}
         </div>

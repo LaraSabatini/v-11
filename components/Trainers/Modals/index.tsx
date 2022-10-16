@@ -1,11 +1,11 @@
 import React, { useContext } from "react"
 // DATA STORAGE & TYPES
-import { Clases } from "contexts/Clases"
+import { Lessons } from "@contexts/LessonsContext"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 
 const Modals = () => {
-  const { modalSuccess, modalError, cleanStates } = useContext(Clases)
+  const { modalSuccess, modalError, cleanStates } = useContext(Lessons)
 
   return (
     <>

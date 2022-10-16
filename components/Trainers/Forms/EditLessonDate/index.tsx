@@ -6,12 +6,13 @@ import {
   editLesson,
 } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Clases } from "contexts/Clases"
-import texts from "strings/trainers.json"
-import { shifts, day, month, year } from "const/fixedVariables"
+import { Lessons } from "@contexts/LessonsContext"
+import generalTexts from "strings/general.json"
+import trainerTexts from "strings/trainers.json"
+import { shifts, day, month, year } from "const/time"
+import yesOrNoArr from "const/fixedVariables"
 import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import ModalForm from "components/UI/ModalForm"
@@ -33,7 +34,7 @@ interface EditInterface {
 
 const EditLessonDate = ({ cancelEdit }: EditInterface) => {
   const { purchaseSelected, setModalSuccess, setModalError } = useContext(
-    Clases,
+    Lessons,
   )
   const [cannotAddDate, setCannotAddDate] = useState<boolean>(false)
   const [provisionalSelection, setProvisionalSelection] = useState<{
@@ -68,7 +69,6 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
       dateSelected !== undefined &&
       dateSelected !== null
     ) {
-      // se puede
       const lessonDay = `${dateSelected.date.slice(
         6,
         10,
@@ -97,16 +97,16 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",
-          title: "Excelente!",
-          content: "Se han modificado la fecha de la clase.",
+          title: `${generalTexts.modalTitles.success}`,
+          content: `${trainerTexts.edit.successModal.content}`,
         })
         cancelEdit()
       } else {
         setModalError({
           status: "alert",
           icon: "IconExclamation",
-          title: "UPS!",
-          content: "Ha ocurrido un error al modificar la fecha de la clase.",
+          title: `${generalTexts.modalTitles.error}`,
+          content: `${trainerTexts.edit.errorModal.content}`,
         })
         cancelEdit()
       }
@@ -147,11 +147,11 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
   const checkLessonsPurchased = async () => {
     const checkLessonsCallPaid = await getByPartnerAndPaid(
       purchaseSelected.partner_id,
-      "SI",
+      `${yesOrNoArr[0].display_name}`,
     )
     const checkLessonsCallNotPaid = await getByPartnerAndPaid(
       purchaseSelected.partner_id,
-      "NO",
+      `${yesOrNoArr[1].display_name}`,
     )
 
     const filterActualLesson = checkLessonsCallPaid.data.filter(
@@ -177,21 +177,21 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
 
   return (
     <ModalForm
-      title="Editar fecha de clase"
-      cancelButtonContent={texts.cancel}
-      submitButtonContent={texts.executePayment.pay}
+      title={trainerTexts.edit.title}
+      cancelButtonContent={generalTexts.actions.cancel}
+      submitButtonContent={generalTexts.actions.pay}
       submit={handleEdit}
       cancelFunction={cancelEdit}
     >
       <Form>
         <CurrentDate>
-          <p>Fecha a modificar:</p>
+          <p>{trainerTexts.edit.change_date}</p>
           <span>
             {purchaseSelected.lesson_date} {purchaseSelected.shift}
           </span>
         </CurrentDate>
         <FutureLessonsList>
-          <p>Clases reservadas:</p>
+          <p>{trainerTexts.edit.reserved_lessons}</p>
           <div>
             {futureLessons.length ? (
               futureLessons.map(lesson => (
@@ -208,7 +208,7 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
           <InputCalendar
             width={220}
             required={dateSelected === undefined}
-            label="Nueva fecha"
+            label={trainerTexts.edit.new_date}
             reference={newDateRef}
             valueCalendar={provisionalSelection.date}
             minCalendarDate={`${day}/${month}/${year}`}
@@ -224,7 +224,7 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
             width={140}
             options={shifts}
             ref={shiftRef}
-            label="Turno"
+            label={trainerTexts.createPurchase.shift}
             required={dateSelected === undefined}
             setValue={provisionalSelection.shift}
             onChangeProps={(e: { id: number; display_name: "AM" | "PM" }) =>
@@ -254,10 +254,7 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
           </AcceptButton>
         </HorizontalGroup>
         {cannotAddDate && (
-          <Warning>
-            El cupo de la fecha y turno seleccionados esta lleno, por favor
-            intenta con otro turno o fecha.
-          </Warning>
+          <Warning>{trainerTexts.createPurchase.warningMessage}</Warning>
         )}
         {dateSelected !== undefined && dateSelected !== null && (
           <DateSelectedContainer>

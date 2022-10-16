@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from "react"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
-import { cajaFilters } from "const/fixedVariables"
+import { cajaFilters } from "const/finances"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import InputCalendar from "components/UI/InputCalendar"

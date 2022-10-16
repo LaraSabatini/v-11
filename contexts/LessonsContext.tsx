@@ -2,13 +2,13 @@ import { createContext, useState, useRef } from "react"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import { day, month, year } from "const/fixedVariables"
+import { day, month, year } from "const/time"
 import ModalInterface from "interfaces/components/ModalInterface"
 import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 
-export const Clases = createContext({
+export const Lessons = createContext({
   clasesPurchasedByWeek: null,
   setClasesPurchasedByWeek: null,
   currentWeekNumber: null,
@@ -63,7 +63,7 @@ export const Clases = createContext({
   setTriggerListUpdate: null,
 })
 
-const ClasesProvider = ({ children }) => {
+const LessonsProvider = ({ children }) => {
   const [clasesPurchasedByWeek, setClasesPurchasedByWeek] = useState<
     ClasesPurchasedInterface[]
   >([])
@@ -166,7 +166,7 @@ const ClasesProvider = ({ children }) => {
   ] = useState<ClasesPurchasedInterface>(null)
 
   return (
-    <Clases.Provider
+    <Lessons.Provider
       value={{
         clasesPurchasedByWeek,
         setClasesPurchasedByWeek,
@@ -223,8 +223,8 @@ const ClasesProvider = ({ children }) => {
       }}
     >
       {children}
-    </Clases.Provider>
+    </Lessons.Provider>
   )
 }
 
-export default ClasesProvider
+export default LessonsProvider

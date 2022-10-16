@@ -6,7 +6,8 @@ import getCategories from "services/Store/getCategories.service"
 import getBrands from "services/Store/getBrands.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
-import texts from "strings/store.json"
+import storeTexts from "strings/store.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Tooptip from "components/UI/Tooltip"
@@ -18,15 +19,12 @@ import ProductsView from "./Store/ProductList"
 import Receipt from "./Store/Receipt"
 import CreateProductForm from "./CreateProductForm"
 import Filters from "./Store/Filters"
-// import Purchases from "./Purchases"
 import Stock from "./Stock"
 import {
   Container,
   Content,
   Title,
   HeadContent,
-  // SectionsButtons,
-  // Section,
   CreateProduct,
   MainButton,
   ProductsAndReceiptContainer,
@@ -102,8 +100,14 @@ function StoreView() {
       <Content>
         <HeadContent>
           <Title>
-            {texts.title}{" "}
-            <span> / {router.query.store === "true" ? "Tienda" : "Stock"}</span>
+            {generalTexts.sections.store}{" "}
+            <span>
+              {" "}
+              /{" "}
+              {router.query.store === "true"
+                ? `${generalTexts.sections.store}`
+                : `${storeTexts.stock}`}
+            </span>
           </Title>
           <Filters />
           {router.query.stock === "true" && (
@@ -133,7 +137,7 @@ function StoreView() {
         {router.query.stock === "true" && <Stock />}
         {(router.query.store === "true" || router.query.stock === "true") && (
           <MainButton>
-            <Tooptip title={texts.mainButton}>
+            <Tooptip title={storeTexts.mainButton}>
               <CreateProduct
                 onClick={() => {
                   if (stockChanges) {

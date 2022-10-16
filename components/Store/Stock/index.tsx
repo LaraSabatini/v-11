@@ -7,7 +7,8 @@ import {
 } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
-import texts from "strings/store.json"
+import storeTexts from "strings/store.json"
+import generalTexts from "strings/general.json"
 import OptionsInterface from "interfaces/store/OptionsInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 // COMPONENTS & STYLING
@@ -423,7 +424,7 @@ const Stock = () => {
   return (
     <Container>
       {validationError && (
-        <ErrorMessage>{texts.stockSection.errorMessage}</ErrorMessage>
+        <ErrorMessage>{storeTexts.stockSection.errorMessage}</ErrorMessage>
       )}
       {modalStockHasChanges && (
         <ModalAlert
@@ -431,13 +432,13 @@ const Stock = () => {
           message={{
             status: `alert`,
             icon: `IconAlert`,
-            title: `${texts.stockSection.changesModal.title}`,
-            content: `${texts.stockSection.changesModal.content}`,
+            title: `${generalTexts.modalTitles.discard}`,
+            content: `${generalTexts.modalContent.discard}`,
           }}
           closeModal={cancelDiscard}
           closeRefresh={cancelDiscard}
-          mainButtonContent={texts.stockSection.discard}
-          secondButtonContent={texts.stockSection.cancel}
+          mainButtonContent={generalTexts.actions.discardChanges}
+          secondButtonContent={generalTexts.actions.cancel}
           mainAction={discardChanges}
           isNotice
         />
@@ -469,13 +470,13 @@ const Stock = () => {
       <ButtonsContainer>
         <TextButton
           onClick={discardChanges}
-          content={texts.stockSection.cancel}
+          content={generalTexts.actions.cancel}
           disabled={!stockChanges}
         />
         <TextButton
           onClick={saveChanges}
           cta
-          content={texts.stockSection.save}
+          content={generalTexts.actions.save}
           disabled={!stockChanges}
         />
       </ButtonsContainer>

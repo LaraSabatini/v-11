@@ -1,19 +1,7 @@
 import axios from "axios"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 
-export const createPartner = async (body: {
-  id: number
-  name: string
-  last_name: string
-  identification_number: string
-  birth_date: string
-  email: string
-  phone: string
-  subs: number
-  membership_start_date: string
-  created_by: number
-  free_pass: number
-  is_student: string
-}) => {
+export const createPartner = async (body: PartnerInterface) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -46,18 +34,7 @@ export const deletePartner = async (id: number) => {
   return res.data
 }
 
-export const editPartner = async (body: {
-  id: number
-  name: string
-  last_name: string
-  identification_number: string
-  birth_date: string
-  email: string
-  membership_start_date: string
-  created_by: number
-  is_student: string
-  free_pass: number
-}) => {
+export const editPartner = async (body: PartnerInterface) => {
   const res = await axios.put(
     `https://v-11-backend.vercel.app/partners/${body.id}`,
     body,

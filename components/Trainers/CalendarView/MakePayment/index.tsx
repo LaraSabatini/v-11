@@ -13,17 +13,12 @@ import {
   updateDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
-import { Clases } from "contexts/Clases"
-import {
-  paymentMethods,
-  paymentUsers,
-  day,
-  month,
-  year,
-  months,
-} from "const/fixedVariables"
+import { Lessons } from "@contexts/LessonsContext"
+import { paymentMethods, paymentUsers } from "const/finances"
+import { day, month, year, months } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-import texts from "strings/trainers.json"
+import trainerTexts from "strings/trainers.json"
+import generalTexts from "strings/general.json"
 import ModalInterface from "interfaces/components/ModalInterface"
 
 // COMPONENTS & STYLING
@@ -59,7 +54,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
     prices,
     setModalSuccess,
     setModalError,
-  } = useContext(Clases)
+  } = useContext(Lessons)
 
   const [hasDiscount, setHasDiscount] = useState<boolean>(false)
   const [listOfLessonsToPay, setListOfLessonsToPay] = useState<
@@ -154,16 +149,16 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
-        title: `${texts.createPruchase.successModal.title}`,
-        content: `${texts.createPruchase.successModal.content}`,
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${trainerTexts.createPurchase.successModal.content}`,
       })
       cancelPayment()
     } else {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
-        title: `${texts.createPruchase.errorModal.title}`,
-        content: `${texts.createPruchase.errorModal.content}`,
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${trainerTexts.createPurchase.errorModal.content}`,
       })
       cancelPayment()
     }
@@ -342,9 +337,9 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
 
   return (
     <ModalForm
-      title={`${texts.executePayment.title} - ${data.partner_name} ${data.partner_last_name}`}
-      cancelButtonContent={texts.cancel}
-      submitButtonContent={texts.executePayment.pay}
+      title={`${trainerTexts.executePayment.title} - ${data.partner_name} ${data.partner_last_name}`}
+      cancelButtonContent={generalTexts.actions.cancel}
+      submitButtonContent={generalTexts.actions.pay}
       submit={handlePayment}
       cancelFunction={cancelPayment}
     >
@@ -381,7 +376,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
         <HorizontalGroup>
           <Autocomplete
             options={paymentMethods}
-            label={texts.createPruchase.paymentMethod}
+            label={trainerTexts.createPurchase.paymentMethod}
             required
             ref={paymentMethodRef}
             width={150}
@@ -395,7 +390,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
           {paymentMethodSelected !== null && paymentMethodSelected.id === 2 && (
             <Autocomplete
               options={paymentUsers}
-              label={texts.createPruchase.digitalUser}
+              label={generalTexts.payments.digital_user}
               required
               ref={paymentUserRef}
               width={150}
@@ -407,7 +402,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
         </HorizontalGroup>
 
         <Total>
-          <p>{texts.createPruchase.total}</p>
+          <p>{trainerTexts.createPurchase.total}</p>
           <p>$ {finalPrice}</p>
         </Total>
         {hasDiscount && (

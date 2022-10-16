@@ -4,7 +4,8 @@ import { editPartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import texts from "strings/partners.json"
+import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
@@ -108,8 +109,8 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",
-          title: `${texts.edit.success.title}`,
-          content: `${texts.edit.success.content}`,
+          title: `${generalTexts.modalTitles.success}`,
+          content: `${partnerTexts.edit.success.content}`,
         })
         setDetailState("view")
         setHasChanges(false)
@@ -117,8 +118,8 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         setModalError({
           status: "alert",
           icon: "IconExclamation",
-          title: `${texts.edit.error.title}`,
-          content: `${texts.edit.error.content}`,
+          title: `${generalTexts.modalTitles.error}`,
+          content: `${partnerTexts.edit.error.content}`,
         })
         setHasChanges(false)
       }
@@ -138,13 +139,13 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
           message={{
             status: `alert`,
             icon: `IconAlert`,
-            title: `${texts.modal_changes.title}`,
-            content: `${texts.modal_changes.content}`,
+            title: `${generalTexts.modalTitles.discard}`,
+            content: `${generalTexts.modalContent.discard}`,
           }}
           closeModal={cancelDiscard}
           closeRefresh={cancelDiscard}
-          mainButtonContent={texts.modal_changes.main_button}
-          secondButtonContent={texts.modal_changes.cancel_button}
+          mainButtonContent={generalTexts.actions.confirm}
+          secondButtonContent={generalTexts.actions.cancel}
           mainAction={discardChanges}
           isNotice
         />
@@ -152,7 +153,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       <PartnerData>
         <TextField
           width={190}
-          label={texts.create.name}
+          label={generalTexts.labels.name}
           required
           value={newData.name}
           type="text"
@@ -161,7 +162,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         />
         <TextField
           width={190}
-          label={texts.create.last_name}
+          label={generalTexts.labels.lastName}
           required
           value={newData.last_name}
           type="text"
@@ -172,7 +173,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
       <PartnerData>
         <TextField
           width={190}
-          label={texts.create.email}
+          label={generalTexts.labels.email}
           value={newData.email}
           type="email"
           reference={emailRef}
@@ -180,7 +181,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         />
         <TextField
           width={190}
-          label={texts.create.identification}
+          label={generalTexts.labels.identificationNumber}
           value={newData.identification_number}
           type="text"
           reference={identificationRef}
@@ -194,7 +195,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         <TextField
           width={180}
           required={wantsSubscription}
-          label="N° de telefono"
+          label={generalTexts.labels.phoneNumber}
           type="text"
           value={newData.phone}
           reference={phoneRef}
@@ -207,7 +208,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         />
         <TextField
           width={190}
-          label={texts.edit.member_since}
+          label={partnerTexts.member_since}
           value={partnerInfo?.membership_start_date}
           type="text"
           disabled
@@ -234,7 +235,7 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         </CheckboxContainer>
         <TextField
           width={190}
-          label={texts.created_by}
+          label={partnerTexts.created_by}
           value={`@${createdBy}`}
           type="text"
           disabled
@@ -242,8 +243,15 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         />
       </PartnerData>
       <ButtonContainer>
-        <TextButton onClick={discardChanges} content={texts.edit.cancel} />
-        <TextButton onClick={saveChanges} content={texts.edit.save} cta />
+        <TextButton
+          onClick={discardChanges}
+          content={generalTexts.actions.cancel}
+        />
+        <TextButton
+          onClick={saveChanges}
+          content={generalTexts.actions.save}
+          cta
+        />
       </ButtonContainer>
     </Details>
   )

@@ -3,6 +3,7 @@ import React, { useContext } from "react"
 import { Finances } from "contexts/Finances"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import HistoryCard from "./ProductCard"
 import { FinalProfit } from "../BoulderView/styles"
@@ -38,10 +39,10 @@ const ProductsView = () => {
       <ProfitsContainer>
         <FinalProfit>
           <p>
-            <span>Efectivo:</span> <b>$ {profitsCash}</b>
+            <span>{generalTexts.payments.cash}:</span> <b>$ {profitsCash}</b>
           </p>
           <p>
-            <span>Mercado Pago:</span> <b>$ {profitsMP}</b>
+            <span>{generalTexts.payments.digital}:</span> <b>$ {profitsMP}</b>
           </p>
         </FinalProfit>
       </ProfitsContainer>
