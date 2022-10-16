@@ -35,7 +35,7 @@ const CardsContainer = styled.div`
 
 const Card = styled.div`
   background-color: white;
-  width: 320px;
+  width: 350px;
   padding: 15px 15px;
   border-radius: 10px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
