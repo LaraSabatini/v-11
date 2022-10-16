@@ -18,7 +18,7 @@ import {
 // DATA STORAGE & TYPES
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
-import { Clases } from "contexts/Clases"
+import { Lessons } from "@contexts/LessonsContext"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
@@ -65,7 +65,7 @@ function TrainersView() {
     cleanStates,
     setModalSuccess,
     setModalError,
-  } = useContext(Clases)
+  } = useContext(Lessons)
   const router = useRouter()
 
   const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)

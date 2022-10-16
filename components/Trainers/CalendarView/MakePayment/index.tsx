@@ -13,7 +13,7 @@ import {
   updateDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
-import { Clases } from "contexts/Clases"
+import { Lessons } from "@contexts/LessonsContext"
 import { paymentMethods, paymentUsers } from "const/finances"
 import { day, month, year, months } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
@@ -54,7 +54,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
     prices,
     setModalSuccess,
     setModalError,
-  } = useContext(Clases)
+  } = useContext(Lessons)
 
   const [hasDiscount, setHasDiscount] = useState<boolean>(false)
   const [listOfLessonsToPay, setListOfLessonsToPay] = useState<

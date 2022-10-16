@@ -113,7 +113,7 @@ const BoulderView = () => {
   const fillDataForOtherThanDays = () => {
     const forMonths = fillData(3)
     const forCombos = fillData(1)
-    const forClases = fillData(4)
+    const forLessons = fillData(4)
 
     const newArray = boulderPurchasesViewData
     newArray[1] = {
@@ -132,9 +132,9 @@ const BoulderView = () => {
 
     newArray[3] = {
       name: `${financesTexts.lessons}`,
-      earnings_cash: forClases.individualEarningsCash,
-      earnings_mp: forClases.individualEarningsMP,
-      amount_of_lessons_sold: forClases.individualUnitsSold,
+      earnings_cash: forLessons.individualEarningsCash,
+      earnings_mp: forLessons.individualEarningsMP,
+      amount_of_lessons_sold: forLessons.individualUnitsSold,
     }
 
     setBoulderPurchasesViewData(newArray)
@@ -234,7 +234,7 @@ const BoulderView = () => {
           </Earnings>
         </Card>
         <Card>
-          <Title>{financesTexts.months}.toUpperCase()</Title>
+          <Title>{financesTexts.month}.toUpperCase()</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}

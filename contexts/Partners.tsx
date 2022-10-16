@@ -42,7 +42,6 @@ export const PartnersContext = createContext({
   newPartnerData: null,
   setNewPartnerData: null,
   comboRef: null,
-  clasesRef: null,
   paymentRef: null,
   paidTime: null,
   setPaidTime: null,
@@ -52,8 +51,8 @@ export const PartnersContext = createContext({
   setCombos: null,
   comboSelected: null,
   setComboSelected: null,
-  amountOfClases: null,
-  setAmountOfClases: null,
+  amountOfLessons: null,
+  setAmountOfLessons: null,
   isChecked: null,
   setIsChecked: null,
   prices: null,
@@ -146,7 +145,6 @@ const PartnersProvider = ({ children }) => {
   const paidTimeUnitRef = useRef(null)
   const trainertRef = useRef(null)
   const comboRef = useRef(null)
-  const clasesRef = useRef(null)
   const paymentRef = useRef(null)
   const phoneRef = useRef(null)
   const paymentUserRef = useRef(null)
@@ -165,7 +163,7 @@ const PartnersProvider = ({ children }) => {
 
   const [comboSelected, setComboSelected] = useState<number>()
 
-  const [amountOfClases, setAmountOfClases] = useState<number>()
+  const [amountOfLessons, setAmountOfLessons] = useState<number>()
 
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const [usesDay, setUsesDay] = useState<boolean>(true)
@@ -227,16 +225,16 @@ const PartnersProvider = ({ children }) => {
           }
         }
       }
-      if (amountOfClases !== undefined) {
-        if (amountOfClases === 1) {
+      if (amountOfLessons !== undefined) {
+        if (amountOfLessons === 1) {
           price += prices[3].price_cash
-        } else if (amountOfClases === 4) {
+        } else if (amountOfLessons === 4) {
           price += prices[4].price_cash
-        } else if (amountOfClases === 8) {
+        } else if (amountOfLessons === 8) {
           price += prices[5].price_cash
         } else {
           // si no son ni 1 ni 4 ni 8
-          price += prices[3].price_cash * amountOfClases
+          price += prices[3].price_cash * amountOfLessons
         }
       }
       setFinalPrice(price)
@@ -272,16 +270,16 @@ const PartnersProvider = ({ children }) => {
           }
         }
       }
-      if (amountOfClases !== undefined) {
-        if (amountOfClases === 1) {
+      if (amountOfLessons !== undefined) {
+        if (amountOfLessons === 1) {
           price += prices[3].price_mp
-        } else if (amountOfClases === 4) {
+        } else if (amountOfLessons === 4) {
           price += prices[4].price_mp
-        } else if (amountOfClases === 8) {
+        } else if (amountOfLessons === 8) {
           price += prices[5].price_mp
         } else {
           // si no son ni 1 ni 4 ni 8
-          price += prices[3].price_mp * amountOfClases
+          price += prices[3].price_mp * amountOfLessons
         }
       }
       setFinalPrice(price)
@@ -321,7 +319,7 @@ const PartnersProvider = ({ children }) => {
       display_name: "Dia/s",
     })
     setComboSelected(undefined)
-    setAmountOfClases(0)
+    setAmountOfLessons(0)
     setIsChecked(false)
     setFinalPrice(0)
     setPaymentMethodSelected(1)
@@ -372,7 +370,6 @@ const PartnersProvider = ({ children }) => {
         newPartnerData,
         setNewPartnerData,
         comboRef,
-        clasesRef,
         paymentRef,
         paidTime,
         setPaidTime,
@@ -382,8 +379,8 @@ const PartnersProvider = ({ children }) => {
         setCombos,
         comboSelected,
         setComboSelected,
-        amountOfClases,
-        setAmountOfClases,
+        amountOfLessons,
+        setAmountOfLessons,
         prices,
         setPrices,
         finalPrice,

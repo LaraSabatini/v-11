@@ -6,7 +6,7 @@ import {
   editLesson,
 } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Clases } from "contexts/Clases"
+import { Lessons } from "@contexts/LessonsContext"
 import generalTexts from "strings/general.json"
 import trainerTexts from "strings/trainers.json"
 import { shifts, day, month, year } from "const/time"
@@ -34,7 +34,7 @@ interface EditInterface {
 
 const EditLessonDate = ({ cancelEdit }: EditInterface) => {
   const { purchaseSelected, setModalSuccess, setModalError } = useContext(
-    Clases,
+    Lessons,
   )
   const [cannotAddDate, setCannotAddDate] = useState<boolean>(false)
   const [provisionalSelection, setProvisionalSelection] = useState<{

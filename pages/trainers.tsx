@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import TrainersView from "components/Trainers"
-import ClasesProvider from "contexts/Clases"
+import LessonsProvider from "@contexts/LessonsContext"
 import { useRouter } from "next/router"
 
 function Trainers() {
@@ -27,9 +27,9 @@ function Trainers() {
         }
       `}</style>
       {isLoggedIn !== null && (
-        <ClasesProvider>
+        <LessonsProvider>
           <TrainersView />
-        </ClasesProvider>
+        </LessonsProvider>
       )}
     </>
   )

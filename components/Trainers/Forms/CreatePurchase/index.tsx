@@ -9,7 +9,7 @@ import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.ser
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"
 import { shifts, day, month, year } from "const/time"
-import { Clases } from "contexts/Clases"
+import { Lessons } from "@contexts/LessonsContext"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
@@ -81,7 +81,7 @@ const CreatePurchaseModal = ({
     setTrainerSelected,
     paymentUserSelected,
     identificationError,
-  } = useContext(Clases)
+  } = useContext(Lessons)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 

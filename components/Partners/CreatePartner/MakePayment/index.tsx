@@ -33,7 +33,7 @@ const MakePayment = () => {
     paidTimeUnit,
     paidTime,
     finalPrice,
-    amountOfClases,
+    amountOfLessons,
     paymentMethodSelected,
     setPaymentMethodSelected,
     setScheduleList,
@@ -78,7 +78,7 @@ const MakePayment = () => {
     paidTime,
     paymentMethodSelected,
     comboSelected,
-    amountOfClases,
+    amountOfLessons,
   ])
 
   // const calendarRef = useRef(null)
