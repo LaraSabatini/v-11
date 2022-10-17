@@ -25,6 +25,8 @@ const PartnerDetails = () => {
   const [createdBy, setCreatedBy] = useState<string>("")
   const [partnerInfo, setPartnerInfo] = useState<PartnerInterface>()
 
+  console.log("partnerSelected", partnerSelected)
+
   const getUsersInfo = async (creatorId: number) => {
     const data = await getUsers()
 
