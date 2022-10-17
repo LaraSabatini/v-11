@@ -204,10 +204,7 @@ const CalendarView = () => {
 
   const evaluateIfPaymentOrEdition = () => {
     if (purchaseSelected.paid === "NO") {
-      // modal pagar
       setModalMakeAPayment(true)
-    } else {
-      // push a arr de seleccionados
     }
   }
 
