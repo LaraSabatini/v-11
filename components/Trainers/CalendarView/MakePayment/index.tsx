@@ -77,6 +77,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
         paid: "SI",
         payment_method_id: paymentMethodSelected.id,
         final_price: finalPrice / lessonsSelectedToPay.length,
+        paid_day: `${day}-${month}-${year}`,
       }
 
       // eslint-disable-next-line no-await-in-loop

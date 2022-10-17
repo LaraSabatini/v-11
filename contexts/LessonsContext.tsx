@@ -61,6 +61,8 @@ export const Lessons = createContext({
   setPurchaseSelected: null,
   triggerListUpdate: null,
   setTriggerListUpdate: null,
+  students: null,
+  setStudents: null,
 })
 
 const LessonsProvider = ({ children }) => {
@@ -165,6 +167,9 @@ const LessonsProvider = ({ children }) => {
     setPurchaseSelected,
   ] = useState<ClasesPurchasedInterface>(null)
 
+  // STUDENTS VIEW
+  const [students, setStudents] = useState<PartnerInterface[]>([])
+
   return (
     <Lessons.Provider
       value={{
@@ -220,6 +225,8 @@ const LessonsProvider = ({ children }) => {
         setPurchaseSelected,
         triggerListUpdate,
         setTriggerListUpdate,
+        students,
+        setStudents,
       }}
     >
       {children}

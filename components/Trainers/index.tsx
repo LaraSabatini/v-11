@@ -28,6 +28,7 @@ import Header from "components/UI/Header"
 import Icon from "components/UI/Assets/Icon"
 import Modals from "./Modals"
 import CalendarView from "./CalendarView"
+import StudentsView from "./StudentsView"
 import CreatePurchaseModal from "./Forms/CreatePurchase"
 import EditLessonDate from "./Forms/EditLessonDate"
 import {
@@ -116,6 +117,7 @@ function TrainersView() {
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
+        paid_day: paid ? `${day}-${month}-${year}` : "",
       }
 
       //  eslint-disable-next-line no-await-in-loop
@@ -322,6 +324,8 @@ function TrainersView() {
           </div>
         </Title>
         {router.query.calendar === "true" && <CalendarView />}
+        {router.query.students === "true" && <StudentsView />}
+
         <ButtonContainer>
           <EditButton
             disabled={purchaseSelected === null}

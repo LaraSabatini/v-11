@@ -123,6 +123,21 @@ function Header() {
                 >
                   {trainerTexts.calendar}
                 </SubButton>
+                <SubButton
+                  selectedSection={router.query.students === "true"}
+                  type="button"
+                  onClick={() => {
+                    if (router.asPath === "/home" && hasChanges) {
+                      setModalHasChanges(true)
+                    } else if (router.asPath === "/store" && stockChanges) {
+                      setModalStockHasChanges(true)
+                    } else {
+                      router.replace("/trainers?students=true")
+                    }
+                  }}
+                >
+                  {trainerTexts.students}
+                </SubButton>
               </ClientsMenu>
             )}
           </SectionTitle>
