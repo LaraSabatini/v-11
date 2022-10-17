@@ -103,7 +103,7 @@ const StudentsView = () => {
         </ScrollView>
         <PaginatorContainer>
           <Pagination
-            totalPages="?"
+            totalPages={1}
             setPage={currentPage}
             onClickNext={goNext}
             onClickBack={goPrev}
