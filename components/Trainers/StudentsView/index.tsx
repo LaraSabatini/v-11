@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { getStudents, searchPartner } from "services/Partners/Partner.service"
 import { getByPartnerAndPaid } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Lessons } from "contexts/LessonsContext"
+import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 // import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
@@ -113,8 +113,6 @@ const StudentsView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentSelected])
 
-  console.log(lessonsByStudent)
-
   return (
     <Container>
       <LeftContainer>
@@ -170,13 +168,13 @@ const StudentsView = () => {
                   <div className="sub-content">
                     <div className="column">
                       {lesson.length > 1 ? (
-                        <>
+                        <div className="content">
                           <p>{lesson.length}</p> <span>Clases</span>
-                        </>
+                        </div>
                       ) : (
-                        <>
+                        <div className="content">
                           <span>{lesson[i]?.lesson_date}</span>
-                        </>
+                        </div>
                       )}
                     </div>
                     <div>

@@ -99,7 +99,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
       newValues.combo !== undefined &&
       newValues.combo !== 0
     ) {
-      // crear boulder payment combo
       const boulderPurchaseBody = {
         id: 0,
         date: `${day}-${month}-${year}`,
@@ -121,7 +120,6 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         "bouderPayment created successfully"
     }
     if (paidTime !== 0) {
-      // crear boulder payment para dia/s o mes/es
       let finalProfit = 0
       if (paidTimeUnit.id === 1) {
         finalProfit =
@@ -300,9 +298,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         } else {
           success = false
         }
-        // editar
       } else {
-        // crear
         const digitalPaymentBody = {
           id: 0,
           user_id: paymentUserSelected.id,
@@ -472,7 +468,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             {partnerInfo?.phone}
           </PartnerData>
         ) : (
-          <></>
+          <div />
         )}
 
         {partnerInfo?.identification_number !== "" ? (

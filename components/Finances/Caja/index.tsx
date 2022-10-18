@@ -18,8 +18,8 @@ import TotalEarnings from "./styles"
 
 const Caja = () => {
   const {
-    cajaFilterSelected,
-    cajaDateSelected,
+    tillFilterSelected,
+    tillDateSelected,
     setProductsPurchasedByDate,
     setProductList,
     setBoulderProductsPurchasedByDate,
@@ -30,7 +30,7 @@ const Caja = () => {
   } = useContext(Finances)
 
   const fillData = async () => {
-    const productPurchasesCall = await getStorePurchasesByDate(cajaDateSelected)
+    const productPurchasesCall = await getStorePurchasesByDate(tillDateSelected)
 
     const filterProducts =
       productPurchasesCall.data.length > 0
@@ -56,7 +56,7 @@ const Caja = () => {
     setBoulderProductsPurchasedByDate(filterBoulderProducts)
 
     const getBoulderPaymentsCall = await getBoulderPurchaseByDate(
-      cajaDateSelected,
+      tillDateSelected,
     )
 
     setPartnerPaymentsByDate(getBoulderPaymentsCall.data)
@@ -64,7 +64,7 @@ const Caja = () => {
     const getProductsCall = await getProducts(1)
     setProductList(getProductsCall.data)
 
-    const digitalPaymentByDateCall = await searchByDate(cajaDateSelected)
+    const digitalPaymentByDateCall = await searchByDate(tillDateSelected)
 
     setDigitalPaymentsList(digitalPaymentByDateCall.data)
 
@@ -104,14 +104,14 @@ const Caja = () => {
   useEffect(() => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cajaDateSelected])
+  }, [tillDateSelected])
 
   return (
     <div>
-      {cajaFilterSelected.id === 1 && <ProductsView />}
-      {cajaFilterSelected.id === 2 && <BoulderView />}
-      {cajaFilterSelected.id === 3 && <CajaByUser />}
-      {cajaFilterSelected.id === 4 && (
+      {tillFilterSelected.id === 1 && <ProductsView />}
+      {tillFilterSelected.id === 2 && <BoulderView />}
+      {tillFilterSelected.id === 3 && <CajaByUser />}
+      {tillFilterSelected.id === 4 && (
         <TotalEarnings>
           <p>
             <span>{generalTexts.payments.cash.toUpperCase()}:</span>{" "}

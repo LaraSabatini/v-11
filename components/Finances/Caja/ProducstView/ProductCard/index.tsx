@@ -49,7 +49,7 @@ const HistoryCard = ({
   }
 
   return (
-    <>
+    <div>
       {id !== 1 && id !== 2 && id !== 3 && (
         <Card>
           {type === 1 && brand_id !== 12 && brand_id !== 11 && (
@@ -101,7 +101,7 @@ const HistoryCard = ({
           </Description>
         </Card>
       )}
-    </>
+    </div>
   )
 }
 

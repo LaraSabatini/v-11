@@ -84,7 +84,7 @@ const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
                     {partner.free_pass === 0 &&
                       partner.is_student ===
                         `${yesOrNoArr[1].display_name.toUpperCase()}` && (
-                        <Day>Dia</Day>
+                        <Day>{partnerTexts.day}</Day>
                       )}
                   </Tags>
 

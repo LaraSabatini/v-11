@@ -9,7 +9,7 @@ import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.ser
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"
 import { shifts, day, month, year } from "const/time"
-import { Lessons } from "@contexts/LessonsContext"
+import { Lessons } from "@contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"

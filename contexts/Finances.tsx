@@ -6,10 +6,10 @@ import MPUserPayment from "interfaces/finances/MPUserPayments"
 import { day, month, year } from "const/time"
 
 export const Finances = createContext({
-  cajaFilterSelected: null,
-  setCajaFilterSelected: null,
-  cajaDateSelected: null,
-  setCajaDateSelected: null,
+  tillFilterSelected: null,
+  setTillFilterSelected: null,
+  tillDateSelected: null,
+  setTillDateSelected: null,
   actualDate: null,
   productsPurchasedByDate: null,
   setProductsPurchasedByDate: null,
@@ -32,8 +32,7 @@ export const Finances = createContext({
 })
 
 const FinancesProvider = ({ children }) => {
-  // CAJA ******************************************************
-  const [cajaFilterSelected, setCajaFilterSelected] = useState<{
+  const [tillFilterSelected, setTillFilterSelected] = useState<{
     id: number
     filter: string
   }>({
@@ -43,14 +42,12 @@ const FinancesProvider = ({ children }) => {
 
   const actualDate = `${day}-${month}-${year}`
 
-  const [cajaDateSelected, setCajaDateSelected] = useState<string>(actualDate)
+  const [tillDateSelected, setTillDateSelected] = useState<string>(actualDate)
 
-  // CAJA PRODUCTOS
   const [productsPurchasedByDate, setProductsPurchasedByDate] = useState<
     ProductsPurchasedByDateInterface[]
   >([])
 
-  // CAJA BOULDER
   const [
     boulderProductsPurchasedByDate,
     setBoulderProductsPurchasedByDate,
@@ -126,10 +123,10 @@ const FinancesProvider = ({ children }) => {
   return (
     <Finances.Provider
       value={{
-        cajaFilterSelected,
-        setCajaFilterSelected,
-        cajaDateSelected,
-        setCajaDateSelected,
+        tillFilterSelected,
+        setTillFilterSelected,
+        tillDateSelected,
+        setTillDateSelected,
         actualDate,
         productsPurchasedByDate,
         setProductsPurchasedByDate,

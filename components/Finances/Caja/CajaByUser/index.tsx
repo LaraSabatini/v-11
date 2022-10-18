@@ -10,7 +10,7 @@ import DefaultInterface from "interfaces/components/DefaultInterface"
 import { MainContainer, CardContainer, Card, User } from "./styles"
 
 const CajaByUser = () => {
-  const { digitalPaymentsList, cajaDateSelected } = useContext(Finances)
+  const { digitalPaymentsList } = useContext(Finances)
 
   return (
     <MainContainer>

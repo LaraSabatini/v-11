@@ -16,10 +16,10 @@ import {
 
 const FiltersCaja = () => {
   const {
-    setCajaFilterSelected,
-    cajaFilterSelected,
-    setCajaDateSelected,
-    cajaDateSelected,
+    setTillFilterSelected,
+    tillFilterSelected,
+    setTillDateSelected,
+    tillDateSelected,
   } = useContext(Finances)
 
   const [openFilters, setOpenFilters] = useState<boolean>(false)
@@ -30,14 +30,14 @@ const FiltersCaja = () => {
     const day = e.slice(0, 2)
     const month = e.slice(3, 5)
     const year = e.slice(6, 10)
-    setCajaDateSelected(`${day}-${month}-${year}`)
+    setTillDateSelected(`${day}-${month}-${year}`)
   }
 
   return (
     <FiltersContainer>
       <Filter>
         <Select onClick={() => setOpenFilters(!openFilters)}>
-          {cajaFilterSelected !== null && <p>{cajaFilterSelected.filter}</p>}
+          {tillFilterSelected !== null && <p>{tillFilterSelected.filter}</p>}
           <Icon icon="IconArrowLeft" />
         </Select>
         {openFilters && (
@@ -46,10 +46,10 @@ const FiltersCaja = () => {
               <Option
                 key={filter.id}
                 onClick={() => {
-                  setCajaFilterSelected(filter)
+                  setTillFilterSelected(filter)
                   setOpenFilters(false)
                 }}
-                selected={cajaFilterSelected.id === filter.id}
+                selected={tillFilterSelected.id === filter.id}
               >
                 {filter.filter}
               </Option>
@@ -61,10 +61,10 @@ const FiltersCaja = () => {
         <InputCalendar
           position="bottom-right"
           width={200}
-          valueCalendar={`${cajaDateSelected.slice(
+          valueCalendar={`${tillDateSelected.slice(
             0,
             2,
-          )}/${cajaDateSelected.slice(3, 5)}/${cajaDateSelected.slice(6, 10)}`}
+          )}/${tillDateSelected.slice(3, 5)}/${tillDateSelected.slice(6, 10)}`}
           reference={calendarRef}
           onChange={e => cleanDate(e.selectedChangeDate)}
         />

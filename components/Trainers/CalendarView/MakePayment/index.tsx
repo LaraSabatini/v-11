@@ -13,7 +13,7 @@ import {
   updateDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
-import { Lessons } from "@contexts/LessonsContext"
+import { Lessons } from "@contexts/Lessons"
 import { paymentMethods, paymentUsers } from "const/finances"
 import { day, month, year, months } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
