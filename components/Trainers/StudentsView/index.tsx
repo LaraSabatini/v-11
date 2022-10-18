@@ -113,8 +113,6 @@ const StudentsView = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentSelected])
 
-  console.log(lessonsByStudent)
-
   return (
     <Container>
       <LeftContainer>

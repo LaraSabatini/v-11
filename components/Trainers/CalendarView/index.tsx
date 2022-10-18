@@ -248,10 +248,12 @@ const CalendarView = () => {
           <ColumnTitle>
             <p>
               {daysOfTheWeek[0].display_name}
-              <span>
-                {weekDays[0]?.getDate()}/{weekDays[0]?.getMonth() + 1}/
-                {weekDays[0]?.getFullYear()}
-              </span>
+              {weekDays.length && (
+                <span>
+                  {weekDays[0].getDate()}/{weekDays[0].getMonth() + 1}/
+                  {weekDays[0].getFullYear()}
+                </span>
+              )}
             </p>
           </ColumnTitle>
           <StudentsList>
@@ -283,10 +285,12 @@ const CalendarView = () => {
           <ColumnTitle>
             <p>
               {daysOfTheWeek[1].display_name}
-              <span>
-                {weekDays[1]?.getDate()}/{weekDays[1]?.getMonth() + 1}/
-                {weekDays[1]?.getFullYear()}
-              </span>
+              {weekDays.length && (
+                <span>
+                  {weekDays[1].getDate()}/{weekDays[1].getMonth() + 1}/
+                  {weekDays[1].getFullYear()}
+                </span>
+              )}
             </p>
           </ColumnTitle>
           <StudentsList>
@@ -318,11 +322,12 @@ const CalendarView = () => {
           <ColumnTitle>
             <p>
               {daysOfTheWeek[2].display_name}
-
-              <span>
-                {weekDays[2]?.getDate()}/{weekDays[2]?.getMonth() + 1}/
-                {weekDays[2]?.getFullYear()}
-              </span>
+              {weekDays.length && (
+                <span>
+                  {weekDays[2].getDate()}/{weekDays[2].getMonth() + 1}/
+                  {weekDays[2].getFullYear()}
+                </span>
+              )}
             </p>
           </ColumnTitle>
           <StudentsList>
@@ -354,11 +359,12 @@ const CalendarView = () => {
           <ColumnTitle>
             <p>
               {daysOfTheWeek[3].display_name}
-
-              <span>
-                {weekDays[3]?.getDate()}/{weekDays[3]?.getMonth() + 1}/
-                {weekDays[3]?.getFullYear()}
-              </span>
+              {weekDays.length && (
+                <span>
+                  {weekDays[3].getDate()}/{weekDays[3].getMonth() + 1}/
+                  {weekDays[3].getFullYear()}
+                </span>
+              )}
             </p>
           </ColumnTitle>
           <StudentsList>
@@ -390,11 +396,12 @@ const CalendarView = () => {
           <ColumnTitle>
             <p>
               {daysOfTheWeek[4].display_name}
-
-              <span>
-                {weekDays[4]?.getDate()}/{weekDays[4]?.getMonth() + 1}/
-                {weekDays[4]?.getFullYear()}
-              </span>
+              {weekDays.length && (
+                <span>
+                  {weekDays[4].getDate()}/{weekDays[4].getMonth() + 1}/
+                  {weekDays[4].getFullYear()}
+                </span>
+              )}
             </p>
           </ColumnTitle>
           <StudentsList>
