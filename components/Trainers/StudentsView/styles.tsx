@@ -72,6 +72,56 @@ const NoMore = styled.p`
   margin-top: 25%;
 `
 
+const LessonsPurchased = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 25px;
+  padding: 10px;
+
+  .row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid ${theme.colors.focus};
+    margin-bottom: 15px;
+  }
+
+  .sub-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: space-between;
+
+    p {
+      margin: 0;
+      width: 10px;
+    }
+
+    span {
+      font-weight: ${theme.fontWeights.light};
+    }
+  }
+
+  .column {
+    display: flex;
+    gap: 15px;
+  }
+`
+
+const TableTitle = styled.p`
+  margin: 0;
+  text-decoration: underline;
+`
+
+const TableTitles = styled.div`
+  display: flex;
+  align-items: center;
+  /* margin-left: 25px; */
+  justify-content: space-between;
+`
+
 export {
   ListContainer,
   ListItem,
@@ -82,4 +132,7 @@ export {
   SearchBarContainer,
   PaginatorContainer,
   NoMore,
+  LessonsPurchased,
+  TableTitle,
+  TableTitles,
 }

@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { getLessonsByWeek } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { Lessons } from "@contexts/LessonsContext"
-import { today, month, year, daysOfTheWeek, shifts } from "const/time"
+import { today, year, daysOfTheWeek, shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import Pagination from "components/UI/Pagination"
@@ -76,7 +76,7 @@ const CalendarView = () => {
     },
   })
 
-  const [weekDays, setWeekDays] = useState<number[]>([])
+  const [weekDays, setWeekDays] = useState<Date[]>([])
 
   const getDayOfWeek = (w: number, y: number) => {
     const simple = new Date(y, 0, 1 + (w - 1) * 7)
@@ -95,11 +95,11 @@ const CalendarView = () => {
     fridayDate.setDate(ISOweekStart.getDate() + 4)
 
     setWeekDays([
-      ISOweekStart.getDate(),
-      tuesdayDate.getDate(),
-      wednesdayDate.getDate(),
-      thursdayDate.getDate(),
-      fridayDate.getDate(),
+      ISOweekStart,
+      tuesdayDate,
+      wednesdayDate,
+      thursdayDate,
+      fridayDate,
     ])
   }
 
@@ -249,7 +249,8 @@ const CalendarView = () => {
             <p>
               {daysOfTheWeek[0].display_name}
               <span>
-                {weekDays[0]}/{month}/{year}
+                {weekDays[0]?.getDate()}/{weekDays[0]?.getMonth() + 1}/
+                {weekDays[0]?.getFullYear()}
               </span>
             </p>
           </ColumnTitle>
@@ -283,7 +284,8 @@ const CalendarView = () => {
             <p>
               {daysOfTheWeek[1].display_name}
               <span>
-                {weekDays[1]}/{month}/{year}
+                {weekDays[1]?.getDate()}/{weekDays[1]?.getMonth() + 1}/
+                {weekDays[1]?.getFullYear()}
               </span>
             </p>
           </ColumnTitle>
@@ -318,7 +320,8 @@ const CalendarView = () => {
               {daysOfTheWeek[2].display_name}
 
               <span>
-                {weekDays[2]}/{month}/{year}
+                {weekDays[2]?.getDate()}/{weekDays[2]?.getMonth() + 1}/
+                {weekDays[2]?.getFullYear()}
               </span>
             </p>
           </ColumnTitle>
@@ -353,7 +356,8 @@ const CalendarView = () => {
               {daysOfTheWeek[3].display_name}
 
               <span>
-                {weekDays[3]}/{month}/{year}
+                {weekDays[3]?.getDate()}/{weekDays[3]?.getMonth() + 1}/
+                {weekDays[3]?.getFullYear()}
               </span>
             </p>
           </ColumnTitle>
@@ -388,7 +392,8 @@ const CalendarView = () => {
               {daysOfTheWeek[4].display_name}
 
               <span>
-                {weekDays[4]}/{month}/{year}
+                {weekDays[4]?.getDate()}/{weekDays[4]?.getMonth() + 1}/
+                {weekDays[4]?.getFullYear()}
               </span>
             </p>
           </ColumnTitle>
