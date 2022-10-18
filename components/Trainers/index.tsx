@@ -232,11 +232,8 @@ function TrainersView() {
             digitalPaymentBody,
           )
 
-          if (editDigitalPayment.message === "payment updated successfully") {
-            success = true
-          } else {
-            success = false
-          }
+          success =
+            editDigitalPayment.message === "payment updated successfully"
         } else {
           const digitalPaymentBody: {
             id: number

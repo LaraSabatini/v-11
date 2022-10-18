@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import { getStudents, searchPartner } from "services/Partners/Partner.service"
+import { getByPartnerAndPaid } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { Lessons } from "contexts/LessonsContext"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+// import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import theme from "theme/index"
@@ -20,24 +22,17 @@ import {
   NoMore,
   SearchBarContainer,
   RightContainer,
+  LessonsPurchased,
+  TableTitle,
+  TableTitles,
 } from "./styles"
 
 const StudentsView = () => {
-  // BUSCADOR
-  // CADA ALUMNO:
-  /*
-        clases compradas
-        pasadas
-        hoy
-        futuras
-
-        cuando pago cada clase o pack => partner payments => VER SI ES POSIBLE
-    */
-
   const { setStudents, students } = useContext(Lessons)
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)
   const [searchValue, setSearchValue] = useState<string>("")
+  const [lessonsByStudent, setLessonsByStudent] = useState([])
 
   const getStudentsList = async () => {
     if (searchValue.length <= 3) {
@@ -71,6 +66,54 @@ const StudentsView = () => {
       setCurrentPage(currentPage - 1)
     }
   }
+
+  const getPayments = async () => {
+    const lessonsPaid = await getByPartnerAndPaid(studentSelected.id, "SI")
+    const lessonsNotPaid = await getByPartnerAndPaid(studentSelected.id, "NO")
+
+    const finalArr = lessonsPaid.data
+      .concat(lessonsNotPaid.data)
+      .sort((a, b) => {
+        return b.id - a.id
+      })
+
+    const paidDays = []
+    finalArr.map(purchase => paidDays.push(purchase.paid_day))
+
+    const uniqueArray = paidDays.filter((item, pos) => {
+      return paidDays.indexOf(item) === pos
+    })
+
+    const finalArrayOfDates = uniqueArray.map(paidDate => {
+      const arrayOfDates = []
+      finalArr.filter(
+        lesson => lesson.paid_day === paidDate && arrayOfDates.push(lesson),
+      )
+      return arrayOfDates
+    })
+
+    setLessonsByStudent(finalArrayOfDates)
+
+    // console.log("PRUEBA", prueba)
+
+    // setRows(uniqueArray)
+
+    // duplicatedDates = uniqueArray
+
+    // eslint-disable-next-line no-console
+    console.log("FINAL", finalArr)
+
+    // setLessonsByStudent(finalArr)
+  }
+
+  useEffect(() => {
+    if (studentSelected !== null) {
+      getPayments()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [studentSelected])
+
+  console.log(lessonsByStudent)
 
   return (
     <Container>
@@ -113,8 +156,57 @@ const StudentsView = () => {
       {studentSelected !== null && (
         <RightContainer>
           <p className="name">
-            {studentSelected.name} {studentSelected.last_name}
+            Historial de pagos - {studentSelected.name}{" "}
+            {studentSelected.last_name}
           </p>
+          <LessonsPurchased>
+            <TableTitles>
+              <TableTitle>Fecha clase/s:</TableTitle>
+              <TableTitle>Fecha pago:</TableTitle>
+            </TableTitles>
+            {lessonsByStudent.length > 0 &&
+              lessonsByStudent.map((lesson, i) => (
+                <div key={lesson} className="row">
+                  <div className="sub-content">
+                    <div className="column">
+                      {lesson.length > 1 ? (
+                        <>
+                          <p>{lesson.length}</p> <span>Clases</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>{lesson[i]?.lesson_date}</span>
+                        </>
+                      )}
+                    </div>
+                    <div>
+                      {lesson[i]?.paid_day === ""
+                        ? "Impago"
+                        : `${lesson[i]?.paid_day}`}
+                    </div>
+                  </div>
+
+                  {/* {lesson.map((h, i) => (
+                    <div key={h.id} className="sub-content">
+                      <div className="column">
+                        {lesson.length > 1 ? (
+                          <>
+                            <p>{lesson.length}</p> <span>Clases</span>
+                          </>
+                        ) : (
+                          <>
+                            <p>{i + 1})</p> <span>{h.lesson_date}</span>
+                          </>
+                        )}
+                      </div>
+                      <div>
+                        {h.paid_day === "" ? "Impago" : `${h.paid_day}`}
+                      </div>
+                    </div>
+                  ))} */}
+                </div>
+              ))}
+          </LessonsPurchased>
         </RightContainer>
       )}
     </Container>
