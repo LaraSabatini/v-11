@@ -77,7 +77,7 @@ function Login() {
   }, [router.asPath])
 
   return (
-    <>
+    <div>
       {!logged && (
         <>
           <Shapes>
@@ -119,7 +119,7 @@ function Login() {
           </MainContainer>
         </>
       )}
-    </>
+    </div>
   )
 }
 

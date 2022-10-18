@@ -200,7 +200,7 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
                 </span>
               ))
             ) : (
-              <></>
+              <div />
             )}
           </div>
         </FutureLessonsList>

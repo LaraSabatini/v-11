@@ -15,7 +15,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.asPath])
   return (
-    <>{(logged || router.asPath === "/") && <Component {...pageProps} />}</>
+    <div>
+      {(logged || router.asPath === "/") && <Component {...pageProps} />}
+    </div>
   )
 }
 

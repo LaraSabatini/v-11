@@ -168,13 +168,13 @@ const StudentsView = () => {
                   <div className="sub-content">
                     <div className="column">
                       {lesson.length > 1 ? (
-                        <>
+                        <div className="content">
                           <p>{lesson.length}</p> <span>Clases</span>
-                        </>
+                        </div>
                       ) : (
-                        <>
+                        <div className="content">
                           <span>{lesson[i]?.lesson_date}</span>
-                        </>
+                        </div>
                       )}
                     </div>
                     <div>
