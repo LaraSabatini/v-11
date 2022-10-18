@@ -18,7 +18,7 @@ import {
 // DATA STORAGE & TYPES
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
-import { Lessons } from "@contexts/LessonsContext"
+import { Lessons } from "@contexts/Lessons"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"

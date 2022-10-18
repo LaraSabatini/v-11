@@ -6,7 +6,7 @@ import {
   editLesson,
 } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Lessons } from "@contexts/LessonsContext"
+import { Lessons } from "@contexts/Lessons"
 import generalTexts from "strings/general.json"
 import trainerTexts from "strings/trainers.json"
 import { shifts, day, month, year } from "const/time"

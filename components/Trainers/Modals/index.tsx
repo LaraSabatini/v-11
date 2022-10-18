@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 // DATA STORAGE & TYPES
-import { Lessons } from "@contexts/LessonsContext"
+import { Lessons } from "@contexts/Lessons"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 

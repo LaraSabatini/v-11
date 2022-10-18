@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { getStudents, searchPartner } from "services/Partners/Partner.service"
 import { getByPartnerAndPaid } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Lessons } from "contexts/LessonsContext"
+import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 // import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING

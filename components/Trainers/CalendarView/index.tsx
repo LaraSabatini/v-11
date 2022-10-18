@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import { getLessonsByWeek } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Lessons } from "@contexts/LessonsContext"
+import { Lessons } from "@contexts/Lessons"
 import { today, year, daysOfTheWeek, shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING

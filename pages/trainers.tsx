@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import TrainersView from "components/Trainers"
-import LessonsProvider from "@contexts/LessonsContext"
+import LessonsProvider from "@contexts/Lessons"
 import { useRouter } from "next/router"
 
 function Trainers() {

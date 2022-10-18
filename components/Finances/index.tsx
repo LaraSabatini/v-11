@@ -1,7 +1,7 @@
 import React from "react"
 import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
-import WorkingHoursProvider from "contexts/WorkingHours"
+// import WorkingHoursProvider from "contexts/WorkingHours"
 import generalTexts from "strings/general.json"
 import financesTexts from "strings/finances.json"
 // COMPONENTS & STYLING
@@ -39,9 +39,9 @@ const FinancesView = () => {
         {router.query.billing === "true" && <Caja />}
         {router.query.expenses === "true" && <Bills />}
         {router.query.workingHours === "true" && (
-          <WorkingHoursProvider>
-            <WorkingHours />
-          </WorkingHoursProvider>
+          // <WorkingHoursProvider>
+          <WorkingHours />
+          // </WorkingHoursProvider>
         )}
         {router.query.earnings === "true" && <Earnings />}
       </Content>
