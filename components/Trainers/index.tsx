@@ -23,6 +23,7 @@ import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterfa
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
+import cleanPartnerData from "utils/cleanPartnerData"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
 import Icon from "components/UI/Assets/Icon"
@@ -174,12 +175,21 @@ function TrainersView() {
       } else {
         setIdentificationError(false)
 
-        const createPartnerCall = await createPartner(newPartnerData)
+        const formatName = cleanPartnerData(newPartnerData.name)
+        const formatLastName = cleanPartnerData(newPartnerData.last_name)
+
+        const createBody = {
+          ...newPartnerData,
+          name: formatName,
+          last_name: formatLastName,
+        }
+
+        const createPartnerCall = await createPartner(createBody)
         if (createPartnerCall.message === "partner created successfully") {
           const pur = await createLessonPurchaseFunc(
             createPartnerCall.partnerId,
-            newPartnerData.name,
-            newPartnerData.last_name,
+            formatName,
+            formatLastName,
           )
           success = pur
         }

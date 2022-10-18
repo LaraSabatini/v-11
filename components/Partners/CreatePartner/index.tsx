@@ -18,6 +18,7 @@ import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { paymentMethods } from "const/finances"
 import { months, today, day, month, year } from "const/time"
+import cleanPartnerData from "utils/cleanPartnerData"
 // COMPONENTS
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
@@ -63,21 +64,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
 
-  const cleanPersonalDataFormat = () => {
-    const inputName = newPartnerData.name.toLowerCase()
-    const name = inputName.charAt(0).toUpperCase() + inputName.slice(1)
-
-    const inputLastName = newPartnerData.last_name.toLowerCase()
-    const lastName =
-      inputLastName.charAt(0).toUpperCase() + inputLastName.slice(1)
-
-    return {
-      name,
-      lastName,
-    }
-  }
-
-  // FIRST FORM
   const handleCreate = async e => {
     e.preventDefault()
 
@@ -100,7 +86,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         "false" &&
       emailRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
-      const formatData = cleanPersonalDataFormat()
+      const formatName = cleanPartnerData(newPartnerData.name)
+      const formatLastName = cleanPartnerData(newPartnerData.last_name)
 
       const seeDuplicated = await searchPartner(
         newPartnerData.identification_number,
@@ -113,8 +100,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         const body = {
           ...newPartnerData,
           id: 0,
-          name: formatData.name,
-          last_name: formatData.lastName,
+          name: formatName,
+          last_name: formatLastName,
           birth_date:
             newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
           membership_start_date: `${day}/${month}/${year}`,
@@ -153,10 +140,8 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             : 0,
         is_student: `${generalTexts.no.toUpperCase()}`,
       }
-      // CREAR SOCIO
       const apiValidation = await createPartner(body)
 
-      // CREAR PAGO SE SOCIO
       if (apiValidation.message === "partner created successfully") {
         success = true
         const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
@@ -198,7 +183,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             paidTimeUnit !== undefined && paidTimeUnit?.id !== null
               ? paidTimeUnit.id
               : "",
-          // clases_paid: 0,
           payment_method_id: paymentMethodSelected,
           payment_method_name: paymentMethods.filter(
             pm => pm.id === paymentMethodSelected,
@@ -210,7 +194,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
             (comboSelected !== null && comboSelected !== undefined)
               ? `${finalExpireDay}-${finalExpireMonth}-${expireYear}`
               : "",
-          // days_and_hours: "",
         }
 
         const createPaymentCall = await createPartnerPayment(paymentBody)
@@ -224,7 +207,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         }
       }
 
-      // CREAR PAGO DIGITAL
       if (paymentMethodSelected === 2) {
         const searchIfExists = await searchByUserAndDate(
           paymentUserSelected.id,
@@ -250,9 +232,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           } else {
             success = false
           }
-          //  editar
         } else {
-          // crear
           const digitalPaymentBody = {
             id: 0,
             user_id: paymentUserSelected.id,
@@ -279,7 +259,6 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
         comboSelected !== undefined &&
         comboSelected !== 0
       ) {
-        // crear boulder payment combo
         const boulderPurchaseBody = {
           id: 0,
           date: `${day}-${month}-${year}`,
@@ -301,11 +280,9 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
           "bouderPayment created successfully"
       }
       if (paidTime !== 0) {
-        // crear boulder payment para dia/s o mes/es
         let finalProfit = 0
         if (paidTimeUnit.id === 1) {
           if (paidTime === 8) {
-            // evaluar si son 8 dias
             finalProfit =
               paymentMethodSelected === 1
                 ? prices[1].price_cash

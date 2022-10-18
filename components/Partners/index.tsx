@@ -58,17 +58,15 @@ function PartnersView() {
   const [searchValue, setSearchValue] = useState<string>("")
 
   const setPartnerList = async () => {
-    if (searchValue.length === 0) {
-      if (filterSelected === "all") {
-        const data = await getPartners(currentPage)
-        setPartners(data.data)
-      } else if (filterSelected === "students") {
-        const data = await getStudents(currentPage)
-        setPartners(data.data)
-      } else {
-        const data = await getFreePassPartners(currentPage)
-        setPartners(data.data)
-      }
+    if (filterSelected === "all") {
+      const data = await getPartners(currentPage)
+      setPartners(data.data)
+    } else if (filterSelected === "students") {
+      const data = await getStudents(currentPage)
+      setPartners(data.data)
+    } else {
+      const data = await getFreePassPartners(currentPage)
+      setPartners(data.data)
     }
   }
 
@@ -90,22 +88,16 @@ function PartnersView() {
     setFilterSelected("all")
     setPartnerSelected(null)
 
-    if (searchValue.length > 2) {
-      const executeSearch = await searchPartner(searchValue, 1)
-      setPartners(executeSearch.data)
-    } else if (searchValue.length === 0) {
-      const data = await getPartners(1)
-      setPartners(data.data)
-    }
+    const executeSearch = await searchPartner(searchValue, 1)
+    setPartners(executeSearch.data)
   }
 
   useEffect(() => {
-    searchPartnerInDB()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchValue])
-
-  useEffect(() => {
-    setPartnerList()
+    if (searchValue.length > 1) {
+      searchPartnerInDB()
+    } else {
+      setPartnerList()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterSelected, currentPage, searchValue, triggerListUpdate])
 
