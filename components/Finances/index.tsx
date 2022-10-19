@@ -7,10 +7,10 @@ import financesTexts from "strings/finances.json"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
 import Bills from "./Bills"
-import Caja from "./Caja"
+import Till from "./Till"
 import Earnings from "./Earnings"
 import WorkingHours from "./WorkingHours"
-import FiltersCaja from "./Caja/Filters"
+import TillFilters from "./Till/Filters"
 import { MainContainer, Content, Title, HeadContent } from "./styles"
 
 const FinancesView = () => {
@@ -34,9 +34,9 @@ const FinancesView = () => {
               {router.query.earnings === "true" && `${financesTexts.earnings}`}
             </span>
           </Title>
-          {router.query.billing === "true" && <FiltersCaja />}
+          {router.query.billing === "true" && <TillFilters />}
         </HeadContent>
-        {router.query.billing === "true" && <Caja />}
+        {router.query.billing === "true" && <Till />}
         {router.query.expenses === "true" && <Bills />}
         {router.query.workingHours === "true" && (
           // <WorkingHoursProvider>

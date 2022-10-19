@@ -11,7 +11,7 @@ const CardsContainer = styled.div`
   gap: 15px;
 `
 
-const CajaTotal = styled.div`
+const TillTotal = styled.div`
   font-family: ${theme.fonts.primary};
 
   display: flex;
@@ -43,4 +43,4 @@ const ProfitsContainer = styled.div`
   gap: 10px;
 `
 
-export { Container, CardsContainer, CajaTotal, ProfitsContainer }
+export { Container, CardsContainer, TillTotal, ProfitsContainer }
