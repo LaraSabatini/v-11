@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect } from "react"
-// SERVICES
-import { searchByDate } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import { paymentUsers } from "const/finances"

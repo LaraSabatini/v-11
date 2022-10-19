@@ -3,7 +3,7 @@ import React, { useContext, useEffect } from "react"
 // SERVICES
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import { getProducts } from "services/Store/Products.service"
-import { searchByDate } from "services/Finances/DigitalPayments.service"
+import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
 import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
@@ -61,7 +61,9 @@ const Till = () => {
 
     setPartnerPaymentsByDate(getBoulderPaymentsCall.data)
 
-    const digitalPaymentByDateCall = await searchByDate(tillDateSelected)
+    const digitalPaymentByDateCall = await searchDigitalPaymentByDate(
+      tillDateSelected,
+    )
 
     setDigitalPaymentsList(digitalPaymentByDateCall.data)
 

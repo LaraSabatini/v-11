@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
 import {
-  getByPartnerAndPaid,
+  getLessonsByPartnerAndPaid,
   editLesson,
-  deletePurchase,
+  deleteLessonPurchase,
 } from "services/Trainers/LessonsPurchased.service"
 import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
 import {
   createDigitalPayment,
-  searchByUserAndDate,
+  searchDigitalPaymentByUserAndDate,
   updateDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
@@ -100,7 +100,7 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
     success =
       boulderPurchaseCall.message === "bouderPayment created successfully"
     if (paymentMethodSelected.id === 2) {
-      const searchIfExists = await searchByUserAndDate(
+      const searchIfExists = await searchDigitalPaymentByUserAndDate(
         paymentUserSelected.id,
         `${day}-${month}-${year}`,
       )
@@ -191,7 +191,10 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
   }
 
   const checkTypeOfPayment = async () => {
-    const checkListOfToPay = await getByPartnerAndPaid(data.partner_id, "NO")
+    const checkListOfToPay = await getLessonsByPartnerAndPaid(
+      data.partner_id,
+      "NO",
+    )
     setListOfLessonsToPay(checkListOfToPay.data)
     setLessonsSelectedToPay([data])
 
@@ -311,10 +314,9 @@ const MakePayment = ({ data, cancelPayment }: DataInterface) => {
 
   const removePurchases = async () => {
     let success: boolean = false
-    // deletePurchase
     for (let i = 0; i < lessonsSelectedToPay.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
-      const deleteCall = await deletePurchase(lessonsSelectedToPay[i].id)
+      const deleteCall = await deleteLessonPurchase(lessonsSelectedToPay[i].id)
       success = deleteCall.message === "purchase deleted successfully"
     }
 

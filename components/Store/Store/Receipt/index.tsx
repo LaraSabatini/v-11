@@ -7,7 +7,7 @@ import {
   editStorePurchase,
 } from "services/Store/storePurchases.service"
 import {
-  searchByUserAndDate,
+  searchDigitalPaymentByUserAndDate,
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
@@ -179,7 +179,7 @@ const Receipt = () => {
     }
 
     if (paymentMethodSelected === 2) {
-      const searchIfExistsCall = await searchByUserAndDate(
+      const searchIfExistsCall = await searchDigitalPaymentByUserAndDate(
         paymentUserSelected.id,
         `${day}-${month}-${year}`,
       )

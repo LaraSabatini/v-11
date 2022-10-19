@@ -5,7 +5,7 @@ import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { getPrices } from "services/Partners/Prices.service"
 import getCombos from "services/Partners/GetCombos.service"
 import {
-  searchByUserAndDate,
+  searchDigitalPaymentByUserAndDate,
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
@@ -167,7 +167,7 @@ const CreatePartner = ({ cancelCreate }: CreateInterface) => {
 
   const createDigitalPaymentFunc = async () => {
     let success: boolean = false
-    const searchIfExists = await searchByUserAndDate(
+    const searchIfExists = await searchDigitalPaymentByUserAndDate(
       paymentUserSelected.id,
       `${day}-${month}-${year}`,
     )

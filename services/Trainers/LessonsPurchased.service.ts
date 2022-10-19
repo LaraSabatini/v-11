@@ -27,7 +27,7 @@ export const getLessonsByWeek = async (week_id: number) => {
   return res.data
 }
 
-export const getByPartnerAndPaid = async (
+export const getLessonsByPartnerAndPaid = async (
   id: number,
   paid: "SI" | "NO" | string,
 ) => {
@@ -89,7 +89,7 @@ export const editLesson = async (body: ClasesPurchasedInterface) => {
   return res.data
 }
 
-export const deletePurchase = async (id: number) => {
+export const deleteLessonPurchase = async (id: number) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",

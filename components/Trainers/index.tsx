@@ -7,7 +7,7 @@ import { createLessonPurchase } from "services/Trainers/LessonsPurchased.service
 import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
 import {
   createDigitalPayment,
-  searchByUserAndDate,
+  searchDigitalPaymentByUserAndDate,
   updateDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 import {
@@ -224,7 +224,7 @@ function TrainersView() {
         createBoulderPurchaseCall.message ===
         "bouderPayment created successfully"
       if (paymentMethodSelected.id === 2) {
-        const searchIfExists = await searchByUserAndDate(
+        const searchIfExists = await searchDigitalPaymentByUserAndDate(
           paymentUserSelected.id,
           `${day}-${month}-${year}`,
         )

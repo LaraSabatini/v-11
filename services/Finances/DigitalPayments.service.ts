@@ -14,7 +14,10 @@ export const getAllDigitalPayments = async (page: number) => {
   return res.data
 }
 
-export const searchByUserAndDate = async (user_id: number, date: string) => {
+export const searchDigitalPaymentByUserAndDate = async (
+  user_id: number,
+  date: string,
+) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -27,7 +30,10 @@ export const searchByUserAndDate = async (user_id: number, date: string) => {
   return res.data
 }
 
-export const searchByUser = async (user_id: number, page: number) => {
+export const searchDigitalPaymentByUser = async (
+  user_id: number,
+  page: number,
+) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -40,7 +46,10 @@ export const searchByUser = async (user_id: number, page: number) => {
   return res.data
 }
 
-export const searchByMonth = async (month_id: number, page: number) => {
+export const searchDigitalPaymentByMonth = async (
+  month_id: number,
+  page: number,
+) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
@@ -53,7 +62,7 @@ export const searchByMonth = async (month_id: number, page: number) => {
   return res.data
 }
 
-export const searchByDate = async (date: string) => {
+export const searchDigitalPaymentByDate = async (date: string) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",

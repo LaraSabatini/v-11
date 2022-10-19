@@ -14,7 +14,7 @@ export const getAllWorkingHours = async (page: number) => {
   return res.data
 }
 
-export const getByWeek = async (week_id: number, page: number) => {
+export const getWokingHoursByWeek = async (week_id: number, page: number) => {
   const axiosHeader = {
     headers: {
       "Content-Type": "application/json",
