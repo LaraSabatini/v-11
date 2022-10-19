@@ -22,10 +22,9 @@ const Navigate = styled.button`
 const ProductsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  /* width: 60%; */
   width: 900px;
   gap: 15px;
-  padding-bottom: 20px;
+  padding: 10px 0 20px 5px;
 `
 
 export { Container, Paginator, Navigate, ProductsContainer }

@@ -83,8 +83,8 @@ const Receipt = () => {
   }
 
   const makeDigitalPayment = async searchIfExistsCall => {
-    let success: boolean = false
-    if (searchIfExistsCall.data.length > 0) {
+    let success = false
+    if (searchIfExistsCall.data.length) {
       const digitalPaymentBody = {
         id: searchIfExistsCall.data[0].id,
         user_id: searchIfExistsCall.data[0].user_id,
