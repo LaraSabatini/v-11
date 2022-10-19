@@ -1,13 +1,9 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 
 const getUsers = async () => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/users`,
+    `${process.env.NEXT_PUBLIC_API_HOST}/users`,
     axiosHeader,
   )
   return res.data

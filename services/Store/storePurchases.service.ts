@@ -1,16 +1,11 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 import StorePurchaseInterface from "interfaces/store/StorePurchase"
 
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/storePayments`
+
 export const getProductPurchases = async (page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/storePayments?page=${page}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}?page=${page}`, axiosHeader)
   return res.data
 }
 
@@ -19,40 +14,21 @@ export const getStorePurchasesByDateAndPaymentMethodAndProduct = async (
   product_id: number,
   payment_method_id: number,
 ) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/storePayments/month=${date}&product=${product_id}&payment=${payment_method_id}`,
+    `${apiURL}/month=${date}&product=${product_id}&payment=${payment_method_id}`,
     axiosHeader,
   )
   return res.data
 }
 
 export const getStorePurchasesByDate = async (date: string) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/storePayments/date=${date}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}/date=${date}`, axiosHeader)
   return res.data
 }
 
 export const createStorePurchase = async (body: StorePurchaseInterface) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-
   const data = await axios
-    .post("https://v-11-backend.vercel.app/storePayments", body, axiosHeader)
+    .post(`${apiURL}`, body, axiosHeader)
     .then(response => {
       const res = response.data
       return res
@@ -65,14 +41,6 @@ export const createStorePurchase = async (body: StorePurchaseInterface) => {
 }
 
 export const editStorePurchase = async (body: StorePurchaseInterface) => {
-  const res = await axios.put(
-    `https://v-11-backend.vercel.app/storePayments/${body.id}`,
-    body,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  )
+  const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }

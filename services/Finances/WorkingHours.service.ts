@@ -1,41 +1,25 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 import WorkingHoursInterface from "interfaces/finances/WorkingHours"
 
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/workingHours`
+
 export const getAllWorkingHours = async (page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/workingHours?page=${page}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}?page=${page}`, axiosHeader)
   return res.data
 }
 
 export const getWokingHoursByWeek = async (week_id: number, page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/workingHours/weekId=${week_id}page=${page}`,
+    `${apiURL}/weekId=${week_id}page=${page}`,
     axiosHeader,
   )
   return res.data
 }
 
 export const createWorkingHours = async (body: WorkingHoursInterface) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-
   const data = await axios
-    .post("https://v-11-backend.vercel.app/workingHours", body, axiosHeader)
+    .post(`${apiURL}`, body, axiosHeader)
     .then(response => {
       const res = response.data
       return res
@@ -48,27 +32,11 @@ export const createWorkingHours = async (body: WorkingHoursInterface) => {
 }
 
 export const updateWorkingHours = async (body: WorkingHoursInterface) => {
-  const res = await axios.put(
-    `https://v-11-backend.vercel.app/workingHours/${body.id}`,
-    body,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  )
+  const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }
 
 export const workingHoursPartner = async (id: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.delete(
-    `https://v-11-backend.vercel.app/workingHours/${id}`,
-    axiosHeader,
-  )
+  const res = await axios.delete(`${apiURL}/${id}`, axiosHeader)
   return res.data
 }

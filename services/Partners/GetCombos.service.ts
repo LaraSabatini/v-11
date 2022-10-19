@@ -1,13 +1,9 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 
 const getCombos = async () => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/combos`,
+    `${process.env.NEXT_PUBLIC_API_HOST}/combos`,
     axiosHeader,
   )
   return res.data

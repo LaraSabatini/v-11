@@ -1,15 +1,12 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 import ProductInterface from "interfaces/store/ProductInterface"
 
-export const createProduct = async (body: ProductInterface) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/products`
 
+export const createProduct = async (body: ProductInterface) => {
   const data = await axios
-    .post("https://v-11-backend.vercel.app/products", body, axiosHeader)
+    .post(`${apiURL}`, body, axiosHeader)
     .then(response => {
       const res = response.data
       return res
@@ -22,52 +19,23 @@ export const createProduct = async (body: ProductInterface) => {
 }
 
 export const editProduct = async (body: ProductInterface) => {
-  const res = await axios.put(
-    `https://v-11-backend.vercel.app/products/${body.id}`,
-    body,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  )
+  const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }
 
 export const getProducts = async (page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/products?page=${page}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}?page=${page}`, axiosHeader)
   return res.data
 }
 
 export const searchProducts = async (search: string, page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/products/${search}?page=${page}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}/${search}?page=${page}`, axiosHeader)
   return res.data
 }
 
 export const productByCategory = async (category_id: string, page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/products/category/${category_id}?page=${page}`,
+    `${apiURL}/category/${category_id}?page=${page}`,
     axiosHeader,
   )
   return res.data

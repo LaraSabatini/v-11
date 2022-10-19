@@ -1,30 +1,19 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/boulderPurchases`
+
 export const getBoulderPurchaseByDate = async (date: string) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/boulderPurchases/date=${date}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}/date=${date}`, axiosHeader)
   return res.data
 }
 
 export const createBoulderPurchase = async (
   body: PartnerPaymentsHistoryInterface,
 ) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-
   const data = await axios
-    .post("https://v-11-backend.vercel.app/boulderPurchases", body, axiosHeader)
+    .post(`${apiURL}`, body, axiosHeader)
     .then(response => {
       const res = response.data
       return res

@@ -1,54 +1,30 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/partnersPayment`
+
 export const getPartnerPayments = async (page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/partnersPayment?page=${page}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}?page=${page}`, axiosHeader)
   return res.data
 }
 
 export const getPartnerPaymentsById = async (id: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/partnersPayment/payment_by_partner_id/${id}`,
+    `${apiURL}/payment_by_partner_id/${id}`,
     axiosHeader,
   )
   return res.data
 }
 
 export const getClasesPaid = async () => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/partnersPayment/clases/0`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}/clases/0`, axiosHeader)
   return res.data
 }
 
 export const createPartnerPayment = async (body: PaymentInterface) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-
   const data = await axios
-    .post("https://v-11-backend.vercel.app/partnersPayment", body, axiosHeader)
+    .post(`${apiURL}`, body, axiosHeader)
     .then(response => {
       const res = response.data
       return res
@@ -61,26 +37,13 @@ export const createPartnerPayment = async (body: PaymentInterface) => {
 }
 
 export const editPartnerPayment = async (body: PaymentInterface) => {
-  const res = await axios.put(
-    `https://v-11-backend.vercel.app/partnersPayment/${body.id}`,
-    body,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  )
+  const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }
 
 export const getPaymentByPartner = async (partner: string, page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/partnersPayment/${partner}?page=${page}`,
+    `${apiURL}/${partner}?page=${page}`,
 
     axiosHeader,
   )
@@ -88,13 +51,8 @@ export const getPaymentByPartner = async (partner: string, page: number) => {
 }
 
 export const getPaymentByDate = async (date: string) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/partnersPayment/date/${date}`,
+    `${apiURL}/date/${date}`,
 
     axiosHeader,
   )
@@ -102,13 +60,8 @@ export const getPaymentByDate = async (date: string) => {
 }
 
 export const getEarningsByDate = async (date: string) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/partnersPayment/cards/${date}`,
+    `${apiURL}/cards/${date}`,
 
     axiosHeader,
   )

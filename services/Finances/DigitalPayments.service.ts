@@ -1,16 +1,11 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 import MPUserPayment from "interfaces/finances/MPUserPayments"
 
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/digitalPayments`
+
 export const getAllDigitalPayments = async (page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/digitalPayments?page=${page}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}?page=${page}`, axiosHeader)
   return res.data
 }
 
@@ -18,13 +13,8 @@ export const searchDigitalPaymentByUserAndDate = async (
   user_id: number,
   date: string,
 ) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/digitalPayments/by-user-date/user_id=${user_id}&date=${date}`,
+    `${apiURL}/by-user-date/user_id=${user_id}&date=${date}`,
     axiosHeader,
   )
   return res.data
@@ -34,13 +24,8 @@ export const searchDigitalPaymentByUser = async (
   user_id: number,
   page: number,
 ) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/digitalPayments/by-user/user_id=${user_id}&page=${page}`,
+    `${apiURL}/by-user/user_id=${user_id}&page=${page}`,
     axiosHeader,
   )
   return res.data
@@ -50,40 +35,21 @@ export const searchDigitalPaymentByMonth = async (
   month_id: number,
   page: number,
 ) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/digitalPayments/by-month/month_id=${month_id}&page=${page}`,
+    `${apiURL}/by-month/month_id=${month_id}&page=${page}`,
     axiosHeader,
   )
   return res.data
 }
 
 export const searchDigitalPaymentByDate = async (date: string) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/digitalPayments/by-date/date=${date}`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}/by-date/date=${date}`, axiosHeader)
   return res.data
 }
 
 export const createDigitalPayment = async (body: MPUserPayment) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-
   const data = await axios
-    .post("https://v-11-backend.vercel.app/digitalPayments", body, axiosHeader)
+    .post(`${apiURL}`, body, axiosHeader)
     .then(response => {
       const res = response.data
       return res
@@ -96,14 +62,6 @@ export const createDigitalPayment = async (body: MPUserPayment) => {
 }
 
 export const updateDigitalPayment = async (body: MPUserPayment) => {
-  const res = await axios.put(
-    `https://v-11-backend.vercel.app/digitalPayments/${body.id}`,
-    body,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  )
+  const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }

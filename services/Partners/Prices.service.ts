@@ -1,28 +1,15 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 import PricesInterface from "interfaces/partners/PricesInterface"
 
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/prices`
+
 export const getPrices = async () => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
-  const res = await axios.get(
-    `https://v-11-backend.vercel.app/prices`,
-    axiosHeader,
-  )
+  const res = await axios.get(`${apiURL}`, axiosHeader)
   return res.data
 }
 
 export const editPrices = async (body: PricesInterface) => {
-  const res = await axios.put(
-    `https://v-11-backend.vercel.app/prices/${body.id}`,
-    body,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    },
-  )
+  const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }
