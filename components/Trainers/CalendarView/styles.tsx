@@ -133,6 +133,18 @@ const SectionContainer = styled.div`
   align-items: flex-end;
 `
 
+const Scroll = styled.div`
+  padding-bottom: 10px;
+  display: flex;
+  width: 140px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+`
+
+const ScrollContainer = styled.div``
+
 export {
   MainContainer,
   Column,
@@ -143,4 +155,6 @@ export {
   DividerRowShifts,
   PaginatorContainer,
   SectionContainer,
+  Scroll,
+  ScrollContainer,
 }
