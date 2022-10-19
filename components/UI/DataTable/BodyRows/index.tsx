@@ -14,6 +14,7 @@ export interface RowInterface {
   onRowClick?: (arg?: any) => void
 }
 
+// eslint-disable-next-line react/function-component-definition
 const BodyRows: React.FC<RowInterface> = ({ item, columns, onRowClick }) => {
   if (item.status && item.status.status && item.status.status === "REVIEWING") {
     return (

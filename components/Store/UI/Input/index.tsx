@@ -9,13 +9,7 @@ interface InputInterface {
   width?: number
 }
 
-const Input = ({
-  value,
-  onChange,
-  reference,
-  onBlur,
-  width,
-}: InputInterface) => {
+function Input({ value, onChange, reference, onBlur, width }: InputInterface) {
   return (
     <InputStyled
       value={value}

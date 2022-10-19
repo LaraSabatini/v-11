@@ -24,12 +24,12 @@ interface EditPaymentInterface {
   partnerLastName: string
 }
 
-const EditPayment = ({
+function EditPayment({
   handleEdit,
   cancelEdit,
   partnerName,
   partnerLastName,
-}: EditPaymentInterface) => {
+}: EditPaymentInterface) {
   const {
     comboRef,
     comboSelected,
@@ -103,11 +103,11 @@ const EditPayment = ({
           width={100}
           value={
             comboSelected !== null && comboSelected !== undefined
-              ? `$${
+              ? `${
                   combos.filter(
                     (combo: CombosInterface) => combo.id === comboSelected,
                   )[0]?.price_cash
-                } /  $${
+                } /  ${
                   combos.filter(
                     (combo: CombosInterface) => combo.id === comboSelected,
                   )[0]?.price_mp

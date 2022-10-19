@@ -15,7 +15,7 @@ import {
   Earnings,
 } from "./styles"
 
-const BoulderView = () => {
+function BoulderView() {
   const {
     boulderProductsPurchasedByDate,
     partnerPaymentsByDate,

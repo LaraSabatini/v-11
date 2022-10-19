@@ -23,7 +23,7 @@ import {
   ScrollContainer,
 } from "./styles"
 
-const CalendarView = () => {
+function CalendarView() {
   const {
     weekNumberSelected,
     setWeekNumberSelected,

@@ -56,7 +56,7 @@ export interface CalendarDateNumberWeekInterface {
   isMinDate: boolean
 }
 
-const InputCalendar = ({
+function InputCalendar({
   width,
   height,
   success,
@@ -73,7 +73,7 @@ const InputCalendar = ({
   forceValidations,
   maxCalendarDate,
   minCalendarDate,
-}: InputCalendarInterface) => {
+}: InputCalendarInterface) {
   /**
    * state to open or close calendars
    */

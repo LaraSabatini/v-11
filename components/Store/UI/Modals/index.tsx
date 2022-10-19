@@ -2,7 +2,7 @@ import React, { useContext } from "react"
 import { StoreContext } from "contexts/Store"
 import ModalAlert from "components/UI/ModalAlert"
 
-const Modals = () => {
+function Modals() {
   const {
     modalSuccess,
     setModalSuccess,

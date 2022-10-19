@@ -13,7 +13,7 @@ import Checkbox from "components/UI/Checkbox"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 import { Form } from "./styles"
 
-const MakePayment = () => {
+function MakePayment() {
   const {
     paidTimeUnitRef,
     paidTimeRef,
@@ -78,11 +78,11 @@ const MakePayment = () => {
           width={100}
           value={
             comboSelected !== null && comboSelected !== undefined
-              ? `$${
+              ? `${
                   combos.filter(
                     (combo: CombosInterface) => combo.id === comboSelected,
                   )[0]?.price_cash
-                } /  $${
+                } /  ${
                   combos.filter(
                     (combo: CombosInterface) => combo.id === comboSelected,
                   )[0]?.price_mp

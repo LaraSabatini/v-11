@@ -32,7 +32,7 @@ interface EditInterface {
   cancelEdit: () => void
 }
 
-const EditLessonDate = ({ cancelEdit }: EditInterface) => {
+function EditLessonDate({ cancelEdit }: EditInterface) {
   const { purchaseSelected, setModalSuccess, setModalError } = useContext(
     Lessons,
   )

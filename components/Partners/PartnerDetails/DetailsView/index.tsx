@@ -39,7 +39,7 @@ interface DetailViewInterface {
   partnerInfo: PartnerInterface
 }
 
-const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
+function DetailsView({ partnerInfo }: DetailViewInterface) {
   const {
     setModalSuccess,
     setModalError,

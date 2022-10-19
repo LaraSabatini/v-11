@@ -38,7 +38,7 @@ import {
   PaymentMethods,
 } from "./styles"
 
-const Receipt = () => {
+function Receipt() {
   const {
     purchaseChange,
     purchase,

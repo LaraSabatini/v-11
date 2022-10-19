@@ -32,7 +32,7 @@ interface CreateInterface {
   cancelCreate: () => void
 }
 
-const CreatePartner = ({ cancelCreate }: CreateInterface) => {
+function CreatePartner({ cancelCreate }: CreateInterface) {
   const {
     nameRef,
     lastNameRef,

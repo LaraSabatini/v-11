@@ -41,7 +41,7 @@ interface DataInterface {
   cancelPayment: () => void
 }
 
-const MakePayment = ({ data, cancelPayment }: DataInterface) => {
+function MakePayment({ data, cancelPayment }: DataInterface) {
   const {
     setPaymentMethodSelected,
     setPaymentUserSelected,

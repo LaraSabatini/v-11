@@ -24,7 +24,7 @@ interface DetailEditInterface {
   createdBy: string
 }
 
-const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
+function DetailsEdition({ partnerInfo, createdBy }: DetailEditInterface) {
   const {
     setHasChanges,
     modalHasChanges,

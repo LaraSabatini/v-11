@@ -8,6 +8,7 @@ interface ComboChipInterface {
   onClick?: (arg?: any) => void
 }
 
+// eslint-disable-next-line react/function-component-definition
 const ComboChip: React.FC<ComboChipInterface> = ({ display_name, onClick }) => {
   return (
     <ChipContainer>

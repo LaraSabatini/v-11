@@ -1,6 +1,6 @@
 import React from "react"
 
-const Magnesiera = () => {
+function Magnesiera() {
   return (
     <svg
       width="114.95"

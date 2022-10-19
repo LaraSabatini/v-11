@@ -27,7 +27,7 @@ import {
   TableTitles,
 } from "./styles"
 
-const StudentsView = () => {
+function StudentsView() {
   const { setStudents, students } = useContext(Lessons)
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)

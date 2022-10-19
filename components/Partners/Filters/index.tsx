@@ -5,7 +5,7 @@ import clientFilters from "const/partners"
 // COMPONENTS & STYLING
 import { FiltersContainer, Filter } from "../styles"
 
-const Filters = () => {
+function Filters() {
   const {
     filterSelected,
     hasChanges,

@@ -29,7 +29,7 @@ import {
   TextFieldContainer,
 } from "./styles"
 
-const Stock = () => {
+function Stock() {
   const {
     productsList,
     setProductsList,

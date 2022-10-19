@@ -4,7 +4,7 @@ import { Lessons } from "@contexts/Lessons"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 
-const Modals = () => {
+function Modals() {
   const { modalSuccess, modalError, cleanStates } = useContext(Lessons)
 
   return (

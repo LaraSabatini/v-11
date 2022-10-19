@@ -41,6 +41,7 @@ export interface TableInterface {
   noPaginator?: boolean
 }
 
+// eslint-disable-next-line react/function-component-definition
 const DataTableComponent: React.FC<TableInterface> = ({
   columns,
   rows,

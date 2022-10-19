@@ -19,6 +19,7 @@ export interface SButtonInterface {
   reference?: React.MutableRefObject<any>
 }
 
+// eslint-disable-next-line react/function-component-definition
 const TextButton: React.FC<SButtonInterface> = ({
   cta,
   type,

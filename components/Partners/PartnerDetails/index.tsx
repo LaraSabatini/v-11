@@ -13,7 +13,7 @@ import DetailsView from "./DetailsView"
 import DetailsEdition from "./DetailsEdition"
 import { Container, Title, Divider, IconContainer } from "./styles"
 
-const PartnerDetails = () => {
+function PartnerDetails() {
   const {
     partnerSelected,
     partners,

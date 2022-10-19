@@ -5,7 +5,7 @@ import { PartnersContext } from "contexts/Partners"
 // COMPONENTS & STYLING
 import { SectionsButtons, Section } from "./styles"
 
-const SectionButtons = () => {
+function SectionButtons() {
   const {
     hasChanges,
     setModalHasChanges,

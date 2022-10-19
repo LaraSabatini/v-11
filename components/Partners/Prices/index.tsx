@@ -20,7 +20,7 @@ import {
   InputContainer,
 } from "./styles"
 
-const Prices = () => {
+function Prices() {
   const { setPrices, prices } = useContext(PartnersContext)
   const [newPrices, setNewPrices] = useState<PricesInterface>(null)
 

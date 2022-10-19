@@ -14,6 +14,7 @@ interface ICheckbox {
   ownState?: boolean
   hasEvent?: boolean
 }
+// eslint-disable-next-line react/function-component-definition
 const Checkbox: React.FC<ICheckbox> = ({
   checked,
   iconCheck = "IconCheck",

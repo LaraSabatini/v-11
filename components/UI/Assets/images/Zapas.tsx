@@ -1,6 +1,6 @@
 import React from "react"
 
-const Zapas = () => {
+function Zapas() {
   return (
     <svg
       width="117"

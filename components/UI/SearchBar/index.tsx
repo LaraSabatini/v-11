@@ -12,6 +12,7 @@ interface SearchInterface {
   id?: string
 }
 
+// eslint-disable-next-line react/function-component-definition
 const SearchBar: React.FC<SearchInterface> = ({
   searchValue,
   lensSearch,

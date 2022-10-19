@@ -17,13 +17,13 @@ interface IPagination {
   onClickLastPage?: (page: number) => void
 }
 
-const Pagination = ({
+function Pagination({
   totalPages,
   setPage,
   onClickBack,
   onClickNext,
   onClickLastPage,
-}: IPagination) => {
+}: IPagination) {
   const [page, setPageState] = useState<number>(1)
 
   useEffect(() => {
