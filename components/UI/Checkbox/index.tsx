@@ -48,20 +48,18 @@ const Checkbox: React.FC<ICheckbox> = ({
   }
 
   return (
-    <>
-      <CheckboxContainer>
-        <input
-          disabled={isDisabled}
-          type="checkbox"
-          id={idParam}
-          checked={checkState}
-          onChange={handleChange}
-        />
-        <label htmlFor={idParam}>
-          <Icon icon={!iconCheck ? "IconCheck" : iconCheck} color="white" />
-        </label>
-      </CheckboxContainer>
-    </>
+    <CheckboxContainer>
+      <input
+        disabled={isDisabled}
+        type="checkbox"
+        id={idParam}
+        checked={checkState}
+        onChange={handleChange}
+      />
+      <label htmlFor={idParam}>
+        <Icon icon={!iconCheck ? "IconCheck" : iconCheck} color="white" />
+      </label>
+    </CheckboxContainer>
   )
 }
 

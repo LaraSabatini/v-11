@@ -434,7 +434,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
         idsOnChips?.length <= 6
       ) {
         chipSet = (
-          <>
+          <div>
             {groupSelectedOptions?.map(
               (group: {
                 group_title?: string
@@ -469,7 +469,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 </React.Fragment>
               ),
             )}
-          </>
+          </div>
         )
       } else if (props.optionsList === "grouped" && idsOnChips?.length > 6) {
         chipSet = (
@@ -720,13 +720,13 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               {props.optionsList === "single" && selectedOptions.length ? (
                 <TotalChips />
               ) : (
-                <></>
+                <div />
               )}
               {props.optionsList === "grouped" &&
               groupSelectedOptions.length ? (
                 <TotalChips />
               ) : (
-                <></>
+                <div />
               )}
             </div>
           </ChipsContainer>

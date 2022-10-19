@@ -459,7 +459,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             {partnerInfo?.email}
           </PartnerData>
         ) : (
-          <></>
+          <div />
         )}
 
         {partnerInfo?.phone !== "" ? (
