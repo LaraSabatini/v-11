@@ -1,6 +1,7 @@
 import axios from "axios"
 import axiosHeader from "services/axiosHeader"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
+import defaultPost from "services/defaultPost"
 
 const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/boulderPurchases`
 
@@ -12,15 +13,6 @@ export const getBoulderPurchaseByDate = async (date: string) => {
 export const createBoulderPurchase = async (
   body: PartnerPaymentsHistoryInterface,
 ) => {
-  const data = await axios
-    .post(`${apiURL}`, body, axiosHeader)
-    .then(response => {
-      const res = response.data
-      return res
-    })
-    .catch(err => {
-      const res = err.response
-      return res
-    })
-  return data
+  const res = await defaultPost(apiURL, body)
+  return res
 }

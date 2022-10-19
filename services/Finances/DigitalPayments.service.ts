@@ -1,6 +1,7 @@
 import axios from "axios"
 import axiosHeader from "services/axiosHeader"
 import MPUserPayment from "interfaces/finances/MPUserPayments"
+import defaultPost from "services/defaultPost"
 
 const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/digitalPayments`
 
@@ -48,17 +49,8 @@ export const searchDigitalPaymentByDate = async (date: string) => {
 }
 
 export const createDigitalPayment = async (body: MPUserPayment) => {
-  const data = await axios
-    .post(`${apiURL}`, body, axiosHeader)
-    .then(response => {
-      const res = response.data
-      return res
-    })
-    .catch(err => {
-      const res = err.response
-      return res
-    })
-  return data
+  const res = await defaultPost(apiURL, body)
+  return res
 }
 
 export const updateDigitalPayment = async (body: MPUserPayment) => {

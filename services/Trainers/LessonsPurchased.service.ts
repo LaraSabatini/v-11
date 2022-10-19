@@ -1,6 +1,7 @@
 import axios from "axios"
 import axiosHeader from "services/axiosHeader"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+import defaultPost from "services/defaultPost"
 
 const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/lessonsPurchased`
 
@@ -34,17 +35,8 @@ export const getLessonsByDateAndShift = async (date: string, shift: string) => {
 }
 
 export const createLessonPurchase = async (body: ClasesPurchasedInterface) => {
-  const data = await axios
-    .post(`${apiURL}`, body, axiosHeader)
-    .then(response => {
-      const res = response.data
-      return res
-    })
-    .catch(err => {
-      const res = err.response
-      return res
-    })
-  return data
+  const res = await defaultPost(apiURL, body)
+  return res
 }
 
 export const editLesson = async (body: ClasesPurchasedInterface) => {
