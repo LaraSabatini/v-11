@@ -67,7 +67,7 @@ export const Lessons = createContext({
   setBuyedCombo: null,
 })
 
-const LessonsProvider = ({ children }) => {
+function LessonsProvider({ children }) {
   const [clasesPurchasedByWeek, setClasesPurchasedByWeek] = useState<
     ClasesPurchasedInterface[]
   >([])

@@ -63,7 +63,7 @@ export const StoreContext = createContext({
   priceRef: null,
 })
 
-const StoreProvider = ({ children }) => {
+function StoreProvider({ children }) {
   const [productsList, setProductsList] = useState<ProductInterface[]>([])
 
   const [categories, setCategories] = useState<OptionsInterface[]>([])

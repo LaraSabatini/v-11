@@ -30,7 +30,7 @@ export const Finances = createContext({
   setTotalEarnings: null,
 })
 
-const FinancesProvider = ({ children }) => {
+function FinancesProvider({ children }) {
   const [tillFilterSelected, setTillFilterSelected] = useState<{
     id: number
     filter: string

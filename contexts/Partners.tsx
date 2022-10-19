@@ -89,7 +89,7 @@ export const PartnersContext = createContext({
   setSectionSelected: null,
 })
 
-const PartnersProvider = ({ children }) => {
+function PartnersProvider({ children }) {
   const [sectionSelected, setSectionSelected] = useState<{
     section: string
     id: number
