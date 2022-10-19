@@ -11,19 +11,7 @@ import { CalendarYearInterface } from "./CalendarYear"
  * styled components to index.tsx
  */
 
-type InputStyles = Pick<
-  InputCalendarInterface,
-  | "error"
-  | "success"
-  | "width"
-  | "height"
-  | "isFocus"
-  | "backError"
-  | "disabledAutocompleted"
->
 type Width = Pick<InputCalendarInterface, "width">
-
-type LabelStyles = Pick<InputCalendarInterface, "error" | "backError">
 
 type PositionStyles = Pick<InputCalendarInterface, "position">
 
@@ -59,7 +47,7 @@ const FieldContainer = styled.div<Width>`
     `}
 `
 
-const Label = styled.label<LabelStyles>`
+const Label = styled.label<{ error: boolean; backError: boolean }>`
   font-weight: ${theme.fontWeights.regular};
   font-size: ${theme.fontSizes.xs};
   margin-bottom: 2px;
@@ -76,7 +64,10 @@ const Label = styled.label<LabelStyles>`
     `}
 `
 
-const InputCalendarFieldContainer = styled.div<InputStyles>`
+const InputCalendarFieldContainer = styled.div<{
+  width?: number
+  height?: number
+}>`
   background-color: ${theme.colors.white};
   box-sizing: border-box;
   display: flex;
@@ -92,7 +83,15 @@ const InputCalendarFieldContainer = styled.div<InputStyles>`
   max-height: 45px;
 `
 
-const InputContainer = styled.input<InputStyles>`
+const InputContainer = styled.input<{
+  success?: boolean
+  width?: number
+  height?: number
+  isFocus?: boolean
+  backError?: boolean
+  disabledAutocompleted?: boolean
+  error?: boolean
+}>`
   background-color: ${theme.colors.white};
   box-sizing: border-box;
   color: ${theme.colors.grey};
@@ -189,7 +188,9 @@ const IconContainer = styled.button`
     outline-style: none;
   }
 `
-const ErrorMessageContainer = styled.div<InputStyles>`
+const ErrorMessageContainer = styled.div<{
+  width?: number
+}>`
   display: flex;
   align-items: center;
   margin-top: 3px;
