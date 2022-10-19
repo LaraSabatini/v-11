@@ -81,8 +81,6 @@ const MakePayment = () => {
     amountOfLessons,
   ])
 
-  // const calendarRef = useRef(null)
-
   return (
     <Form>
       <HorizontalGroup>

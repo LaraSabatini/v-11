@@ -187,7 +187,6 @@ const Product = ({
       {category_id === 1 && brand === 11 && (
         <img className="powerade" src="/powerade.png" alt="beer" />
       )}
-      {/* merch */}
       <Description>
         <ProductName>{name}</ProductName>
         <ProductPrice>$ {price}</ProductPrice>
