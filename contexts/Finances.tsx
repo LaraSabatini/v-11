@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import { createContext, useState, useMemo } from "react"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
@@ -10,7 +10,6 @@ export const Finances = createContext({
   setTillFilterSelected: null,
   tillDateSelected: null,
   setTillDateSelected: null,
-  actualDate: null,
   productsPurchasedByDate: null,
   setProductsPurchasedByDate: null,
   boulderProductsPurchasedByDate: null,
@@ -40,9 +39,9 @@ const FinancesProvider = ({ children }) => {
     filter: "Caja completa",
   })
 
-  const actualDate = `${day}-${month}-${year}`
-
-  const [tillDateSelected, setTillDateSelected] = useState<string>(actualDate)
+  const [tillDateSelected, setTillDateSelected] = useState<string>(
+    `${day}-${month}-${year}`,
+  )
 
   const [productsPurchasedByDate, setProductsPurchasedByDate] = useState<
     ProductsPurchasedByDateInterface[]
@@ -120,33 +119,74 @@ const FinancesProvider = ({ children }) => {
     mp: 0,
   })
 
+  const value = useMemo(
+    () => ({
+      totalEarnings,
+      setTotalEarnings,
+      digitalPaymentsList,
+      setDigitalPaymentsList,
+      finalEargninsBoulder,
+      setFinalEargninsBoulder,
+      boulderPurchasesViewData,
+      setBoulderPurchasesViewData,
+      tillFilterSelected,
+      setTillFilterSelected,
+      tillDateSelected,
+      setTillDateSelected,
+      productsPurchasedByDate,
+      setProductsPurchasedByDate,
+      boulderProductsPurchasedByDate,
+      setBoulderProductsPurchasedByDate,
+      partnerPaymentsByDate,
+      setPartnerPaymentsByDate,
+      productList,
+      setProductList,
+      sectionSelected,
+      setSectionSelected,
+    }),
+    [
+      totalEarnings,
+      digitalPaymentsList,
+      finalEargninsBoulder,
+      boulderPurchasesViewData,
+      tillFilterSelected,
+      tillDateSelected,
+      productsPurchasedByDate,
+      boulderProductsPurchasedByDate,
+      partnerPaymentsByDate,
+      productList,
+      sectionSelected,
+    ],
+  )
+
   return (
     <Finances.Provider
-      value={{
-        tillFilterSelected,
-        setTillFilterSelected,
-        tillDateSelected,
-        setTillDateSelected,
-        actualDate,
-        productsPurchasedByDate,
-        setProductsPurchasedByDate,
-        boulderProductsPurchasedByDate,
-        setBoulderProductsPurchasedByDate,
-        productList,
-        setProductList,
-        partnerPaymentsByDate,
-        setPartnerPaymentsByDate,
-        sectionSelected,
-        setSectionSelected,
-        boulderPurchasesViewData,
-        setBoulderPurchasesViewData,
-        finalEargninsBoulder,
-        setFinalEargninsBoulder,
-        digitalPaymentsList,
-        setDigitalPaymentsList,
-        totalEarnings,
-        setTotalEarnings,
-      }}
+      value={value}
+      // value={{
+      //   tillFilterSelected,
+      //   setTillFilterSelected,
+      //   tillDateSelected,
+      //   setTillDateSelected,
+      //   actualDate,
+      //   productsPurchasedByDate,
+      //   setProductsPurchasedByDate,
+      //   boulderProductsPurchasedByDate,
+      //   setBoulderProductsPurchasedByDate,
+      //   productList,
+      //   setProductList,
+      //   partnerPaymentsByDate,
+      //   setPartnerPaymentsByDate,
+      //   sectionSelected,
+      //   setSectionSelected,
+      //   boulderPurchasesViewData,
+      //   setBoulderPurchasesViewData,
+      //   finalEargninsBoulder,
+      //   setFinalEargninsBoulder,
+      //   digitalPaymentsList,
+      //   setDigitalPaymentsList,
+      //   totalEarnings,
+      //   setTotalEarnings,
+      // }}
     >
       {children}
     </Finances.Provider>
