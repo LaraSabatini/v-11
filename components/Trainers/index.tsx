@@ -67,6 +67,7 @@ function TrainersView() {
     cleanStates,
     setModalSuccess,
     setModalError,
+    buyedCombo,
   } = useContext(Lessons)
   const router = useRouter()
 
@@ -111,9 +112,10 @@ function TrainersView() {
         trainer_id: trainerSelected.id,
         trainer_name: trainerSelected.display_name,
         week_id: weekNumber,
-        paid: paid
-          ? `${yesOrNoArr[0].display_name}`
-          : `${yesOrNoArr[1].display_name}`,
+        paid:
+          paid || buyedCombo
+            ? `${yesOrNoArr[0].display_name}`
+            : `${yesOrNoArr[1].display_name}`,
         day_id: currentDate.getDay(),
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
@@ -196,7 +198,7 @@ function TrainersView() {
       }
     }
 
-    if (paid) {
+    if (paid && !buyedCombo) {
       const boulderPurchaseBody: {
         id: number
         date: string

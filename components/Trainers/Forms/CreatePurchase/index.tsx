@@ -81,6 +81,8 @@ const CreatePurchaseModal = ({
     setTrainerSelected,
     paymentUserSelected,
     identificationError,
+    buyedCombo,
+    setBuyedCombo,
   } = useContext(Lessons)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
@@ -283,8 +285,7 @@ const CreatePurchaseModal = ({
     selectedAmountOfLessons &&
     selectedTrainer &&
     selectedAmount &&
-    paid !== null &&
-    payment
+    ((paid !== null && payment) || buyedCombo)
 
   const conditionsForClientNotRegistered =
     selectedAmountOfLessons &&
@@ -578,18 +579,34 @@ const CreatePurchaseModal = ({
             <LessonsSubGroup>
               <Autocomplete
                 options={yesOrNoArr}
-                label={trainerTexts.createPurchase.paysNow}
+                label={trainerTexts.createPurchase.buyed_combo}
                 required
                 ref={paysNowRef}
                 width={100}
                 onChangeProps={(e: { id: number; display_name: string }) => {
                   if (e.id === 1) {
-                    setPaid(true)
+                    setBuyedCombo(true)
                   } else {
-                    setPaid(false)
+                    setBuyedCombo(false)
                   }
                 }}
               />
+              {!buyedCombo && (
+                <Autocomplete
+                  options={yesOrNoArr}
+                  label={trainerTexts.createPurchase.paysNow}
+                  required
+                  ref={paysNowRef}
+                  width={100}
+                  onChangeProps={(e: { id: number; display_name: string }) => {
+                    if (e.id === 1) {
+                      setPaid(true)
+                    } else {
+                      setPaid(false)
+                    }
+                  }}
+                />
+              )}
               {paid && (
                 <Autocomplete
                   options={paymentMethods}
