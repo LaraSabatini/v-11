@@ -12,17 +12,7 @@ function Home() {
     router.replace("/home?clients=true")
   }
 
-  return (
-    <>
-      <style jsx global>{`
-        body {
-          margin: 0px;
-          padding: 0px;
-        }
-      `}</style>
-      {!logged && <Login />}
-    </>
-  )
+  return <div>{!logged && <Login />}</div>
 }
 
 export default Home
