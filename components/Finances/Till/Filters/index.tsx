@@ -14,7 +14,7 @@ import {
   Select,
 } from "./styles"
 
-const TillFilters = () => {
+function TillFilters() {
   const {
     setTillFilterSelected,
     tillFilterSelected,

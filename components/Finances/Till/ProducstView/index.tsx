@@ -9,7 +9,7 @@ import HistoryCard from "./ProductCard"
 import { FinalProfit } from "../BoulderView/styles"
 import { Container, CardsContainer, ProfitsContainer } from "./styles"
 
-const ProductsView = () => {
+function ProductsView() {
   const { productsPurchasedByDate, productList } = useContext(Finances)
 
   const filterProfitsCash = productsPurchasedByDate.filter(

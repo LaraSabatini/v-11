@@ -16,7 +16,7 @@ import BoulderView from "./BoulderView"
 import TillByUser from "./TillByUser"
 import TotalEarnings from "./styles"
 
-const Till = () => {
+function Till() {
   const {
     tillFilterSelected,
     tillDateSelected,
