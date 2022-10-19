@@ -68,6 +68,7 @@ const ClientsMenu = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  /* left: -100px; */
   padding: 10px 20px 10px 5px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   border-radius: 0 0 3px 3px;
