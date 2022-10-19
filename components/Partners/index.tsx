@@ -11,6 +11,7 @@ import {
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
@@ -56,6 +57,7 @@ function PartnersView() {
   const router = useRouter()
 
   const [searchValue, setSearchValue] = useState<string>("")
+  const [searchResults, setSearchResults] = useState<PartnerInterface[]>([])
 
   const setPartnerList = async () => {
     if (filterSelected === "all") {
@@ -84,22 +86,30 @@ function PartnersView() {
     }
   }
 
-  const searchPartnerInDB = async () => {
-    setFilterSelected("all")
-    setPartnerSelected(null)
-
-    const executeSearch = await searchPartner(searchValue, 1)
-    setPartners(executeSearch.data)
-  }
-
   useEffect(() => {
-    if (searchValue.length >= 3) {
-      searchPartnerInDB()
-    } else {
+    if (searchResults.length === 0) {
       setPartnerList()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterSelected, currentPage, searchValue, triggerListUpdate])
+  }, [filterSelected, currentPage, triggerListUpdate, searchResults])
+
+  const search = async () => {
+    if (searchValue.length >= 3) {
+      setFilterSelected("all")
+      setPartnerSelected(null)
+
+      const executeSearch = await searchPartner(searchValue, 1)
+
+      setSearchResults(executeSearch.data)
+    } else {
+      setSearchResults([])
+    }
+  }
+
+  useEffect(() => {
+    search()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchValue])
 
   return (
     <Container>
@@ -138,7 +148,11 @@ function PartnersView() {
               />
             </SearchBarContainer>
             <ListAndDetailContainer>
-              <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
+              <PartnersList
+                data={searchResults.length === 0 ? partners : searchResults}
+                goNext={goNext}
+                goPrev={goPrev}
+              />
               {partnerSelected !== null ? (
                 <PartnerDetails />
               ) : (
