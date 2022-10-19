@@ -73,10 +73,6 @@ export const PartnersContext = createContext({
   phoneRef: null,
   wantsSubscription: null,
   setWantsSubscription: null,
-  scheduleList: null,
-  setScheduleList: null,
-  setScheduleSelected: null,
-  scheduleSelected: null,
   activeEdition: null,
   setActiveEdition: null,
   newValues: null,
@@ -178,10 +174,6 @@ const PartnersProvider = ({ children }) => {
   const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
 
   const [trainerSelected, setTrainerSelected] = useState<DefaultInterface>()
-
-  const [scheduleList, setScheduleList] = useState<DefaultInterface[]>()
-
-  const [scheduleSelected, setScheduleSelected] = useState<number[]>([])
 
   // EDIT *************************************************************
 
@@ -294,7 +286,6 @@ const PartnersProvider = ({ children }) => {
   ] = useState<ModalInterface | null>(null)
 
   const cleanStates = () => {
-    setScheduleSelected([])
     setModalSuccess(null)
     setAddPaymentModal(false)
     setModalError(null)
@@ -399,10 +390,6 @@ const PartnersProvider = ({ children }) => {
         phoneRef,
         wantsSubscription,
         setWantsSubscription,
-        scheduleList,
-        setScheduleList,
-        scheduleSelected,
-        setScheduleSelected,
         activeEdition,
         setActiveEdition,
         newValues,

@@ -82,6 +82,42 @@ const Receipt = () => {
     setPaymentUserSelected(null)
   }
 
+  const makeDigitalPayment = async searchIfExistsCall => {
+    let success: boolean = false
+    if (searchIfExistsCall.data.length > 0) {
+      const digitalPaymentBody = {
+        id: searchIfExistsCall.data[0].id,
+        user_id: searchIfExistsCall.data[0].user_id,
+        user_name: searchIfExistsCall.data[0].user_name,
+        date: searchIfExistsCall.data[0].date,
+        month: searchIfExistsCall.data[0].month,
+        month_id: searchIfExistsCall.data[0].month_id,
+        total_profit: searchIfExistsCall.data[0].total_profit + finalPrice,
+      }
+
+      const editDigitalPaymentCall = await updateDigitalPayment(
+        digitalPaymentBody,
+      )
+      success =
+        editDigitalPaymentCall.message === "payment updated successfully"
+    } else {
+      const digitalPaymentBody = {
+        id: 0,
+        user_id: paymentUserSelected.id,
+        user_name: paymentUserSelected.display_name,
+        date: `${day}-${month}-${year}`,
+        month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+          .display_name,
+        month_id: parseInt(`${month}`, 10),
+        total_profit: finalPrice,
+      }
+
+      const createDigitalCall = await createDigitalPayment(digitalPaymentBody)
+      success = createDigitalCall.message === "payment created successfully"
+    }
+    return success
+  }
+
   const executePurchase = async () => {
     let success = false
 
@@ -105,7 +141,6 @@ const Receipt = () => {
       const editStockCall = await editProduct(editStockBody)
       success = editStockCall.message === "product updated successfully"
 
-      //  CREAR PRODUCT PURCHASE
       const checkIfPurchasedToday = await getStorePurchasesByDateAndPaymentMethodAndProduct(
         `${day}-${month}-${year}`,
         purchase[i].product_id,
@@ -149,37 +184,8 @@ const Receipt = () => {
         `${day}-${month}-${year}`,
       )
 
-      if (searchIfExistsCall.data.length > 0) {
-        const digitalPaymentBody = {
-          id: searchIfExistsCall.data[0].id,
-          user_id: searchIfExistsCall.data[0].user_id,
-          user_name: searchIfExistsCall.data[0].user_name,
-          date: searchIfExistsCall.data[0].date,
-          month: searchIfExistsCall.data[0].month,
-          month_id: searchIfExistsCall.data[0].month_id,
-          total_profit: searchIfExistsCall.data[0].total_profit + finalPrice,
-        }
-
-        const editDigitalPaymentCall = await updateDigitalPayment(
-          digitalPaymentBody,
-        )
-        success =
-          editDigitalPaymentCall.message === "payment updated successfully"
-      } else {
-        const digitalPaymentBody = {
-          id: 0,
-          user_id: paymentUserSelected.id,
-          user_name: paymentUserSelected.display_name,
-          date: `${day}-${month}-${year}`,
-          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-            .display_name,
-          month_id: parseInt(`${month}`, 10),
-          total_profit: finalPrice,
-        }
-
-        const createDigitalCall = await createDigitalPayment(digitalPaymentBody)
-        success = createDigitalCall.message === "payment created successfully"
-      }
+      const executePayment = await makeDigitalPayment(searchIfExistsCall)
+      success = executePayment
     }
 
     const checkIfProductsAreDailyPass = purchase.filter(
