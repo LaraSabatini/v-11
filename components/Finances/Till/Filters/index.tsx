@@ -1,7 +1,7 @@
 import React, { useContext, useState, useRef } from "react"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
-import { cajaFilters } from "const/finances"
+import { tillFilters } from "const/finances"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import InputCalendar from "components/UI/InputCalendar"
@@ -14,7 +14,7 @@ import {
   Select,
 } from "./styles"
 
-const FiltersCaja = () => {
+const TillFilters = () => {
   const {
     setTillFilterSelected,
     tillFilterSelected,
@@ -42,7 +42,7 @@ const FiltersCaja = () => {
         </Select>
         {openFilters && (
           <Options>
-            {cajaFilters.map((filter: { id: number; filter: string }) => (
+            {tillFilters.map((filter: { id: number; filter: string }) => (
               <Option
                 key={filter.id}
                 onClick={() => {
@@ -73,4 +73,4 @@ const FiltersCaja = () => {
   )
 }
 
-export default FiltersCaja
+export default TillFilters

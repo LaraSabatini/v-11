@@ -18,6 +18,7 @@
         "paymentMethod": "Metodo de pago",
         "total": "TOTAL:",
         "errorMessage": "Hay un cliente registrado con este DNI",
+        "buyed_combo": "Compro un combo?",
         "warningMessage": "El cupo de la fecha y turno seleccionados esta lleno, por favor intenta con otro turno o fecha.",
         "successModal": {
             "content": "La clase se ha creado exitosamente"

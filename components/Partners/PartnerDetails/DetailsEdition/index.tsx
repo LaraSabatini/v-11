@@ -6,6 +6,7 @@ import { PartnersContext } from "contexts/Partners"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
+import cleanPartnerData from "utils/cleanPartnerData"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
@@ -87,12 +88,8 @@ const DetailsEdition = ({ partnerInfo, createdBy }: DetailEditInterface) => {
         "false" &&
       phoneRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
-      const inputName = newData.name.toLowerCase()
-      const name = inputName.charAt(0).toUpperCase() + inputName.slice(1)
-
-      const inputLastName = newData.last_name.toLowerCase()
-      const lastName =
-        inputLastName.charAt(0).toUpperCase() + inputLastName.slice(1)
+      const name = cleanPartnerData(newData.name)
+      const lastName = cleanPartnerData(newData.last_name)
 
       const freePass = newData.free_pass
 

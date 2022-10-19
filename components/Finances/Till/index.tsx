@@ -13,10 +13,10 @@ import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases
 // COMPONENTS & STYLING
 import ProductsView from "./ProducstView"
 import BoulderView from "./BoulderView"
-import CajaByUser from "./CajaByUser"
+import TillByUser from "./TillByUser"
 import TotalEarnings from "./styles"
 
-const Caja = () => {
+const Till = () => {
   const {
     tillFilterSelected,
     tillDateSelected,
@@ -113,7 +113,7 @@ const Caja = () => {
     <div>
       {tillFilterSelected.id === 1 && <ProductsView />}
       {tillFilterSelected.id === 2 && <BoulderView />}
-      {tillFilterSelected.id === 3 && <CajaByUser />}
+      {tillFilterSelected.id === 3 && <TillByUser />}
       {tillFilterSelected.id === 4 && (
         <TotalEarnings>
           <p>
@@ -130,4 +130,4 @@ const Caja = () => {
   )
 }
 
-export default Caja
+export default Till

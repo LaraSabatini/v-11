@@ -13,7 +13,6 @@ import generalTexts from "strings/general.json"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
-// import InputCalendar from "components/UI/InputCalendar"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 import { Form } from "./styles"
 

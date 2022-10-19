@@ -14,14 +14,14 @@ import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service
 import { getPrices } from "services/Partners/Prices.service"
 import { deletePartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import { months, today, day, month, year } from "const/time"
+import { months, day, month, year } from "const/time"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import financesTexts from "strings/finances.json"
-
+import getExpirationDate from "utils/getExpirationDate"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
@@ -92,68 +92,181 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     }
   }
 
+  const createComboPurchase = async () => {
+    let success = false
+    const boulderPurchaseBody = {
+      id: 0,
+      date: `${day}-${month}-${year}`,
+      item_id: 1,
+      item_name: `${financesTexts.combo}`,
+      amount_of_items: 1,
+      profit:
+        paymentMethodSelected === 1 ? combos[0].price_cash : combos[0].price_mp,
+      payment_method_id: paymentMethodSelected,
+    }
+
+    const createBoulderPurchaseCall = await createBoulderPurchase(
+      boulderPurchaseBody,
+    )
+    success =
+      createBoulderPurchaseCall.message === "bouderPayment created successfully"
+
+    return success
+  }
+
+  const createDayOrMonthPurchase = async () => {
+    let success: boolean = false
+
+    let finalProfit = 0
+    if (paidTimeUnit.id === 1) {
+      finalProfit =
+        paymentMethodSelected === 1
+          ? paidTime * prices[0].price_cash
+          : paidTime * prices[0].price_mp
+    } else {
+      finalProfit =
+        paymentMethodSelected === 1
+          ? paidTime * prices[2].price_cash
+          : paidTime * prices[2].price_mp
+    }
+
+    const boulderPurchaseBody = {
+      id: 0,
+      date: `${day}-${month}-${year}`,
+      item_id: paidTimeUnit.id === 1 ? 2 : 3,
+      item_name:
+        paidTimeUnit.id === 1
+          ? `${financesTexts.day}`
+          : `${financesTexts.month}`,
+      amount_of_items: paidTime,
+      profit: finalProfit,
+      payment_method_id: paymentMethodSelected,
+    }
+
+    const createBoulderPurchaseCall = await createBoulderPurchase(
+      boulderPurchaseBody,
+    )
+    success =
+      createBoulderPurchaseCall.message === "bouderPayment created successfully"
+
+    return success
+  }
+
   const addPayment = async () => {
     let success: boolean = false
-    if (
+
+    const comboCondition =
       newValues.combo !== null &&
       newValues.combo !== undefined &&
       newValues.combo !== 0
-    ) {
-      const boulderPurchaseBody = {
-        id: 0,
-        date: `${day}-${month}-${year}`,
-        item_id: 1,
-        item_name: `${financesTexts.combo}`,
-        amount_of_items: 1,
-        profit:
-          paymentMethodSelected === 1
-            ? combos[0].price_cash
-            : combos[0].price_mp,
-        payment_method_id: paymentMethodSelected,
-      }
 
-      const createBoulderPurchaseCall = await createBoulderPurchase(
-        boulderPurchaseBody,
-      )
-      success =
-        createBoulderPurchaseCall.message ===
-        "bouderPayment created successfully"
+    if (comboCondition) {
+      const executePurchase = await createComboPurchase()
+      success = executePurchase
     }
     if (paidTime !== 0) {
-      let finalProfit = 0
-      if (paidTimeUnit.id === 1) {
-        finalProfit =
-          paymentMethodSelected === 1
-            ? paidTime * prices[0].price_cash
-            : paidTime * prices[0].price_mp
-      } else {
-        finalProfit =
-          paymentMethodSelected === 1
-            ? paidTime * prices[2].price_cash
-            : paidTime * prices[2].price_mp
-      }
-
-      const boulderPurchaseBody = {
-        id: 0,
-        date: `${day}-${month}-${year}`,
-        item_id: paidTimeUnit.id === 1 ? 2 : 3,
-        item_name:
-          paidTimeUnit.id === 1
-            ? `${financesTexts.day}`
-            : `${financesTexts.month}`,
-        amount_of_items: paidTime,
-        profit: finalProfit,
-        payment_method_id: paymentMethodSelected,
-      }
-
-      const createBoulderPurchaseCall = await createBoulderPurchase(
-        boulderPurchaseBody,
-      )
-      success =
-        createBoulderPurchaseCall.message ===
-        "bouderPayment created successfully"
+      const executePurchase = await createDayOrMonthPurchase()
+      success = executePurchase
     }
 
+    return success
+  }
+
+  const addDaysFunc = async (expirationDate: string) => {
+    let success: boolean = false
+    let finalTime = 0
+    if (paidTime !== null && paidTime !== 0) {
+      if (usesDay) {
+        finalTime = paidTime - 1
+      } else {
+        finalTime = paidTime
+      }
+    } else {
+      finalTime = 0
+    }
+
+    const body = {
+      ...newValues,
+      time_paid:
+        paidTimeUnit.id === 1
+          ? finalTime + initialPayment.time_paid
+          : initialPayment.time_paid + newValues.time_paid,
+      price_paid: finalPrice,
+      payment_expire_date:
+        (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
+        (comboSelected !== null && comboSelected !== undefined)
+          ? expirationDate
+          : "",
+      date: `${day}-${month}-${year}`,
+    }
+
+    await paidTimeUnitRef.current?.focus()
+    await paymentRef.current?.focus()
+
+    if (
+      paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      paymentRef.current.attributes.getNamedItem("data-error").value === "false"
+    ) {
+      const createPayment = await createPartnerPayment(body)
+      const addPaymentFunc = await addPayment()
+
+      if (
+        createPayment.message === "partnerPayment created successfully" &&
+        addPaymentFunc
+      ) {
+        success = true
+      } else {
+        success = false
+      }
+    }
+    return success
+  }
+
+  const executeDigitalPayment = async () => {
+    let success = false
+    const searchIfExists = await searchByUserAndDate(
+      paymentUserSelected.id,
+      `${day}-${month}-${year}`,
+    )
+
+    if (searchIfExists.data.length > 0) {
+      const digitalPaymentBody = {
+        id: searchIfExists.data[0].id,
+        user_id: searchIfExists.data[0].user_id,
+        user_name: searchIfExists.data[0].user_name,
+        date: searchIfExists.data[0].date,
+        month: searchIfExists.data[0].month,
+        month_id: searchIfExists.data[0].month_id,
+        total_profit: searchIfExists.data[0].total_profit + finalPrice,
+      }
+
+      const editDigitalPayment = await updateDigitalPayment(digitalPaymentBody)
+      if (editDigitalPayment.message === "payment updated successfully") {
+        success = true
+      } else {
+        success = false
+      }
+    } else {
+      const digitalPaymentBody = {
+        id: 0,
+        user_id: paymentUserSelected.id,
+        user_name: paymentUserSelected.display_name,
+        date: `${day}-${month}-${year}`,
+        month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+          .display_name,
+        month_id: parseInt(`${month}`, 10),
+        total_profit: finalPrice,
+      }
+
+      const createDigital = await createDigitalPayment(digitalPaymentBody)
+
+      if (createDigital.message === "payment created successfully") {
+        success = true
+      } else {
+        success = false
+      }
+    }
     return success
   }
 
@@ -161,19 +274,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     e.preventDefault()
     let success = false
 
-    const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
-    const expireDate = newDate.getDate()
-    const expireMonth = newDate.getMonth()
-    const expireYear = newDate.getFullYear()
-    const finalExpireDay = expireDate > 9 ? expireDate : `0${expireDate}`
-    let finalExpireMonth
-    if (comboSelected !== null && comboSelected !== undefined) {
-      finalExpireMonth =
-        expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`
-    } else {
-      finalExpireMonth =
-        expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
-    }
+    const expirationDate = getExpirationDate(paidTime, comboSelected)
 
     const canAddDays =
       initialPayment.time_paid_unit === 0 ||
@@ -187,55 +288,9 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         content: `${partnerTexts.cannotAddDays.content}`,
       })
       cleanStates()
-    }
-    if (canAddDays) {
-      let finalTime = 0
-      if (paidTime !== null && paidTime !== 0) {
-        if (usesDay) {
-          finalTime = paidTime - 1
-        } else {
-          finalTime = paidTime
-        }
-      } else {
-        finalTime = 0
-      }
-
-      const body = {
-        ...newValues,
-        time_paid:
-          paidTimeUnit.id === 1
-            ? finalTime + initialPayment.time_paid
-            : initialPayment.time_paid + newValues.time_paid,
-        price_paid: finalPrice,
-        payment_expire_date:
-          (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-          (comboSelected !== null && comboSelected !== undefined)
-            ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
-            : "",
-        date: `${day}-${month}-${year}`,
-      }
-
-      await paidTimeUnitRef.current?.focus()
-      await paymentRef.current?.focus()
-
-      if (
-        paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
-          "false" &&
-        paymentRef.current.attributes.getNamedItem("data-error").value ===
-          "false"
-      ) {
-        const createPayment = await createPartnerPayment(body)
-        const addPaymentFunc = await addPayment()
-
-        if (
-          createPayment.message === "partnerPayment created successfully" &&
-          addPaymentFunc
-        ) {
-          success = true
-        } else {
-          success = false
-        }
-      }
+    } else {
+      const addDays = await addDaysFunc(expirationDate)
+      success = addDays
     }
 
     if (initialPayment === undefined) {
@@ -246,7 +301,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
         payment_expire_date:
           (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
           (comboSelected !== null && comboSelected !== undefined)
-            ? `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
+            ? expirationDate
             : "",
         date: `${day}-${month}-${year}`,
       }
@@ -274,50 +329,8 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
     }
 
     if (paymentMethodSelected === 2) {
-      const searchIfExists = await searchByUserAndDate(
-        paymentUserSelected.id,
-        `${day}-${month}-${year}`,
-      )
-
-      if (searchIfExists.data.length > 0) {
-        const digitalPaymentBody = {
-          id: searchIfExists.data[0].id,
-          user_id: searchIfExists.data[0].user_id,
-          user_name: searchIfExists.data[0].user_name,
-          date: searchIfExists.data[0].date,
-          month: searchIfExists.data[0].month,
-          month_id: searchIfExists.data[0].month_id,
-          total_profit: searchIfExists.data[0].total_profit + finalPrice,
-        }
-
-        const editDigitalPayment = await updateDigitalPayment(
-          digitalPaymentBody,
-        )
-        if (editDigitalPayment.message === "payment updated successfully") {
-          success = true
-        } else {
-          success = false
-        }
-      } else {
-        const digitalPaymentBody = {
-          id: 0,
-          user_id: paymentUserSelected.id,
-          user_name: paymentUserSelected.display_name,
-          date: `${day}-${month}-${year}`,
-          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-            .display_name,
-          month_id: parseInt(`${month}`, 10),
-          total_profit: finalPrice,
-        }
-
-        const createDigital = await createDigitalPayment(digitalPaymentBody)
-
-        if (createDigital.message === "payment created successfully") {
-          success = true
-        } else {
-          success = false
-        }
-      }
+      const executePurchase = await executeDigitalPayment()
+      success = executePurchase
     }
 
     if (success) {

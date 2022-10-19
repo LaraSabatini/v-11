@@ -13,7 +13,7 @@ export const paymentUsers: DefaultInterface[] = [
   { id: 5, display_name: "Joaco" },
 ]
 
-export const cajaFilters = [
+export const tillFilters = [
   {
     id: 1,
     filter: "Productos",

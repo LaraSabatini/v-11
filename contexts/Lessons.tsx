@@ -63,6 +63,8 @@ export const Lessons = createContext({
   setTriggerListUpdate: null,
   students: null,
   setStudents: null,
+  buyedCombo: null,
+  setBuyedCombo: null,
 })
 
 const LessonsProvider = ({ children }) => {
@@ -117,6 +119,8 @@ const LessonsProvider = ({ children }) => {
   ] = useState<DefaultInterface>(null)
 
   const [paid, setPaid] = useState<boolean>(null)
+
+  const [buyedCombo, setBuyedCombo] = useState<boolean>(true)
 
   const [clientSelected, setClientSelected] = useState<PartnerInterface | null>(
     null,
@@ -227,6 +231,8 @@ const LessonsProvider = ({ children }) => {
         setTriggerListUpdate,
         students,
         setStudents,
+        buyedCombo,
+        setBuyedCombo,
       }}
     >
       {children}

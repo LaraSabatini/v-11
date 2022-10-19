@@ -7,6 +7,7 @@ import { today, year, daysOfTheWeek, shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import Pagination from "components/UI/Pagination"
+import ScrollView from "components/UI/ScrollView"
 import MakePayment from "./MakePayment"
 import {
   MainContainer,
@@ -18,6 +19,8 @@ import {
   DividerRowShifts,
   PaginatorContainer,
   SectionContainer,
+  Scroll,
+  ScrollContainer,
 } from "./styles"
 
 const CalendarView = () => {
@@ -257,28 +260,40 @@ const CalendarView = () => {
             </p>
           </ColumnTitle>
           <StudentsList>
-            {cleanedLessons.monday.am.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.monday.am.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
           <StudentsList>
-            {cleanedLessons.monday.pm.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.monday.pm.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
         </Column>
         <Column>
@@ -294,28 +309,40 @@ const CalendarView = () => {
             </p>
           </ColumnTitle>
           <StudentsList>
-            {cleanedLessons.tuesday.am.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.tuesday.am.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
           <StudentsList>
-            {cleanedLessons.tuesday.pm.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.tuesday.pm.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
         </Column>
         <Column>
@@ -331,28 +358,40 @@ const CalendarView = () => {
             </p>
           </ColumnTitle>
           <StudentsList>
-            {cleanedLessons.wednesday.am.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.wednesday.am.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
           <StudentsList>
-            {cleanedLessons.wednesday.pm.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.wednesday.pm.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
         </Column>
         <Column>
@@ -368,28 +407,40 @@ const CalendarView = () => {
             </p>
           </ColumnTitle>
           <StudentsList>
-            {cleanedLessons.thursday.am.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.thursday.am.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
           <StudentsList>
-            {cleanedLessons.thursday.pm.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.thursday.pm.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
         </Column>
         <Column>
@@ -405,28 +456,40 @@ const CalendarView = () => {
             </p>
           </ColumnTitle>
           <StudentsList>
-            {cleanedLessons.friday.am.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.friday.am.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
           <StudentsList>
-            {cleanedLessons.friday.pm.map(lesson => (
-              <LessonPurchased
-                paid={lesson.paid === "SI"}
-                type="button"
-                selected={purchaseSelected?.id === lesson.id}
-                onClick={() => selectPurchase(lesson)}
-              >
-                {lesson.partner_name} {lesson.partner_last_name}
-              </LessonPurchased>
-            ))}
+            <ScrollContainer>
+              <ScrollView height={160}>
+                <Scroll>
+                  {cleanedLessons.friday.pm.map(lesson => (
+                    <LessonPurchased
+                      paid={lesson.paid === "SI"}
+                      type="button"
+                      selected={purchaseSelected?.id === lesson.id}
+                      onClick={() => selectPurchase(lesson)}
+                    >
+                      {lesson.partner_name} {lesson.partner_last_name}
+                    </LessonPurchased>
+                  ))}
+                </Scroll>
+              </ScrollView>
+            </ScrollContainer>
           </StudentsList>
         </Column>
         {modalMakeAPayment && (

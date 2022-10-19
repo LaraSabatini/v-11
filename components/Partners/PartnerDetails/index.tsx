@@ -38,6 +38,7 @@ const PartnerDetails = () => {
     const searchPartner = partners.filter(
       (partner: PartnerInterface) => partner.id === partnerSelected,
     )
+
     setPartnerInfo(searchPartner[0])
     getUsersInfo(searchPartner[0].created_by)
     // eslint-disable-next-line react-hooks/exhaustive-deps
