@@ -61,14 +61,10 @@ const Caja = () => {
 
     setPartnerPaymentsByDate(getBoulderPaymentsCall.data)
 
-    const getProductsCall = await getProducts(1)
-    setProductList(getProductsCall.data)
-
     const digitalPaymentByDateCall = await searchByDate(tillDateSelected)
 
     setDigitalPaymentsList(digitalPaymentByDateCall.data)
 
-    // CASH EARNIGS => STORE
     const cashEarningsFromStore = productPurchasesCall.data.filter(
       purchase => purchase.payment_method_id === 1,
     )
@@ -77,7 +73,6 @@ const Caja = () => {
       cashEarningsFinal += p.profit
       return 0
     })
-    // => BOULDER PURCHASES
     const cashEarningsFromBoulderPayments = getBoulderPaymentsCall.data.filter(
       purchase => purchase.payment_method_id === 1,
     )
@@ -86,8 +81,6 @@ const Caja = () => {
       cashEarningsFinalFromBoulder += p.profit
       return 0
     })
-
-    // MP EARNIGS => STORE
 
     let mpEarningsFinal = 0
     digitalPaymentByDateCall.data.map(p => {
@@ -105,6 +98,16 @@ const Caja = () => {
     fillData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tillDateSelected])
+
+  const fillProducts = async () => {
+    const getProductsCall = await getProducts(1)
+    setProductList(getProductsCall.data)
+  }
+
+  useEffect(() => {
+    fillProducts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div>

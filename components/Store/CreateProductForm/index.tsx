@@ -110,7 +110,6 @@ const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
     }
   }
 
-  // calculate price by cost & margin
   const calculateMargin = () => {
     const stringCost = `${newProductData.cost}`
     const stringPrice = `${newProductData.price}`

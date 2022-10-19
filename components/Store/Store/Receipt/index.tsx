@@ -142,7 +142,6 @@ const Receipt = () => {
         success = createCall.message === "productPurchase created successfully"
       }
     }
-    // FUERA FOR LOOP
 
     if (paymentMethodSelected === 2) {
       const searchIfExistsCall = await searchByUserAndDate(
@@ -197,7 +196,6 @@ const Receipt = () => {
         combo: 0,
         time_paid: checkIfProductsAreDailyPass[0].product_amount,
         time_paid_unit: 1,
-        // clases_paid: 0,
         payment_method_id:
           checkIfProductsAreDailyPass[0].product_id === 1 ? 1 : 2,
         payment_method_name:
@@ -207,7 +205,6 @@ const Receipt = () => {
         price_paid: checkIfProductsAreDailyPass[0].final_price,
         date: `${day}-${month}-${year}`,
         payment_expire_date: "",
-        // days_and_hours: "",
       }
 
       const createPurchaseCall = await createPartnerPayment(paymentBody)

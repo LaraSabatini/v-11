@@ -98,35 +98,33 @@ export default function CalendarDateYear({
     minYearDate[2]
 
   return (
-    <>
-      <CalendarDropDownContainer>
-        <CalendarDropDownContainerList position={position}>
-          <CalendarContainer>
-            <CalendarBody>
-              <CalendarBodyYear>
-                <ScrollView height={303} id="yearSelected">
-                  {arrayYearList.map(y => (
-                    <CalendarYear
-                      key={y}
-                      isSelected={y === yearGo}
-                      onClick={
-                        (maxDate !== null && y > maxYearDateYyyy) ||
-                        (minDate !== null && y < minYearDateYyyy)
-                          ? () => !actionYearClick
-                          : () => actionYearClick(y)
-                      }
-                      isMaxDate={maxDate !== null && y > maxYearDateYyyy}
-                      isMinDate={minDate !== null && y < minYearDateYyyy}
-                    >
-                      {y}
-                    </CalendarYear>
-                  ))}
-                </ScrollView>
-              </CalendarBodyYear>
-            </CalendarBody>
-          </CalendarContainer>
-        </CalendarDropDownContainerList>
-      </CalendarDropDownContainer>
-    </>
+    <CalendarDropDownContainer>
+      <CalendarDropDownContainerList position={position}>
+        <CalendarContainer>
+          <CalendarBody>
+            <CalendarBodyYear>
+              <ScrollView height={303} id="yearSelected">
+                {arrayYearList.map(y => (
+                  <CalendarYear
+                    key={y}
+                    isSelected={y === yearGo}
+                    onClick={
+                      (maxDate !== null && y > maxYearDateYyyy) ||
+                      (minDate !== null && y < minYearDateYyyy)
+                        ? () => !actionYearClick
+                        : () => actionYearClick(y)
+                    }
+                    isMaxDate={maxDate !== null && y > maxYearDateYyyy}
+                    isMinDate={minDate !== null && y < minYearDateYyyy}
+                  >
+                    {y}
+                  </CalendarYear>
+                ))}
+              </ScrollView>
+            </CalendarBodyYear>
+          </CalendarBody>
+        </CalendarContainer>
+      </CalendarDropDownContainerList>
+    </CalendarDropDownContainer>
   )
 }

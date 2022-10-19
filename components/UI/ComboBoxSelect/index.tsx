@@ -423,7 +423,10 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 )
               },
             )}
-            <Tooltip title={`+${selectedOptions?.length - 6}`} placement="top">
+            <Tooltip
+              title={selectedOptions.length && `+${selectedOptions.length - 6}`}
+              placement="top"
+            >
               <Chip display_name={<Icon icon="IconSeeMore" />} />
             </Tooltip>
           </>
@@ -434,7 +437,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
         idsOnChips?.length <= 6
       ) {
         chipSet = (
-          <>
+          <div>
             {groupSelectedOptions?.map(
               (group: {
                 group_title?: string
@@ -469,7 +472,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 </React.Fragment>
               ),
             )}
-          </>
+          </div>
         )
       } else if (props.optionsList === "grouped" && idsOnChips?.length > 6) {
         chipSet = (
@@ -516,7 +519,10 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                   </React.Fragment>
                 ),
               )}
-            <Tooltip title={`+${idsOnChips?.length - 6}`} placement="top">
+            <Tooltip
+              title={idsOnChips.length && `+${idsOnChips.length - 6}`}
+              placement="top"
+            >
               <Chip display_name={<Icon icon="IconSeeMore" />} />
             </Tooltip>
           </>
@@ -555,7 +561,10 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 )
               },
             )}
-            <Tooltip title={`+${props.options?.length - 6}`} placement="top">
+            <Tooltip
+              title={props.options.length && `+${props.options.length - 6}`}
+              placement="top"
+            >
               <Chip display_name={<Icon icon="IconSeeMore" />} />
             </Tooltip>
           </>
@@ -596,7 +605,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
           )
         } else if (idsOfOptions.length > 6) {
           chipSet = (
-            <>
+            <div>
               {props.options?.map(
                 (group: {
                   group_title?: string
@@ -638,7 +647,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                   </React.Fragment>
                 ),
               )}
-            </>
+            </div>
           )
         }
       }
@@ -720,13 +729,13 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
               {props.optionsList === "single" && selectedOptions.length ? (
                 <TotalChips />
               ) : (
-                <></>
+                <div />
               )}
               {props.optionsList === "grouped" &&
               groupSelectedOptions.length ? (
                 <TotalChips />
               ) : (
-                <></>
+                <div />
               )}
             </div>
           </ChipsContainer>

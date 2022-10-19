@@ -125,7 +125,7 @@ const DataTableComponent: React.FC<TableInterface> = ({
           </PaginatorContainer>
         </>
       ) : (
-        <></>
+        <div />
       )}
     </TableWrapper>
   )

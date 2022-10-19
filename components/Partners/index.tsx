@@ -93,7 +93,7 @@ function PartnersView() {
   }
 
   useEffect(() => {
-    if (searchValue.length > 1) {
+    if (searchValue.length >= 3) {
       searchPartnerInDB()
     } else {
       setPartnerList()

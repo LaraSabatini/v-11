@@ -225,11 +225,11 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           "false"
       ) {
         const createPayment = await createPartnerPayment(body)
-        const prueba = await addPayment()
+        const addPaymentFunc = await addPayment()
 
         if (
           createPayment.message === "partnerPayment created successfully" &&
-          prueba
+          addPaymentFunc
         ) {
           success = true
         } else {
@@ -260,11 +260,11 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
           "false"
       ) {
         const createPayment = await createPartnerPayment(body)
-        const prueba = await addPayment()
+        const addPaymentFunc = await addPayment()
 
         if (
           createPayment.message === "payment updated successfully" &&
-          prueba
+          addPaymentFunc
         ) {
           success = true
         } else {
@@ -459,7 +459,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             {partnerInfo?.email}
           </PartnerData>
         ) : (
-          <></>
+          <div />
         )}
 
         {partnerInfo?.phone !== "" ? (
@@ -477,7 +477,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             {partnerInfo?.identification_number}
           </PartnerData>
         ) : (
-          <></>
+          <div />
         )}
 
         <PartnerData>
