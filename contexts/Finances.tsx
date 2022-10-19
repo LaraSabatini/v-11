@@ -159,38 +159,7 @@ const FinancesProvider = ({ children }) => {
     ],
   )
 
-  return (
-    <Finances.Provider
-      value={value}
-      // value={{
-      //   tillFilterSelected,
-      //   setTillFilterSelected,
-      //   tillDateSelected,
-      //   setTillDateSelected,
-      //   actualDate,
-      //   productsPurchasedByDate,
-      //   setProductsPurchasedByDate,
-      //   boulderProductsPurchasedByDate,
-      //   setBoulderProductsPurchasedByDate,
-      //   productList,
-      //   setProductList,
-      //   partnerPaymentsByDate,
-      //   setPartnerPaymentsByDate,
-      //   sectionSelected,
-      //   setSectionSelected,
-      //   boulderPurchasesViewData,
-      //   setBoulderPurchasesViewData,
-      //   finalEargninsBoulder,
-      //   setFinalEargninsBoulder,
-      //   digitalPaymentsList,
-      //   setDigitalPaymentsList,
-      //   totalEarnings,
-      //   setTotalEarnings,
-      // }}
-    >
-      {children}
-    </Finances.Provider>
-  )
+  return <Finances.Provider value={value}>{children}</Finances.Provider>
 }
 
 export default FinancesProvider
