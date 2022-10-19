@@ -1,11 +1,8 @@
 import React, { useContext, useEffect } from "react"
-// SERVICES
-import { getSchedule } from "services/Trainers/Schedule.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import { paymentMethods, paymentUsers } from "const/finances"
 import { timeUnits } from "const/time"
-import ScheduleInterface from "interfaces/trainers/ScheduleInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
@@ -49,7 +46,6 @@ const EditPayment = ({
     isChecked,
     paymentMethodSelected,
     paidTimeUnit,
-    setScheduleList,
     combos,
     setNewValues,
     newValues,
@@ -59,24 +55,6 @@ const EditPayment = ({
     usesDay,
     setUsesDay,
   } = useContext(PartnersContext)
-
-  const fillScheduleData = async () => {
-    const data = await getSchedule()
-    const arraySchedule = []
-    data.data.map((schedule: ScheduleInterface) =>
-      arraySchedule.push({
-        id: schedule.id,
-        display_name: `${schedule.day_and_hour}`,
-      }),
-    )
-
-    setScheduleList(arraySchedule)
-  }
-
-  useEffect(() => {
-    fillScheduleData()
-    //   eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     calculatePrice()
