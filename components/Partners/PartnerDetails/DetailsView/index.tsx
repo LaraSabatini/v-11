@@ -477,7 +477,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
             {partnerInfo?.identification_number}
           </PartnerData>
         ) : (
-          <></>
+          <div />
         )}
 
         <PartnerData>

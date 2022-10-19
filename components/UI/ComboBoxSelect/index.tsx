@@ -605,7 +605,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
           )
         } else if (idsOfOptions.length > 6) {
           chipSet = (
-            <>
+            <div>
               {props.options?.map(
                 (group: {
                   group_title?: string
@@ -647,7 +647,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                   </React.Fragment>
                 ),
               )}
-            </>
+            </div>
           )
         }
       }
