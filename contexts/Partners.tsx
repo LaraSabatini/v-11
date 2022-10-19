@@ -199,7 +199,7 @@ function PartnersProvider({ children }) {
       ) {
         //   si paga un dia
         if (paidTime === 1 && paidTimeUnit.id === 1) {
-          price += prices[0]?.price_cash
+          price += prices !== undefined && prices[0].price_cash
         } else if (paidTime === 8 && paidTimeUnit.id === 1) {
           // si paga 8 dias
           price += prices[1].price_cash
