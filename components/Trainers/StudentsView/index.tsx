@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import { getStudents, searchPartner } from "services/Partners/Partner.service"
-import { getByPartnerAndPaid } from "services/Trainers/LessonsPurchased.service"
+import { getLessonsByPartnerAndPaid } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
@@ -27,7 +27,7 @@ import {
   TableTitles,
 } from "./styles"
 
-const StudentsView = () => {
+function StudentsView() {
   const { setStudents, students } = useContext(Lessons)
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)
@@ -68,8 +68,14 @@ const StudentsView = () => {
   }
 
   const getPayments = async () => {
-    const lessonsPaid = await getByPartnerAndPaid(studentSelected.id, "SI")
-    const lessonsNotPaid = await getByPartnerAndPaid(studentSelected.id, "NO")
+    const lessonsPaid = await getLessonsByPartnerAndPaid(
+      studentSelected.id,
+      "SI",
+    )
+    const lessonsNotPaid = await getLessonsByPartnerAndPaid(
+      studentSelected.id,
+      "NO",
+    )
 
     const finalArr = lessonsPaid.data
       .concat(lessonsNotPaid.data)

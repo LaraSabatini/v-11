@@ -19,19 +19,13 @@ function Trainers() {
   }, [isLoggedIn])
 
   return (
-    <>
-      <style jsx global>{`
-        body {
-          margin: 0px;
-          padding: 0px;
-        }
-      `}</style>
+    <div>
       {isLoggedIn !== null && (
         <LessonsProvider>
           <TrainersView />
         </LessonsProvider>
       )}
-    </>
+    </div>
   )
 }
 

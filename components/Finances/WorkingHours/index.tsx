@@ -2,7 +2,7 @@
 // DATA STORAGE & TYPES
 // import { WorkingHoursContext } from "contexts/WorkingHours"
 
-const WorkingHours = () => {
+function WorkingHours() {
   // const {
   //   // actualWeek, setActualWeek
   //   weekSelected,

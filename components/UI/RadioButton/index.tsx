@@ -11,7 +11,7 @@ interface RadioInterface {
   disabled?: boolean
 }
 
-const RadioButton = (props: RadioInterface) => {
+function RadioButton(props: RadioInterface) {
   const { value, name, checked, className, onClick, onChange, disabled } = props
   const [isChecked, setIsChecked] = useState<boolean>(checked || false)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

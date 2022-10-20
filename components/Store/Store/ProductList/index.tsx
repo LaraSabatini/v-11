@@ -16,7 +16,7 @@ interface ProductListInterface {
   goNext: () => void
 }
 
-const ProductsView = ({ data, goPrev, goNext }: ProductListInterface) => {
+function ProductsView({ data, goPrev, goNext }: ProductListInterface) {
   const { currentPage } = useContext(StoreContext)
 
   return (

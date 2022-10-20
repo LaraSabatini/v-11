@@ -18,7 +18,7 @@ interface CreateInterface {
   cancelCreate: () => void
 }
 
-const CreateProductForm = ({ cancelCreate }: CreateInterface) => {
+function CreateProductForm({ cancelCreate }: CreateInterface) {
   const {
     categories,
     brands,

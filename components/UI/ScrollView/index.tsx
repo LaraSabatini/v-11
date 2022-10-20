@@ -1,12 +1,12 @@
 import React from "react"
 import ScrollViewStyled from "./styles"
 
-const ScrollView = (props: {
+function ScrollView(props: {
   height: number
   horizontal?: boolean
   children: JSX.Element | JSX.Element[]
   id?: string
-}) => {
+}) {
   const { height, horizontal, children, id } = props
 
   return (

@@ -34,7 +34,7 @@ interface StatusIconInterface {
     | "sidebar"
 }
 
-const StatusIcon = (props: StatusIconInterface) => {
+function StatusIcon(props: StatusIconInterface) {
   const {
     tooltipText,
     hasTooltip,

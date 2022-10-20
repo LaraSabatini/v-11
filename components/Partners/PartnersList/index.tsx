@@ -33,7 +33,7 @@ interface PartnerListInterface {
   goNext: () => void
 }
 
-const PartnersList = ({ data, goPrev, goNext }: PartnerListInterface) => {
+function PartnersList({ data, goPrev, goNext }: PartnerListInterface) {
   const {
     partnerSelected,
     setPartnerSelected,

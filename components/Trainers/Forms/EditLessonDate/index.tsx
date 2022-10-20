@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState, useEffect } from "react"
 // SERVICES
 import {
   getLessonsByDateAndShift,
-  getByPartnerAndPaid,
+  getLessonsByPartnerAndPaid,
   editLesson,
 } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
@@ -32,7 +32,7 @@ interface EditInterface {
   cancelEdit: () => void
 }
 
-const EditLessonDate = ({ cancelEdit }: EditInterface) => {
+function EditLessonDate({ cancelEdit }: EditInterface) {
   const { purchaseSelected, setModalSuccess, setModalError } = useContext(
     Lessons,
   )
@@ -145,11 +145,11 @@ const EditLessonDate = ({ cancelEdit }: EditInterface) => {
   }
 
   const checkLessonsPurchased = async () => {
-    const checkLessonsCallPaid = await getByPartnerAndPaid(
+    const checkLessonsCallPaid = await getLessonsByPartnerAndPaid(
       purchaseSelected.partner_id,
       `${yesOrNoArr[0].display_name}`,
     )
-    const checkLessonsCallNotPaid = await getByPartnerAndPaid(
+    const checkLessonsCallNotPaid = await getLessonsByPartnerAndPaid(
       purchaseSelected.partner_id,
       `${yesOrNoArr[1].display_name}`,
     )

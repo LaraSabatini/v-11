@@ -1,13 +1,9 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 
 const getTrainers = async () => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/trainers`,
+    `${process.env.NEXT_PUBLIC_API_HOST}/trainers`,
     axiosHeader,
   )
   return res.data

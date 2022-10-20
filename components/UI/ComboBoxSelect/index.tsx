@@ -763,7 +763,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                 <li className="combobox-select-option">{nonMatches}</li>
               </ul>
             ) : (
-              <>
+              <div>
                 {props.options?.length <= 8 ? (
                   <ul className="combobox-select-list">
                     {props.optionsList === "single" &&
@@ -966,7 +966,7 @@ const ComboBoxSelect = React.forwardRef<HTMLInputElement, ComboBoxSelectType>(
                     </ul>
                   </ScrollView>
                 )}
-              </>
+              </div>
             )}
           </DropdownList>
         )}

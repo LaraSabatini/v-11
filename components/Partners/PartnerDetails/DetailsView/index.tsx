@@ -6,7 +6,7 @@ import {
   editPartnerPayment,
 } from "services/Partners/PartnerPayments.service"
 import {
-  searchByUserAndDate,
+  searchDigitalPaymentByUserAndDate,
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
@@ -39,7 +39,7 @@ interface DetailViewInterface {
   partnerInfo: PartnerInterface
 }
 
-const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
+function DetailsView({ partnerInfo }: DetailViewInterface) {
   const {
     setModalSuccess,
     setModalError,
@@ -225,7 +225,7 @@ const DetailsView = ({ partnerInfo }: DetailViewInterface) => {
 
   const executeDigitalPayment = async () => {
     let success = false
-    const searchIfExists = await searchByUserAndDate(
+    const searchIfExists = await searchDigitalPaymentByUserAndDate(
       paymentUserSelected.id,
       `${day}-${month}-${year}`,
     )

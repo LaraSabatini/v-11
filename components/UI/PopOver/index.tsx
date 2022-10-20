@@ -7,6 +7,7 @@ export interface PopOverInterface {
   position?: "left" | "right"
 }
 
+// eslint-disable-next-line react/function-component-definition
 const PopOver: React.FC<PopOverInterface> = ({
   title,
   description,

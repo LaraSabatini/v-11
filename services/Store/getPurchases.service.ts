@@ -1,13 +1,11 @@
 import axios from "axios"
+import axiosHeader from "services/axiosHeader"
+
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/purchases`
 
 export const getPurchases = async (page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/purchases?page=${page}`,
+    `${apiURL}?page=${page}`,
 
     axiosHeader,
   )
@@ -18,13 +16,8 @@ export const getPurchasesByProduct = async (
   product_id: number,
   page: number,
 ) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/purchases/item/${product_id}?page=${page}`,
+    `${apiURL}/item/${product_id}?page=${page}`,
 
     axiosHeader,
   )
@@ -32,13 +25,8 @@ export const getPurchasesByProduct = async (
 }
 
 export const getPurchasesByDate = async (date: string, page: number) => {
-  const axiosHeader = {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  }
   const res = await axios.get(
-    `https://v-11-backend.vercel.app/purchases/${date}?page=${page}`,
+    `${apiURL}/${date}?page=${page}`,
 
     axiosHeader,
   )

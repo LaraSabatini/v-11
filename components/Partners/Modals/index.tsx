@@ -4,7 +4,7 @@ import { PartnersContext } from "contexts/Partners"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 
-const Modals = () => {
+function Modals() {
   const {
     modalSuccess,
     modalError,

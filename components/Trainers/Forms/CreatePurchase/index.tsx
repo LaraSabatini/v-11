@@ -44,10 +44,10 @@ interface CreatePurchaseInterface {
   cancelCreatePurchase: (arg?: any) => void
 }
 
-const CreatePurchaseModal = ({
+function CreatePurchaseModal({
   handleCreatePurchase,
   cancelCreatePurchase,
-}: CreatePurchaseInterface) => {
+}: CreatePurchaseInterface) {
   const {
     clientRef,
     birthDateRef,

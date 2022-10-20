@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useContext, useEffect } from "react"
-// SERVICES
-import { searchByDate } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import { paymentUsers } from "const/finances"
@@ -9,7 +7,7 @@ import DefaultInterface from "interfaces/components/DefaultInterface"
 // COMPONENTS & STYLING
 import { MainContainer, CardContainer, Card, User } from "./styles"
 
-const TillByUser = () => {
+function TillByUser() {
   const { digitalPaymentsList } = useContext(Finances)
 
   return (

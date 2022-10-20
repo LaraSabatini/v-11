@@ -19,19 +19,13 @@ function Home() {
   }, [isLoggedIn])
 
   return (
-    <>
-      <style jsx global>{`
-        body {
-          margin: 0px;
-          padding: 0px;
-        }
-      `}</style>
+    <div>
       {isLoggedIn !== null && (
         <PartnersProvider>
           <PartnersView />
         </PartnersProvider>
       )}
-    </>
+    </div>
   )
 }
 

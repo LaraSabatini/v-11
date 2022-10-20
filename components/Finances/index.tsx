@@ -13,7 +13,7 @@ import WorkingHours from "./WorkingHours"
 import TillFilters from "./Till/Filters"
 import { MainContainer, Content, Title, HeadContent } from "./styles"
 
-const FinancesView = () => {
+function FinancesView() {
   const router = useRouter()
 
   return (

@@ -7,7 +7,7 @@ interface LogOutInterface {
   currentUser: string
 }
 
-const LogOut = ({ currentUser }: LogOutInterface) => {
+function LogOut({ currentUser }: LogOutInterface) {
   const router = useRouter()
 
   const logOut = () => {

@@ -7,7 +7,7 @@ import {
   editStorePurchase,
 } from "services/Store/storePurchases.service"
 import {
-  searchByUserAndDate,
+  searchDigitalPaymentByUserAndDate,
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
@@ -38,7 +38,7 @@ import {
   PaymentMethods,
 } from "./styles"
 
-const Receipt = () => {
+function Receipt() {
   const {
     purchaseChange,
     purchase,
@@ -83,8 +83,8 @@ const Receipt = () => {
   }
 
   const makeDigitalPayment = async searchIfExistsCall => {
-    let success: boolean = false
-    if (searchIfExistsCall.data.length > 0) {
+    let success = false
+    if (searchIfExistsCall.data.length) {
       const digitalPaymentBody = {
         id: searchIfExistsCall.data[0].id,
         user_id: searchIfExistsCall.data[0].user_id,
@@ -179,7 +179,7 @@ const Receipt = () => {
     }
 
     if (paymentMethodSelected === 2) {
-      const searchIfExistsCall = await searchByUserAndDate(
+      const searchIfExistsCall = await searchDigitalPaymentByUserAndDate(
         paymentUserSelected.id,
         `${day}-${month}-${year}`,
       )

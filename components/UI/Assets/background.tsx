@@ -1,6 +1,6 @@
 import React from "react"
 
-const Background = () => {
+function Background() {
   return (
     <svg
       width="1440"

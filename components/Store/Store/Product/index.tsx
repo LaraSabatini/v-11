@@ -20,7 +20,7 @@ import {
   ComponentContainerZapas,
 } from "./styles"
 
-const Product = ({
+function Product({
   name,
   category_id,
   price,
@@ -28,7 +28,7 @@ const Product = ({
   cost,
   margin,
   brand,
-}: ProductCardInterface) => {
+}: ProductCardInterface) {
   const {
     setPurchase,
     purchase,

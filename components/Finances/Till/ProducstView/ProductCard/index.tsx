@@ -14,7 +14,7 @@ import {
   ComponentContainerZapas,
 } from "./styles"
 
-const HistoryCard = ({
+function HistoryCard({
   name,
   margin,
   cost,
@@ -25,7 +25,7 @@ const HistoryCard = ({
   price,
   payment,
   id,
-}: HistoryCardInterface) => {
+}: HistoryCardInterface) {
   const finalProfit = final_sells - cost * amount
 
   const splittedProfit = `${finalProfit}`.split(".")

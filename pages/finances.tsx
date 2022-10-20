@@ -19,19 +19,13 @@ function Finances() {
   }, [isLoggedIn])
 
   return (
-    <>
-      <style jsx global>{`
-        body {
-          margin: 0px;
-          padding: 0px;
-        }
-      `}</style>
+    <div>
       {isLoggedIn !== null && (
         <FinancesProvider>
           <FinancesView />
         </FinancesProvider>
       )}
-    </>
+    </div>
   )
 }
 

@@ -15,7 +15,7 @@ import {
   Option,
 } from "../../styles"
 
-const Filters = () => {
+function Filters() {
   const {
     categories,
     openTypeMenu,

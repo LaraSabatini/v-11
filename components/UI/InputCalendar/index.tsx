@@ -35,11 +35,9 @@ export interface InputCalendarInterface {
   disabled?: boolean // to display field disabled
   disabledAutocompleted?: boolean // to display the field disabled
   required?: boolean // to mark that the input calendar is a required field in a form
-  error?: boolean // to display error messages and change styles in such case
   backError?: boolean // hears a state when consumed to change styles in the presence of an error
   backErrorMessage?: string // has content to error messages in the presence of an error backend
   position?: "bottom-left" | "bottom-right" | "top-left" | "top-right" // to position the drop-down calendar up or down the input. In turn, it can be adjusted towards the right or left margin of the input
-  isFocus?: boolean
   onChange?: (value?: { selectedChangeDate?: string }) => void // to capture the new input value when changing steps on a form
   valueCalendar?: any // to give it a specific value from an api
   reference: RefObject<HTMLInputElement> // important prop, takes the reference as value for its operation
@@ -56,7 +54,7 @@ export interface CalendarDateNumberWeekInterface {
   isMinDate: boolean
 }
 
-const InputCalendar = ({
+function InputCalendar({
   width,
   height,
   success,
@@ -73,7 +71,7 @@ const InputCalendar = ({
   forceValidations,
   maxCalendarDate,
   minCalendarDate,
-}: InputCalendarInterface) => {
+}: InputCalendarInterface) {
   /**
    * state to open or close calendars
    */
@@ -445,8 +443,8 @@ const InputCalendar = ({
         {required ? `${label}*` : label}
       </Label>
       <InputCalendarFieldContainer
-        error={error}
-        backError={backError}
+        // error={error}
+        // backError={backError}
         width={width}
         height={height}
         ref={clickRefCalendarDropDown}
