@@ -1,4 +1,4 @@
-import { createContext, useState, useRef } from "react"
+import { createContext, useState, useRef, useMemo } from "react"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
@@ -8,64 +8,7 @@ import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 
-export const Lessons = createContext({
-  clasesPurchasedByWeek: null,
-  setClasesPurchasedByWeek: null,
-  currentWeekNumber: null,
-  setCurrentWeekNumber: null,
-  weekNumberSelected: null,
-  setWeekNumberSelected: null,
-  newPurchases: null,
-  setNewPurchases: null,
-  clientRef: null,
-  birthDateRef: null,
-  trainersList: null,
-  setTrainersList: null,
-  amountOfLessonsRef: null,
-  trainerSelectedRef: null,
-  amountOfLessons: null,
-  setAmountOfLessons: null,
-  lessonRef: null,
-  datesSelected: null,
-  setDatesSelected: null,
-  prices: null,
-  setPrices: null,
-  paymentMethodSelected: null,
-  setPaymentMethodSelected: null,
-  paid: null,
-  setPaid: null,
-  clientSelected: null,
-  setClientSelected: null,
-  finalPrice: null,
-  setFinalPrice: null,
-  paymentUserSelected: null,
-  setPaymentUserSelected: null,
-  newPartnerData: null,
-  setNewPartnerData: null,
-  clientIsRegistered: null,
-  setClientIsRegistered: null,
-  shiftRef: null,
-  paysNowRef: null,
-  paymentMethodRef: null,
-  paymentUserRef: null,
-  trainerSelected: null,
-  setTrainerSelected: null,
-  identificationError: null,
-  setIdentificationError: null,
-  modalSuccess: null,
-  setModalSuccess: null,
-  modalError: null,
-  setModalError: null,
-  cleanStates: null,
-  purchaseSelected: null,
-  setPurchaseSelected: null,
-  triggerListUpdate: null,
-  setTriggerListUpdate: null,
-  students: null,
-  setStudents: null,
-  buyedCombo: null,
-  setBuyedCombo: null,
-})
+export const Lessons = createContext(null)
 
 function LessonsProvider({ children }) {
   const [clasesPurchasedByWeek, setClasesPurchasedByWeek] = useState<
@@ -151,6 +94,7 @@ function LessonsProvider({ children }) {
 
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanStates = () => {
     setNewPurchases(null)
     setAmountOfLessons(0)
@@ -163,6 +107,7 @@ function LessonsProvider({ children }) {
     setModalSuccess(null)
     setModalError(null)
     setTriggerListUpdate(triggerListUpdate + 1)
+    setBuyedCombo(true)
   }
 
   // CALENDAR VIEW ********************************
@@ -174,70 +119,94 @@ function LessonsProvider({ children }) {
   // STUDENTS VIEW
   const [students, setStudents] = useState<PartnerInterface[]>([])
 
-  return (
-    <Lessons.Provider
-      value={{
-        clasesPurchasedByWeek,
-        setClasesPurchasedByWeek,
-        currentWeekNumber,
-        setCurrentWeekNumber,
-        weekNumberSelected,
-        setWeekNumberSelected,
-        newPurchases,
-        setNewPurchases,
-        clientRef,
-        birthDateRef,
-        trainersList,
-        setTrainersList,
-        amountOfLessonsRef,
-        trainerSelectedRef,
-        amountOfLessons,
-        setAmountOfLessons,
-        lessonRef,
-        datesSelected,
-        setDatesSelected,
-        prices,
-        setPrices,
-        paymentMethodSelected,
-        setPaymentMethodSelected,
-        paid,
-        setPaid,
-        clientSelected,
-        setClientSelected,
-        finalPrice,
-        setFinalPrice,
-        paymentUserSelected,
-        setPaymentUserSelected,
-        newPartnerData,
-        setNewPartnerData,
-        clientIsRegistered,
-        setClientIsRegistered,
-        shiftRef,
-        paysNowRef,
-        paymentMethodRef,
-        paymentUserRef,
-        trainerSelected,
-        setTrainerSelected,
-        identificationError,
-        setIdentificationError,
-        modalSuccess,
-        setModalSuccess,
-        modalError,
-        setModalError,
-        cleanStates,
-        purchaseSelected,
-        setPurchaseSelected,
-        triggerListUpdate,
-        setTriggerListUpdate,
-        students,
-        setStudents,
-        buyedCombo,
-        setBuyedCombo,
-      }}
-    >
-      {children}
-    </Lessons.Provider>
+  const value = useMemo(
+    () => ({
+      clasesPurchasedByWeek,
+      setClasesPurchasedByWeek,
+      currentWeekNumber,
+      setCurrentWeekNumber,
+      weekNumberSelected,
+      setWeekNumberSelected,
+      newPurchases,
+      setNewPurchases,
+      clientRef,
+      birthDateRef,
+      trainersList,
+      setTrainersList,
+      amountOfLessonsRef,
+      trainerSelectedRef,
+      amountOfLessons,
+      setAmountOfLessons,
+      lessonRef,
+      datesSelected,
+      setDatesSelected,
+      prices,
+      setPrices,
+      paymentMethodSelected,
+      setPaymentMethodSelected,
+      paid,
+      setPaid,
+      clientSelected,
+      setClientSelected,
+      finalPrice,
+      setFinalPrice,
+      paymentUserSelected,
+      setPaymentUserSelected,
+      newPartnerData,
+      setNewPartnerData,
+      clientIsRegistered,
+      setClientIsRegistered,
+      shiftRef,
+      paysNowRef,
+      paymentMethodRef,
+      paymentUserRef,
+      trainerSelected,
+      setTrainerSelected,
+      identificationError,
+      setIdentificationError,
+      modalSuccess,
+      setModalSuccess,
+      modalError,
+      setModalError,
+      cleanStates,
+      purchaseSelected,
+      setPurchaseSelected,
+      triggerListUpdate,
+      setTriggerListUpdate,
+      students,
+      setStudents,
+      buyedCombo,
+      setBuyedCombo,
+    }),
+    [
+      clasesPurchasedByWeek,
+      currentWeekNumber,
+      weekNumberSelected,
+      newPurchases,
+      trainersList,
+      amountOfLessons,
+      datesSelected,
+      prices,
+      paymentMethodSelected,
+      paid,
+      clientSelected,
+      finalPrice,
+      paymentUserSelected,
+      newPartnerData,
+      clientIsRegistered,
+      trainerSelected,
+      identificationError,
+      modalSuccess,
+      modalError,
+      cleanStates,
+      purchaseSelected,
+      triggerListUpdate,
+      students,
+      buyedCombo,
+    ],
   )
+
+  return <Lessons.Provider value={value}>{children}</Lessons.Provider>
 }
 
 export default LessonsProvider
