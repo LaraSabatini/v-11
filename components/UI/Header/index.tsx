@@ -1,11 +1,5 @@
-import React, {
-  useState,
-  useEffect,
-  // useContext
-} from "react"
+import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
-// import { PartnersContext } from "contexts/Partners"
-// import { StoreContext } from "contexts/Store"
 import routes from "routes"
 import Tooltip from "components/UI/Tooltip"
 import LogOut from "./LogOut"
@@ -22,8 +16,6 @@ import {
 
 function Header() {
   const router = useRouter()
-  // const { hasChanges, setModalHasChanges } = useContext(PartnersContext)
-  // const { setModalStockHasChanges, stockChanges } = useContext(StoreContext)
   const [currentUser, setCurrentUser] = useState<string>("")
 
   const [openLogOut, setOpenLogOut] = useState<boolean>(false)
@@ -102,17 +94,7 @@ function Header() {
             ))}
         </Sections>
         <Tooltip title={currentUser} placement="bottom-end">
-          <ProfilePicture
-            onClick={() => {
-              // if (hasChanges && hasChanges !== null) {
-              //   setModalHasChanges(true)
-              // } else if (stockChanges) {
-              //   setModalStockHasChanges(true)
-              // } else {
-              setOpenLogOut(!openLogOut)
-              // }
-            }}
-          >
+          <ProfilePicture onClick={() => setOpenLogOut(!openLogOut)}>
             {currentUser.length && currentUser.substring(0, 1).toUpperCase()}
           </ProfilePicture>
         </Tooltip>
