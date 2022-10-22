@@ -234,6 +234,11 @@ function PartnersProvider({ children }) {
     setPaymentUserSelected,
   ] = useState<DefaultInterface>(null)
 
+  const [
+    disableCreatePartnerFormButton,
+    setDisableCreatePartnerFormButton,
+  ] = useState<boolean>(false)
+
   const value = useMemo(
     () => ({
       isChecked,
@@ -314,6 +319,8 @@ function PartnersProvider({ children }) {
       paymentUserRef,
       sectionSelected,
       setSectionSelected,
+      disableCreatePartnerFormButton,
+      setDisableCreatePartnerFormButton,
     }),
     [
       isChecked,
@@ -350,6 +357,7 @@ function PartnersProvider({ children }) {
       usesDay,
       paymentUserSelected,
       sectionSelected,
+      disableCreatePartnerFormButton,
     ],
   )
 
