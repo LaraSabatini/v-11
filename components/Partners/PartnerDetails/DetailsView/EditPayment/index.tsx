@@ -116,50 +116,53 @@ function EditPayment({
           }
         />
       </HorizontalGroup>
-      <HorizontalGroup>
-        <SubContainer>
-          <TextField
-            width={60}
-            label={partnerTexts.time}
-            type="number"
-            reference={paidTimeRef}
-            value={`${newValues.time_paid}`}
-            onChange={e => {
-              const number = parseInt(e.target.value, 10)
-              // eslint-disable-next-line no-restricted-globals
-              if (isNaN(number)) {
-                setPaidTime(0)
-                setNewValues({ ...newValues, time_paid: 0 })
-              } else {
-                setPaidTime(number)
-                setNewValues({ ...newValues, time_paid: number })
+      {comboSelected === null && (
+        <HorizontalGroup>
+          <SubContainer>
+            <TextField
+              width={60}
+              label={partnerTexts.time}
+              type="number"
+              reference={paidTimeRef}
+              required={comboSelected === null}
+              onChange={e => {
+                const number = parseInt(e.target.value, 10)
+                // eslint-disable-next-line no-restricted-globals
+                if (isNaN(number)) {
+                  setPaidTime(0)
+                  setNewValues({ ...newValues, time_paid: 0 })
+                } else {
+                  setPaidTime(number)
+                  setNewValues({ ...newValues, time_paid: number })
+                }
+              }}
+            />
+            <Autocomplete
+              label={partnerTexts.create.unit}
+              required={paidTime !== 0 && paidTime !== ""}
+              width={115}
+              options={timeUnits}
+              setValue={
+                newValues.time_paid_unit !== 0
+                  ? timeUnits.filter(
+                      tu => tu.id === newValues.time_paid_unit,
+                    )[0]?.display_name
+                  : ""
               }
-            }}
-          />
-          <Autocomplete
-            label={partnerTexts.create.unit}
-            required={paidTime !== 0 && paidTime !== ""}
-            width={115}
-            options={timeUnits}
-            setValue={
-              newValues.time_paid_unit !== 0
-                ? timeUnits.filter(tu => tu.id === newValues.time_paid_unit)[0]
-                    ?.display_name
-                : ""
-            }
-            ref={paidTimeUnitRef}
-            onChangeProps={(e: { id: number; display_name: string }) => {
-              setPaidTimeUnit(e)
-              setNewValues({ ...newValues, time_paid_unit: e.id })
-              if (e.id !== 1) {
-                setIsChecked(true)
-              } else {
-                setIsChecked(false)
-              }
-            }}
-          />
-        </SubContainer>
-      </HorizontalGroup>
+              ref={paidTimeUnitRef}
+              onChangeProps={(e: { id: number; display_name: string }) => {
+                setPaidTimeUnit(e)
+                setNewValues({ ...newValues, time_paid_unit: e.id })
+                if (e.id !== 1) {
+                  setIsChecked(true)
+                } else {
+                  setIsChecked(false)
+                }
+              }}
+            />
+          </SubContainer>
+        </HorizontalGroup>
+      )}
       <HorizontalGroup>
         <Autocomplete
           required

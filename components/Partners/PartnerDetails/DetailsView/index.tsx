@@ -60,6 +60,8 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
     prices,
     usesDay,
     combos,
+    paidTimeRef,
+    paymentUserRef,
   } = useContext(PartnersContext)
 
   const [initialPayment, setInitialPayment] = useState<PaymentInterface>()
@@ -200,26 +202,12 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
       date: `${day}-${month}-${year}`,
     }
 
-    await paidTimeUnitRef.current?.focus()
-    await paymentRef.current?.focus()
+    const createPayment = await createPartnerPayment(body)
+    const addPaymentFunc = await addPayment()
 
-    if (
-      paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
-      paymentRef.current.attributes.getNamedItem("data-error").value === "false"
-    ) {
-      const createPayment = await createPartnerPayment(body)
-      const addPaymentFunc = await addPayment()
-
-      if (
-        createPayment.message === "partnerPayment created successfully" &&
-        addPaymentFunc
-      ) {
-        success = true
-      } else {
-        success = false
-      }
-    }
+    success =
+      createPayment.message === "partnerPayment created successfully" &&
+      addPaymentFunc
     return success
   }
 
@@ -242,11 +230,8 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
       }
 
       const editDigitalPayment = await updateDigitalPayment(digitalPaymentBody)
-      if (editDigitalPayment.message === "payment updated successfully") {
-        success = true
-      } else {
-        success = false
-      }
+
+      success = editDigitalPayment.message === "payment updated successfully"
     } else {
       const digitalPaymentBody = {
         id: 0,
@@ -261,12 +246,9 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
 
       const createDigital = await createDigitalPayment(digitalPaymentBody)
 
-      if (createDigital.message === "payment created successfully") {
-        success = true
-      } else {
-        success = false
-      }
+      success = createDigital.message === "payment created successfully"
     }
+
     return success
   }
 
@@ -274,7 +256,36 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
     e.preventDefault()
     let success = false
 
-    const expirationDate = getExpirationDate(paidTime, comboSelected)
+    let canPurchase = false
+
+    if (comboSelected === null) {
+      await paidTimeRef.current?.focus()
+      await paidTimeUnitRef.current?.focus()
+
+      if (
+        paidTimeRef.current.attributes.getNamedItem("data-error").value ===
+          "false" &&
+        paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
+          "false"
+      ) {
+        canPurchase = true
+      } else {
+        canPurchase = false
+      }
+    }
+    await paymentRef.current?.focus()
+
+    if (paymentMethodSelected === 2) {
+      await paymentUserRef.current?.focus()
+      if (
+        paymentUserRef.current.attributes.getNamedItem("data-error").value ===
+        "false"
+      ) {
+        canPurchase = true
+      } else {
+        canPurchase = false
+      }
+    }
 
     const canAddDays =
       initialPayment.time_paid_unit === 0 ||
@@ -288,59 +299,50 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
         content: `${partnerTexts.cannotAddDays.content}`,
       })
       cleanStates()
-    } else {
+    }
+
+    if (canPurchase && canAddDays) {
+      const expirationDate = getExpirationDate(paidTime, comboSelected)
+
       const addDays = await addDaysFunc(expirationDate)
       success = addDays
-    }
 
-    if (initialPayment === undefined) {
-      const body = {
-        ...newValues,
-        time_paid: newValues.time_paid,
-        price_paid: finalPrice,
-        payment_expire_date:
-          (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-          (comboSelected !== null && comboSelected !== undefined)
-            ? expirationDate
-            : "",
-        date: `${day}-${month}-${year}`,
-      }
+      if (initialPayment === undefined) {
+        const body = {
+          ...newValues,
+          time_paid: newValues.time_paid,
+          price_paid: finalPrice,
+          payment_expire_date:
+            (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
+            (comboSelected !== null && comboSelected !== undefined)
+              ? expirationDate
+              : "",
+          date: `${day}-${month}-${year}`,
+        }
 
-      await paidTimeUnitRef.current?.focus()
-      await paymentRef.current?.focus()
-      if (
-        paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
-          "false" &&
-        paymentRef.current.attributes.getNamedItem("data-error").value ===
-          "false"
-      ) {
         const createPayment = await createPartnerPayment(body)
+
         const addPaymentFunc = await addPayment()
 
-        if (
+        success =
           createPayment.message === "payment updated successfully" &&
           addPaymentFunc
-        ) {
-          success = true
-        } else {
-          success = false
-        }
+      }
+
+      if (paymentMethodSelected === 2) {
+        const executePurchase = await executeDigitalPayment()
+        success = executePurchase
       }
     }
 
-    if (paymentMethodSelected === 2) {
-      const executePurchase = await executeDigitalPayment()
-      success = executePurchase
-    }
-
-    if (success) {
+    if (success && canPurchase) {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
         title: `${generalTexts.modalTitles.success}`,
         content: `${partnerTexts.updatePaymentSuccess.content}`,
       })
-    } else {
+    } else if (!success && canPurchase) {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
