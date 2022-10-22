@@ -179,7 +179,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
     <ModalForm
       title={trainerTexts.edit.title}
       cancelButtonContent={generalTexts.actions.cancel}
-      submitButtonContent={generalTexts.actions.pay}
+      submitButtonContent={generalTexts.actions.save}
       submit={handleEdit}
       cancelFunction={cancelEdit}
     >
