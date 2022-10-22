@@ -72,6 +72,8 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
     { name: "days", value: 0 },
   ])
 
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
+
   const [changedDays, setChangedDays] = useState<boolean>(false)
 
   const deletePartnerFunction = async () => {
@@ -302,6 +304,7 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
     }
 
     if (canPurchase && canAddDays) {
+      setDisabledButton(true)
       const expirationDate = getExpirationDate(paidTime, comboSelected)
 
       const addDays = await addDaysFunc(expirationDate)
@@ -582,6 +585,7 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
           cancelEdit={() => cleanStates()}
           partnerName={partnerInfo.name}
           partnerLastName={partnerInfo.last_name}
+          disabledButton={disabledButton}
         />
       )}
     </Details>

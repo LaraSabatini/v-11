@@ -22,6 +22,7 @@ interface EditPaymentInterface {
   cancelEdit: (arg?: any) => void
   partnerName: string
   partnerLastName: string
+  disabledButton: boolean
 }
 
 function EditPayment({
@@ -29,6 +30,7 @@ function EditPayment({
   cancelEdit,
   partnerName,
   partnerLastName,
+  disabledButton,
 }: EditPaymentInterface) {
   const {
     comboRef,
@@ -76,6 +78,7 @@ function EditPayment({
       submitButtonContent={generalTexts.actions.confirm}
       submit={handleEdit}
       cancelFunction={cancelEdit}
+      disabledButton={disabledButton}
     >
       <HorizontalGroup>
         <Autocomplete
