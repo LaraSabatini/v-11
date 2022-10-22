@@ -83,6 +83,7 @@ function CreatePurchaseModal({
     identificationError,
     buyedCombo,
     setBuyedCombo,
+    cleanStates,
   } = useContext(Lessons)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
@@ -321,8 +322,10 @@ function CreatePurchaseModal({
             onChangeProps={(e: { id: number; display_name: string }) => {
               if (e.id === 1) {
                 setClientIsRegistered(true)
+                setClientSelected(null)
               } else {
                 setClientIsRegistered(false)
+                setClientSelected(null)
               }
             }}
           />
@@ -350,7 +353,7 @@ function CreatePurchaseModal({
                 <p>
                   {clientSelected?.name} {clientSelected?.last_name}
                 </p>
-                <button onClick={() => setClientSelected(null)} type="button">
+                <button onClick={() => cleanStates()} type="button">
                   <Icon icon="IconMenuOff" />
                 </button>
               </SelectedClient>
@@ -577,20 +580,27 @@ function CreatePurchaseModal({
         {amountOfLessons === 0 ||
           (datesSelected.length === amountOfLessons && (
             <LessonsSubGroup>
-              <Autocomplete
-                options={yesOrNoArr}
-                label={trainerTexts.createPurchase.buyed_combo}
-                required
-                ref={paysNowRef}
-                width={100}
-                onChangeProps={(e: { id: number; display_name: string }) => {
-                  if (e.id === 1) {
-                    setBuyedCombo(true)
-                  } else {
-                    setBuyedCombo(false)
-                  }
-                }}
-              />
+              {clientSelected !== null && (
+                <Autocomplete
+                  options={yesOrNoArr}
+                  label={trainerTexts.createPurchase.buyed_combo}
+                  required
+                  ref={paysNowRef}
+                  width={100}
+                  onChangeProps={(e: { id: number; display_name: string }) => {
+                    if (e.id === 1) {
+                      setBuyedCombo(true)
+                      setFinalPrice(0)
+                      setPaid(null)
+                      setPaymentMethodSelected(null)
+                    } else {
+                      setBuyedCombo(false)
+                      setPaid(null)
+                      setPaymentMethodSelected(null)
+                    }
+                  }}
+                />
+              )}
               {!buyedCombo && (
                 <Autocomplete
                   options={yesOrNoArr}
@@ -603,11 +613,14 @@ function CreatePurchaseModal({
                       setPaid(true)
                     } else {
                       setPaid(false)
+                      setFinalPrice(0)
+                      setPaymentUserSelected(null)
+                      setPaymentMethodSelected(null)
                     }
                   }}
                 />
               )}
-              {paid && (
+              {paid && !buyedCombo && (
                 <Autocomplete
                   options={paymentMethods}
                   label={trainerTexts.createPurchase.paymentMethod}
@@ -623,7 +636,8 @@ function CreatePurchaseModal({
                 />
               )}
               {paymentMethodSelected !== null &&
-                paymentMethodSelected.id === 2 && (
+                paymentMethodSelected.id === 2 &&
+                paid !== null && (
                   <Autocomplete
                     options={paymentUsers}
                     label={generalTexts.payments.digital_user}

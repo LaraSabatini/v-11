@@ -63,7 +63,7 @@ function LessonsProvider({ children }) {
 
   const [paid, setPaid] = useState<boolean>(null)
 
-  const [buyedCombo, setBuyedCombo] = useState<boolean>(true)
+  const [buyedCombo, setBuyedCombo] = useState<boolean>(false)
 
   const [clientSelected, setClientSelected] = useState<PartnerInterface | null>(
     null,
