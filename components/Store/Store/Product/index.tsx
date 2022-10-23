@@ -28,6 +28,7 @@ function Product({
   cost,
   margin,
   brand,
+  stock,
 }: ProductCardInterface) {
   const {
     setPurchase,
@@ -156,12 +157,16 @@ function Product({
       setButtonAddDisabled(true)
     } else {
       setButtonAddDisabled(false)
-      addProduct()
+      if (stock === 0) {
+        setButtonAddDisabled(true)
+      } else {
+        addProduct()
+      }
     }
   }
 
   return (
-    <ProductCard>
+    <ProductCard stock={stock === 0}>
       {category_id === 1 && brand !== 12 && brand !== 11 && (
         <img className="zapas" src="/beer.png" alt="beer" />
       )}

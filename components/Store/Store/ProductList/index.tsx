@@ -26,6 +26,7 @@ function ProductsView({ data, goPrev, goNext }: ProductListInterface) {
           {data &&
             data.map(product => (
               <Product
+                stock={product.stock}
                 key={product.id}
                 name={product.name}
                 category_id={product.category_id}

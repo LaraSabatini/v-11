@@ -1,7 +1,13 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme/index"
 
-const ProductCard = styled.div`
+const ProductCard = styled.div<{ stock: boolean }>`
+  ${props =>
+    props.stock &&
+    css`
+      opacity: 0.5;
+    `}
+
   font-family: ${theme.fonts.primary};
   width: 260px;
   padding: 15px;

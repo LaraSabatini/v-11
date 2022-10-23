@@ -52,6 +52,8 @@ function Receipt() {
     setPaymentMethodSelected,
     paymentUserSelected,
     setPaymentUserSelected,
+    triggerListUpdate,
+    setTriggerListUpdate,
   } = useContext(StoreContext)
 
   const [finalPrice, setFinalPrice] = useState<number>(0)
@@ -81,6 +83,7 @@ function Receipt() {
   const cleanInitialStates = () => {
     setPaymentMethodSelected(1)
     setPaymentUserSelected(null)
+    setTriggerListUpdate(triggerListUpdate + 1)
   }
 
   const makeDigitalPayment = async searchIfExistsCall => {
