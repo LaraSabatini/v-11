@@ -227,6 +227,7 @@ function PartnersProvider({ children }) {
     setPaymentMethodSelected(1)
     setCreateModal(false)
     setModalErrorAddDays(null)
+    setUsesDay(true)
   }
 
   const [
