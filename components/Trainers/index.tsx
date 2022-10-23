@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 // SERVICES
-import getTrainers from "services/Trainers/GetTrainers.service"
 import { getPrices } from "services/Partners/Prices.service"
 import { createLessonPurchase } from "services/Trainers/LessonsPurchased.service"
 import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
@@ -22,7 +21,6 @@ import { Lessons } from "@contexts/Lessons"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
-import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import cleanPartnerData from "utils/cleanPartnerData"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
@@ -43,22 +41,13 @@ import {
 function TrainersView() {
   const {
     purchaseSelected,
-    setTrainersList,
     setPrices,
     clientIsRegistered,
-    clientRef,
-    amountOfLessonsRef,
-    trainerSelectedRef,
-    lessonRef,
-    shiftRef,
-    paysNowRef,
-    paymentMethodRef,
-    paymentUserRef,
+
     paid,
     amountOfLessons,
     datesSelected,
     clientSelected,
-    trainerSelected,
     finalPrice,
     paymentMethodSelected,
     paymentUserSelected,
@@ -68,6 +57,7 @@ function TrainersView() {
     setModalSuccess,
     setModalError,
     buyedCombo,
+    setDisablePurchaseButton,
   } = useContext(Lessons)
   const router = useRouter()
 
@@ -109,8 +99,8 @@ function TrainersView() {
         partner_id: partnerId,
         partner_name: partnerName,
         partner_last_name: partnerLastName,
-        trainer_id: trainerSelected.id,
-        trainer_name: trainerSelected.display_name,
+        trainer_id: 0,
+        trainer_name: "",
         week_id: weekNumber,
         paid:
           paid || buyedCombo
@@ -132,25 +122,95 @@ function TrainersView() {
     return success
   }
 
-  const executePurchase = async e => {
-    e.preventDefault()
-
+  const createBoulderPurchaseCallFunc = async () => {
     let success: boolean = false
 
-    await clientRef.current?.focus()
-    await amountOfLessonsRef.current?.focus()
-    await trainerSelectedRef.current?.focus()
-    await lessonRef.current?.focus()
-    await shiftRef.current?.focus()
-    await paysNowRef.current?.focus()
-
-    if (paid) {
-      await paymentMethodRef.current?.focus()
-      await paymentUserRef.current?.focus()
+    const boulderPurchaseBody: {
+      id: number
+      date: string
+      item_id: number
+      item_name: string
+      amount_of_items: number
+      profit: number
+      payment_method_id: number
+    } = {
+      id: 0,
+      date: `${day}-${month}-${year}`,
+      item_id: 4,
+      item_name: `${trainerTexts.lessons}`,
+      amount_of_items: amountOfLessons,
+      profit: finalPrice,
+      payment_method_id: paymentMethodSelected.id,
     }
-    await clientRef.current?.focus()
+
+    const createBoulderPurchaseCall = await createBoulderPurchase(
+      boulderPurchaseBody,
+    )
+    success =
+      createBoulderPurchaseCall.message === "bouderPayment created successfully"
+
+    if (paymentMethodSelected.id === 2) {
+      const searchIfExists = await searchDigitalPaymentByUserAndDate(
+        paymentUserSelected.id,
+        `${day}-${month}-${year}`,
+      )
+
+      if (searchIfExists.data.length > 0) {
+        const digitalPaymentBody = {
+          id: searchIfExists.data[0].id,
+          user_id: searchIfExists.data[0].user_id,
+          user_name: searchIfExists.data[0].user_name,
+          date: searchIfExists.data[0].date,
+          month: searchIfExists.data[0].month,
+          month_id: searchIfExists.data[0].month_id,
+          total_profit: searchIfExists.data[0].total_profit + finalPrice,
+        }
+
+        const editDigitalPayment = await updateDigitalPayment(
+          digitalPaymentBody,
+        )
+
+        success = editDigitalPayment.message === "payment updated successfully"
+      } else {
+        const digitalPaymentBody: {
+          id: number
+          user_id: number
+          user_name: string
+          date: string
+          month: string
+          month_id: number
+          total_profit: number
+        } = {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
+          date: `${day}-${month}-${year}`,
+          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+            .display_name,
+          month_id: parseInt(`${month}`, 10),
+          total_profit: finalPrice,
+        }
+
+        const createDigitalPaymentCall = await createDigitalPayment(
+          digitalPaymentBody,
+        )
+        success =
+          createDigitalPaymentCall.message === "payment created successfully"
+      }
+    }
+    return success
+  }
+
+  const executePurchase = async e => {
+    e.preventDefault()
+    setDisablePurchaseButton(true)
+
+    let success: boolean = false
+    let canShowModalError = true
 
     if (clientIsRegistered) {
+      canShowModalError = true
+
       if (clientSelected.is_student === `${yesOrNoArr[1].display_name}`) {
         const bodyEditPartner = {
           ...clientSelected,
@@ -166,7 +226,13 @@ function TrainersView() {
         clientSelected.name,
         clientSelected.last_name,
       )
+
       success = createPur
+
+      if (paid && !buyedCombo) {
+        const boulderPurchase = await createBoulderPurchaseCallFunc()
+        success = boulderPurchase && createPur
+      }
     } else {
       const seeDuplicated = await searchPartner(
         newPartnerData.identification_number,
@@ -174,7 +240,9 @@ function TrainersView() {
       )
       if (seeDuplicated.data.length > 0) {
         setIdentificationError(true)
+        canShowModalError = false
       } else {
+        canShowModalError = true
         setIdentificationError(false)
 
         const formatName = cleanPartnerData(newPartnerData.name)
@@ -195,82 +263,10 @@ function TrainersView() {
           )
           success = pur
         }
-      }
-    }
 
-    if (paid && !buyedCombo) {
-      const boulderPurchaseBody: {
-        id: number
-        date: string
-        item_id: number
-        item_name: string
-        amount_of_items: number
-        profit: number
-        payment_method_id: number
-      } = {
-        id: 0,
-        date: `${day}-${month}-${year}`,
-        item_id: 4,
-        item_name: `${trainerTexts.lessons}`,
-        amount_of_items: amountOfLessons,
-        profit: finalPrice,
-        payment_method_id: paymentMethodSelected.id,
-      }
-
-      const createBoulderPurchaseCall = await createBoulderPurchase(
-        boulderPurchaseBody,
-      )
-      success =
-        createBoulderPurchaseCall.message ===
-        "bouderPayment created successfully"
-      if (paymentMethodSelected.id === 2) {
-        const searchIfExists = await searchDigitalPaymentByUserAndDate(
-          paymentUserSelected.id,
-          `${day}-${month}-${year}`,
-        )
-
-        if (searchIfExists.data.length > 0) {
-          const digitalPaymentBody = {
-            id: searchIfExists.data[0].id,
-            user_id: searchIfExists.data[0].user_id,
-            user_name: searchIfExists.data[0].user_name,
-            date: searchIfExists.data[0].date,
-            month: searchIfExists.data[0].month,
-            month_id: searchIfExists.data[0].month_id,
-            total_profit: searchIfExists.data[0].total_profit + finalPrice,
-          }
-
-          const editDigitalPayment = await updateDigitalPayment(
-            digitalPaymentBody,
-          )
-
-          success =
-            editDigitalPayment.message === "payment updated successfully"
-        } else {
-          const digitalPaymentBody: {
-            id: number
-            user_id: number
-            user_name: string
-            date: string
-            month: string
-            month_id: number
-            total_profit: number
-          } = {
-            id: 0,
-            user_id: paymentUserSelected.id,
-            user_name: paymentUserSelected.display_name,
-            date: `${day}-${month}-${year}`,
-            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-              .display_name,
-            month_id: parseInt(`${month}`, 10),
-            total_profit: finalPrice,
-          }
-
-          const createDigitalPaymentCall = await createDigitalPayment(
-            digitalPaymentBody,
-          )
-          success =
-            createDigitalPaymentCall.message === "payment created successfully"
+        if (paid && !buyedCombo) {
+          const boulderPurchase = await createBoulderPurchaseCallFunc()
+          success = boulderPurchase
         }
       }
     }
@@ -283,7 +279,8 @@ function TrainersView() {
         content: `${trainerTexts.createPurchase.successModal.content}`,
       })
       setCreateLessonPurchaseView(false)
-    } else {
+    }
+    if (canShowModalError && !success) {
       setModalError({
         status: "alert",
         icon: "IconExclamation",
@@ -295,17 +292,6 @@ function TrainersView() {
   }
 
   const fillData = async () => {
-    const trainersCall = await getTrainers()
-
-    const trainerArr = []
-    trainersCall.data.map((trainer: TrainerInterface) =>
-      trainerArr.push({
-        id: trainer.id,
-        display_name: trainer.name,
-      }),
-    )
-    setTrainersList(trainerArr)
-
     const pricesCall = await getPrices()
     setPrices(pricesCall.data)
   }

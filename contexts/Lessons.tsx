@@ -94,6 +94,10 @@ function LessonsProvider({ children }) {
 
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
 
+  const [disablePurchaseButton, setDisablePurchaseButton] = useState<boolean>(
+    false,
+  )
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanStates = () => {
     setNewPurchases(null)
@@ -108,6 +112,8 @@ function LessonsProvider({ children }) {
     setModalError(null)
     setTriggerListUpdate(triggerListUpdate + 1)
     setBuyedCombo(true)
+    setDisablePurchaseButton(false)
+    setIdentificationError(false)
   }
 
   // CALENDAR VIEW ********************************
@@ -177,6 +183,8 @@ function LessonsProvider({ children }) {
       setStudents,
       buyedCombo,
       setBuyedCombo,
+      disablePurchaseButton,
+      setDisablePurchaseButton,
     }),
     [
       clasesPurchasedByWeek,
@@ -203,6 +211,7 @@ function LessonsProvider({ children }) {
       triggerListUpdate,
       students,
       buyedCombo,
+      disablePurchaseButton,
     ],
   )
 

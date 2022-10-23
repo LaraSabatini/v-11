@@ -9,7 +9,7 @@ import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.ser
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"
 import { shifts, day, month, year } from "const/time"
-import { Lessons } from "@contexts/Lessons"
+import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
@@ -51,9 +51,7 @@ function CreatePurchaseModal({
   const {
     clientRef,
     birthDateRef,
-    trainersList,
     amountOfLessonsRef,
-    trainerSelectedRef,
     amountOfLessons,
     setAmountOfLessons,
     lessonRef,
@@ -77,13 +75,12 @@ function CreatePurchaseModal({
     paysNowRef,
     paymentMethodRef,
     paymentUserRef,
-    trainerSelected,
-    setTrainerSelected,
     paymentUserSelected,
     identificationError,
     buyedCombo,
     setBuyedCombo,
     cleanStates,
+    disablePurchaseButton,
   } = useContext(Lessons)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
@@ -259,7 +256,6 @@ function CreatePurchaseModal({
     ? clientSelected !== null
     : clientSelected === null
   const selectedAmountOfLessons = amountOfLessons > 0
-  const selectedTrainer = trainerSelected !== null
   const selectedAmount = datesSelected.length === amountOfLessons
   const selectedPays = paid && paymentMethodSelected !== null
 
@@ -284,13 +280,11 @@ function CreatePurchaseModal({
     clientIsRegistered &&
     selectedClient &&
     selectedAmountOfLessons &&
-    selectedTrainer &&
     selectedAmount &&
     ((paid !== null && payment) || buyedCombo)
 
   const conditionsForClientNotRegistered =
     selectedAmountOfLessons &&
-    selectedTrainer &&
     selectedAmount &&
     paid !== null &&
     payment &&
@@ -308,7 +302,9 @@ function CreatePurchaseModal({
       submitButtonContent={generalTexts.actions.create}
       submit={handleCreatePurchase}
       cancelFunction={cancelCreatePurchase}
-      disabledButton={!canExecute}
+      disabledButton={
+        (!canExecute || disablePurchaseButton) && !identificationError
+      }
     >
       <FormContainer>
         {/* START - CLIENT IS REGISTERED VALIDATION */}
@@ -485,14 +481,6 @@ function CreatePurchaseModal({
                     }
                   }}
                 />
-                <Autocomplete
-                  width={200}
-                  label={generalTexts.labels.trainer}
-                  required
-                  ref={trainerSelectedRef}
-                  options={trainersList}
-                  onChangeProps={e => setTrainerSelected(e)}
-                />
               </LessonsSubGroup>
 
               {(amountOfLessons === 0 ||
@@ -500,6 +488,7 @@ function CreatePurchaseModal({
 
               <LessonsSubGroup>
                 <InputCalendar
+                  position="top-left"
                   label={trainerTexts.createPurchase.lessonsDate}
                   minCalendarDate={`${day}/${month}/${year}`}
                   valueCalendar={provisionalSelection.date}
@@ -577,86 +566,86 @@ function CreatePurchaseModal({
         {cannotAddDate && (
           <Warning>{trainerTexts.createPurchase.warningMessage}</Warning>
         )}
-        {amountOfLessons === 0 ||
-          (datesSelected.length === amountOfLessons && (
-            <LessonsSubGroup>
-              {clientSelected !== null && (
+        {amountOfLessons > 0 && datesSelected.length === amountOfLessons && (
+          <LessonsSubGroup>
+            {clientSelected !== null && (
+              <Autocomplete
+                options={yesOrNoArr}
+                label={trainerTexts.createPurchase.buyed_combo}
+                required
+                ref={paysNowRef}
+                width={100}
+                onChangeProps={(e: { id: number; display_name: string }) => {
+                  if (e.id === 1) {
+                    setBuyedCombo(true)
+                    setFinalPrice(0)
+                    setPaid(null)
+                    setPaymentMethodSelected(null)
+                  } else {
+                    setBuyedCombo(false)
+                    setPaid(null)
+                    setPaymentMethodSelected(null)
+                  }
+                }}
+              />
+            )}
+            {(!buyedCombo || clientSelected === null) && (
+              <Autocomplete
+                options={yesOrNoArr}
+                label={trainerTexts.createPurchase.paysNow}
+                required
+                ref={paysNowRef}
+                width={100}
+                onChangeProps={(e: { id: number; display_name: string }) => {
+                  if (e.id === 1) {
+                    setPaid(true)
+                  } else {
+                    setPaid(false)
+                    setFinalPrice(0)
+                    setPaymentUserSelected(null)
+                    setPaymentMethodSelected(null)
+                  }
+                }}
+              />
+            )}
+            {((clientSelected !== null && paid && !buyedCombo) ||
+              (clientSelected === null && paid)) && (
+              <Autocomplete
+                options={paymentMethods}
+                label={trainerTexts.createPurchase.paymentMethod}
+                required
+                ref={paymentMethodRef}
+                width={100}
+                onChangeProps={(e: { id: number; display_name: string }) => {
+                  setPaymentMethodSelected(e)
+                  if (e.id === 1) {
+                    setPaymentUserSelected(null)
+                  }
+                }}
+              />
+            )}
+            {paymentMethodSelected !== null &&
+              paymentMethodSelected.id === 2 &&
+              paid !== null && (
                 <Autocomplete
-                  options={yesOrNoArr}
-                  label={trainerTexts.createPurchase.buyed_combo}
+                  options={paymentUsers}
+                  label={generalTexts.payments.digital_user}
                   required
-                  ref={paysNowRef}
-                  width={100}
-                  onChangeProps={(e: { id: number; display_name: string }) => {
-                    if (e.id === 1) {
-                      setBuyedCombo(true)
-                      setFinalPrice(0)
-                      setPaid(null)
-                      setPaymentMethodSelected(null)
-                    } else {
-                      setBuyedCombo(false)
-                      setPaid(null)
-                      setPaymentMethodSelected(null)
-                    }
-                  }}
+                  ref={paymentUserRef}
+                  width={150}
+                  onChangeProps={(e: { id: number; display_name: string }) =>
+                    setPaymentUserSelected(e)
+                  }
                 />
               )}
-              {!buyedCombo && (
-                <Autocomplete
-                  options={yesOrNoArr}
-                  label={trainerTexts.createPurchase.paysNow}
-                  required
-                  ref={paysNowRef}
-                  width={100}
-                  onChangeProps={(e: { id: number; display_name: string }) => {
-                    if (e.id === 1) {
-                      setPaid(true)
-                    } else {
-                      setPaid(false)
-                      setFinalPrice(0)
-                      setPaymentUserSelected(null)
-                      setPaymentMethodSelected(null)
-                    }
-                  }}
-                />
-              )}
-              {paid && !buyedCombo && (
-                <Autocomplete
-                  options={paymentMethods}
-                  label={trainerTexts.createPurchase.paymentMethod}
-                  required
-                  ref={paymentMethodRef}
-                  width={100}
-                  onChangeProps={(e: { id: number; display_name: string }) => {
-                    setPaymentMethodSelected(e)
-                    if (e.id === 1) {
-                      setPaymentUserSelected(null)
-                    }
-                  }}
-                />
-              )}
-              {paymentMethodSelected !== null &&
-                paymentMethodSelected.id === 2 &&
-                paid !== null && (
-                  <Autocomplete
-                    options={paymentUsers}
-                    label={generalTexts.payments.digital_user}
-                    required
-                    ref={paymentUserRef}
-                    width={150}
-                    onChangeProps={(e: { id: number; display_name: string }) =>
-                      setPaymentUserSelected(e)
-                    }
-                  />
-                )}
-              <PriceContainer>
-                <p>{trainerTexts.createPurchase.total}</p>{" "}
-                <p>
-                  <b>${finalPrice}</b>
-                </p>
-              </PriceContainer>
-            </LessonsSubGroup>
-          ))}
+            <PriceContainer>
+              <p>{trainerTexts.createPurchase.total}</p>{" "}
+              <p>
+                <b>${finalPrice}</b>
+              </p>
+            </PriceContainer>
+          </LessonsSubGroup>
+        )}
       </FormContainer>
     </ModalForm>
   )
