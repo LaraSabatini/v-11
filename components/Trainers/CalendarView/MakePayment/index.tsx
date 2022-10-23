@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useState, useRef } from "react"
 // SERVICES
 import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
 import {
@@ -55,6 +55,10 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
     setModalSuccess,
     setModalError,
   } = useContext(Lessons)
+
+  const unusedRef = useRef(null)
+
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
   const [hasDiscount, setHasDiscount] = useState<boolean>(false)
   const [listOfLessonsToPay, setListOfLessonsToPay] = useState<
@@ -168,10 +172,11 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
   const handlePayment = async e => {
     e.preventDefault()
     await paymentMethodRef.current?.focus()
-    if (paymentMethodSelected.id === 2) {
+    await unusedRef.current?.focus()
+    if (paymentMethodSelected?.id === 2) {
       await paymentUserRef.current?.focus()
+      await unusedRef.current?.focus()
     }
-    await paymentMethodRef.current?.focus()
 
     if (
       paymentMethodRef.current.attributes.getNamedItem("data-error").value ===
@@ -182,9 +187,11 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
           paymentUserRef.current.attributes.getNamedItem("data-error").value ===
           "false"
         ) {
+          setDisabledButton(true)
           await executePayment()
         }
       } else {
+        setDisabledButton(true)
         await executePayment()
       }
     }
@@ -266,7 +273,6 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
             : lessonPriceForFreePass[0].mp * lessonsSelectedToPay.length
       }
     } else {
-      //
       // eslint-disable-next-line no-lonely-if
       if (lessonsSelectedToPay.length === 4) {
         price =
@@ -345,6 +351,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
       submitButtonContent={generalTexts.actions.pay}
       submit={handlePayment}
       cancelFunction={cancelPayment}
+      disabledButton={disabledButton}
     >
       {modalConfirmDelete !== null && (
         <ModalAlert
@@ -415,6 +422,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
         )}
         <DeleteRecord
           type="button"
+          ref={unusedRef}
           onClick={() =>
             setModalConfirmDelete({
               status: `alert`,
