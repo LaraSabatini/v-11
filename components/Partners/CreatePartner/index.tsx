@@ -61,6 +61,8 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     paymentUserSelected,
     combos,
     prices,
+    disableCreatePartnerFormButton,
+    setDisableCreatePartnerFormButton,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
@@ -110,6 +112,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         }
 
         setNewPartnerData(body)
+        setDisableCreatePartnerFormButton(true)
         setView(2)
       }
     }
@@ -253,6 +256,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
 
   const finalizeCreate = async e => {
     e.preventDefault()
+
     await paidTimeUnitRef.current?.focus()
     await paidTimeRef.current?.focus()
     await paymentRef.current?.focus()
@@ -266,6 +270,8 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         "false" &&
       paymentRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
+      setDisableCreatePartnerFormButton(true)
+
       const body: PartnerInterface = {
         ...newPartnerData,
         free_pass:
@@ -327,6 +333,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         title: `${generalTexts.modalTitles.success}`,
         content: `${partnerTexts.create.success.content}`,
       })
+      setDisableCreatePartnerFormButton(false)
     } else {
       setModalError({
         status: "alert",
@@ -334,6 +341,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         title: `${generalTexts.modalTitles.error}`,
         content: `${partnerTexts.create.error.content}`,
       })
+      setDisableCreatePartnerFormButton(false)
     }
   }
 
@@ -350,6 +358,13 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    if (view === 2) {
+      setDisableCreatePartnerFormButton(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view])
+
   return (
     <ModalForm
       title={
@@ -365,6 +380,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
       }
       submit={view === 1 ? handleCreate : finalizeCreate}
       cancelFunction={cancelCreate}
+      disabledButton={disableCreatePartnerFormButton}
     >
       {view === 1 && (
         <Form>

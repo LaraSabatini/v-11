@@ -120,7 +120,7 @@ function PartnersProvider({ children }) {
         paidTimeUnit.id !== null
       ) {
         if (paidTime === 1 && paidTimeUnit.id === 1) {
-          price += prices !== undefined && prices[0].price_cash
+          price += prices !== undefined && prices[0]?.price_cash
         } else if (paidTime === 8 && paidTimeUnit.id === 1) {
           price += prices[1].price_cash
         } else if (paidTime === 1 && paidTimeUnit.id === 2) {
@@ -227,12 +227,18 @@ function PartnersProvider({ children }) {
     setPaymentMethodSelected(1)
     setCreateModal(false)
     setModalErrorAddDays(null)
+    setUsesDay(true)
   }
 
   const [
     paymentUserSelected,
     setPaymentUserSelected,
   ] = useState<DefaultInterface>(null)
+
+  const [
+    disableCreatePartnerFormButton,
+    setDisableCreatePartnerFormButton,
+  ] = useState<boolean>(false)
 
   const value = useMemo(
     () => ({
@@ -314,6 +320,8 @@ function PartnersProvider({ children }) {
       paymentUserRef,
       sectionSelected,
       setSectionSelected,
+      disableCreatePartnerFormButton,
+      setDisableCreatePartnerFormButton,
     }),
     [
       isChecked,
@@ -350,6 +358,7 @@ function PartnersProvider({ children }) {
       usesDay,
       paymentUserSelected,
       sectionSelected,
+      disableCreatePartnerFormButton,
     ],
   )
 

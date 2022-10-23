@@ -36,6 +36,8 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
   const { purchaseSelected, setModalSuccess, setModalError } = useContext(
     Lessons,
   )
+
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
   const [cannotAddDate, setCannotAddDate] = useState<boolean>(false)
   const [provisionalSelection, setProvisionalSelection] = useState<{
     date: string
@@ -69,6 +71,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
       dateSelected !== undefined &&
       dateSelected !== null
     ) {
+      setDisabledButton(true)
       const lessonDay = `${dateSelected.date.slice(
         6,
         10,
@@ -165,7 +168,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
     } else {
       newArrayOfLessons = checkLessonsCallNotPaid.data
     }
-    setFutureLessons(newArrayOfLessons)
+    setFutureLessons(newArrayOfLessons[0])
   }
 
   useEffect(() => {
@@ -179,9 +182,10 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
     <ModalForm
       title={trainerTexts.edit.title}
       cancelButtonContent={generalTexts.actions.cancel}
-      submitButtonContent={generalTexts.actions.pay}
+      submitButtonContent={generalTexts.actions.save}
       submit={handleEdit}
       cancelFunction={cancelEdit}
+      disabledButton={disabledButton}
     >
       <Form>
         <CurrentDate>
