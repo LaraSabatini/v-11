@@ -36,6 +36,8 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
     setAutoCompleteBrandsValues,
     priceRef,
   } = useContext(StoreContext)
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
+
   const [brandSelected, setBrandSelected] = useState<string>("")
   const [newProductData, setNewProductData] = useState<ProductInterface>({
     id: 0,
@@ -85,6 +87,7 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
       costRef.current.attributes.getNamedItem("data-error").value === "false" &&
       priceRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
+      setDisabledButton(true)
       const body = {
         ...newProductData,
         name: `${newProductData.name} ${brandSelected}`,
@@ -99,6 +102,7 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
           content: `${storeTexts.create.success.content}`,
         })
         cancelCreate()
+        setDisabledButton(false)
       } else {
         setModalError({
           status: "alert",
@@ -106,6 +110,7 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
           title: `${generalTexts.modalTitles.error}`,
           content: `${storeTexts.create.error.content}`,
         })
+        setDisabledButton(false)
       }
     }
   }
@@ -137,6 +142,7 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
       submitButtonContent={generalTexts.actions.create}
       submit={handleCreate}
       cancelFunction={cancelCreate}
+      disabledButton={disabledButton}
     >
       <Form>
         <HorizontalGroup>
