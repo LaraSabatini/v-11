@@ -55,6 +55,7 @@ function Receipt() {
   } = useContext(StoreContext)
 
   const [finalPrice, setFinalPrice] = useState<number>(0)
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
   const paymentUserRef = useRef(null)
 
@@ -120,6 +121,7 @@ function Receipt() {
 
   const executePurchase = async () => {
     let success = false
+    setDisabledButton(true)
 
     for (let i = 0; i < purchase.length; i += 1) {
       const filterProduct = productsList.filter(
@@ -226,6 +228,7 @@ function Receipt() {
         content: `${storeTexts.purchase.success.content}`,
       })
       cleanInitialStates()
+      setDisabledButton(false)
     } else {
       setModalError({
         status: "alert",
@@ -234,6 +237,7 @@ function Receipt() {
         content: `${storeTexts.purchase.error.content}`,
       })
       cleanInitialStates()
+      setDisabledButton(false)
     }
   }
 
@@ -324,7 +328,10 @@ function Receipt() {
         <TextButton
           onClick={executePurchase}
           cta
-          disabled={paymentMethodSelected === 2 && paymentUserSelected === null}
+          disabled={
+            (paymentMethodSelected === 2 && paymentUserSelected === null) ||
+            disabledButton
+          }
           content={storeTexts.purchase.execute}
         />
       </ButtonContainer>
