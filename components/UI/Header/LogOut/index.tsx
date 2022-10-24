@@ -14,6 +14,7 @@ function LogOut({ currentUser }: LogOutInterface) {
     localStorage.removeItem("isLoggedIn")
     localStorage.removeItem("user")
     localStorage.removeItem("id")
+    localStorage.removeItem("permissions")
     router.replace("/")
   }
 

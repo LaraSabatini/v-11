@@ -48,5 +48,11 @@
     "pagination": {
         "next": "Siguiente pagina",
         "prev": "Pagina previa"
+    },
+    "permits": {
+        "title": "Tu perfil no cuenta con los permisos necesarios para utilizar esta seccion",
+        "info": "Contactate con un administrador para obtener los permisos necesarios",
+        "action_title": "Funcion deshabilitada",
+        "action_description": "Tu perfil no cuenta con los permisos necesarios"
     }
 }
