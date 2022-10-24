@@ -471,7 +471,6 @@ function Stock() {
         <TextButton
           onClick={discardChanges}
           content={generalTexts.actions.cancel}
-          disabled={!stockChanges}
         />
         <TextButton
           onClick={saveChanges}
