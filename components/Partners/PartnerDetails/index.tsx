@@ -13,7 +13,16 @@ import DetailsView from "./DetailsView"
 import DetailsEdition from "./DetailsEdition"
 import { Container, Title, Divider, IconContainer } from "./styles"
 
-function PartnerDetails() {
+interface ActionsPermissions {
+  permits: {
+    create: boolean
+    update: boolean
+    edit: boolean
+    delete: boolean
+  }
+}
+
+function PartnerDetails({ permits }: ActionsPermissions) {
   const {
     partnerSelected,
     partners,
@@ -49,6 +58,7 @@ function PartnerDetails() {
       <Title>
         {partnerTexts.details}
         <IconContainer
+          disabledButton={!permits.edit}
           onClick={() => {
             if (hasChanges) {
               setModalHasChanges(true)

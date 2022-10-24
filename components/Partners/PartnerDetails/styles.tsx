@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
@@ -47,13 +47,19 @@ const HorizontalSection = styled.div`
   justify-content: space-between;
 `
 
-const IconContainer = styled.button`
+const IconContainer = styled.button<{ disabledButton: boolean }>`
   border: none;
   background-color: transparent;
   cursor: pointer;
   margin-left: 20px;
   position: absolute;
   right: -50px;
+
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.4;
+    `};
 `
 
 export {

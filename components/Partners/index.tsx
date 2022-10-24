@@ -17,6 +17,7 @@ import Icon from "components/UI/Assets/Icon"
 import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import Header from "components/UI/Header"
+import NoPermissionsView from "components/UI/NoPermitsView"
 import Modals from "./Modals"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
@@ -54,6 +55,31 @@ function PartnersView() {
   } = useContext(PartnersContext)
 
   const router = useRouter()
+
+  const getPermissions = localStorage.getItem("permissions")
+  const permissions = JSON.parse(getPermissions)[0].sections
+  const routeName = router.pathname.slice(1, router.pathname.length)
+
+  const sectionPermissions = permissions.filter(
+    section => section.name === routeName,
+  )[0]
+
+  const routeQuery = Object.keys(router.query)[0]
+
+  const queryClients = routeQuery === "clients"
+  const queryPrices = routeQuery === "prices"
+
+  const canCreatePartner = sectionPermissions.sub_sections.filter(
+    subSection => subSection.name === "clients",
+  )[0].actions.create
+
+  const canViewClients = sectionPermissions.sub_sections.filter(
+    subSection => subSection.name === "clients",
+  )[0].view
+
+  const canViewPrices = sectionPermissions.sub_sections.filter(
+    subSection => subSection.name === "prices",
+  )[0].view
 
   const [searchValue, setSearchValue] = useState<string>("")
 
@@ -93,13 +119,22 @@ function PartnersView() {
   }
 
   useEffect(() => {
-    if (searchValue.length >= 3) {
-      searchPartnerInDB()
-    } else {
-      setPartnerList()
+    if (queryClients && canViewClients) {
+      if (searchValue.length >= 3) {
+        searchPartnerInDB()
+      } else {
+        setPartnerList()
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterSelected, currentPage, searchValue, triggerListUpdate])
+  }, [
+    filterSelected,
+    currentPage,
+    searchValue,
+    triggerListUpdate,
+    queryClients,
+    canViewClients,
+  ])
 
   return (
     <Container>
@@ -117,10 +152,10 @@ function PartnersView() {
                 : `${generalTexts.sections.home}`}
             </span>
           </Title>
-          {router.query.clients === "true" && <Filters />}
+          {queryClients && canViewClients && <Filters />}
         </HeadContent>
 
-        {router.query.clients === "true" && (
+        {queryClients && canViewClients && (
           <>
             <SearchBarContainer
               onClick={() => {
@@ -140,24 +175,44 @@ function PartnersView() {
             <ListAndDetailContainer>
               <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
               {partnerSelected !== null ? (
-                <PartnerDetails />
+                <PartnerDetails
+                  permits={
+                    sectionPermissions.sub_sections.filter(
+                      subSection => subSection.name === "clients",
+                    )[0].actions
+                  }
+                />
               ) : (
                 <div style={{ width: "440px" }} />
               )}
             </ListAndDetailContainer>
           </>
         )}
-        {router.query.prices === "true" && <Prices />}
-        {router.query.clients === "true" && (
+        {queryClients && !canViewClients && <NoPermissionsView />}
+
+        {queryPrices && canViewPrices && <Prices />}
+
+        {queryPrices && !canViewPrices && <NoPermissionsView />}
+
+        {queryClients && canViewClients && (
           <MainButton>
-            <Tooptip title={partnerTexts.mainButton}>
+            <Tooptip
+              title={
+                canCreatePartner
+                  ? `${partnerTexts.mainButton}`
+                  : `${generalTexts.permits.action_title}`
+              }
+            >
               <AddPartner
+                disabled={!canCreatePartner}
                 onClick={() => {
-                  if (hasChanges) {
-                    setModalHasChanges(true)
-                  } else {
-                    setDetailState("view")
-                    setCreateModal(true)
+                  if (canCreatePartner) {
+                    if (hasChanges) {
+                      setModalHasChanges(true)
+                    } else {
+                      setDetailState("view")
+                      setCreateModal(true)
+                    }
                   }
                 }}
               >

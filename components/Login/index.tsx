@@ -60,6 +60,7 @@ function Login() {
         localStorage.setItem("user", res.data[0].name)
         localStorage.setItem("id", res.data[0].id)
         localStorage.setItem("isLoggedIn", "true")
+        localStorage.setItem("permissions", res.data[0].permissions)
         router.push("home?clients=true")
       } else {
         setSuccess(false)

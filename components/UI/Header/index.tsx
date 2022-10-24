@@ -16,6 +16,9 @@ import {
 
 function Header() {
   const router = useRouter()
+  const getPermissions = localStorage.getItem("permissions")
+  const permissions = JSON.parse(getPermissions)[0].sections
+
   const [currentUser, setCurrentUser] = useState<string>("")
 
   const [openLogOut, setOpenLogOut] = useState<boolean>(false)
@@ -52,7 +55,7 @@ function Header() {
       <HeaderContent>
         <Sections>
           {menus.length &&
-            routes.map(route => (
+            routes.map((route, mayorIndex) => (
               <SectionTitle
                 key={route.name}
                 onClick={() => {
@@ -72,21 +75,25 @@ function Header() {
                 bold={router.asPath.includes(`${route.route}`)}
               >
                 {route.name}
-
                 {menus.filter(menu => menu.name === route.route)[0].value && (
                   <ClientsMenu>
-                    {route.queries.map(query => (
-                      <SubButton
-                        type="button"
-                        selectedSection={
-                          router.asPath === `/${route.route}${query.query}`
-                        }
-                        onClick={() => {
-                          router.replace(`/${route.route}${query.query}`)
-                        }}
-                      >
-                        {query.name}
-                      </SubButton>
+                    {route.queries.map((query, minorIndex) => (
+                      <>
+                        {permissions[mayorIndex].sub_sections[minorIndex]
+                          .view && (
+                          <SubButton
+                            type="button"
+                            selectedSection={
+                              router.asPath === `/${route.route}${query.query}`
+                            }
+                            onClick={() => {
+                              router.replace(`/${route.route}${query.query}`)
+                            }}
+                          >
+                            {query.name}
+                          </SubButton>
+                        )}
+                      </>
                     ))}
                   </ClientsMenu>
                 )}
