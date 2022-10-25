@@ -79,7 +79,7 @@ function PartnersView() {
 
   const canViewPrices = sectionPermissions.sub_sections.filter(
     subSection => subSection.name === "prices",
-  )[0].view
+  )[0]
 
   const [searchValue, setSearchValue] = useState<string>("")
 
@@ -190,9 +190,11 @@ function PartnersView() {
         )}
         {queryClients && !canViewClients && <NoPermissionsView />}
 
-        {queryPrices && canViewPrices && <Prices />}
+        {queryPrices && canViewPrices.view && (
+          <Prices canEdit={canViewPrices.actions.edit} />
+        )}
 
-        {queryPrices && !canViewPrices && <NoPermissionsView />}
+        {queryPrices && !canViewPrices.view && <NoPermissionsView />}
 
         {queryClients && canViewClients && (
           <MainButton>

@@ -20,7 +20,11 @@ import {
   InputContainer,
 } from "./styles"
 
-function Prices() {
+interface ActionsInterface {
+  canEdit: boolean
+}
+
+function Prices({ canEdit }: ActionsInterface) {
   const { setPrices, prices } = useContext(PartnersContext)
   const [newPrices, setNewPrices] = useState<PricesInterface>(null)
 
@@ -77,7 +81,16 @@ function Prices() {
         <Items>
           {prices.length &&
             prices.map((price: PricesInterface) => (
-              <Item key={price.id} onClick={() => setActiveRow(price.id)}>
+              <Item
+                key={price.id}
+                onClick={() => {
+                  if (canEdit) {
+                    setActiveRow(price.id)
+                  } else {
+                    setActiveRow(null)
+                  }
+                }}
+              >
                 <p className="name">{price.name}</p>
                 {activeRow !== null &&
                 activeRow === price.id &&
