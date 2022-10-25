@@ -73,8 +73,8 @@ function TillFilters() {
         )}
       </Filter>
 
-      <CalendarContainer>
-        {billingPermissions.calendar && (
+      {billingPermissions.calendar && (
+        <CalendarContainer>
           <InputCalendar
             position="bottom-right"
             width={200}
@@ -88,8 +88,8 @@ function TillFilters() {
             reference={calendarRef}
             onChange={e => cleanDate(e.selectedChangeDate)}
           />
-        )}
-      </CalendarContainer>
+        </CalendarContainer>
+      )}
     </FiltersContainer>
   )
 }

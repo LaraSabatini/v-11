@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const PartnerData = styled.div`
@@ -19,7 +19,7 @@ const Details = styled.div`
   flex-direction: column;
 `
 
-const RemoveButton = styled.button`
+const RemoveButton = styled.button<{ disabledButton: boolean }>`
   background: ${theme.colors.danger};
   border: none;
   padding: 10px 15px;
@@ -28,6 +28,13 @@ const RemoveButton = styled.button`
   border-radius: 5px;
   color: white;
   cursor: pointer;
+
+  ${props =>
+    props.disabledButton &&
+    css`
+      opacity: 0.5;
+      cursor: not-allowed;
+    `};
 `
 
 const ButtonContainer = styled.div`

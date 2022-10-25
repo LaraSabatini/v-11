@@ -329,7 +329,11 @@ function Receipt() {
           content={generalTexts.actions.cancel}
         />
         <TextButton
-          onClick={executePurchase}
+          onClick={() => {
+            if (!disabledButton) {
+              executePurchase()
+            }
+          }}
           cta
           disabled={
             (paymentMethodSelected === 2 && paymentUserSelected === null) ||

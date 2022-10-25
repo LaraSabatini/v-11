@@ -47,7 +47,7 @@ const HorizontalSection = styled.div`
   justify-content: space-between;
 `
 
-const IconContainer = styled.button<{ disabledButton: boolean }>`
+const IconContainer = styled.button<{ disabledButton?: boolean }>`
   border: none;
   background-color: transparent;
   cursor: pointer;
@@ -56,9 +56,11 @@ const IconContainer = styled.button<{ disabledButton: boolean }>`
   right: -50px;
 
   ${props =>
-    props.disabled &&
+    props.disabledButton &&
     css`
       opacity: 0.4;
+      cursor: not-allowed;
+      margin-top: -5px;
     `};
 `
 

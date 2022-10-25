@@ -6,9 +6,11 @@ import { PartnersContext } from "contexts/Partners"
 import UserInterface from "interfaces/users/UserInterface"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
+import Tooltip from "components/UI/Tooltip"
 import DetailsView from "./DetailsView"
 import DetailsEdition from "./DetailsEdition"
 import { Container, Title, Divider, IconContainer } from "./styles"
@@ -57,24 +59,34 @@ function PartnerDetails({ permits }: ActionsPermissions) {
     <Container>
       <Title>
         {partnerTexts.details}
-        <IconContainer
-          disabledButton={!permits.edit}
-          onClick={() => {
-            if (hasChanges) {
-              setModalHasChanges(true)
-            } else if (detailState === "view" && !hasChanges) {
-              setDetailState("edit")
-            } else {
-              setDetailState("view")
-            }
-          }}
-        >
-          <Icon icon="IconEdit" color={theme.colors.black} />
-        </IconContainer>
+        {permits.edit ? (
+          <IconContainer
+            onClick={() => {
+              if (hasChanges) {
+                setModalHasChanges(true)
+              } else if (detailState === "view" && !hasChanges) {
+                setDetailState("edit")
+              } else {
+                setDetailState("view")
+              }
+            }}
+          >
+            <Icon icon="IconEdit" color={theme.colors.black} />
+          </IconContainer>
+        ) : (
+          <Tooltip
+            placement="top-end"
+            title={generalTexts.permits.action_title}
+          >
+            <IconContainer disabledButton>
+              <Icon icon="IconEdit" color={theme.colors.black} />
+            </IconContainer>
+          </Tooltip>
+        )}
       </Title>
       <Divider />
       {detailState === "view" ? (
-        <DetailsView partnerInfo={partnerInfo} />
+        <DetailsView partnerInfo={partnerInfo} canUpdate={permits.update} />
       ) : (
         <DetailsEdition partnerInfo={partnerInfo} createdBy={createdBy} />
       )}

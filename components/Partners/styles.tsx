@@ -73,6 +73,7 @@ const AddPartner = styled.button<{ disabled: boolean }>`
     props.disabled &&
     css`
       opacity: 0.4;
+      cursor: not-allowed;
     `};
 `
 

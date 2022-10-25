@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react"
+import { useRouter } from "next/router"
 // SERVICES
 import { getPartnerPaymentsById } from "@services/Partners/PartnerPayments.service"
 import {
@@ -37,9 +38,10 @@ import {
 
 interface DetailViewInterface {
   partnerInfo: PartnerInterface
+  canUpdate: boolean
 }
 
-function DetailsView({ partnerInfo }: DetailViewInterface) {
+function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
   const {
     setModalSuccess,
     setModalError,
@@ -75,6 +77,20 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
   const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
   const [changedDays, setChangedDays] = useState<boolean>(false)
+
+  const router = useRouter()
+
+  const getPermissions = localStorage.getItem("permissions")
+  const permissions = JSON.parse(getPermissions)[0].sections
+  const routeName = router.pathname.slice(1, router.pathname.length)
+
+  const sectionPermissions = permissions.filter(
+    section => section.name === routeName,
+  )[0]
+
+  const canDeletePartner = sectionPermissions.sub_sections.filter(
+    subSection => subSection.name === "clients",
+  )[0].actions.delete
 
   const deletePartnerFunction = async () => {
     const deletion = await deletePartner(partnerInfo.id)
@@ -533,29 +549,36 @@ function DetailsView({ partnerInfo }: DetailViewInterface) {
       </div>
 
       <ButtonContainer>
-        <RemoveButton type="button" onClick={() => setSafeModal(true)}>
+        <RemoveButton
+          type="button"
+          disabledButton={!canDeletePartner}
+          onClick={() => setSafeModal(true)}
+        >
           {generalTexts.actions.removeRecord}
         </RemoveButton>
         {changes === false && (
           <TextButton
             content={partnerTexts.updatePayment}
             cta
+            disabled={!canUpdate}
             onClick={() => {
-              setNewValues({
-                id: initialPayment !== undefined ? initialPayment.id : 0,
-                partner_id: partnerInfo.id,
-                partner_name: partnerInfo.name,
-                partner_last_name: partnerInfo.last_name,
-                combo: 0,
-                time_paid: 0,
-                time_paid_unit: 0,
-                payment_method_id: 0,
-                payment_method_name: "",
-                price_paid: 0,
-                date: "",
-                payment_expire_date: "",
-              })
-              setUpdatePaymentModal(true)
+              if (canUpdate) {
+                setNewValues({
+                  id: initialPayment !== undefined ? initialPayment.id : 0,
+                  partner_id: partnerInfo.id,
+                  partner_name: partnerInfo.name,
+                  partner_last_name: partnerInfo.last_name,
+                  combo: 0,
+                  time_paid: 0,
+                  time_paid_unit: 0,
+                  payment_method_id: 0,
+                  payment_method_name: "",
+                  price_paid: 0,
+                  date: "",
+                  payment_expire_date: "",
+                })
+                setUpdatePaymentModal(true)
+              }
             }}
           />
         )}
