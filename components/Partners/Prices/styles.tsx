@@ -2,8 +2,9 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  height: 60vh;
+  height: 65vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding-top: 50px;
@@ -23,7 +24,7 @@ const Form = styled.div`
 `
 
 const Title = styled.p`
-  width: 135px;
+  width: 120px;
   padding-left: 5px;
 `
 
@@ -35,27 +36,11 @@ const Head = styled.div`
   border-bottom: 1px solid ${theme.colors.neutral_dark};
 `
 
-const DividerOne = styled.div`
-  position: absolute;
-  width: 1px;
-  background-color: ${theme.colors.neutral_dark};
-  height: 327px;
-  left: 130px;
-  top: 15px;
-`
-const DividerTwo = styled.div`
-  position: absolute;
-  width: 1px;
-  background-color: ${theme.colors.neutral_dark};
-  height: 327px;
-  left: 265px;
-  top: 15px;
-`
-
 const Items = styled.div`
   width: 90%;
   display: flex;
   flex-direction: column;
+  padding-top: 10px;
 `
 
 const Item = styled.div`
@@ -72,8 +57,10 @@ const Item = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 90%;
-  margin-top: 50px;
+  /* width: 90%; */
+  width: 445px;
+  padding-top: 15px;
+  /* margin-top: 50px; */
 
   .edit {
     border: none;
@@ -108,8 +95,6 @@ export {
   Form,
   Title,
   Head,
-  DividerOne,
-  DividerTwo,
   Items,
   Item,
   ButtonContainer,
