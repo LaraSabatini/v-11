@@ -68,7 +68,7 @@ function MakePayment() {
           type="number"
           disabledAutocompleted
           disabled
-          width={100}
+          width={120}
           value={
             comboSelected !== null && comboSelected !== undefined
               ? `${
@@ -144,7 +144,7 @@ function MakePayment() {
           type="text"
           disabledAutocompleted
           disabled
-          width={130}
+          width={150}
           value={`${finalPrice}` || ""}
         />
       </HorizontalGroup>
