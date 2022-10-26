@@ -39,10 +39,26 @@ const Card = styled.div`
   padding: 15px 15px;
   border-radius: 10px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
-  height: 162px;
+  height: fit-content;
 
   .shoes {
     background-color: #48aba372;
+  }
+
+  .pass {
+    background-color: #532d7537;
+  }
+
+  .month {
+    background-color: #c66a485b;
+  }
+
+  .combo {
+    background-color: #70777c57;
+  }
+
+  .lessons {
+    background-color: #b2b9e29c;
   }
 `
 
@@ -62,6 +78,11 @@ const Earnings = styled.div`
   p {
     margin: 0;
     padding: 15px 0 10px 0;
+    width: 140px;
+  }
+
+  .asistencies {
+    width: 200px;
   }
 `
 

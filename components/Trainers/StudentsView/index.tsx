@@ -99,17 +99,6 @@ function StudentsView() {
     })
 
     setLessonsByStudent(finalArrayOfDates)
-
-    // console.log("PRUEBA", prueba)
-
-    // setRows(uniqueArray)
-
-    // duplicatedDates = uniqueArray
-
-    // eslint-disable-next-line no-console
-    console.log("FINAL", finalArr)
-
-    // setLessonsByStudent(finalArr)
   }
 
   useEffect(() => {
