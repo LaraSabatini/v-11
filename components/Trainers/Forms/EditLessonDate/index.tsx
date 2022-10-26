@@ -197,7 +197,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
         <FutureLessonsList>
           <p>{trainerTexts.edit.reserved_lessons}</p>
           <div>
-            {futureLessons.length ? (
+            {futureLessons?.length && futureLessons !== undefined ? (
               futureLessons.map(lesson => (
                 <span>
                   • {lesson.lesson_date} {lesson.shift}
