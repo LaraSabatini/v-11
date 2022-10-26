@@ -29,7 +29,6 @@ function MakePayment() {
     paidTimeUnit,
     paidTime,
     finalPrice,
-    amountOfLessons,
     paymentMethodSelected,
     setPaymentMethodSelected,
     calculatePrice,
@@ -50,13 +49,7 @@ function MakePayment() {
   useEffect(() => {
     calculatePrice()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    paidTimeUnit,
-    paidTime,
-    paymentMethodSelected,
-    comboSelected,
-    amountOfLessons,
-  ])
+  }, [paidTimeUnit, paidTime, paymentMethodSelected, comboSelected])
 
   return (
     <Form>

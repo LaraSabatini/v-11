@@ -80,8 +80,6 @@ function PartnersProvider({ children }) {
 
   const [comboSelected, setComboSelected] = useState<number>()
 
-  const [amountOfLessons, setAmountOfLessons] = useState<number>()
-
   const [isChecked, setIsChecked] = useState<boolean>(false)
   const [usesDay, setUsesDay] = useState<boolean>(true)
 
@@ -123,6 +121,8 @@ function PartnersProvider({ children }) {
           price += prices !== undefined && prices[0]?.price_cash
         } else if (paidTime === 8 && paidTimeUnit.id === 1) {
           price += prices[1].price_cash
+        } else if (paidTime === 4 && paidTimeUnit.id === 1) {
+          price += prices[6].price_cash
         } else if (paidTime === 1 && paidTimeUnit.id === 2) {
           price += prices[2].price_cash
         } else {
@@ -134,17 +134,7 @@ function PartnersProvider({ children }) {
           }
         }
       }
-      if (amountOfLessons !== undefined) {
-        if (amountOfLessons === 1) {
-          price += prices[3].price_cash
-        } else if (amountOfLessons === 4) {
-          price += prices[4].price_cash
-        } else if (amountOfLessons === 8) {
-          price += prices[5].price_cash
-        } else {
-          price += prices[3].price_cash * amountOfLessons
-        }
-      }
+
       setFinalPrice(price)
     } else if (paymentMethodSelected === 2) {
       let price = 0
@@ -164,6 +154,8 @@ function PartnersProvider({ children }) {
           price += prices[1].price_mp
         } else if (paidTime === 1 && paidTimeUnit.id === 2) {
           price += prices[2].price_mp
+        } else if (paidTime === 4 && paidTimeUnit.id === 1) {
+          price += prices[6].price_mp
         } else {
           // eslint-disable-next-line no-lonely-if
           if (paidTimeUnit.id === 1) {
@@ -171,17 +163,6 @@ function PartnersProvider({ children }) {
           } else {
             price += prices[2].price_mp * paidTime
           }
-        }
-      }
-      if (amountOfLessons !== undefined) {
-        if (amountOfLessons === 1) {
-          price += prices[3].price_mp
-        } else if (amountOfLessons === 4) {
-          price += prices[4].price_mp
-        } else if (amountOfLessons === 8) {
-          price += prices[5].price_mp
-        } else {
-          price += prices[3].price_mp * amountOfLessons
         }
       }
       setFinalPrice(price)
@@ -221,7 +202,6 @@ function PartnersProvider({ children }) {
       display_name: "Dia/s",
     })
     setComboSelected(undefined)
-    setAmountOfLessons(0)
     setIsChecked(false)
     setFinalPrice(0)
     setPaymentMethodSelected(1)
@@ -286,8 +266,6 @@ function PartnersProvider({ children }) {
       setCombos,
       comboSelected,
       setComboSelected,
-      amountOfLessons,
-      setAmountOfLessons,
       prices,
       setPrices,
       finalPrice,
@@ -341,7 +319,6 @@ function PartnersProvider({ children }) {
       paidTimeUnit,
       combos,
       comboSelected,
-      amountOfLessons,
       prices,
       finalPrice,
       paymentMethodSelected,
