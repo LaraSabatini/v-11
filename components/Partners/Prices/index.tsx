@@ -7,13 +7,12 @@ import PricesInterface from "interfaces/partners/PricesInterface"
 import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
+import ScrollView from "components/UI/ScrollView"
 import {
   Container,
   Form,
   Title,
   Head,
-  DividerOne,
-  DividerTwo,
   Items,
   Item,
   ButtonContainer,
@@ -72,78 +71,78 @@ function Prices({ canEdit }: ActionsInterface) {
     <Container>
       <Form>
         <Head>
-          <DividerOne />
-          <DividerTwo />
           <Title>Item</Title>
           <Title>Precio Efectivo</Title>
           <Title>Precio MP</Title>
         </Head>
         <Items>
-          {prices.length &&
-            prices.map((price: PricesInterface) => (
-              <Item
-                key={price.id}
-                onClick={() => {
-                  if (canEdit) {
-                    setActiveRow(price.id)
-                  } else {
-                    setActiveRow(null)
-                  }
-                }}
-              >
-                <p className="name">{price.name}</p>
-                {activeRow !== null &&
-                activeRow === price.id &&
-                newPrices !== null ? (
-                  <>
-                    <InputContainer>
-                      <input
-                        type="number"
-                        value={newPrices.price_cash || ""}
-                        onChange={e =>
-                          setNewPrices({
-                            ...newPrices,
-                            price_cash: parseInt(e.target.value, 10),
-                          })
-                        }
-                      />
-                    </InputContainer>
-                    <InputContainer>
-                      <input
-                        type="number"
-                        value={newPrices.price_mp || ""}
-                        onChange={e =>
-                          setNewPrices({
-                            ...newPrices,
-                            price_mp: parseInt(e.target.value, 10),
-                          })
-                        }
-                      />
-                    </InputContainer>
-                  </>
-                ) : (
-                  <>
-                    <p>${price.price_cash}</p>
-                    <p>${price.price_mp}</p>
-                  </>
-                )}
-              </Item>
-            ))}
+          <ScrollView height={350}>
+            {prices.length &&
+              prices.map((price: PricesInterface) => (
+                <Item
+                  key={price.id}
+                  onClick={() => {
+                    if (canEdit) {
+                      setActiveRow(price.id)
+                    } else {
+                      setActiveRow(null)
+                    }
+                  }}
+                >
+                  <p className="name">{price.name}</p>
+                  {activeRow !== null &&
+                  activeRow === price.id &&
+                  newPrices !== null ? (
+                    <>
+                      <InputContainer>
+                        <input
+                          type="number"
+                          value={newPrices.price_cash || ""}
+                          onChange={e =>
+                            setNewPrices({
+                              ...newPrices,
+                              price_cash: parseInt(e.target.value, 10),
+                            })
+                          }
+                        />
+                      </InputContainer>
+                      <InputContainer>
+                        <input
+                          type="number"
+                          value={newPrices.price_mp || ""}
+                          onChange={e =>
+                            setNewPrices({
+                              ...newPrices,
+                              price_mp: parseInt(e.target.value, 10),
+                            })
+                          }
+                        />
+                      </InputContainer>
+                    </>
+                  ) : (
+                    <>
+                      <p>${price.price_cash}</p>
+                      <p>${price.price_mp}</p>
+                    </>
+                  )}
+                </Item>
+              ))}
+          </ScrollView>
         </Items>
-        <ButtonContainer>
-          <TextButton
-            disabled={activeRow === null}
-            onClick={cancelChanges}
-            content={generalTexts.actions.cancel}
-          />
-          <TextButton
-            disabled={activeRow === null}
-            onClick={saveChanges}
-            content={generalTexts.actions.save}
-            cta
-          />
-        </ButtonContainer>
       </Form>
+      <ButtonContainer>
+        <TextButton
+          disabled={activeRow === null}
+          onClick={cancelChanges}
+          content={generalTexts.actions.cancel}
+        />
+        <TextButton
+          disabled={activeRow === null}
+          onClick={saveChanges}
+          content={generalTexts.actions.save}
+          cta
+        />
+      </ButtonContainer>
     </Container>
   )
 }
