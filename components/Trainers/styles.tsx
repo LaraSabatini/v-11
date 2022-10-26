@@ -46,9 +46,16 @@ const ButtonContainer = styled.div`
   }
 `
 
-const PurchaseButton = styled.button`
+const PurchaseButton = styled.button<{ disabledButton: boolean }>`
   background-color: ${theme.colors.primary};
   cursor: pointer;
+
+  ${props =>
+    props.disabledButton &&
+    css`
+      opacity: 0.7;
+      cursor: not-allowed;
+    `};
 `
 
 const EditButton = styled.button<{ disabled: boolean }>`

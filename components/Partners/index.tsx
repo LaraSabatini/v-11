@@ -57,29 +57,11 @@ function PartnersView() {
   const router = useRouter()
 
   const getPermissions = localStorage.getItem("permissions")
-  const permissions = JSON.parse(getPermissions)[0].sections
-  const routeName = router.pathname.slice(1, router.pathname.length)
+  const permissions = JSON.parse(getPermissions)[0].sections[0].sub_sections
 
-  const sectionPermissions = permissions.filter(
-    section => section.name === routeName,
-  )[0]
-
-  const routeQuery = Object.keys(router.query)[0]
-
-  const queryClients = routeQuery === "clients"
-  const queryPrices = routeQuery === "prices"
-
-  const canCreatePartner = sectionPermissions.sub_sections.filter(
-    subSection => subSection.name === "clients",
-  )[0].actions.create
-
-  const canViewClients = sectionPermissions.sub_sections.filter(
-    subSection => subSection.name === "clients",
-  )[0].view
-
-  const canViewPrices = sectionPermissions.sub_sections.filter(
-    subSection => subSection.name === "prices",
-  )[0]
+  const partnerActions = permissions[0].actions
+  const canViewClients = permissions[0].view
+  const pricesSection = permissions[1]
 
   const [searchValue, setSearchValue] = useState<string>("")
 
@@ -119,7 +101,7 @@ function PartnersView() {
   }
 
   useEffect(() => {
-    if (queryClients && canViewClients) {
+    if (Object.keys(router.query)[0] === "clients" && canViewClients) {
       if (searchValue.length >= 3) {
         searchPartnerInDB()
       } else {
@@ -132,7 +114,6 @@ function PartnersView() {
     currentPage,
     searchValue,
     triggerListUpdate,
-    queryClients,
     canViewClients,
   ])
 
@@ -152,10 +133,12 @@ function PartnersView() {
                 : `${generalTexts.sections.home}`}
             </span>
           </Title>
-          {queryClients && canViewClients && <Filters />}
+          {Object.keys(router.query)[0] === "clients" && canViewClients && (
+            <Filters />
+          )}
         </HeadContent>
 
-        {queryClients && canViewClients && (
+        {Object.keys(router.query)[0] === "clients" && canViewClients && (
           <>
             <SearchBarContainer
               onClick={() => {
@@ -175,40 +158,38 @@ function PartnersView() {
             <ListAndDetailContainer>
               <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
               {partnerSelected !== null ? (
-                <PartnerDetails
-                  permits={
-                    sectionPermissions.sub_sections.filter(
-                      subSection => subSection.name === "clients",
-                    )[0].actions
-                  }
-                />
+                <PartnerDetails permits={partnerActions} />
               ) : (
                 <div style={{ width: "440px" }} />
               )}
             </ListAndDetailContainer>
           </>
         )}
-        {queryClients && !canViewClients && <NoPermissionsView />}
-
-        {queryPrices && canViewPrices.view && (
-          <Prices canEdit={canViewPrices.actions.edit} />
+        {Object.keys(router.query)[0] === "clients" && !canViewClients && (
+          <NoPermissionsView />
         )}
 
-        {queryPrices && !canViewPrices.view && <NoPermissionsView />}
+        {Object.keys(router.query)[0] === "prices" && pricesSection.view && (
+          <Prices canEdit={pricesSection.actions.edit} />
+        )}
 
-        {queryClients && canViewClients && (
+        {Object.keys(router.query)[0] === "prices" && !pricesSection.view && (
+          <NoPermissionsView />
+        )}
+
+        {Object.keys(router.query)[0] === "clients" && canViewClients && (
           <MainButton>
             <Tooptip
               title={
-                canCreatePartner
+                partnerActions.create
                   ? `${partnerTexts.mainButton}`
                   : `${generalTexts.permits.action_title}`
               }
             >
               <AddPartner
-                disabled={!canCreatePartner}
+                disabled={!partnerActions.create}
                 onClick={() => {
-                  if (canCreatePartner) {
+                  if (partnerActions.create) {
                     if (hasChanges) {
                       setModalHasChanges(true)
                     } else {

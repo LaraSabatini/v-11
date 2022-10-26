@@ -1,5 +1,4 @@
 import React, { useContext, useState, useRef } from "react"
-import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import { tillFilters } from "const/finances"
@@ -23,8 +22,6 @@ function TillFilters() {
     tillDateSelected,
   } = useContext(Finances)
 
-  const router = useRouter()
-
   const [openFilters, setOpenFilters] = useState<boolean>(false)
 
   const calendarRef = useRef(null)
@@ -37,16 +34,9 @@ function TillFilters() {
   }
 
   const getPermissions = localStorage.getItem("permissions")
-  const permissions = JSON.parse(getPermissions)[0].sections
-  const routeName = router.pathname.slice(1, router.pathname.length)
+  const permissions = JSON.parse(getPermissions)[0].sections[3].sub_sections
 
-  const sectionPermissions = permissions.filter(
-    section => section.name === routeName,
-  )[0].sub_sections
-
-  const billingPermissions = sectionPermissions.filter(
-    subSection => subSection.name === "billing",
-  )[0].actions
+  const billingPermissions = permissions[0].actions
 
   return (
     <FiltersContainer>

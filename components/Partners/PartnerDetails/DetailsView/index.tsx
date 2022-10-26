@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react"
-import { useRouter } from "next/router"
 // SERVICES
 import { getPartnerPaymentsById } from "@services/Partners/PartnerPayments.service"
 import {
@@ -78,19 +77,9 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
 
   const [changedDays, setChangedDays] = useState<boolean>(false)
 
-  const router = useRouter()
-
   const getPermissions = localStorage.getItem("permissions")
-  const permissions = JSON.parse(getPermissions)[0].sections
-  const routeName = router.pathname.slice(1, router.pathname.length)
-
-  const sectionPermissions = permissions.filter(
-    section => section.name === routeName,
-  )[0]
-
-  const canDeletePartner = sectionPermissions.sub_sections.filter(
-    subSection => subSection.name === "clients",
-  )[0].actions.delete
+  const permissions = JSON.parse(getPermissions)[0].sections[0].sub_sections[0]
+  const canDeletePartner = permissions.actions.delete
 
   const deletePartnerFunction = async () => {
     const deletion = await deletePartner(partnerInfo.id)
