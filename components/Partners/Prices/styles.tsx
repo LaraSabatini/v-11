@@ -2,7 +2,7 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  height: 65vh;
+  height: 500px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,7 +14,7 @@ const Form = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
-  height: 100%;
+  height: 600px;
   width: 450px;
   font-family: ${theme.fonts.primary};
   display: flex;
