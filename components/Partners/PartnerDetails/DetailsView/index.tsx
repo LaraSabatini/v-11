@@ -564,7 +564,11 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         <RemoveButton
           type="button"
           disabledButton={!canDeletePartner}
-          onClick={() => setSafeModal(true)}
+          onClick={() => {
+            if (canDeletePartner) {
+              setSafeModal(true)
+            }
+          }}
         >
           {generalTexts.actions.removeRecord}
         </RemoveButton>
