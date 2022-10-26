@@ -36,48 +36,53 @@ function BoulderView() {
   const [lessonPacks, setLessonPacks] = useState<number[]>([])
 
   const reestructureDataForDays = () => {
-    let individualEarningsCash: number = 0
-    let individualEarningsMP: number = 0
-    let individualDaysSold: number = 0
+    const finalEarningsForDays = {
+      individualEarningsCash: 0,
+      individualEarningsMP: 0,
+      individualDaysSold: 0,
+    }
 
     const filterIndividualPayments = partnerPaymentsByDate.filter(
       (partnerPayment: PartnerPaymentsHistoryInterface) =>
         partnerPayment.item_id === 2,
     )
 
-    const filterPackFour = filterIndividualPayments.filter(
-      purchase => purchase.amount_of_items === 4,
-    )
-    const filterPackEight = filterIndividualPayments.filter(
-      purchase => purchase.amount_of_items === 8,
-    )
-
-    setDayPacks([filterPackFour.length, filterPackEight.length])
+    setDayPacks([
+      filterIndividualPayments.filter(
+        purchase => purchase.amount_of_items === 4,
+      ).length,
+      filterIndividualPayments.filter(
+        purchase => purchase.amount_of_items === 8,
+      ).length,
+    ])
 
     filterIndividualPayments.map((payment: PartnerPaymentsHistoryInterface) => {
-      individualDaysSold += payment.amount_of_items
+      finalEarningsForDays.individualDaysSold += payment.amount_of_items
       if (payment.payment_method_id === 1) {
-        individualEarningsCash += payment.profit
+        finalEarningsForDays.individualEarningsCash += payment.profit
       } else {
-        individualEarningsMP += payment.profit
+        finalEarningsForDays.individualEarningsMP += payment.profit
       }
       return 0
     })
 
-    let storeEarningsCash: number = 0
-    let storeEarningsMP: number = 0
-    let storeDaysSold: number = 0
+    const finalEarningsForDaysIndividual = {
+      storeEarningsCash: 0,
+      storeEarningsMP: 0,
+      storeDaysSold: 0,
+    }
+
     const filterStorePayments = boulderProductsPurchasedByDate.filter(
       (storePayment: ProductsPurchasedByDateInterface) =>
         storePayment.product_id === 1 || storePayment.product_id === 2,
     )
 
     filterStorePayments.map((payment: ProductsPurchasedByDateInterface) => {
-      storeDaysSold += payment.amount_of_items
+      finalEarningsForDaysIndividual.storeDaysSold += payment.amount_of_items
       if (payment.payment_method_id === 1) {
-        storeEarningsCash += payment.profit
+        finalEarningsForDaysIndividual.storeEarningsCash += payment.profit
       } else {
-        storeEarningsMP += payment.profit
+        finalEarningsForDaysIndividual.storeEarningsMP += payment.profit
       }
 
       return 0
@@ -86,14 +91,20 @@ function BoulderView() {
     const newArray = boulderPurchasesViewData
     newArray[0] = {
       name: `${financesTexts.day_pass}`,
-      earnings_cash: individualEarningsCash + storeEarningsCash,
-      earnings_mp: individualEarningsMP + storeEarningsMP,
-      amount_of_days_sold: storeDaysSold + individualDaysSold,
+      earnings_cash:
+        finalEarningsForDays.individualEarningsCash +
+        finalEarningsForDaysIndividual.storeEarningsCash,
+      earnings_mp:
+        finalEarningsForDays.individualEarningsMP +
+        finalEarningsForDaysIndividual.storeEarningsMP,
+      amount_of_days_sold:
+        finalEarningsForDaysIndividual.storeDaysSold +
+        finalEarningsForDays.individualDaysSold,
     }
 
     setDaysPurchased({
-      store: storeDaysSold,
-      partner: individualDaysSold,
+      store: finalEarningsForDaysIndividual.storeDaysSold,
+      partner: finalEarningsForDays.individualDaysSold,
     })
   }
 
@@ -169,20 +180,23 @@ function BoulderView() {
   }
 
   const fillDataForRentedShoes = () => {
-    let storeEarningsCash: number = 0
-    let storeEarningsMP: number = 0
-    let storeShoesRented: number = 0
+    const finalEarningsForRentedShoes = {
+      storeEarningsCash: 0,
+      storeEarningsMP: 0,
+      storeShoesRented: 0,
+    }
+
     const filterStorePayments = boulderProductsPurchasedByDate.filter(
       (storePayment: ProductsPurchasedByDateInterface) =>
         storePayment.product_id === 3,
     )
 
     filterStorePayments.map((payment: ProductsPurchasedByDateInterface) => {
-      storeShoesRented += payment.amount_of_items
+      finalEarningsForRentedShoes.storeShoesRented += payment.amount_of_items
       if (payment.payment_method_id === 1) {
-        storeEarningsCash += payment.profit
+        finalEarningsForRentedShoes.storeEarningsCash += payment.profit
       } else {
-        storeEarningsMP += payment.profit
+        finalEarningsForRentedShoes.storeEarningsMP += payment.profit
       }
 
       return 0
@@ -191,26 +205,28 @@ function BoulderView() {
     const newArray = boulderPurchasesViewData
     newArray[4] = {
       name: `${financesTexts.shoes}`,
-      earnings_cash: storeEarningsCash,
-      earnings_mp: storeEarningsMP,
-      amount_of_shoes_rented: storeShoesRented,
+      earnings_cash: finalEarningsForRentedShoes.storeEarningsCash,
+      earnings_mp: finalEarningsForRentedShoes.storeEarningsMP,
+      amount_of_shoes_rented: finalEarningsForRentedShoes.storeShoesRented,
     }
 
     setBoulderPurchasesViewData(newArray)
 
+    let finalCash = 0
+    newArray.map(item => {
+      finalCash += item.earnings_cash
+      return 0
+    })
+
+    let finalDigital = 0
+    newArray.map(item => {
+      finalDigital += item.earnings_mp
+      return 0
+    })
+
     setFinalEargninsBoulder({
-      cash:
-        newArray[0].earnings_cash +
-        newArray[1].earnings_cash +
-        newArray[2].earnings_cash +
-        newArray[3].earnings_cash +
-        newArray[4].earnings_cash,
-      mp:
-        newArray[0].earnings_mp +
-        newArray[1].earnings_mp +
-        newArray[2].earnings_mp +
-        newArray[3].earnings_mp +
-        newArray[4].earnings_mp,
+      cash: finalCash,
+      mp: finalDigital,
     })
   }
 
