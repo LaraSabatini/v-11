@@ -147,6 +147,10 @@ const ProductsAndReceiptContainer = styled.div`
   gap: 20px;
 `
 
+const NoPermissionsViewContainer = styled.div`
+  margin-top: -100px;
+`
+
 export {
   Container,
   Content,
@@ -162,4 +166,5 @@ export {
   MainButton,
   CreateProduct,
   ProductsAndReceiptContainer,
+  NoPermissionsViewContainer,
 }

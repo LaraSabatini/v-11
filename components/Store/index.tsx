@@ -10,6 +10,7 @@ import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import theme from "theme/index"
+import NoPermissionsView from "components/UI/NoPermitsView"
 import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
@@ -28,6 +29,7 @@ import {
   CreateProduct,
   MainButton,
   ProductsAndReceiptContainer,
+  NoPermissionsViewContainer,
 } from "./styles"
 
 function StoreView() {
@@ -49,6 +51,9 @@ function StoreView() {
   const [createProductModal, setCreateProductModal] = useState<boolean>(false)
 
   const router = useRouter()
+
+  const getPermissions = localStorage.getItem("permissions")
+  const permissions = JSON.parse(getPermissions)[0].sections[2].sub_sections
 
   const getStaticData = async () => {
     const categoriesListCall = await getCategories()
@@ -109,8 +114,11 @@ function StoreView() {
                 : `${storeTexts.stock}`}
             </span>
           </Title>
-          <Filters />
-          {router.query.stock === "true" && (
+          {(Object.keys(router.query)[0] === "stock" && permissions[1].view) ||
+            (Object.keys(router.query)[0] === "store" &&
+              permissions[0].view && <Filters />)}
+
+          {Object.keys(router.query)[0] === "stock" && permissions[1].view && (
             <button
               className="btn-search"
               type="button"
@@ -128,30 +136,41 @@ function StoreView() {
             </button>
           )}
         </HeadContent>
-        {router.query.store === "true" && (
+        {((Object.keys(router.query)[0] === "store" && !permissions[0].view) ||
+          (Object.keys(router.query)[0] === "stock" &&
+            !permissions[1].view)) && (
+          <NoPermissionsViewContainer>
+            <NoPermissionsView />
+          </NoPermissionsViewContainer>
+        )}
+        {Object.keys(router.query)[0] === "store" && permissions[0].view && (
           <ProductsAndReceiptContainer>
             <ProductsView goNext={goNext} goPrev={goPrev} data={productsList} />
-            <Receipt />
+            <Receipt purchasePermits={permissions[0].actions.create_purchase} />
           </ProductsAndReceiptContainer>
         )}
-        {router.query.stock === "true" && <Stock />}
-        {(router.query.store === "true" || router.query.stock === "true") && (
-          <MainButton>
-            <Tooptip title={storeTexts.mainButton}>
-              <CreateProduct
-                onClick={() => {
-                  if (stockChanges) {
-                    setModalStockHasChanges(true)
-                  } else {
-                    setCreateProductModal(true)
-                  }
-                }}
-              >
-                <Icon color={theme.colors.white} icon="IconAdd" />
-              </CreateProduct>
-            </Tooptip>
-          </MainButton>
+        {Object.keys(router.query)[0] === "stock" && (
+          <Stock editPermits={permissions[1].actions.update} />
         )}
+        {(Object.keys(router.query)[0] === "store" ||
+          Object.keys(router.query)[0] === "stock") &&
+          permissions[0].actions.create_product && (
+            <MainButton>
+              <Tooptip title={storeTexts.mainButton}>
+                <CreateProduct
+                  onClick={() => {
+                    if (stockChanges) {
+                      setModalStockHasChanges(true)
+                    } else {
+                      setCreateProductModal(true)
+                    }
+                  }}
+                >
+                  <Icon color={theme.colors.white} icon="IconAdd" />
+                </CreateProduct>
+              </Tooptip>
+            </MainButton>
+          )}
       </Content>
       {createProductModal && (
         <CreateProductForm cancelCreate={() => setCreateProductModal(false)} />

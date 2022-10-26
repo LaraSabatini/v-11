@@ -29,7 +29,11 @@ import {
   TextFieldContainer,
 } from "./styles"
 
-function Stock() {
+interface StockInterface {
+  editPermits: boolean
+}
+
+function Stock({ editPermits }: StockInterface) {
   const {
     productsList,
     setProductsList,
@@ -449,12 +453,13 @@ function Stock() {
           columns={columns}
           height={350}
           onRowClick={e => {
-            if (!activeEdition) {
+            if (!activeEdition && editPermits) {
               activateRow(e.item)
             } else if (
               activeEdition &&
               e.item.id !== newValues.id &&
-              stockChanges
+              stockChanges &&
+              editPermits
             ) {
               setModalStockHasChanges(true)
             }
