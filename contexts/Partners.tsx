@@ -109,6 +109,7 @@ function PartnersProvider({ children }) {
       let price = 0
       if (comboSelected !== null && comboSelected !== undefined) {
         const comboCash = combos.filter(combo => combo.id === comboSelected)
+
         price += comboCash[0].price_cash
       }
       if (
@@ -139,8 +140,8 @@ function PartnersProvider({ children }) {
     } else if (paymentMethodSelected === 2) {
       let price = 0
       if (comboSelected !== null && comboSelected !== undefined) {
-        const comboCash = combos.filter(combo => combo.id === comboSelected)
-        price += comboCash[0].price_mp
+        const comboDigital = combos.filter(combo => combo.id === comboSelected)
+        price += comboDigital[0].price_mp
       }
       if (
         paidTime !== null &&
