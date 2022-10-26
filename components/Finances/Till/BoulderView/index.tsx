@@ -6,6 +6,8 @@ import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases
 import financesTexts from "strings/finances.json"
 import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
+import FreePassCard from "./FreePassCard"
+import LessonsCard from "./LessonsCard"
 import {
   Container,
   FinalProfit,
@@ -30,6 +32,9 @@ function BoulderView() {
     partner: 0,
   })
 
+  const [dayPacks, setDayPacks] = useState<number[]>([])
+  const [lessonPacks, setLessonPacks] = useState<number[]>([])
+
   const reestructureDataForDays = () => {
     let individualEarningsCash: number = 0
     let individualEarningsMP: number = 0
@@ -39,6 +44,15 @@ function BoulderView() {
       (partnerPayment: PartnerPaymentsHistoryInterface) =>
         partnerPayment.item_id === 2,
     )
+
+    const filterPackFour = filterIndividualPayments.filter(
+      purchase => purchase.amount_of_items === 4,
+    )
+    const filterPackEight = filterIndividualPayments.filter(
+      purchase => purchase.amount_of_items === 8,
+    )
+
+    setDayPacks([filterPackFour.length, filterPackEight.length])
 
     filterIndividualPayments.map((payment: PartnerPaymentsHistoryInterface) => {
       individualDaysSold += payment.amount_of_items
@@ -74,13 +88,27 @@ function BoulderView() {
       name: `${financesTexts.day_pass}`,
       earnings_cash: individualEarningsCash + storeEarningsCash,
       earnings_mp: individualEarningsMP + storeEarningsMP,
-      amount_of_days_sold: individualDaysSold + storeDaysSold,
+      amount_of_days_sold: storeDaysSold + individualDaysSold,
     }
 
     setDaysPurchased({
       store: storeDaysSold,
       partner: individualDaysSold,
     })
+  }
+
+  const setLessonsData = () => {
+    const filterLessons = partnerPaymentsByDate.filter(
+      purchase => purchase.item_id === 4,
+    )
+    const filterFourPack = filterLessons.filter(
+      lesson => lesson.amount_of_items === 4,
+    )
+    const filterEightPack = filterLessons.filter(
+      lesson => lesson.amount_of_items === 8,
+    )
+
+    setLessonPacks([filterFourPack.length, filterEightPack.length])
   }
 
   const fillData = (id: number) => {
@@ -190,6 +218,7 @@ function BoulderView() {
     reestructureDataForDays()
     fillDataForOtherThanDays()
     fillDataForRentedShoes()
+    setLessonsData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boulderProductsPurchasedByDate, partnerPaymentsByDate])
 
@@ -206,35 +235,28 @@ function BoulderView() {
         </p>
       </FinalProfit>
       <CardsContainer>
+        <FreePassCard
+          earningsCash={boulderPurchasesViewData[0].earnings_cash}
+          earningsDigital={boulderPurchasesViewData[0].earnings_mp}
+          amountOfSells={boulderPurchasesViewData[0].amount_of_days_sold}
+          byStore={daysPurchased.store}
+          byClient={daysPurchased.partner}
+          packs={dayPacks}
+          people={partnerPaymentsByDate.length + daysPurchased.store}
+        />
+        <LessonsCard
+          earningsCash={boulderPurchasesViewData[3].earnings_cash}
+          earningsDigital={boulderPurchasesViewData[3].earnings_mp}
+          amountOfSells={boulderPurchasesViewData[3].amount_of_lessons_sold}
+          packs={lessonPacks}
+          nonPacks={
+            boulderPurchasesViewData[3].amount_of_lessons_sold -
+            (lessonPacks[0] * 4 + lessonPacks[1] * 8)
+          }
+        />
+
         <Card>
-          <Title>{financesTexts.day_pass.toUpperCase()}</Title>
-          <Earnings>
-            <p>
-              {generalTexts.payments.cash}:{" "}
-              <b>$ {boulderPurchasesViewData[0].earnings_cash}</b>
-            </p>
-            <p>
-              {generalTexts.payments.digital}:{" "}
-              <b>$ {boulderPurchasesViewData[0].earnings_mp}</b>
-            </p>
-          </Earnings>
-          <Earnings>
-            <p>
-              {financesTexts.sold_pases}:{" "}
-              <b>{boulderPurchasesViewData[0].amount_of_days_sold}</b>
-            </p>
-          </Earnings>
-          <Earnings>
-            <p>
-              • {financesTexts.through_store}: <b>{daysPurchased.store}</b>
-            </p>
-            <p>
-              • {financesTexts.through_clients}: <b>{daysPurchased.partner}</b>
-            </p>
-          </Earnings>
-        </Card>
-        <Card>
-          <Title>{financesTexts.month.toUpperCase()}</Title>
+          <Title className="month">{financesTexts.month.toUpperCase()}</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}
@@ -253,7 +275,7 @@ function BoulderView() {
           </Earnings>
         </Card>
         <Card>
-          <Title>{financesTexts.combo.toUpperCase()}</Title>
+          <Title className="combo">{financesTexts.combo.toUpperCase()}</Title>
           <Earnings>
             <p>
               {generalTexts.payments.cash}:{" "}
@@ -272,25 +294,6 @@ function BoulderView() {
           </Earnings>
         </Card>
         <Card>
-          <Title>{financesTexts.lessons.toUpperCase()}</Title>
-          <Earnings>
-            <p>
-              {generalTexts.payments.cash}:{" "}
-              <b>$ {boulderPurchasesViewData[3].earnings_cash}</b>
-            </p>
-            <p>
-              {generalTexts.payments.digital}:{" "}
-              <b>$ {boulderPurchasesViewData[3].earnings_mp}</b>
-            </p>
-          </Earnings>
-          <Earnings>
-            <p>
-              {financesTexts.sells}:{" "}
-              <b>{boulderPurchasesViewData[3].amount_of_lessons_sold}</b>
-            </p>
-          </Earnings>
-        </Card>
-        <Card>
           <Title className="shoes">{financesTexts.shoes.toUpperCase()}</Title>
           <Earnings>
             <p>
@@ -303,7 +306,7 @@ function BoulderView() {
             </p>
           </Earnings>
           <Earnings>
-            <p>
+            <p className="asistencies">
               {financesTexts.units_lend}:{" "}
               <b>{boulderPurchasesViewData[4].amount_of_shoes_rented}</b>
             </p>
