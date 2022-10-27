@@ -159,6 +159,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         (comboSelected !== null && comboSelected !== undefined)
           ? expirationDate
           : "",
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createPaymentCall = await createPartnerPayment(paymentBody)

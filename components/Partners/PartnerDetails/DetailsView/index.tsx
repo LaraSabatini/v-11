@@ -224,6 +224,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
           ? expirationDate
           : "",
       date: `${day}-${month}-${year}`,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createPayment = await createPartnerPayment(body)
@@ -345,6 +346,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
               ? expirationDate
               : "",
           date: `${day}-${month}-${year}`,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
         const createPayment = await createPartnerPayment(body)
@@ -389,6 +391,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
           const body = {
             ...initialPayment,
             time_paid: variableValues[0].value,
+            created_by: parseInt(localStorage.getItem("id"), 10),
           }
 
           const edit = await editPartnerPayment(body)
@@ -443,6 +446,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         price_paid: 0,
         date: "",
         payment_expire_date: "",
+        created_by: 0,
       })
       setVariableValues([
         {

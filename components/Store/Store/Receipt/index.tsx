@@ -222,6 +222,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         price_paid: checkIfProductsAreDailyPass[0].final_price,
         date: `${day}-${month}-${year}`,
         payment_expire_date: "",
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const createPurchaseCall = await createPartnerPayment(paymentBody)
