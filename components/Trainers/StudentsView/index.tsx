@@ -5,8 +5,10 @@ import { getLessonsByPartnerAndPaid } from "services/Trainers/LessonsPurchased.s
 // DATA STORAGE & TYPES
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import generalTexts from "strings/general.json"
 // import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
+import PopOver from "components/UI/PopOver"
 import Icon from "components/UI/Assets/Icon"
 import theme from "theme/index"
 import ScrollView from "components/UI/ScrollView"
@@ -25,6 +27,7 @@ import {
   LessonsPurchased,
   TableTitle,
   TableTitles,
+  HelpContainer,
 } from "./styles"
 
 function StudentsView() {
@@ -33,21 +36,25 @@ function StudentsView() {
   const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)
   const [searchValue, setSearchValue] = useState<string>("")
   const [lessonsByStudent, setLessonsByStudent] = useState([])
+  const [popOverView, setPopOverView] = useState<boolean>(false)
+  const [totalPages, setTotalPages] = useState<number>(1)
 
   const getStudentsList = async () => {
-    if (searchValue.length <= 3) {
-      const getStudentsCall = await getStudents(currentPage)
-      setStudents(getStudentsCall.data)
-    } else {
-      const searchPartnerCall = await searchPartner(searchValue, 1)
-      setStudents(searchPartnerCall.data)
-    }
+    const getStudentsCall = await getStudents(currentPage)
+    setStudents(getStudentsCall.data)
+    setTotalPages(getStudentsCall.meta.totalPages)
   }
 
   useEffect(() => {
     getStudentsList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, searchValue])
+  }, [currentPage])
+
+  const searchStudentInDB = async () => {
+    const searchPartnerCall = await searchPartner(searchValue, 1)
+    setStudents(searchPartnerCall.data)
+    setTotalPages(searchPartnerCall.meta.totalPages)
+  }
 
   const checkSelection = (student: PartnerInterface) => {
     if (studentSelected?.id === student.id) {
@@ -114,9 +121,25 @@ function StudentsView() {
         <SearchBarContainer>
           <SearchBar
             searchValue={searchValue}
-            onChangeSearch={e => setSearchValue(e.target.value)}
+            onChangeSearch={e => {
+              if (e.target.value === "") {
+                getStudentsList()
+                setSearchValue("")
+              } else {
+                setSearchValue(e.target.value)
+              }
+            }}
             width={250}
+            enterSearch={searchStudentInDB}
           />
+          <HelpContainer onClick={() => setPopOverView(!popOverView)}>
+            <PopOver
+              title={generalTexts.search.title}
+              description={generalTexts.search.description}
+              view={popOverView}
+            />
+            <Icon icon="IconHelp" />
+          </HelpContainer>
         </SearchBarContainer>
         <ScrollView height={500}>
           <ListContainer>
@@ -139,10 +162,10 @@ function StudentsView() {
         </ScrollView>
         <PaginatorContainer>
           <Pagination
-            totalPages={1}
             setPage={currentPage}
             onClickNext={goNext}
             onClickBack={goPrev}
+            totalPages={totalPages}
           />
         </PaginatorContainer>
       </LeftContainer>
@@ -178,25 +201,6 @@ function StudentsView() {
                         : `${lesson[i]?.paid_day}`}
                     </div>
                   </div>
-
-                  {/* {lesson.map((h, i) => (
-                    <div key={h.id} className="sub-content">
-                      <div className="column">
-                        {lesson.length > 1 ? (
-                          <>
-                            <p>{lesson.length}</p> <span>Clases</span>
-                          </>
-                        ) : (
-                          <>
-                            <p>{i + 1})</p> <span>{h.lesson_date}</span>
-                          </>
-                        )}
-                      </div>
-                      <div>
-                        {h.paid_day === "" ? "Impago" : `${h.paid_day}`}
-                      </div>
-                    </div>
-                  ))} */}
                 </div>
               ))}
           </LessonsPurchased>

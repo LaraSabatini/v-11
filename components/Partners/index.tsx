@@ -14,6 +14,7 @@ import { PartnersContext } from "contexts/Partners"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
+import PopOver from "components/UI/PopOver"
 import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import Header from "components/UI/Header"
@@ -33,6 +34,7 @@ import {
   MainButton,
   ListAndDetailContainer,
   SearchBarContainer,
+  HelpContainer,
 } from "./styles"
 
 function PartnersView() {
@@ -65,6 +67,8 @@ function PartnersView() {
 
   const [searchValue, setSearchValue] = useState<string>("")
   const [totalPages, setTotalPages] = useState<number>(1)
+
+  const [popOverView, setPopOverView] = useState<boolean>(false)
 
   const setPartnerList = async () => {
     if (filterSelected === "all") {
@@ -105,21 +109,9 @@ function PartnersView() {
   }
 
   useEffect(() => {
-    if (Object.keys(router.query)[0] === "clients" && canViewClients) {
-      if (searchValue.length >= 3) {
-        searchPartnerInDB()
-      } else {
-        setPartnerList()
-      }
-    }
+    setPartnerList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    filterSelected,
-    currentPage,
-    searchValue,
-    triggerListUpdate,
-    canViewClients,
-  ])
+  }, [filterSelected, currentPage, triggerListUpdate, canViewClients])
 
   return (
     <Container>
@@ -155,9 +147,25 @@ function PartnersView() {
             >
               <SearchBar
                 searchValue={searchValue}
-                onChangeSearch={e => setSearchValue(e.target.value)}
+                onChangeSearch={e => {
+                  if (e.target.value === "") {
+                    setPartnerList()
+                    setSearchValue("")
+                  } else {
+                    setSearchValue(e.target.value)
+                  }
+                }}
                 width={250}
+                enterSearch={searchPartnerInDB}
               />
+              <HelpContainer onClick={() => setPopOverView(!popOverView)}>
+                <PopOver
+                  title={generalTexts.search.title}
+                  description={generalTexts.search.description}
+                  view={popOverView}
+                />
+                <Icon icon="IconHelp" />
+              </HelpContainer>
             </SearchBarContainer>
             <ListAndDetailContainer>
               <PartnersList

@@ -34,6 +34,10 @@
     "modalContent": {
         "discard": "Si descartas los cambios no se guardara tu progreso"
     },
+    "search": {
+        "title": "Busqueda",
+        "description": "Para ejecutar la busqueda presiona 'Enter'"
+    },
     "payments": {
         "cash": "Efectivo",
         "digital": "Mercado Pago",

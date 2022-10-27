@@ -54,10 +54,6 @@ const RightContainer = styled.div`
   }
 `
 
-const SearchBarContainer = styled.div`
-  margin-left: 20px;
-`
-
 const PaginatorContainer = styled.div`
   margin-top: 10px;
   display: flex;
@@ -123,8 +119,20 @@ const TableTitle = styled.p`
 const TableTitles = styled.div`
   display: flex;
   align-items: center;
-  /* margin-left: 25px; */
   justify-content: space-between;
+`
+
+const SearchBarContainer = styled.div`
+  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`
+
+const HelpContainer = styled.div`
+  position: relative;
+  margin-top: 5px;
+  cursor: pointer;
 `
 
 export {
@@ -140,4 +148,5 @@ export {
   LessonsPurchased,
   TableTitle,
   TableTitles,
+  HelpContainer,
 }
