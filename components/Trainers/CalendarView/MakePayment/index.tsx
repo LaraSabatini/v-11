@@ -82,6 +82,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
         payment_method_id: paymentMethodSelected.id,
         final_price: finalPrice / lessonsSelectedToPay.length,
         paid_day: `${day}-${month}-${year}`,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       // eslint-disable-next-line no-await-in-loop

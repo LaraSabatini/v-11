@@ -122,6 +122,7 @@ function TrainersView() {
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
         paid_day: paid ? `${day}-${month}-${year}` : "",
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       //  eslint-disable-next-line no-await-in-loop
