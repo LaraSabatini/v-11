@@ -9,6 +9,7 @@ import {
 import getCategories from "services/Store/getCategories.service"
 import getBrands from "services/Store/getBrands.service"
 // DATA STORAGE & TYPES
+import PartnersProvider from "contexts/Partners"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
@@ -156,7 +157,9 @@ function StoreView() {
   return (
     <Container>
       <Modals />
-      <Header />
+      <PartnersProvider>
+        <Header />
+      </PartnersProvider>
       <Content>
         <HeadContent>
           <Title>

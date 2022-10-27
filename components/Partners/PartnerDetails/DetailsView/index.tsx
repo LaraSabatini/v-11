@@ -63,6 +63,9 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     combos,
     paidTimeRef,
     paymentUserRef,
+    setHasChanges,
+    modalHasChanges,
+    setModalHasChanges,
   } = useContext(PartnersContext)
 
   const [initialPayment, setInitialPayment] = useState<PaymentInterface>()
@@ -373,6 +376,8 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
   }
 
   const excecuteChanges = async () => {
+    setHasChanges(false)
+
     let success: boolean = false
     if (changedDays) {
       if (initialPayment.time_paid > 0) {
@@ -454,8 +459,36 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [partnerInfo])
 
+  const cancelDiscard = () => {
+    setModalHasChanges(false)
+  }
+
   return (
     <Details>
+      {modalHasChanges && (
+        <ModalAlert
+          success={false}
+          message={{
+            status: `alert`,
+            icon: `IconAlert`,
+            title: `${generalTexts.modalTitles.discard}`,
+            content: `${generalTexts.modalContent.discard}`,
+          }}
+          closeModal={cancelDiscard}
+          closeRefresh={cancelDiscard}
+          mainButtonContent={generalTexts.actions.confirm}
+          secondButtonContent={generalTexts.actions.cancel}
+          mainAction={() => {
+            setModalHasChanges(false)
+            setHasChanges(false)
+            setChanges(false)
+            setVariableValues([
+              { name: "days", value: initialPayment.time_paid },
+            ])
+          }}
+          isNotice
+        />
+      )}
       {modalErrorAddDays !== null && (
         <ModalAlert
           success={false}
@@ -537,6 +570,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
               onClick={() => {
                 setChangedDays(true)
                 setChanges(true)
+                setHasChanges(true)
                 setVariableValues([
                   { name: "days", value: variableValues[0].value - 1 },
                 ])
@@ -593,6 +627,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
               content={generalTexts.actions.cancel}
               onClick={() => {
                 setChanges(false)
+                setHasChanges(false)
                 setVariableValues([
                   { name: "days", value: initialPayment.time_paid },
                 ])

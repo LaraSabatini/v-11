@@ -1,6 +1,7 @@
 import React from "react"
 import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
+import PartnersProvider from "contexts/Partners"
 // import WorkingHoursProvider from "contexts/WorkingHours"
 import generalTexts from "strings/general.json"
 import financesTexts from "strings/finances.json"
@@ -23,7 +24,9 @@ function FinancesView() {
 
   return (
     <MainContainer>
-      <Header />
+      <PartnersProvider>
+        <Header />
+      </PartnersProvider>
       <Content>
         <HeadContent>
           <Title>
