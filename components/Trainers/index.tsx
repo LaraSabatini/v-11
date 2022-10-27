@@ -23,6 +23,7 @@ import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
 import cleanPartnerData from "utils/cleanPartnerData"
 // COMPONENTS & STYLING
+import NoPermissionsView from "components/UI/NoPermitsView"
 import Header from "components/UI/Header"
 import Icon from "components/UI/Assets/Icon"
 import Modals from "./Modals"
@@ -43,7 +44,6 @@ function TrainersView() {
     purchaseSelected,
     setPrices,
     clientIsRegistered,
-
     paid,
     amountOfLessons,
     datesSelected,
@@ -60,6 +60,14 @@ function TrainersView() {
     setDisablePurchaseButton,
   } = useContext(Lessons)
   const router = useRouter()
+
+  const getPermissions = localStorage.getItem("permissions")
+  const permissions = JSON.parse(getPermissions)[0].sections[1]
+
+  const canViewCalendar = permissions.sub_sections[0].view
+  const canViewStudents = permissions.sub_sections[1].view
+
+  const calendarActions = permissions.sub_sections[0].actions
 
   const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
   const [
@@ -318,24 +326,43 @@ function TrainersView() {
             </span>
           </div>
         </Title>
-        {router.query.calendar === "true" && <CalendarView />}
-        {router.query.students === "true" && <StudentsView />}
+        {router.query.calendar === "true" && canViewCalendar && (
+          <CalendarView />
+        )}
+        {router.query.calendar === "true" && !canViewCalendar && (
+          <NoPermissionsView />
+        )}
+        {router.query.students === "true" && canViewStudents && (
+          <StudentsView />
+        )}
+        {router.query.students === "true" && !canViewStudents && (
+          <NoPermissionsView />
+        )}
 
-        <ButtonContainer>
-          <EditButton
-            disabled={purchaseSelected === null}
-            onClick={() => {
-              if (purchaseSelected !== null) {
-                setEditLessonDateView(true)
-              }
-            }}
-          >
-            <Icon icon="IconEdit" color="#fff" />
-          </EditButton>
-          <PurchaseButton onClick={() => setCreateLessonPurchaseView(true)}>
-            <Icon icon="IconAdd" color="#fff" />
-          </PurchaseButton>
-        </ButtonContainer>
+        {canViewCalendar && (
+          <ButtonContainer>
+            <EditButton
+              disabled={purchaseSelected === null || !calendarActions.update}
+              onClick={() => {
+                if (purchaseSelected !== null && calendarActions.update) {
+                  setEditLessonDateView(true)
+                }
+              }}
+            >
+              <Icon icon="IconEdit" color="#fff" />
+            </EditButton>
+            <PurchaseButton
+              disabledButton={!calendarActions.create}
+              onClick={() => {
+                if (calendarActions.create) {
+                  setCreateLessonPurchaseView(true)
+                }
+              }}
+            >
+              <Icon icon="IconAdd" color="#fff" />
+            </PurchaseButton>
+          </ButtonContainer>
+        )}
 
         {editLessonDateView && (
           <EditLessonDate cancelEdit={() => setEditLessonDateView(false)} />

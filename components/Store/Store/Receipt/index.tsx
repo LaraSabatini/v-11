@@ -38,7 +38,11 @@ import {
   PaymentMethods,
 } from "./styles"
 
-function Receipt() {
+interface ReceiptInterface {
+  purchasePermits: boolean
+}
+
+function Receipt({ purchasePermits }: ReceiptInterface) {
   const {
     purchaseChange,
     purchase,
@@ -330,14 +334,15 @@ function Receipt() {
         />
         <TextButton
           onClick={() => {
-            if (!disabledButton) {
+            if (!disabledButton && !purchasePermits) {
               executePurchase()
             }
           }}
           cta
           disabled={
             (paymentMethodSelected === 2 && paymentUserSelected === null) ||
-            disabledButton
+            disabledButton ||
+            !purchasePermits
           }
           content={storeTexts.purchase.execute}
         />
