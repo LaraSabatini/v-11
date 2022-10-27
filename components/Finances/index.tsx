@@ -2,7 +2,6 @@ import React from "react"
 import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
-// import WorkingHoursProvider from "contexts/WorkingHours"
 import generalTexts from "strings/general.json"
 import financesTexts from "strings/finances.json"
 // COMPONENTS & STYLING
@@ -18,9 +17,10 @@ import { MainContainer, Content, Title, HeadContent } from "./styles"
 
 function FinancesView() {
   const router = useRouter()
-
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections[3].sub_sections
+
+  const routeIsBilling = Object.keys(router.query)[0] === "billing"
 
   return (
     <MainContainer>
@@ -32,43 +32,36 @@ function FinancesView() {
           <Title>
             {generalTexts.sections.finances}
             <span>
-              {" "}
-              /{" "}
-              {router.query.billing === "true" &&
-                `${financesTexts.boulderEarnings}`}
-              {router.query.expenses === "true" && `${financesTexts.bills}`}
-              {router.query.workingHours === "true" &&
-                `${financesTexts.workingHours}`}
-              {router.query.earnings === "true" && `${financesTexts.earnings}`}
+              {" / "}
+              {
+                {
+                  billing: `${financesTexts.boulderEarnings}`,
+                  expenses: `${financesTexts.bills}`,
+                  workingHours: `${financesTexts.workingHours}`,
+                  earnings: `${financesTexts.earnings}`,
+                }[Object.keys(router.query)[0]]
+              }
             </span>
           </Title>
-          {Object.keys(router.query)[0] === "billing" &&
-            permissions[0].view && <TillFilters />}
+          {routeIsBilling && permissions[0].view && <TillFilters />}
         </HeadContent>
-        {Object.keys(router.query)[0] === "billing" && permissions[0].view && (
-          <Till />
-        )}
-        {Object.keys(router.query)[0] === "expenses" && permissions[1].view && (
-          <Bills />
-        )}
-        {Object.keys(router.query)[0] === "workingHours" &&
-          permissions[2].view && (
-            // <WorkingHoursProvider>
-            <WorkingHours />
-            // </WorkingHoursProvider>
-          )}
-        {Object.keys(router.query)[0] === "earnings" && permissions[3].view && (
-          <Earnings />
-        )}
 
-        {((Object.keys(router.query)[0] === "billing" &&
-          !permissions[0].view) ||
+        {((routeIsBilling && !permissions[0].view) ||
           (Object.keys(router.query)[0] === "expenses" &&
             !permissions[1].view) ||
           (Object.keys(router.query)[0] === "workingHours" &&
             !permissions[2].view) ||
           (Object.keys(router.query)[0] === "earnings" &&
             !permissions[3].view)) && <NoPermissionsView />}
+
+        {
+          {
+            billing: <>{permissions[0].view && <Till />}</>,
+            expenses: <>{permissions[1].view && <Bills />}</>,
+            workingHours: <>{permissions[2].view && <WorkingHours />}</>,
+            earnings: <>{permissions[3].view && <Earnings />}</>,
+          }[Object.keys(router.query)[0]]
+        }
       </Content>
     </MainContainer>
   )
