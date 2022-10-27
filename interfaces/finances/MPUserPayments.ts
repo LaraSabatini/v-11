@@ -6,4 +6,5 @@ export default interface MPUserPayment {
   month: string
   month_id: number
   total_profit: number
+  created_by: number
 }

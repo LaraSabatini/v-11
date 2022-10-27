@@ -119,6 +119,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
           month: searchIfExists.data[0].month,
           month_id: searchIfExists.data[0].month_id,
           total_profit: searchIfExists.data[0].total_profit + finalPrice,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
         const editDigitalPayment = await updateDigitalPayment(
           digitalPaymentBody,
@@ -139,6 +140,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
             .display_name,
           month_id: parseInt(`${month}`, 10),
           total_profit: finalPrice,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
         const createDigital = await createDigitalPayment(digitalPaymentBody)
