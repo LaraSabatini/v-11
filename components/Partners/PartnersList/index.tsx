@@ -3,13 +3,12 @@ import React, { useContext } from "react"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
-import generalTexts from "strings/general.json"
 import yesOrNoArr from "const/fixedVariables"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import ScrollView from "components/UI/ScrollView"
-import Tooltip from "components/UI/Tooltip"
+import Pagination from "components/UI/Pagination"
 import Icon from "components/UI/Assets/Icon"
 import {
   ListContainer,
@@ -22,18 +21,23 @@ import {
   FreePass,
   IconContainer,
   Paginator,
-  Navigate,
   NoPartnersView,
   Day,
 } from "./styles"
 
 interface PartnerListInterface {
   data: PartnerInterface[]
+  totalPages: number
   goPrev: () => void
   goNext: () => void
 }
 
-function PartnersList({ data, goPrev, goNext }: PartnerListInterface) {
+function PartnersList({
+  data,
+  goPrev,
+  goNext,
+  totalPages,
+}: PartnerListInterface) {
   const {
     partnerSelected,
     setPartnerSelected,
@@ -100,23 +104,9 @@ function PartnersList({ data, goPrev, goNext }: PartnerListInterface) {
         </ListContainer>
       </ScrollView>
       <Paginator>
-        <Navigate
-          onClick={() => {
-            if (hasChanges) {
-              setModalHasChanges(true)
-            } else {
-              goPrev()
-              setDetailState("view")
-            }
-          }}
-        >
-          <Tooltip title={generalTexts.pagination.prev}>
-            <Icon icon="IconArrowLeft" />
-          </Tooltip>
-        </Navigate>
-        {currentPage}
-        <Navigate
-          onClick={() => {
+        <Pagination
+          totalPages={totalPages}
+          onClickNext={() => {
             if (hasChanges) {
               setModalHasChanges(true)
             } else {
@@ -124,11 +114,16 @@ function PartnersList({ data, goPrev, goNext }: PartnerListInterface) {
               setDetailState("view")
             }
           }}
-        >
-          <Tooltip title={generalTexts.pagination.next} placement="top-start">
-            <Icon icon="IconArrowRight" />
-          </Tooltip>
-        </Navigate>
+          onClickBack={() => {
+            if (hasChanges) {
+              setModalHasChanges(true)
+            } else {
+              goPrev()
+              setDetailState("view")
+            }
+          }}
+          setPage={currentPage}
+        />
       </Paginator>
     </Container>
   )

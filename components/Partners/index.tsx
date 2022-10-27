@@ -64,17 +64,21 @@ function PartnersView() {
   const pricesSection = permissions[1]
 
   const [searchValue, setSearchValue] = useState<string>("")
+  const [totalPages, setTotalPages] = useState<number>(1)
 
   const setPartnerList = async () => {
     if (filterSelected === "all") {
       const data = await getPartners(currentPage)
       setPartners(data.data)
+      setTotalPages(data.meta.totalPages)
     } else if (filterSelected === "students") {
       const data = await getStudents(currentPage)
       setPartners(data.data)
+      setTotalPages(data.meta.totalPages)
     } else {
       const data = await getFreePassPartners(currentPage)
       setPartners(data.data)
+      setTotalPages(data.meta.totalPages)
     }
   }
 
@@ -156,7 +160,12 @@ function PartnersView() {
               />
             </SearchBarContainer>
             <ListAndDetailContainer>
-              <PartnersList data={partners} goNext={goNext} goPrev={goPrev} />
+              <PartnersList
+                totalPages={totalPages}
+                data={partners}
+                goNext={goNext}
+                goPrev={goPrev}
+              />
               {partnerSelected !== null ? (
                 <PartnerDetails permits={partnerActions} />
               ) : (
