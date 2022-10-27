@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 // SERVICES
-import {
-  editProduct,
-  getProducts,
-  searchProducts,
-} from "services/Store/Products.service"
+import { editProduct, getProducts } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
@@ -48,6 +44,8 @@ function Stock({ editPermits }: StockInterface) {
     setStockChanges,
     modalStockHasChanges,
     setModalStockHasChanges,
+    rows,
+    setRows,
   } = useContext(StoreContext)
 
   const [activeEdition, setActiveEdition] = useState<boolean>(false)
@@ -57,99 +55,49 @@ function Stock({ editPermits }: StockInterface) {
   const [newValues, setNewValues] = useState<ProductInterface>(null)
   const [validationError, setValidationError] = useState<boolean>(false)
 
-  const [rows, setRows] = useState<{
-    success: boolean
-    message?: {
-      icon: string
-      content: string
-    }
-    rows: any[]
-  }>()
-
   const rowRef = useRef(null)
 
   const fillRows = async () => {
-    if (searchValueForStock.length <= 2) {
-      const data = await getProducts(currentPage)
-      setProductsList(data.data)
+    const data = await getProducts(currentPage)
+    setProductsList(data.data)
 
-      const rowsCleaned: RowsInterface[] = []
+    const rowsCleaned: RowsInterface[] = []
 
-      data.data.map((product: ProductInterface) => {
-        const marginString = `${product.margin}`
-        const arrOfMargin = marginString.split(".")
-        const first = arrOfMargin[0]
-        let finalMargin = 0
-        if (arrOfMargin.length > 1) {
-          const second = arrOfMargin[1].slice(0, 2)
-          finalMargin = parseFloat(`${first}.${second}`)
-        } else {
-          finalMargin = parseInt(first, 10)
-        }
+    data.data.map((product: ProductInterface) => {
+      const marginString = `${product.margin}`
+      const arrOfMargin = marginString.split(".")
+      const first = arrOfMargin[0]
+      let finalMargin = 0
+      if (arrOfMargin.length > 1) {
+        const second = arrOfMargin[1].slice(0, 2)
+        finalMargin = parseFloat(`${first}.${second}`)
+      } else {
+        finalMargin = parseInt(first, 10)
+      }
 
-        rowsCleaned.push({
-          id: product.id,
-          item: product.name,
-          brand: brands.filter(
-            (brand: OptionsInterface) => brand.id === product.brand_id,
-          )[0]?.name,
-          category: categories.filter(
-            (category: OptionsInterface) => category.id === product.category_id,
-          )[0]?.name,
-          stock: product.stock,
-          price: product.price,
-          margin: finalMargin,
-          cost: product.cost,
-          sales_contact_name: product.sales_contact_name,
-          sales_contact_information: product.sales_contact_information,
-        })
-        return 0
+      rowsCleaned.push({
+        id: product.id,
+        item: product.name,
+        brand: brands.filter(
+          (brand: OptionsInterface) => brand.id === product.brand_id,
+        )[0]?.name,
+        category: categories.filter(
+          (category: OptionsInterface) => category.id === product.category_id,
+        )[0]?.name,
+        stock: product.stock,
+        price: product.price,
+        margin: finalMargin,
+        cost: product.cost,
+        sales_contact_name: product.sales_contact_name,
+        sales_contact_information: product.sales_contact_information,
       })
+      return 0
+    })
 
-      setRows({
-        success: true,
-        rows: rowsCleaned,
-      })
-    } else {
-      const search = await searchProducts(searchValueForStock, 1)
-      setProductsList(search.data)
-      const rowsCleaned: RowsInterface[] = []
-
-      search.data.map((product: ProductInterface) => {
-        const marginString = `${product.margin}`
-        const arrOfMargin = marginString.split(".")
-        const first = arrOfMargin[0]
-        let finalMargin = 0
-        if (arrOfMargin.length > 1) {
-          const second = arrOfMargin[1].slice(0, 2)
-          finalMargin = parseFloat(`${first}.${second}`)
-        } else {
-          finalMargin = parseInt(first, 10)
-        }
-        rowsCleaned.push({
-          id: product.id,
-          item: product.name,
-          brand: brands.filter(
-            (brand: OptionsInterface) => brand.id === product.brand_id,
-          )[0]?.name,
-          category: categories.filter(
-            (category: OptionsInterface) => category.id === product.category_id,
-          )[0]?.name,
-          stock: product.stock,
-          price: product.price,
-          margin: finalMargin,
-          cost: product.cost,
-          sales_contact_name: product.sales_contact_name,
-          sales_contact_information: product.sales_contact_information,
-        })
-        return 0
-      })
-
-      setRows({
-        success: true,
-        rows: rowsCleaned,
-      })
-    }
+    setRows({
+      success: true,
+      rows: rowsCleaned,
+    })
   }
 
   const fillAutocompletes = () => {
@@ -170,8 +118,10 @@ function Stock({ editPermits }: StockInterface) {
 
   useEffect(() => {
     if (brands !== undefined && categories !== undefined) {
-      fillRows()
-      fillAutocompletes()
+      if (searchValueForStock === "") {
+        fillRows()
+        fillAutocompletes()
+      }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

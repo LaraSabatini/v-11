@@ -93,6 +93,15 @@ const ListAndDetailContainer = styled.div`
 
 const SearchBarContainer = styled.div`
   margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`
+
+const HelpContainer = styled.div`
+  position: relative;
+  margin-top: 5px;
+  cursor: pointer;
 `
 
 export {
@@ -106,4 +115,5 @@ export {
   MainButton,
   ListAndDetailContainer,
   SearchBarContainer,
+  HelpContainer,
 }

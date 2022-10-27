@@ -79,6 +79,15 @@ function StoreProvider({ children }) {
     setPaymentUserSelected,
   ] = useState<DefaultInterface | null>(null)
 
+  const [rows, setRows] = useState<{
+    success: boolean
+    message?: {
+      icon: string
+      content: string
+    }
+    rows: any[]
+  }>()
+
   const value = useMemo(
     () => ({
       productsList,
@@ -135,6 +144,8 @@ function StoreProvider({ children }) {
       paymentUserSelected,
       setPaymentUserSelected,
       priceRef,
+      rows,
+      setRows,
     }),
     [
       productsList,
@@ -161,6 +172,7 @@ function StoreProvider({ children }) {
       paymentFilter,
       paymentMethodSelected,
       paymentUserSelected,
+      rows,
     ],
   )
 

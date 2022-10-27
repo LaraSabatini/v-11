@@ -1,17 +1,25 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 // SERVICES
-import { getProducts, productByCategory } from "services/Store/Products.service"
+import {
+  getProducts,
+  productByCategory,
+  searchProducts,
+} from "services/Store/Products.service"
 import getCategories from "services/Store/getCategories.service"
 import getBrands from "services/Store/getBrands.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
+import RowsInterface from "interfaces/store/RowsInterface"
+import ProductInterface from "interfaces/store/ProductInterface"
+import OptionsInterface from "interfaces/store/OptionsInterface"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import NoPermissionsView from "components/UI/NoPermitsView"
 import Tooptip from "components/UI/Tooltip"
+import PopOver from "components/UI/PopOver"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
 import SearchBar from "components/UI/SearchBar"
@@ -30,6 +38,8 @@ import {
   MainButton,
   ProductsAndReceiptContainer,
   NoPermissionsViewContainer,
+  HelpContainer,
+  SearchBarContainer,
 } from "./styles"
 
 function StoreView() {
@@ -46,9 +56,13 @@ function StoreView() {
     setSearchValueForStock,
     setModalStockHasChanges,
     stockChanges,
+    brands,
+    categories,
+    setRows,
   } = useContext(StoreContext)
 
   const [createProductModal, setCreateProductModal] = useState<boolean>(false)
+  const [popOverView, setPopOverView] = useState<boolean>(false)
 
   const router = useRouter()
 
@@ -98,6 +112,47 @@ function StoreView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [triggerListUpdate, currentPage, filterSelected])
 
+  const searchInDB = async () => {
+    const search = await searchProducts(searchValueForStock, 1)
+    setProductsList(search.data)
+    const rowsCleaned: RowsInterface[] = []
+
+    search.data.map((product: ProductInterface) => {
+      const marginString = `${product.margin}`
+      const arrOfMargin = marginString.split(".")
+      const first = arrOfMargin[0]
+      let finalMargin = 0
+      if (arrOfMargin.length > 1) {
+        const second = arrOfMargin[1].slice(0, 2)
+        finalMargin = parseFloat(`${first}.${second}`)
+      } else {
+        finalMargin = parseInt(first, 10)
+      }
+      rowsCleaned.push({
+        id: product.id,
+        item: product.name,
+        brand: brands.filter(
+          (brand: OptionsInterface) => brand.id === product.brand_id,
+        )[0]?.name,
+        category: categories.filter(
+          (category: OptionsInterface) => category.id === product.category_id,
+        )[0]?.name,
+        stock: product.stock,
+        price: product.price,
+        margin: finalMargin,
+        cost: product.cost,
+        sales_contact_name: product.sales_contact_name,
+        sales_contact_information: product.sales_contact_information,
+      })
+      return 0
+    })
+
+    setRows({
+      success: true,
+      rows: rowsCleaned,
+    })
+  }
+
   return (
     <Container>
       <Modals />
@@ -128,11 +183,28 @@ function StoreView() {
                 }
               }}
             >
-              <SearchBar
-                searchValue={searchValueForStock}
-                onChangeSearch={e => setSearchValueForStock(e.target.value)}
-                width={250}
-              />
+              <SearchBarContainer>
+                <HelpContainer onClick={() => setPopOverView(!popOverView)}>
+                  <PopOver
+                    title={generalTexts.search.title}
+                    description={generalTexts.search.description}
+                    view={popOverView}
+                  />
+                  <Icon icon="IconHelp" />
+                </HelpContainer>
+                <SearchBar
+                  searchValue={searchValueForStock}
+                  onChangeSearch={e => {
+                    if (e.target.value === "") {
+                      setSearchValueForStock("")
+                    } else {
+                      setSearchValueForStock(e.target.value)
+                    }
+                  }}
+                  width={250}
+                  enterSearch={searchInDB}
+                />
+              </SearchBarContainer>
             </button>
           )}
         </HeadContent>

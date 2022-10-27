@@ -151,6 +151,20 @@ const NoPermissionsViewContainer = styled.div`
   margin-top: -100px;
 `
 
+const HelpContainer = styled.div`
+  position: relative;
+  margin-top: 5px;
+  cursor: pointer;
+`
+
+const SearchBarContainer = styled.div`
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-align: left;
+`
+
 export {
   Container,
   Content,
@@ -166,5 +180,7 @@ export {
   MainButton,
   CreateProduct,
   ProductsAndReceiptContainer,
+  HelpContainer,
   NoPermissionsViewContainer,
+  SearchBarContainer,
 }
