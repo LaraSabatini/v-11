@@ -97,12 +97,6 @@ const Paginator = styled.div`
   margin-top: 10px;
 `
 
-const Navigate = styled.button`
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-`
-
 const NoPartnersView = styled.h1`
   font-family: ${theme.fonts.primary};
   text-transform: uppercase;
@@ -124,7 +118,6 @@ export {
   FreePass,
   IconContainer,
   Paginator,
-  Navigate,
   NoPartnersView,
   Day,
 }
