@@ -15,6 +15,7 @@ import {
   editPartner,
 } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import PartnersProvider from "contexts/Partners"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
 import { Lessons } from "@contexts/Lessons"
@@ -311,7 +312,9 @@ function TrainersView() {
 
   return (
     <>
-      <Header />
+      <PartnersProvider>
+        <Header />
+      </PartnersProvider>
       <Modals />
       <Container>
         <Title>

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { PartnersContext } from "contexts/Partners"
 import { useRouter } from "next/router"
 import routes from "routes"
 import Tooltip from "components/UI/Tooltip"
@@ -15,6 +16,8 @@ import {
 } from "./styles"
 
 function Header() {
+  const { hasChanges, setModalHasChanges } = useContext(PartnersContext)
+
   const router = useRouter()
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections
@@ -87,7 +90,11 @@ function Header() {
                               router.asPath === `/${route.route}${query.query}`
                             }
                             onClick={() => {
-                              router.replace(`/${route.route}${query.query}`)
+                              if (hasChanges && router.route === "/home") {
+                                setModalHasChanges(true)
+                              } else {
+                                router.replace(`/${route.route}${query.query}`)
+                              }
                             }}
                           >
                             {query.name}
