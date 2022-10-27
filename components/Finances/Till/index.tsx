@@ -8,8 +8,8 @@ import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.serv
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import generalTexts from "strings/general.json"
-// import PaymentInterface from "interfaces/partners/PaymentInterface"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
+import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 // COMPONENTS & STYLING
 import ProductsView from "./ProducstView"
 import BoulderView from "./BoulderView"
@@ -68,7 +68,8 @@ function Till() {
     setDigitalPaymentsList(digitalPaymentByDateCall.data)
 
     const cashEarningsFromStore = productPurchasesCall.data.filter(
-      purchase => purchase.payment_method_id === 1,
+      (purchase: ProductsPurchasedByDateInterface) =>
+        purchase.payment_method_id === 1,
     )
     let cashEarningsFinal = 0
     cashEarningsFromStore.map(p => {
@@ -76,8 +77,10 @@ function Till() {
       return 0
     })
     const cashEarningsFromBoulderPayments = getBoulderPaymentsCall.data.filter(
-      purchase => purchase.payment_method_id === 1,
+      (purchase: PartnerPaymentsHistoryInterface) =>
+        purchase.payment_method_id === 1,
     )
+
     let cashEarningsFinalFromBoulder = 0
     cashEarningsFromBoulderPayments.map(p => {
       cashEarningsFinalFromBoulder += p.profit
@@ -113,21 +116,25 @@ function Till() {
 
   return (
     <div>
-      {tillFilterSelected.id === 1 && <ProductsView />}
-      {tillFilterSelected.id === 2 && <BoulderView />}
-      {tillFilterSelected.id === 3 && <TillByUser />}
-      {tillFilterSelected.id === 4 && (
-        <TotalEarnings>
-          <p>
-            <span>{generalTexts.payments.cash.toUpperCase()}:</span>{" "}
-            <b>$ {totalEarnings.cash}</b>
-          </p>
-          <p>
-            <span>{generalTexts.payments.digital.toUpperCase()}:</span>{" "}
-            <b>$ {totalEarnings.mp}</b>
-          </p>
-        </TotalEarnings>
-      )}
+      {
+        {
+          1: <ProductsView />,
+          2: <BoulderView />,
+          3: <TillByUser />,
+          4: (
+            <TotalEarnings>
+              <p>
+                <span>{generalTexts.payments.cash.toUpperCase()}:</span>{" "}
+                <b>$ {totalEarnings.cash}</b>
+              </p>
+              <p>
+                <span>{generalTexts.payments.digital.toUpperCase()}:</span>{" "}
+                <b>$ {totalEarnings.mp}</b>
+              </p>
+            </TotalEarnings>
+          ),
+        }[tillFilterSelected.id]
+      }
     </div>
   )
 }
