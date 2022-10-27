@@ -35,7 +35,7 @@ const CardsContainer = styled.div`
 
 const Card = styled.div`
   background-color: white;
-  width: 350px;
+  width: 380px;
   padding: 15px 15px;
   border-radius: 10px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
@@ -73,12 +73,12 @@ const Earnings = styled.div`
   display: flex;
   gap: 50px;
   border-bottom: 1px solid #532d7537;
-  padding-left: 10px;
+  padding: 0 10px;
+  justify-content: space-between;
 
   p {
     margin: 0;
     padding: 15px 0 10px 0;
-    width: 140px;
   }
 
   .asistencies {
