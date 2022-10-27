@@ -98,6 +98,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
       amount_of_items: lessonsSelectedToPay.length,
       profit: finalPrice,
       payment_method_id: paymentMethodSelected.id,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
     const boulderPurchaseCall = await createBoulderPurchase(boulderPurchaseBody)
 

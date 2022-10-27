@@ -23,6 +23,7 @@ import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterfa
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
 import cleanPartnerData from "utils/cleanPartnerData"
+import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 // COMPONENTS & STYLING
 import NoPermissionsView from "components/UI/NoPermitsView"
 import Header from "components/UI/Header"
@@ -134,15 +135,7 @@ function TrainersView() {
   const createBoulderPurchaseCallFunc = async () => {
     let success: boolean = false
 
-    const boulderPurchaseBody: {
-      id: number
-      date: string
-      item_id: number
-      item_name: string
-      amount_of_items: number
-      profit: number
-      payment_method_id: number
-    } = {
+    const boulderPurchaseBody: PartnerPaymentsHistoryInterface = {
       id: 0,
       date: `${day}-${month}-${year}`,
       item_id: 4,
@@ -150,6 +143,7 @@ function TrainersView() {
       amount_of_items: amountOfLessons,
       profit: finalPrice,
       payment_method_id: paymentMethodSelected.id,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createBoulderPurchaseCall = await createBoulderPurchase(
