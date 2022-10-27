@@ -334,7 +334,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         />
         <TextButton
           onClick={() => {
-            if (!disabledButton && !purchasePermits) {
+            if (!disabledButton && purchasePermits) {
               executePurchase()
             }
           }}
