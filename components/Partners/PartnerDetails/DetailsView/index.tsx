@@ -115,6 +115,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
       profit:
         paymentMethodSelected === 1 ? combos[0].price_cash : combos[0].price_mp,
       payment_method_id: paymentMethodSelected,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createBoulderPurchaseCall = await createBoulderPurchase(
@@ -165,6 +166,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
       amount_of_items: paidTime,
       profit: finalProfit,
       payment_method_id: paymentMethodSelected,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createBoulderPurchaseCall = await createBoulderPurchase(
@@ -222,6 +224,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
           ? expirationDate
           : "",
       date: `${day}-${month}-${year}`,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createPayment = await createPartnerPayment(body)
@@ -249,6 +252,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         month: searchIfExists.data[0].month,
         month_id: searchIfExists.data[0].month_id,
         total_profit: searchIfExists.data[0].total_profit + finalPrice,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const editDigitalPayment = await updateDigitalPayment(digitalPaymentBody)
@@ -264,6 +268,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
           .display_name,
         month_id: parseInt(`${month}`, 10),
         total_profit: finalPrice,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const createDigital = await createDigitalPayment(digitalPaymentBody)
@@ -341,6 +346,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
               ? expirationDate
               : "",
           date: `${day}-${month}-${year}`,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
         const createPayment = await createPartnerPayment(body)
@@ -385,6 +391,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
           const body = {
             ...initialPayment,
             time_paid: variableValues[0].value,
+            created_by: parseInt(localStorage.getItem("id"), 10),
           }
 
           const edit = await editPartnerPayment(body)
@@ -439,6 +446,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         price_paid: 0,
         date: "",
         payment_expire_date: "",
+        created_by: 0,
       })
       setVariableValues([
         {

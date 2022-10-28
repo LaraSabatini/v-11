@@ -6,4 +6,5 @@ export default interface PartnerPaymentsHistoryInterface {
   item_name: string
   payment_method_id: number
   profit: number
+  created_by: number
 }

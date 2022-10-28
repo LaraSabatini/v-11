@@ -11,4 +11,5 @@ export default interface PaymentInterface {
   price_paid: number
   date: string
   payment_expire_date: string
+  created_by: number
 }

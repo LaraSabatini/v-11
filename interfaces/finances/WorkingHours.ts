@@ -6,4 +6,5 @@ export default interface WorkingHoursInterface {
   working_hours_range: string
   amount_of_hours_worked: number
   week_id: number
+  created_by: number
 }

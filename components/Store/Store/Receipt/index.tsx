@@ -101,6 +101,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         month: searchIfExistsCall.data[0].month,
         month_id: searchIfExistsCall.data[0].month_id,
         total_profit: searchIfExistsCall.data[0].total_profit + finalPrice,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const editDigitalPaymentCall = await updateDigitalPayment(
@@ -118,6 +119,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           .display_name,
         month_id: parseInt(`${month}`, 10),
         total_profit: finalPrice,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const createDigitalCall = await createDigitalPayment(digitalPaymentBody)
@@ -168,6 +170,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
             checkIfPurchasedToday.data[0].profit + purchase[i].final_price,
           payment_method_id: paymentMethodSelected,
           date: checkIfPurchasedToday.data[0].date,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
         const edit = await editStorePurchase(editBody)
         success = edit.message === "store_payments updated successfully"
@@ -180,6 +183,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           profit: purchase[i].final_price,
           payment_method_id: paymentMethodSelected,
           date: `${day}-${month}-${year}`,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
         const createCall = await createStorePurchase(createBody)
@@ -220,6 +224,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         price_paid: checkIfProductsAreDailyPass[0].final_price,
         date: `${day}-${month}-${year}`,
         payment_expire_date: "",
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const createPurchaseCall = await createPartnerPayment(paymentBody)

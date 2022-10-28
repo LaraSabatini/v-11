@@ -13,4 +13,5 @@ export default interface ClasesPurchasedInterface {
   final_price: number
   payment_method_id: number
   paid_day: string
+  created_by: number
 }
