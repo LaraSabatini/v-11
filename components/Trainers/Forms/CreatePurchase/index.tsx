@@ -20,10 +20,10 @@ import InputCalendar from "components/UI/InputCalendar"
 import Icon from "components/UI/Assets/Icon"
 import PopOver from "components/UI/PopOver"
 import ScrollView from "components/UI/ScrollView"
-import deleteLessonFromList from "./utlis/deleteLessonFromList"
-import checkIfDateHasSpace from "./utlis/checkIsDateHasSpace"
-import calculatePriceWithoutDiscount from "./utlis/calculatePriceWithoutDiscount"
-import checkDiscount from "./utlis/checkDiscount"
+import deleteLessonFromList from "../utils/deleteLessonFromList"
+import checkIfDateHasSpace from "../utils/checkIfDateHasSpace"
+import calculatePriceWithoutDiscount from "../utils/calculatePriceWithoutDiscount"
+import checkDiscount from "../utils/checkDiscount"
 import {
   FormContainer,
   HorizontalGroup,
@@ -122,55 +122,53 @@ function CreatePurchaseModal({
     setFinalPrice(calcFinalPrice)
   }
 
-  const lessonPriceForFreePass: {
-    amount_of_lessons: number
-    cash: number
-    mp: number
-  }[] = [
-    {
-      amount_of_lessons: 1,
-      cash: prices[3].price_cash - prices[0].price_cash,
-      mp: prices[3].price_mp - prices[0].price_mp,
-    },
-    {
-      amount_of_lessons: 4,
-      cash: prices[4].price_cash - prices[0].price_cash * 4,
-      mp: prices[4].price_mp - prices[0].price_mp * 4,
-    },
-    {
-      amount_of_lessons: 8,
-      cash: prices[5].price_cash - prices[0].price_cash * 8,
-      mp: prices[5].price_mp - prices[0].price_mp * 8,
-    },
-  ]
-
   const calculatePrice = async () => {
-    if (clientSelected !== null && clientSelected.free_pass === 1) {
-      const hasDiscount = await checkDiscount(clientSelected.id)
+    const lessonPriceForFreePass: {
+      amount_of_lessons: number
+      cash: number
+      mp: number
+    }[] = [
+      {
+        amount_of_lessons: 1,
+        cash: prices[3].price_cash - prices[0].price_cash,
+        mp: prices[3].price_mp - prices[0].price_mp,
+      },
+      {
+        amount_of_lessons: 4,
+        cash: prices[4].price_cash - prices[0].price_cash * 4,
+        mp: prices[4].price_mp - prices[0].price_mp * 4,
+      },
+      {
+        amount_of_lessons: 8,
+        cash: prices[5].price_cash - prices[0].price_cash * 8,
+        mp: prices[5].price_mp - prices[0].price_mp * 8,
+      },
+    ]
+    const hasDiscount = await checkDiscount(clientSelected.id)
 
-      let price: number = 0
+    let price: number = 0
 
-      if (hasDiscount) {
-        if (amountOfLessons === 4) {
+    if (hasDiscount) {
+      switch (amountOfLessons) {
+        case 4:
           price =
             paymentMethodSelected.id === 1
               ? lessonPriceForFreePass[1].cash
               : lessonPriceForFreePass[1].mp
-        } else if (amountOfLessons === 8) {
+          break
+        case 8:
           price =
             paymentMethodSelected.id === 1
               ? lessonPriceForFreePass[2].cash
               : lessonPriceForFreePass[2].mp
-        } else {
+          break
+        default:
           price =
             paymentMethodSelected.id === 1
               ? lessonPriceForFreePass[0].cash * amountOfLessons
               : lessonPriceForFreePass[0].mp * amountOfLessons
-        }
-        setFinalPrice(price)
-      } else {
-        setFinalPriceFunction()
       }
+      setFinalPrice(price)
     } else {
       setFinalPriceFunction()
     }
@@ -178,7 +176,11 @@ function CreatePurchaseModal({
 
   useEffect(() => {
     if (paid && paymentMethodSelected !== null) {
-      calculatePrice()
+      if (clientSelected !== null && clientSelected.free_pass === 1) {
+        calculatePrice()
+      } else {
+        setFinalPriceFunction()
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentMethodSelected, paid])
