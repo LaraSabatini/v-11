@@ -236,10 +236,10 @@ function CreatePurchaseModal({
               ? lessonPriceForFreePass[0].cash * amountOfLessons
               : lessonPriceForFreePass[0].mp * amountOfLessons
         }
+        setFinalPrice(price)
       } else {
         calculatePriceWithoutDiscount()
       }
-      setFinalPrice(price)
     } else {
       calculatePriceWithoutDiscount()
     }
