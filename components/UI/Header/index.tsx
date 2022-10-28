@@ -81,7 +81,7 @@ function Header() {
                 {menus.filter(menu => menu.name === route.route)[0].value && (
                   <ClientsMenu>
                     {route.queries.map((query, minorIndex) => (
-                      <>
+                      <div>
                         {permissions[mayorIndex].sub_sections[minorIndex]
                           .view && (
                           <SubButton
@@ -100,7 +100,7 @@ function Header() {
                             {query.name}
                           </SubButton>
                         )}
-                      </>
+                      </div>
                     ))}
                   </ClientsMenu>
                 )}

@@ -56,10 +56,10 @@ function FinancesView() {
 
         {
           {
-            billing: <>{permissions[0].view && <Till />}</>,
-            expenses: <>{permissions[1].view && <Bills />}</>,
-            workingHours: <>{permissions[2].view && <WorkingHours />}</>,
-            earnings: <>{permissions[3].view && <Earnings />}</>,
+            billing: <div>{permissions[0].view && <Till />}</div>,
+            expenses: <div>{permissions[1].view && <Bills />}</div>,
+            workingHours: <div>{permissions[2].view && <WorkingHours />}</div>,
+            earnings: <div>{permissions[3].view && <Earnings />}</div>,
           }[Object.keys(router.query)[0]]
         }
       </Content>
