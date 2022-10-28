@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react"
 // SERVICES
-// import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
 import {
   getLessonsByPartnerAndPaid,
   editLesson,
