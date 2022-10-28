@@ -20,10 +20,11 @@ import InputCalendar from "components/UI/InputCalendar"
 import Icon from "components/UI/Assets/Icon"
 import PopOver from "components/UI/PopOver"
 import ScrollView from "components/UI/ScrollView"
-import deleteLessonFromList from "../utils/deleteLessonFromList"
-import checkIfDateHasSpace from "../utils/checkIfDateHasSpace"
-import calculatePriceWithoutDiscount from "../utils/calculatePriceWithoutDiscount"
-import checkDiscount from "../utils/checkDiscount"
+import deleteLessonFromList from "../../utils/deleteLessonFromList"
+import checkIfDateHasSpace from "../../utils/checkIfDateHasSpace"
+import calculatePriceWithoutDiscount from "../../utils/calculatePriceWithoutDiscount"
+import checkDiscount from "../../utils/checkDiscount"
+import calculatePriceWithDiscount from "../../utils/calculatePriceWithDiscount"
 import {
   FormContainer,
   HorizontalGroup,
@@ -123,51 +124,15 @@ function CreatePurchaseModal({
   }
 
   const calculatePrice = async () => {
-    const lessonPriceForFreePass: {
-      amount_of_lessons: number
-      cash: number
-      mp: number
-    }[] = [
-      {
-        amount_of_lessons: 1,
-        cash: prices[3].price_cash - prices[0].price_cash,
-        mp: prices[3].price_mp - prices[0].price_mp,
-      },
-      {
-        amount_of_lessons: 4,
-        cash: prices[4].price_cash - prices[0].price_cash * 4,
-        mp: prices[4].price_mp - prices[0].price_mp * 4,
-      },
-      {
-        amount_of_lessons: 8,
-        cash: prices[5].price_cash - prices[0].price_cash * 8,
-        mp: prices[5].price_mp - prices[0].price_mp * 8,
-      },
-    ]
     const hasDiscount = await checkDiscount(clientSelected.id)
-
     let price: number = 0
 
     if (hasDiscount) {
-      switch (amountOfLessons) {
-        case 4:
-          price =
-            paymentMethodSelected.id === 1
-              ? lessonPriceForFreePass[1].cash
-              : lessonPriceForFreePass[1].mp
-          break
-        case 8:
-          price =
-            paymentMethodSelected.id === 1
-              ? lessonPriceForFreePass[2].cash
-              : lessonPriceForFreePass[2].mp
-          break
-        default:
-          price =
-            paymentMethodSelected.id === 1
-              ? lessonPriceForFreePass[0].cash * amountOfLessons
-              : lessonPriceForFreePass[0].mp * amountOfLessons
-      }
+      price = calculatePriceWithDiscount(
+        amountOfLessons,
+        paymentMethodSelected.id,
+        prices,
+      )
       setFinalPrice(price)
     } else {
       setFinalPriceFunction()

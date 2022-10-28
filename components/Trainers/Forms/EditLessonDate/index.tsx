@@ -17,7 +17,7 @@ import Icon from "components/UI/Assets/Icon"
 import ModalForm from "components/UI/ModalForm"
 import InputCalendar from "components/UI/InputCalendar"
 import Autocomplete from "components/UI/Autocomplete"
-import checkIfDateHasSpace from "../utils/checkIfDateHasSpace"
+import checkIfDateHasSpace from "../../utils/checkIfDateHasSpace"
 import { AcceptButton, Warning } from "../CreatePurchase/styles"
 import {
   Form,
