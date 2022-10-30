@@ -1,7 +1,6 @@
 import React, { useContext, useRef, useState, useEffect } from "react"
 // SERVICES
 import {
-  getLessonsByDateAndShift,
   getLessonsByPartnerAndPaid,
   editLesson,
 } from "services/Trainers/LessonsPurchased.service"
@@ -18,6 +17,7 @@ import Icon from "components/UI/Assets/Icon"
 import ModalForm from "components/UI/ModalForm"
 import InputCalendar from "components/UI/InputCalendar"
 import Autocomplete from "components/UI/Autocomplete"
+import checkIfDateHasSpace from "../../utils/checkIfDateHasSpace"
 import { AcceptButton, Warning } from "../CreatePurchase/styles"
 import {
   Form,
@@ -114,37 +114,6 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
         })
         cancelEdit()
       }
-    }
-  }
-
-  const checkIfDateHasSpace = async () => {
-    const dateCleaned = `${provisionalSelection.date.slice(
-      0,
-      2,
-    )}-${provisionalSelection.date.slice(
-      3,
-      5,
-    )}-${provisionalSelection.date.slice(6, 10)}`
-
-    const checkAvailability = await getLessonsByDateAndShift(
-      dateCleaned,
-      provisionalSelection.shift,
-    )
-
-    if (checkAvailability.data.length >= 10) {
-      setCannotAddDate(true)
-    } else {
-      setCannotAddDate(false)
-      setDateSelected({
-        id: 1,
-        date: dateCleaned,
-        shift: provisionalSelection.shift,
-      })
-
-      setProvisionalSelection({
-        date: "",
-        shift: "",
-      })
     }
   }
 
@@ -246,12 +215,33 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
               provisionalSelection.date === "" ||
               provisionalSelection.shift === ""
             }
-            onClick={() => {
+            onClick={async () => {
               if (
                 provisionalSelection.date !== "" &&
                 provisionalSelection.shift !== ""
               ) {
-                checkIfDateHasSpace()
+                const checkDate = await checkIfDateHasSpace(
+                  provisionalSelection,
+                  [dateSelected],
+                )
+
+                if (checkDate.can) {
+                  setDateSelected({
+                    id:
+                      futureLessons !== undefined
+                        ? futureLessons.length + 1
+                        : 1,
+                    date: checkDate.newDates[1].date,
+                    shift: checkDate.newDates[1].shift as "AM" | "PM" | "",
+                  })
+                  setProvisionalSelection({
+                    date: "",
+                    shift: "",
+                  })
+                  setCannotAddDate(false)
+                } else {
+                  setCannotAddDate(true)
+                }
               }
             }}
           >

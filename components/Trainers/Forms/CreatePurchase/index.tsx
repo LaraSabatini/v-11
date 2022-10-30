@@ -3,8 +3,6 @@
 import React, { useState, useContext, useEffect } from "react"
 // SERVICES
 import { searchPartner } from "services/Partners/Partner.service"
-import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
-import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"
@@ -22,6 +20,11 @@ import InputCalendar from "components/UI/InputCalendar"
 import Icon from "components/UI/Assets/Icon"
 import PopOver from "components/UI/PopOver"
 import ScrollView from "components/UI/ScrollView"
+import deleteLessonFromList from "../../utils/deleteLessonFromList"
+import checkIfDateHasSpace from "../../utils/checkIfDateHasSpace"
+import calculatePriceWithoutDiscount from "../../utils/calculatePriceWithoutDiscount"
+import checkDiscount from "../../utils/checkDiscount"
+import calculatePriceWithDiscount from "../../utils/calculatePriceWithDiscount"
 import {
   FormContainer,
   HorizontalGroup,
@@ -111,143 +114,38 @@ function CreatePurchaseModal({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
-  const deleteLessonFromList = (lesson: {
-    id: number
-    date: string
-    shift: string
-  }) => {
-    const newArrayOfDates = datesSelected.filter(
-      (lessonDate: { id: number; date: string; shift: "AM" | "PM" }) =>
-        lessonDate !== lesson,
+  const setFinalPriceFunction = () => {
+    const calcFinalPrice = calculatePriceWithoutDiscount(
+      amountOfLessons,
+      paymentMethodSelected.id,
+      prices,
     )
-    setDatesSelected(newArrayOfDates)
-  }
-
-  const checkIfDateHasSpace = async () => {
-    const dateCleaned = `${provisionalSelection.date.slice(
-      0,
-      2,
-    )}-${provisionalSelection.date.slice(
-      3,
-      5,
-    )}-${provisionalSelection.date.slice(6, 10)}`
-
-    const checkAvailability = await getLessonsByDateAndShift(
-      dateCleaned,
-      provisionalSelection.shift,
-    )
-
-    if (checkAvailability.data.length >= 10) {
-      setCannotAddDate(true)
-    } else {
-      setCannotAddDate(false)
-      setDatesSelected([
-        ...datesSelected,
-        {
-          id: datesSelected.length + 1,
-          date: provisionalSelection.date,
-          shift: provisionalSelection.shift,
-        },
-      ])
-
-      setProvisionalSelection({
-        date: "",
-        shift: "",
-      })
-    }
-  }
-
-  const calculatePriceWithoutDiscount = () => {
-    let price: number = 0
-    if (amountOfLessons === 4) {
-      price =
-        paymentMethodSelected.id === 1
-          ? prices[4].price_cash
-          : prices[4].price_mp
-    } else if (amountOfLessons === 8) {
-      price =
-        paymentMethodSelected.id === 1
-          ? prices[5].price_cash
-          : prices[5].price_mp
-    } else {
-      price =
-        paymentMethodSelected.id === 1
-          ? prices[3].price_cash * amountOfLessons
-          : prices[3].price_mp * amountOfLessons
-    }
-    setFinalPrice(price)
+    setFinalPrice(calcFinalPrice)
   }
 
   const calculatePrice = async () => {
-    const lessonPriceForFreePass: {
-      amount_of_lessons: number
-      cash: number
-      mp: number
-    }[] = [
-      {
-        amount_of_lessons: 1,
-        cash: prices[3].price_cash - prices[0].price_cash,
-        mp: prices[3].price_mp - prices[0].price_mp,
-      },
-      {
-        amount_of_lessons: 4,
-        cash: prices[4].price_cash - prices[0].price_cash * 4,
-        mp: prices[4].price_mp - prices[0].price_mp * 4,
-      },
-      {
-        amount_of_lessons: 8,
-        cash: prices[5].price_cash - prices[0].price_cash * 8,
-        mp: prices[5].price_mp - prices[0].price_mp * 8,
-      },
-    ]
+    const hasDiscount = await checkDiscount(clientSelected.id)
+    let price: number = 0
 
-    if (clientSelected !== null && clientSelected.free_pass === 1) {
-      const checkPayment = await getPartnerPaymentsById(clientSelected.id)
-
-      const expirationDate =
-        checkPayment.data[checkPayment.data.length - 1].payment_expire_date
-
-      const expirationDay = expirationDate.slice(0, 2)
-      const expirationMonth = expirationDate.slice(3, 5)
-      const expirationYear = expirationDate.slice(6, 10)
-
-      const expirationDateCleaned = new Date(
-        `${expirationYear}-${expirationMonth}-${expirationDay}`,
+    if (hasDiscount) {
+      price = calculatePriceWithDiscount(
+        amountOfLessons,
+        paymentMethodSelected.id,
+        prices,
       )
-      const todayDate = new Date(`${year}-${month}-${day}`)
-
-      const hasDiscount: boolean = expirationDateCleaned > todayDate
-      let price: number = 0
-
-      if (hasDiscount) {
-        if (amountOfLessons === 4) {
-          price =
-            paymentMethodSelected.id === 1
-              ? lessonPriceForFreePass[1].cash
-              : lessonPriceForFreePass[1].mp
-        } else if (amountOfLessons === 8) {
-          price =
-            paymentMethodSelected.id === 1
-              ? lessonPriceForFreePass[2].cash
-              : lessonPriceForFreePass[2].mp
-        } else {
-          price =
-            paymentMethodSelected.id === 1
-              ? lessonPriceForFreePass[0].cash * amountOfLessons
-              : lessonPriceForFreePass[0].mp * amountOfLessons
-        }
-        setFinalPrice(price)
-      } else {
-        calculatePriceWithoutDiscount()
-      }
+      setFinalPrice(price)
     } else {
-      calculatePriceWithoutDiscount()
+      setFinalPriceFunction()
     }
   }
 
   useEffect(() => {
     if (paid && paymentMethodSelected !== null) {
-      calculatePrice()
+      if (clientSelected !== null && clientSelected.free_pass === 1) {
+        calculatePrice()
+      } else {
+        setFinalPriceFunction()
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentMethodSelected, paid])
@@ -307,7 +205,6 @@ function CreatePurchaseModal({
       }
     >
       <FormContainer>
-        {/* START - CLIENT IS REGISTERED VALIDATION */}
         <HorizontalGroup>
           <Autocomplete
             label={trainerTexts.createPurchase.registeredLabel}
@@ -381,9 +278,7 @@ function CreatePurchaseModal({
             </>
           )}
         </Results>
-        {/* END - CLIENT IS REGISTERED VALIDATION */}
 
-        {/* START - REGISTER CLIENT */}
         {!clientIsRegistered && clientIsRegistered !== null && (
           <RegisterClientContainer>
             <HorizontalGroup>
@@ -461,7 +356,6 @@ function CreatePurchaseModal({
           </RegisterClientContainer>
         )}
 
-        {/* START - CLIENT IS REGISTERED VALIDATION */}
         {(clientSelected !== null || clientIsRegistered === false) && (
           <div className="subdiv">
             <LessonsContainer>
@@ -527,12 +421,26 @@ function CreatePurchaseModal({
                     provisionalSelection.date === "" ||
                     provisionalSelection.shift === ""
                   }
-                  onClick={() => {
+                  onClick={async () => {
                     if (
                       provisionalSelection.date !== "" &&
                       provisionalSelection.shift !== ""
                     ) {
-                      checkIfDateHasSpace()
+                      const checkDate = await checkIfDateHasSpace(
+                        provisionalSelection,
+                        datesSelected,
+                      )
+
+                      if (checkDate.can) {
+                        setDatesSelected(checkDate.newDates)
+                        setProvisionalSelection({
+                          date: "",
+                          shift: "",
+                        })
+                        setCannotAddDate(false)
+                      } else {
+                        setCannotAddDate(true)
+                      }
                     }
                   }}
                 >
@@ -552,7 +460,13 @@ function CreatePurchaseModal({
                         <span>• {date.date}</span> <b>{date.shift}</b>
                         <button
                           type="button"
-                          onClick={() => deleteLessonFromList(date)}
+                          onClick={() => {
+                            const newArrayOfDates = deleteLessonFromList(
+                              date,
+                              datesSelected,
+                            )
+                            setDatesSelected(newArrayOfDates)
+                          }}
                         >
                           <Icon icon="IconMenuOff" />
                         </button>

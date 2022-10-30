@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState, useRef } from "react"
 // SERVICES
-import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
 import {
   getLessonsByPartnerAndPaid,
   editLesson,
@@ -20,13 +19,15 @@ import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterfa
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
 import ModalInterface from "interfaces/components/ModalInterface"
-
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
 import Autocomplete from "components/UI/Autocomplete"
 import ModalForm from "components/UI/ModalForm"
+import checkDiscount from "../../utils/checkDiscount"
+import calculatePriceWithoutDiscount from "../../utils/calculatePriceWithoutDiscount"
+import calculatePriceWithDiscount from "../../utils/calculatePriceWithDiscount"
 import {
   Form,
   HorizontalGroup,
@@ -208,25 +209,8 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
     )
     setListOfLessonsToPay(checkListOfToPay.data)
     setLessonsSelectedToPay([data])
-
-    const checkPayment = await getPartnerPaymentsById(data.partner_id)
-    if (checkPayment.data.length) {
-      const expirationDate =
-        checkPayment.data[checkPayment.data.length - 1].payment_expire_date
-
-      const expirationDay = expirationDate.slice(0, 2)
-      const expirationMonth = expirationDate.slice(3, 5)
-      const expirationYear = expirationDate.slice(6, 10)
-
-      const expirationDateCleaned = new Date(
-        `${expirationYear}-${expirationMonth}-${expirationDay}`,
-      )
-      const todayDate = new Date(`${year}-${month}-${day}`)
-
-      const hasDiscountConditional: boolean = expirationDateCleaned > todayDate
-
-      setHasDiscount(hasDiscountConditional)
-    }
+    const checkPayment = await checkDiscount(data.partner_id)
+    setHasDiscount(checkPayment)
   }
 
   useEffect(() => {
@@ -237,63 +221,18 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
   const calculateFinalPrice = () => {
     let price: number = 0
 
-    const lessonPriceForFreePass: {
-      amount_of_lessons: number
-      cash: number
-      mp: number
-    }[] = [
-      {
-        amount_of_lessons: 1,
-        cash: prices[3].price_cash - prices[0].price_cash,
-        mp: prices[3].price_mp - prices[0].price_mp,
-      },
-      {
-        amount_of_lessons: 4,
-        cash: prices[4].price_cash - prices[0].price_cash * 4,
-        mp: prices[4].price_mp - prices[0].price_mp * 4,
-      },
-      {
-        amount_of_lessons: 8,
-        cash: prices[5].price_cash - prices[0].price_cash * 8,
-        mp: prices[5].price_mp - prices[0].price_mp * 8,
-      },
-    ]
-
     if (hasDiscount) {
-      if (lessonsSelectedToPay.length === 4) {
-        price =
-          paymentMethodSelected.id === 1
-            ? lessonPriceForFreePass[1].cash
-            : lessonPriceForFreePass[1].mp
-      } else if (lessonsSelectedToPay.length === 8) {
-        price =
-          paymentMethodSelected.id === 1
-            ? lessonPriceForFreePass[2].cash
-            : lessonPriceForFreePass[2].mp
-      } else {
-        price =
-          paymentMethodSelected.id === 1
-            ? lessonPriceForFreePass[0].cash * lessonsSelectedToPay.length
-            : lessonPriceForFreePass[0].mp * lessonsSelectedToPay.length
-      }
+      price = calculatePriceWithDiscount(
+        lessonsSelectedToPay.length,
+        paymentMethodSelected.id,
+        prices,
+      )
     } else {
-      // eslint-disable-next-line no-lonely-if
-      if (lessonsSelectedToPay.length === 4) {
-        price =
-          paymentMethodSelected.id === 1
-            ? prices[4].price_cash
-            : prices[4].price_mp
-      } else if (lessonsSelectedToPay.length === 8) {
-        price =
-          paymentMethodSelected.id === 1
-            ? prices[5].price_cash
-            : prices[5].price_mp
-      } else {
-        price =
-          paymentMethodSelected.id === 1
-            ? prices[3].price_cash * lessonsSelectedToPay.length
-            : prices[3].price_mp * lessonsSelectedToPay.length
-      }
+      price = calculatePriceWithoutDiscount(
+        lessonsSelectedToPay.length,
+        paymentMethodSelected.id,
+        prices,
+      )
     }
 
     setFinalPrice(price)

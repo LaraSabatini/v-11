@@ -125,6 +125,50 @@ function LessonsProvider({ children }) {
   // STUDENTS VIEW
   const [students, setStudents] = useState<PartnerInterface[]>([])
 
+  const [cleanedLessons, setCleanedLessons] = useState<{
+    monday: {
+      am: ClasesPurchasedInterface[]
+      pm: ClasesPurchasedInterface[]
+    }
+    tuesday: {
+      am: ClasesPurchasedInterface[]
+      pm: ClasesPurchasedInterface[]
+    }
+    wednesday: {
+      am: ClasesPurchasedInterface[]
+      pm: ClasesPurchasedInterface[]
+    }
+    thursday: {
+      am: ClasesPurchasedInterface[]
+      pm: ClasesPurchasedInterface[]
+    }
+    friday: {
+      am: ClasesPurchasedInterface[]
+      pm: ClasesPurchasedInterface[]
+    }
+  }>({
+    monday: {
+      am: [],
+      pm: [],
+    },
+    tuesday: {
+      am: [],
+      pm: [],
+    },
+    wednesday: {
+      am: [],
+      pm: [],
+    },
+    thursday: {
+      am: [],
+      pm: [],
+    },
+    friday: {
+      am: [],
+      pm: [],
+    },
+  })
+
   const value = useMemo(
     () => ({
       clasesPurchasedByWeek,
@@ -185,6 +229,8 @@ function LessonsProvider({ children }) {
       setBuyedCombo,
       disablePurchaseButton,
       setDisablePurchaseButton,
+      cleanedLessons,
+      setCleanedLessons,
     }),
     [
       clasesPurchasedByWeek,
@@ -212,6 +258,7 @@ function LessonsProvider({ children }) {
       students,
       buyedCombo,
       disablePurchaseButton,
+      cleanedLessons,
     ],
   )
 
