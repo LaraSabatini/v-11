@@ -23,6 +23,8 @@ import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterfa
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
 import cleanPartnerData from "utils/cleanPartnerData"
+import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
+import MPUserPayment from "interfaces/finances/MPUserPayments"
 // COMPONENTS & STYLING
 import NoPermissionsView from "components/UI/NoPermitsView"
 import Header from "components/UI/Header"
@@ -120,6 +122,7 @@ function TrainersView() {
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
         paid_day: paid ? `${day}-${month}-${year}` : "",
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       //  eslint-disable-next-line no-await-in-loop
@@ -134,15 +137,7 @@ function TrainersView() {
   const createBoulderPurchaseCallFunc = async () => {
     let success: boolean = false
 
-    const boulderPurchaseBody: {
-      id: number
-      date: string
-      item_id: number
-      item_name: string
-      amount_of_items: number
-      profit: number
-      payment_method_id: number
-    } = {
+    const boulderPurchaseBody: PartnerPaymentsHistoryInterface = {
       id: 0,
       date: `${day}-${month}-${year}`,
       item_id: 4,
@@ -150,6 +145,7 @@ function TrainersView() {
       amount_of_items: amountOfLessons,
       profit: finalPrice,
       payment_method_id: paymentMethodSelected.id,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createBoulderPurchaseCall = await createBoulderPurchase(
@@ -165,7 +161,7 @@ function TrainersView() {
       )
 
       if (searchIfExists.data.length > 0) {
-        const digitalPaymentBody = {
+        const digitalPaymentBody: MPUserPayment = {
           id: searchIfExists.data[0].id,
           user_id: searchIfExists.data[0].user_id,
           user_name: searchIfExists.data[0].user_name,
@@ -173,6 +169,7 @@ function TrainersView() {
           month: searchIfExists.data[0].month,
           month_id: searchIfExists.data[0].month_id,
           total_profit: searchIfExists.data[0].total_profit + finalPrice,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
         const editDigitalPayment = await updateDigitalPayment(
@@ -181,15 +178,7 @@ function TrainersView() {
 
         success = editDigitalPayment.message === "payment updated successfully"
       } else {
-        const digitalPaymentBody: {
-          id: number
-          user_id: number
-          user_name: string
-          date: string
-          month: string
-          month_id: number
-          total_profit: number
-        } = {
+        const digitalPaymentBody: MPUserPayment = {
           id: 0,
           user_id: paymentUserSelected.id,
           user_name: paymentUserSelected.display_name,
@@ -198,6 +187,7 @@ function TrainersView() {
             .display_name,
           month_id: parseInt(`${month}`, 10),
           total_profit: finalPrice,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
         const createDigitalPaymentCall = await createDigitalPayment(

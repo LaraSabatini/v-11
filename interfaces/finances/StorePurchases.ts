@@ -6,4 +6,5 @@ export default interface ProductsPurchasedByDateInterface {
   profit: number
   payment_method_id: number
   date: string
+  created_by: number
 }

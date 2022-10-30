@@ -89,6 +89,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
         shift: dateSelected.shift,
         day_id: currentDate.getDay(),
         week_id: weekNumber,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const editLessonCall = await editLesson(editLessonBody)

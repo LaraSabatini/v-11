@@ -160,6 +160,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         (comboSelected !== null && comboSelected !== undefined)
           ? expirationDate
           : "",
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createPaymentCall = await createPartnerPayment(paymentBody)
@@ -185,6 +186,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         month: searchIfExists.data[0].month,
         month_id: searchIfExists.data[0].month_id,
         total_profit: searchIfExists.data[0].total_profit + finalPrice,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
       const editDigitalPayment = await updateDigitalPayment(digitalPaymentBody)
 
@@ -203,6 +205,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
           .display_name,
         month_id: parseInt(`${month}`, 10),
         total_profit: finalPrice,
+        created_by: parseInt(localStorage.getItem("id"), 10),
       }
 
       const createDigital = await createDigitalPayment(digitalPaymentBody)
@@ -231,6 +234,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
       amount_of_items: paidTime,
       profit: finalProfit,
       payment_method_id: paymentMethodSelected,
+      created_by: parseInt(localStorage.getItem("id"), 10),
     }
 
     const createBoulderPurchaseCall = await createBoulderPurchase(
@@ -299,6 +303,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
               ? combos[0].price_cash
               : combos[0].price_mp,
           payment_method_id: paymentMethodSelected,
+          created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
         const createBoulderPurchaseCall = await createBoulderPurchase(
