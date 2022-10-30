@@ -11,7 +11,6 @@ import {
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
-import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
 import { editProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
@@ -195,36 +194,6 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
 
       const executePayment = await makeDigitalPayment(searchIfExistsCall)
       success = executePayment
-    }
-
-    const checkIfProductsAreDailyPass = purchase.filter(
-      (product: TemporalPurchaseInterface) =>
-        product.product_id === 1 || product.product_id === 2,
-    )
-
-    if (checkIfProductsAreDailyPass.length > 0) {
-      const paymentBody = {
-        id: 0,
-        partner_id: 258,
-        partner_name: `${storeTexts.daily_pass}`,
-        partner_last_name: `${storeTexts.do_not_delete}`,
-        combo: 0,
-        time_paid: checkIfProductsAreDailyPass[0].product_amount,
-        time_paid_unit: 1,
-        payment_method_id:
-          checkIfProductsAreDailyPass[0].product_id === 1 ? 1 : 2,
-        payment_method_name:
-          checkIfProductsAreDailyPass[0].product_id === 1
-            ? `${generalTexts.payments.cash}`
-            : `${generalTexts.payments.digital_abv}`,
-        price_paid: checkIfProductsAreDailyPass[0].final_price,
-        date: `${day}-${month}-${year}`,
-        payment_expire_date: "",
-      }
-
-      const createPurchaseCall = await createPartnerPayment(paymentBody)
-      success =
-        createPurchaseCall.message === "partnerPayment created successfully"
     }
 
     if (success) {
