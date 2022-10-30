@@ -61,19 +61,23 @@ const ProfilePicture = styled.button`
   color: ${theme.colors.white};
 `
 
-const ClientsMenu = styled.div`
+const SubMenu = styled.div`
   position: absolute;
   background-color: white;
-  width: fit-content;
   display: flex;
   flex-direction: column;
   gap: 10px;
-  /* left: -100px; */
   padding: 10px 20px 10px 5px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   border-radius: 0 0 3px 3px;
   top: 20px;
   z-index: 150;
+`
+
+const List = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `
 
 const SubButton = styled.button<{ selectedSection: boolean }>`
@@ -83,10 +87,13 @@ const SubButton = styled.button<{ selectedSection: boolean }>`
   background: none;
   text-align: left;
   font-size: 15px;
-  width: fit-content;
   font-weight: ${theme.fontWeights.light};
   &:hover {
     font-weight: ${theme.fontWeights.regular};
+  }
+
+  p {
+    margin: 0;
   }
 
   ${props =>
@@ -102,6 +109,7 @@ export {
   HeaderContent,
   Sections,
   SectionTitle,
-  ClientsMenu,
+  SubMenu,
   SubButton,
+  List,
 }

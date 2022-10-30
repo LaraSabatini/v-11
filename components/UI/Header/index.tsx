@@ -11,8 +11,9 @@ import {
   HeaderContent,
   Sections,
   SectionTitle,
-  ClientsMenu,
+  SubMenu,
   SubButton,
+  List,
 } from "./styles"
 
 function Header() {
@@ -79,9 +80,9 @@ function Header() {
               >
                 {route.name}
                 {menus.filter(menu => menu.name === route.route)[0].value && (
-                  <ClientsMenu>
+                  <SubMenu>
                     {route.queries.map((query, minorIndex) => (
-                      <div>
+                      <List>
                         {permissions[mayorIndex].sub_sections[minorIndex]
                           .view && (
                           <SubButton
@@ -97,12 +98,12 @@ function Header() {
                               }
                             }}
                           >
-                            {query.name}
+                            <p>{query.name}</p>
                           </SubButton>
                         )}
-                      </div>
+                      </List>
                     ))}
-                  </ClientsMenu>
+                  </SubMenu>
                 )}
               </SectionTitle>
             ))}
