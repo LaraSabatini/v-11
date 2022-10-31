@@ -1,7 +1,7 @@
 {
     "students": "Alumnos",
     "calendar": "Calendario de clases",
-    "lessons": "clases",
+    "lessons": "Clases",
     "days": "Dias:",
     "lessonsLeft": "Clases restantes:",
     "createPurchase": {
@@ -41,5 +41,13 @@
         "errorModal": {
             "content": "Ha ocurrido un error al modificar la fecha de la clase."
         }
+    },
+    "students_info": {
+        "no_results": "NO HAY MAS ALUMNOS EN LA LISTA",
+        "payments_history": "Historial de pagos",
+        "purchase": "Compra",
+        "expire_date": "Fecha de vencimiento:",
+        "without_payment": "Impago",
+        "has_shoes": "*Cuenta con zapatillas incluidas"
     }
 }

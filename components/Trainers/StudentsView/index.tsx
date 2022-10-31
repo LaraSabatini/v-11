@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import { getStudents, searchPartner } from "services/Partners/Partner.service"
-import { getLessonsByPartnerAndPaid } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import { day, month, year } from "const/time"
 import generalTexts from "strings/general.json"
-// import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+import trainerTexts from "strings/trainers.json"
 // COMPONENTS & STYLING
 import PopOver from "components/UI/PopOver"
 import Icon from "components/UI/Assets/Icon"
@@ -14,6 +14,8 @@ import theme from "theme/index"
 import ScrollView from "components/UI/ScrollView"
 import SearchBar from "components/UI/SearchBar"
 import Pagination from "components/UI/Pagination"
+import getPayments from "./utils/getPayments"
+import calcExpireDate from "./utils/calcExpireDate"
 import {
   ListContainer,
   ListItem,
@@ -28,6 +30,11 @@ import {
   TableTitle,
   TableTitles,
   HelpContainer,
+  LessonGroup,
+  Dropdown,
+  DateShown,
+  GroupInfo,
+  LessonListContainer,
 } from "./styles"
 
 function StudentsView() {
@@ -39,7 +46,12 @@ function StudentsView() {
   const [popOverView, setPopOverView] = useState<boolean>(false)
   const [totalPages, setTotalPages] = useState<number>(1)
 
+  const [groupSelected, setGroupSelected] = useState<number>(null)
+
+  const todayDate = new Date(`${year}-${month}-${day}`)
+
   const getStudentsList = async () => {
+    setStudentSelected(null)
     const getStudentsCall = await getStudents(currentPage)
     setStudents(getStudentsCall.data)
     setTotalPages(getStudentsCall.meta.totalPages)
@@ -51,6 +63,7 @@ function StudentsView() {
   }, [currentPage])
 
   const searchStudentInDB = async () => {
+    setStudentSelected(null)
     const searchPartnerCall = await searchPartner(searchValue, 1)
     setStudents(searchPartnerCall.data)
     setTotalPages(searchPartnerCall.meta.totalPages)
@@ -64,56 +77,28 @@ function StudentsView() {
     }
   }
 
-  const goNext = () => {
-    setCurrentPage(currentPage + 1)
-  }
-
-  const goPrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-  }
-
-  const getPayments = async () => {
-    const lessonsPaid = await getLessonsByPartnerAndPaid(
-      studentSelected.id,
-      "SI",
-    )
-    const lessonsNotPaid = await getLessonsByPartnerAndPaid(
-      studentSelected.id,
-      "NO",
-    )
-
-    const finalArr = lessonsPaid.data
-      .concat(lessonsNotPaid.data)
-      .sort((a, b) => {
-        return b.id - a.id
-      })
-
-    const paidDays = []
-    finalArr.map(purchase => paidDays.push(purchase.paid_day))
-
-    const uniqueArray = paidDays.filter((item, pos) => {
-      return paidDays.indexOf(item) === pos
-    })
-
-    const finalArrayOfDates = uniqueArray.map(paidDate => {
-      const arrayOfDates = []
-      finalArr.filter(
-        lesson => lesson.paid_day === paidDate && arrayOfDates.push(lesson),
-      )
-      return arrayOfDates
-    })
-
-    setLessonsByStudent(finalArrayOfDates)
+  const getListPayments = async () => {
+    const list = await getPayments(studentSelected.id)
+    setLessonsByStudent(list)
   }
 
   useEffect(() => {
     if (studentSelected !== null) {
-      getPayments()
+      getListPayments()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [studentSelected])
+
+  const checkPastDate = date => {
+    const cleanDate = `${date.slice(6, 10)}-${date.slice(3, 5)}-${date.slice(
+      0,
+      2,
+    )}`
+
+    const lessonDate = new Date(cleanDate)
+    const isDisabled = lessonDate < todayDate
+    return isDisabled
+  }
 
   return (
     <Container>
@@ -156,15 +141,19 @@ function StudentsView() {
                 </ListItem>
               ))
             ) : (
-              <NoMore>NO HAY MAS ALUMNOS EN LA LISTA</NoMore>
+              <NoMore>{trainerTexts.students_info.no_results}</NoMore>
             )}
           </ListContainer>
         </ScrollView>
         <PaginatorContainer>
           <Pagination
             setPage={currentPage}
-            onClickNext={goNext}
-            onClickBack={goPrev}
+            onClickNext={() => setCurrentPage(currentPage + 1)}
+            onClickBack={() => {
+              if (currentPage > 1) {
+                setCurrentPage(currentPage - 1)
+              }
+            }}
             totalPages={totalPages}
           />
         </PaginatorContainer>
@@ -172,37 +161,64 @@ function StudentsView() {
       {studentSelected !== null && (
         <RightContainer>
           <p className="name">
-            Historial de pagos - {studentSelected.name}{" "}
-            {studentSelected.last_name}
+            {trainerTexts.students_info.payments_history} -{" "}
+            {studentSelected.name} {studentSelected.last_name}
           </p>
           <LessonsPurchased>
             <TableTitles>
-              <TableTitle>Fecha clase/s:</TableTitle>
-              <TableTitle>Fecha pago:</TableTitle>
+              <TableTitle>{trainerTexts.students_info.purchase}</TableTitle>
+              <TableTitle>{trainerTexts.students_info.expire_date}</TableTitle>
             </TableTitles>
-            {lessonsByStudent.length > 0 &&
-              lessonsByStudent.map((lesson, i) => (
-                <div key={lesson} className="row">
-                  <div className="sub-content">
-                    <div className="column">
-                      {lesson.length > 1 ? (
-                        <div className="content">
-                          <p>{lesson.length}</p> <span>Clases</span>
+            <ScrollView height={270}>
+              <LessonListContainer>
+                {lessonsByStudent.length > 0 &&
+                  lessonsByStudent.map(lesson => (
+                    <LessonGroup>
+                      <Dropdown
+                        onClick={() => {
+                          if (
+                            groupSelected === null ||
+                            groupSelected !== lesson
+                          ) {
+                            setGroupSelected(lesson)
+                          } else {
+                            setGroupSelected(null)
+                          }
+                        }}
+                        open={groupSelected === lesson}
+                      >
+                        <div className="title">
+                          <p>{lesson.length}</p>{" "}
+                          <span>{trainerTexts.lessons}</span>
                         </div>
-                      ) : (
-                        <div className="content">
-                          <span>{lesson[i]?.lesson_date}</span>
+                        <div className="title">
+                          <p>
+                            {lesson[0].paid_day !== ""
+                              ? calcExpireDate(lesson[0].paid_day).string
+                              : `${trainerTexts.students_info.without_payment}`}
+                          </p>
+                          <Icon icon="IconArrowRight" />
                         </div>
+                      </Dropdown>
+
+                      {groupSelected !== null && groupSelected === lesson && (
+                        <GroupInfo>
+                          {lesson.map(purchase => (
+                            <DateShown
+                              disabled={checkPastDate(purchase.lesson_date)}
+                            >
+                              {purchase.lesson_date}
+                            </DateShown>
+                          ))}
+                        </GroupInfo>
                       )}
-                    </div>
-                    <div>
-                      {lesson[i]?.paid_day === ""
-                        ? "Impago"
-                        : `${lesson[i]?.paid_day}`}
-                    </div>
-                  </div>
-                </div>
-              ))}
+                      {lesson.length === 8 && (
+                        <span>{trainerTexts.students_info.has_shoes}</span>
+                      )}
+                    </LessonGroup>
+                  ))}
+              </LessonListContainer>
+            </ScrollView>
           </LessonsPurchased>
         </RightContainer>
       )}
