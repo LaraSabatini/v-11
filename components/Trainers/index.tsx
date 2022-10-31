@@ -334,16 +334,18 @@ function TrainersView() {
 
         {canViewCalendar && (
           <ButtonContainer>
-            <EditButton
-              disabled={purchaseSelected === null || !calendarActions.update}
-              onClick={() => {
-                if (purchaseSelected !== null && calendarActions.update) {
-                  setEditLessonDateView(true)
-                }
-              }}
-            >
-              <Icon icon="IconEdit" color="#fff" />
-            </EditButton>
+            {router.query.calendar === "true" && (
+              <EditButton
+                disabled={purchaseSelected === null || !calendarActions.update}
+                onClick={() => {
+                  if (purchaseSelected !== null && calendarActions.update) {
+                    setEditLessonDateView(true)
+                  }
+                }}
+              >
+                <Icon icon="IconEdit" color="#fff" />
+              </EditButton>
+            )}
             <PurchaseButton
               disabledButton={!calendarActions.create}
               onClick={() => {

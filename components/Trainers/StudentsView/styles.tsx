@@ -135,6 +135,70 @@ const HelpContainer = styled.div`
   cursor: pointer;
 `
 
+const LessonGroup = styled.div`
+  display: flex;
+  width: 95%;
+  flex-direction: column;
+`
+
+const Dropdown = styled.div<{ open: boolean }>`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
+  padding: 0 15px 0 10px;
+  border-radius: 10px;
+
+  .title {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  svg {
+    transform: rotate(270deg);
+  }
+
+  ${props =>
+    props.open &&
+    css`
+      svg {
+        transform: rotate(90deg);
+      }
+    `};
+`
+
+const GroupInfo = styled.div`
+  width: 100%;
+  margin-top: 10px;
+  background-color: white;
+  border-radius: 0 0 10px 10px;
+  padding: 0 15px 0 10px;
+  border: 1px solid ${theme.colors.focus};
+  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
+`
+
+const DateShown = styled.div<{ disabled: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 5px 0;
+
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.3;
+    `};
+`
+
+const LessonListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 0 10px 10px;
+`
+
 export {
   ListContainer,
   ListItem,
@@ -149,4 +213,9 @@ export {
   TableTitle,
   TableTitles,
   HelpContainer,
+  LessonGroup,
+  Dropdown,
+  GroupInfo,
+  DateShown,
+  LessonListContainer,
 }
