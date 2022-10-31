@@ -382,7 +382,7 @@ function CreatePurchaseModal({
 
               <LessonsSubGroup>
                 <InputCalendar
-                  position="top-left"
+                  position={clientIsRegistered ? "bottom-left" : "top-left"}
                   label={trainerTexts.createPurchase.lessonsDate}
                   minCalendarDate={`${day}/${month}/${year}`}
                   valueCalendar={provisionalSelection.date}
