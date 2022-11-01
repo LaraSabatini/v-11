@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import ModalForm from "components/UI/ModalForm"
 import calcTotalEarnings from "utils/calcTotalEarnings"
 // import { day, month, year } from "const/time"
+import sendEmail from "services/SendEmail"
 import { View, Title, Row, Amount } from "./styles"
 
 interface TillPreviewInterface {
@@ -18,6 +19,8 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
     e.preventDefault()
     // eslint-disable-next-line no-console
     console.log("cerrar caja")
+    const prueba = sendEmail()
+    console.log("PRUEBA", prueba)
 
     // window.open(
     //   `mailto:sabatinilara@gmail.com,roman@gmail.com?subject=Cierre de Caja ${day}-${month}-${year}&body=Caja efectivo: $${totalEarnings.cash},
