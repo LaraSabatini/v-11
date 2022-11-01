@@ -1,34 +1,26 @@
-/* eslint-disable no-console */
-import { MailtrapClient } from "mailtrap"
+import axios from "axios"
+import axiosHeader from "services/axiosHeader"
 
-// f51b6904b0145b571d4281ae0261e175
-const TOKEN = "2e07812876b4875ee5475bdb3fc252dd"
-const ENDPOINT = "https://send.api.mailtrap.io/"
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/sendEmail/send-email`
 
-const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN })
-
-const sender = {
-  email: "mailtrap@vonceescalada.com",
-  name: "Mailtrap Test",
-}
-const recipients = [
-  {
-    email: "sabatinilara@gmail.com",
-  },
-]
-
-const sendEmail = () => {
-  const res = client
-    .send({
-      from: sender,
-      to: recipients,
-      subject: "You are awesome!",
-      text: "Congrats for sending test email with Mailtrap!",
-      category: "Integration Test",
+const sendEmail = async (body: {
+  recipients: { email: string }[]
+  subject: string
+  text: string
+  category: string
+}) => {
+  const data = await axios
+    .post(`${apiURL}`, body, axiosHeader)
+    .then(response => {
+      const res = response.data
+      return res
     })
-    .then(console.log, console.error)
-
-  return res
+    .catch(err => {
+      const res = err.response
+      return res
+    })
+  return data
 }
 
+// req.body.recipients, req.body.subject, req.body.text, req.body.category
 export default sendEmail

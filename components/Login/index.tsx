@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 // SERVICES
 import validateUser from "services/Users/ValidateUser.service"
+import getUsers from "services/Users/GetUsers.service"
 // DATA STORAGE & TYPES
+import { GeneralContext } from "contexts/GeneralContext"
 import texts from "strings/loginPage.json"
 // COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
@@ -20,6 +22,8 @@ import {
 function Login() {
   const router = useRouter()
   const [logged, setLogged] = useState(false)
+
+  const { setUsers } = useContext(GeneralContext)
 
   const [userName, setUserName] = useState<string>("")
   const [password, setPassword] = useState<string>("")
@@ -61,6 +65,14 @@ function Login() {
         localStorage.setItem("id", res.data[0].id)
         localStorage.setItem("isLoggedIn", "true")
         localStorage.setItem("permissions", res.data[0].permissions)
+
+        const getUserData = await getUsers()
+
+        const cleanedUserArray = getUserData.data.filter(
+          user => user.admin === 1,
+        )
+        setUsers(cleanedUserArray)
+
         router.push("home?clients=true")
       } else {
         setSuccess(false)

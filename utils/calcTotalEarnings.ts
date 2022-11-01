@@ -9,36 +9,9 @@ const calcTotalEarnings = async () => {
   const today = `${day}-${month}-${year}`
   const productPurchasesCall = await getStorePurchasesByDate(today)
 
-  //   const filterProducts =
-  //     productPurchasesCall.data.length > 0
-  //       ? productPurchasesCall.data.filter(
-  //           (purchase: ProductsPurchasedByDateInterface) =>
-  //             purchase.product_id !== 1 &&
-  //             purchase.product_id !== 2 &&
-  //             purchase.product_id !== 3,
-  //         )
-  //       : []
-  //   setProductsPurchasedByDate(filterProducts)
-
-  //   const filterBoulderProducts =
-  //     productPurchasesCall.data.length > 0
-  //       ? productPurchasesCall.data.filter(
-  //           (purchase: ProductsPurchasedByDateInterface) =>
-  //             purchase.product_id === 1 ||
-  //             purchase.product_id === 2 ||
-  //             purchase.product_id === 3,
-  //         )
-  //       : []
-
-  //   setBoulderProductsPurchasedByDate(filterBoulderProducts)
-
   const getBoulderPaymentsCall = await getBoulderPurchaseByDate(today)
 
-  //   setPartnerPaymentsByDate(getBoulderPaymentsCall.data)
-
   const digitalPaymentByDateCall = await searchDigitalPaymentByDate(today)
-
-  //   setDigitalPaymentsList(digitalPaymentByDateCall.data)
 
   const cashEarningsFromStore = productPurchasesCall.data.filter(
     (purchase: ProductsPurchasedByDateInterface) =>

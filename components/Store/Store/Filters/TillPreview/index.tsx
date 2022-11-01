@@ -1,8 +1,16 @@
-import React, { useEffect, useState } from "react"
+import React, {
+  useEffect,
+  useState,
+  //  useContext
+} from "react"
 import ModalForm from "components/UI/ModalForm"
 import calcTotalEarnings from "utils/calcTotalEarnings"
 // import { day, month, year } from "const/time"
-import sendEmail from "services/SendEmail"
+// import { GeneralContext } from "contexts/GeneralContext"
+// import sendEmail from "services/SendEmail"
+// import "public/logo.png"
+// import transformHTML from "mails/closeTill"
+import calcEarningsStore from "utils/calcEarningsStore"
 import { View, Title, Row, Amount } from "./styles"
 
 interface TillPreviewInterface {
@@ -10,6 +18,8 @@ interface TillPreviewInterface {
 }
 
 function TillPreview({ closeTillPreview }: TillPreviewInterface) {
+  // const { users } = useContext(GeneralContext)
+
   const [totalEarnings, setTotalEarnings] = useState<{
     cash: number
     mp: number
@@ -17,18 +27,50 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
 
   const closeTill = async e => {
     e.preventDefault()
+
+    const prueba = await calcEarningsStore()
+
     // eslint-disable-next-line no-console
-    console.log("cerrar caja")
-    const prueba = sendEmail()
-    console.log("PRUEBA", prueba)
+    console.log("EARNINGS STORE", prueba)
 
-    // window.open(
-    //   `mailto:sabatinilara@gmail.com,roman@gmail.com?subject=Cierre de Caja ${day}-${month}-${year}&body=Caja efectivo: $${totalEarnings.cash},
-    //   Caja MP: $${totalEarnings.mp}
+    const final = {
+      cash: 0,
+      mp: 0,
+    }
+    prueba.map(item => {
+      if (item.payment_method_id === 1) {
+        final.cash += item.profit
+      } else {
+        final.mp += item.profit
+      }
+      return {}
+    })
 
-    //   Se vendieron tantos pases
-    //   `,
-    // )
+    console.log(final)
+
+    // const getMails = users.map(user => user.email).filter(mail => mail !== "")
+    // getMails.forEach((email, i) => {
+    //   getMails[i] = { email }
+    // })
+    // const pruebaMail = [{ email: "sabatinilara@gmail.com" }]
+    // const recipients = getMails
+    // const recipients = pruebaMail
+    // const HTMLToSend = transformHTML(totalEarnings)
+    // const html = HTMLToSend
+
+    // const body = {
+    //   recipients,
+    //   subject: "otra prueba",
+    //   text: html,
+    //   category: "test",
+    // }
+
+    // eslint-disable-next-line no-console
+    // console.log(body)
+
+    // const send = sendEmail(body)
+    // console.log(body, getMails)
+    // condicional => "Mail sent successfully"
   }
 
   const getFinalEarings = async () => {

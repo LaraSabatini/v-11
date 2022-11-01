@@ -3,7 +3,6 @@ import React, { useContext, useState, useEffect } from "react"
 import getUsers from "services/Users/GetUsers.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
-import UserInterface from "interfaces/users/UserInterface"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
@@ -39,9 +38,7 @@ function PartnerDetails({ permits }: ActionsPermissions) {
   const getUsersInfo = async (creatorId: number) => {
     const data = await getUsers()
 
-    const creator = data.data.filter(
-      (user: UserInterface) => user.id === creatorId,
-    )
+    const creator = data.data.filter(user => user.id === creatorId)
     setCreatedBy(creator[0].name)
   }
 

@@ -1,5 +1,6 @@
 import type { AppProps } from "next/app"
 import GlobalStyle from "theme/globalStyles"
+import GeneralProvider from "contexts/GeneralContext"
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 import useStorage from "../hooks/useStorage"
@@ -18,7 +19,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <div>
       <GlobalStyle />
-      {(logged || router.asPath === "/") && <Component {...pageProps} />}
+      {(logged || router.asPath === "/") && (
+        <GeneralProvider>
+          <Component {...pageProps} />
+        </GeneralProvider>
+      )}
     </div>
   )
 }
