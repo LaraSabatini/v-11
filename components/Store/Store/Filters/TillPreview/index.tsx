@@ -9,8 +9,7 @@ import calcTotalEarnings from "utils/calcTotalEarnings"
 // import { GeneralContext } from "contexts/GeneralContext"
 // import sendEmail from "services/SendEmail"
 // import transformHTML from "mails/closeTill"
-// import calcEarningsStore from "utils/calcEarningsStore"
-// import calcEarningsBoulder from "utils/calcEarningsBoulder"
+
 import { View, Title, Row, Amount } from "./styles"
 
 interface TillPreviewInterface {
@@ -29,9 +28,6 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
 
   const closeTill = async e => {
     e.preventDefault()
-
-    // const earningsStore = await calcEarningsStore()
-    // const earningsBoulder = await calcEarningsBoulder()
 
     // const getMails = users.map(user => user.email).filter(mail => mail !== "")
     // getMails.forEach((email, i) => {
