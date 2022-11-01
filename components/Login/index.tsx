@@ -74,6 +74,8 @@ function Login() {
         setUsers(cleanedUserArray)
 
         router.push("home?clients=true")
+        // eslint-disable-next-line no-restricted-globals
+        location.reload()
       } else {
         setSuccess(false)
       }
