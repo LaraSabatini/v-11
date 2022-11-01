@@ -8,9 +8,9 @@ import calcTotalEarnings from "utils/calcTotalEarnings"
 // import { day, month, year } from "const/time"
 // import { GeneralContext } from "contexts/GeneralContext"
 // import sendEmail from "services/SendEmail"
-// import "public/logo.png"
 // import transformHTML from "mails/closeTill"
-import calcEarningsStore from "utils/calcEarningsStore"
+// import calcEarningsStore from "utils/calcEarningsStore"
+// import calcEarningsBoulder from "utils/calcEarningsBoulder"
 import { View, Title, Row, Amount } from "./styles"
 
 interface TillPreviewInterface {
@@ -25,28 +25,13 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
     mp: number
   }>({ cash: 0, mp: 0 })
 
+  // const currentUser = localStorage.getItem("user")
+
   const closeTill = async e => {
     e.preventDefault()
 
-    const prueba = await calcEarningsStore()
-
-    // eslint-disable-next-line no-console
-    console.log("EARNINGS STORE", prueba)
-
-    const final = {
-      cash: 0,
-      mp: 0,
-    }
-    prueba.map(item => {
-      if (item.payment_method_id === 1) {
-        final.cash += item.profit
-      } else {
-        final.mp += item.profit
-      }
-      return {}
-    })
-
-    console.log(final)
+    // const earningsStore = await calcEarningsStore()
+    // const earningsBoulder = await calcEarningsBoulder()
 
     // const getMails = users.map(user => user.email).filter(mail => mail !== "")
     // getMails.forEach((email, i) => {
@@ -55,7 +40,7 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
     // const pruebaMail = [{ email: "sabatinilara@gmail.com" }]
     // const recipients = getMails
     // const recipients = pruebaMail
-    // const HTMLToSend = transformHTML(totalEarnings)
+    // const HTMLToSend = transformHTML(totalEarnings, earningsStore, earningsBoulder, currentUser)
     // const html = HTMLToSend
 
     // const body = {

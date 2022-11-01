@@ -3,7 +3,6 @@ const transformHTML = (
   earningsStore: { cash: string; mp: string },
   earningsBoulder: { cash: string; mp: string },
   user: string,
-  userMp: string,
   amountOfPeople: number,
   freePass: number,
   month: number,
@@ -413,7 +412,6 @@ const transformHTML = (
   </td></tr></table></td>
   </tr></table>
   </td></tr><tr><td><div class=t32 style="mso-line-height-rule:exactly;mso-line-height-alt:15px;line-height:15px;font-size:1px;display:block;">&nbsp;</div></td></tr><tr><td>
-  <table class=t34 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t35 style="width:600px;padding:0 0 1px 0;"><p class=t41 style="text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;font:normal 400 14px/24px BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Josefin Sans';">Usuario MP: @${userMp}</p></td>
   </tr></table>
   </td></tr><tr><td><div class=t22 style="mso-line-height-rule:exactly;mso-line-height-alt:5px;line-height:5px;font-size:1px;display:block;">&nbsp;</div></td></tr><tr><td>
   <table class=t24 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t25 style="width:600px;"><p class=t31 style="text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;font:normal 400 14px/24px BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Josefin Sans';">La caja fue cerrada por @${user} a las 00:00 hs</p></td>
