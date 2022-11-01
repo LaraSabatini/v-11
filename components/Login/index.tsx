@@ -61,7 +61,8 @@ function Login() {
         localStorage.setItem("id", res.data[0].id)
         localStorage.setItem("isLoggedIn", "true")
         localStorage.setItem("permissions", res.data[0].permissions)
-        router.push("home?clients=true")
+        // eslint-disable-next-line no-restricted-globals
+        location.reload()
       } else {
         setSuccess(false)
       }
