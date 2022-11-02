@@ -10,7 +10,7 @@ import {
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
-import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
+import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
 import { getPrices } from "services/Partners/Prices.service"
 import { deletePartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES

@@ -9,7 +9,7 @@ import {
   updateDigitalPayment,
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
-import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
+import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"

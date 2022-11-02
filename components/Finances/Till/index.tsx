@@ -4,7 +4,7 @@ import React, { useContext, useEffect } from "react"
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import { getProducts } from "services/Store/Products.service"
 import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
-import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.service"
+import { getBoulderPurchaseByDate } from "services/Finances/Boulderpurchases.service"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import generalTexts from "strings/general.json"

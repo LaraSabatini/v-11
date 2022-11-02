@@ -18,7 +18,7 @@ export const getPartnerPaymentsById = async (id: number) => {
   return res.data
 }
 
-export const getClasesPaid = async () => {
+export const getLessonsPaid = async () => {
   const res = await axios.get(`${apiURL}/clases/0`, axiosHeader)
   return res.data
 }

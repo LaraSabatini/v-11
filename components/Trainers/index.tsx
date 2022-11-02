@@ -3,7 +3,7 @@ import { useRouter } from "next/router"
 // SERVICES
 import { getPrices } from "services/Partners/Prices.service"
 import { createLessonPurchase } from "services/Trainers/LessonsPurchased.service"
-import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
+import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
 import {
   createDigitalPayment,
   searchDigitalPaymentByUserAndDate,

@@ -5,7 +5,7 @@ import {
   editLesson,
   deleteLessonPurchase,
 } from "services/Trainers/LessonsPurchased.service"
-import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
+import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
 import {
   createDigitalPayment,
   searchDigitalPaymentByUserAndDate,

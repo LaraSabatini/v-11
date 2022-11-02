@@ -1,6 +1,6 @@
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
-import { getBoulderPurchaseByDate } from "services/Finances/Bouderpurchases.service"
+import { getBoulderPurchaseByDate } from "services/Finances/Boulderpurchases.service"
 import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import { day, month, year } from "const/time"

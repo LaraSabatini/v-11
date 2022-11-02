@@ -28,7 +28,7 @@ export const updateWorkingHours = async (body: WorkingHoursInterface) => {
   return res.data
 }
 
-export const workingHoursPartner = async (id: number) => {
+export const deleteWorkingHours = async (id: number) => {
   const res = await axios.delete(`${apiURL}/${id}`, axiosHeader)
   return res.data
 }
