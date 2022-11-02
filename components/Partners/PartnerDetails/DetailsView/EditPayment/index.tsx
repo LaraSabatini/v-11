@@ -6,6 +6,7 @@ import { timeUnits } from "const/time"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
+import { GeneralContext } from "contexts/GeneralContext"
 // COMPONENTS & STYLING
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
@@ -58,8 +59,10 @@ function EditPayment({
     setUsesDay,
   } = useContext(PartnersContext)
 
+  const { prices } = useContext(GeneralContext)
+
   useEffect(() => {
-    calculatePrice()
+    calculatePrice(prices)
     //   eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paidTimeUnit, paidTime, paymentMethodSelected, comboSelected])
 

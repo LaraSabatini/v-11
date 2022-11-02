@@ -11,9 +11,9 @@ import {
   createDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
-import { getPrices } from "services/Partners/Prices.service"
 import { deletePartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { GeneralContext } from "contexts/GeneralContext"
 import { months, day, month, year } from "const/time"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
@@ -46,7 +46,6 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     setModalSuccess,
     setModalError,
     setNewValues,
-    setPrices,
     cleanStates,
     newValues,
     paidTime,
@@ -59,7 +58,6 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     modalErrorAddDays,
     paymentMethodSelected,
     paymentUserSelected,
-    prices,
     usesDay,
     combos,
     paidTimeRef,
@@ -68,6 +66,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     modalHasChanges,
     setModalHasChanges,
   } = useContext(PartnersContext)
+  const { prices } = useContext(GeneralContext)
 
   const [initialPayment, setInitialPayment] = useState<PaymentInterface>()
   const [safeModal, setSafeModal] = useState<boolean>(false)
@@ -438,9 +437,6 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         },
       ])
     }
-
-    const pricesData = await getPrices()
-    setPrices(pricesData.data)
   }
 
   useEffect(() => {

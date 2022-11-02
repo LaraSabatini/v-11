@@ -4,6 +4,7 @@ import React, { useState, useContext, useEffect } from "react"
 // SERVICES
 import { searchPartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { GeneralContext } from "contexts/GeneralContext"
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"
 import { shifts, day, month, year } from "const/time"
@@ -67,7 +68,6 @@ function CreatePurchaseModal({
     paid,
     setPaid,
     finalPrice,
-    prices,
     setFinalPrice,
     setPaymentUserSelected,
     setNewPartnerData,
@@ -85,6 +85,7 @@ function CreatePurchaseModal({
     cleanStates,
     disablePurchaseButton,
   } = useContext(Lessons)
+  const { prices } = useContext(GeneralContext)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 

@@ -2,11 +2,11 @@ import { createContext, useState, useRef, useMemo } from "react"
 import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
-import PricesInterface from "interfaces/partners/PricesInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import ModalInterface from "interfaces/components/ModalInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
+import PricesInterface from "interfaces/partners/PricesInterface"
 
 export const PartnersContext = createContext(null)
 
@@ -85,7 +85,6 @@ function PartnersProvider({ children }) {
 
   const [wantsSubscription, setWantsSubscription] = useState<boolean>(false)
 
-  const [prices, setPrices] = useState<PricesInterface[]>([])
   const [finalPrice, setFinalPrice] = useState<number>(0)
 
   const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
@@ -104,7 +103,7 @@ function PartnersProvider({ children }) {
   const [newValues, setNewValues] = useState<PaymentInterface>(null)
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const calculatePrice = () => {
+  const calculatePrice = (prices: PricesInterface) => {
     if (paymentMethodSelected === 1) {
       let price = 0
       if (comboSelected !== null && comboSelected !== undefined) {
@@ -267,8 +266,6 @@ function PartnersProvider({ children }) {
       setCombos,
       comboSelected,
       setComboSelected,
-      prices,
-      setPrices,
       finalPrice,
       setFinalPrice,
       paymentMethodSelected,
@@ -320,7 +317,6 @@ function PartnersProvider({ children }) {
       paidTimeUnit,
       combos,
       comboSelected,
-      prices,
       finalPrice,
       paymentMethodSelected,
       partnerPayments,

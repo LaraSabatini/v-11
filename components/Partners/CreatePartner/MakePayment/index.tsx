@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from "react"
 // DATA STORAGE & TYPES
+import { GeneralContext } from "contexts/GeneralContext"
 import { PartnersContext } from "contexts/Partners"
 import { paymentMethods, paymentUsers } from "const/finances"
 import { timeUnits } from "const/time"
@@ -38,6 +39,8 @@ function MakePayment() {
     setPaymentUserSelected,
   } = useContext(PartnersContext)
 
+  const { prices } = useContext(GeneralContext)
+
   const combosAutocomplete = []
   combos.map((combo: CombosInterface) =>
     combosAutocomplete.push({
@@ -47,7 +50,7 @@ function MakePayment() {
   )
 
   useEffect(() => {
-    calculatePrice()
+    calculatePrice(prices)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paidTimeUnit, paidTime, paymentMethodSelected, comboSelected])
 

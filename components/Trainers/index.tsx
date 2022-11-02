@@ -1,7 +1,6 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState } from "react"
 import { useRouter } from "next/router"
 // SERVICES
-import { getPrices } from "services/Partners/Prices.service"
 import { createLessonPurchase } from "services/Trainers/LessonsPurchased.service"
 import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
 import {
@@ -45,7 +44,6 @@ import {
 function TrainersView() {
   const {
     purchaseSelected,
-    setPrices,
     clientIsRegistered,
     paid,
     amountOfLessons,
@@ -289,16 +287,6 @@ function TrainersView() {
       setCreateLessonPurchaseView(false)
     }
   }
-
-  const fillData = async () => {
-    const pricesCall = await getPrices()
-    setPrices(pricesCall.data)
-  }
-
-  useEffect(() => {
-    fillData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <>

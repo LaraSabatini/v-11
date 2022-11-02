@@ -1,4 +1,5 @@
 import { createContext, useState, useMemo } from "react"
+import PricesInterface from "interfaces/partners/PricesInterface"
 
 export const GeneralContext = createContext(null)
 
@@ -11,12 +12,19 @@ function GeneralProvider({ children }) {
     }[]
   >([])
 
+  const [prices, setPrices] = useState<PricesInterface[]>([])
+  const [triggerPricesUpdate, setTriggerPricesUpdate] = useState<number>()
+
   const value = useMemo(
     () => ({
       users,
       setUsers,
+      prices,
+      setPrices,
+      triggerPricesUpdate,
+      setTriggerPricesUpdate,
     }),
-    [users],
+    [users, prices, triggerPricesUpdate],
   )
 
   return (

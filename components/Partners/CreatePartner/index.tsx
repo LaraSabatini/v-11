@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react"
 // SERVICES
 import { createPartner, searchPartner } from "services/Partners/Partner.service"
 import { createPartnerPayment } from "services/Partners/PartnerPayments.service"
-import { getPrices } from "services/Partners/Prices.service"
 import getCombos from "services/Partners/GetCombos.service"
 import {
   searchDigitalPaymentByUserAndDate,
@@ -11,6 +10,7 @@ import {
 } from "services/Finances/DigitalPayments.service"
 import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
 // DATA STORAGE & TYPES
+import { GeneralContext } from "contexts/GeneralContext"
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
@@ -49,7 +49,6 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     paymentRef,
     paidTimeUnit,
     paidTime,
-    setPrices,
     setCombos,
     comboSelected,
     paymentMethodSelected,
@@ -61,12 +60,12 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     paymentUserRef,
     paymentUserSelected,
     combos,
-    prices,
     disableCreatePartnerFormButton,
     setDisableCreatePartnerFormButton,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
+  const { prices } = useContext(GeneralContext)
 
   const handleCreate = async e => {
     e.preventDefault()
@@ -338,16 +337,13 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     }
   }
 
-  const fillPrices = async () => {
-    const data = await getPrices()
-    setPrices(data.data)
-
+  const getCombosData = async () => {
     const combosData = await getCombos()
     setCombos(combosData.data)
   }
 
   useEffect(() => {
-    fillPrices()
+    getCombosData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

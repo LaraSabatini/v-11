@@ -12,6 +12,7 @@ import {
   updateDigitalPayment,
 } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
+import { GeneralContext } from "contexts/GeneralContext"
 import { Lessons } from "@contexts/Lessons"
 import { paymentMethods, paymentUsers } from "const/finances"
 import { day, month, year, months } from "const/time"
@@ -52,10 +53,11 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
     paymentUserRef,
     finalPrice,
     setFinalPrice,
-    prices,
     setModalSuccess,
     setModalError,
   } = useContext(Lessons)
+
+  const { prices } = useContext(GeneralContext)
 
   const unusedRef = useRef(null)
 
