@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useContext, useEffect } from "react"
 // SERVICES
-import { searchPartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { searchPartnerAction } from "reducers/partners"
 import { GeneralContext } from "contexts/GeneralContext"
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"
@@ -103,7 +103,7 @@ function CreatePurchaseModal({
 
   const searchClients = async () => {
     if (searchValue.length > 3) {
-      const searchCall = await searchPartner(searchValue, 1)
+      const searchCall = await searchPartnerAction(searchValue)
       setSearchResults(searchCall.data)
     } else {
       setSearchResults([])

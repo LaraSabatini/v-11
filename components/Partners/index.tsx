@@ -2,12 +2,12 @@ import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 // SERVICES
 import {
-  searchPartner,
   getPartners,
   getStudents,
   getFreePassPartners,
 } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { searchPartnerAction } from "reducers/partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
@@ -104,7 +104,7 @@ function PartnersView() {
     setFilterSelected("all")
     setPartnerSelected(null)
 
-    const executeSearch = await searchPartner(searchValue, 1)
+    const executeSearch = await searchPartnerAction(searchValue)
     setPartners(executeSearch.data)
   }
 

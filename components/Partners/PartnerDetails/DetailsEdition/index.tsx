@@ -1,12 +1,11 @@
 import React, { useEffect, useState, useContext } from "react"
-// SERVICES
-import { editPartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { editPartnerAction } from "reducers/partners"
 import { PartnersContext } from "contexts/Partners"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
-import cleanPartnerData from "utils/cleanPartnerData"
+import { cleanPartnerData } from "utils"
 // COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
@@ -88,21 +87,14 @@ function DetailsEdition({ partnerInfo, createdBy }: DetailEditInterface) {
         "false" &&
       phoneRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
-      const name = cleanPartnerData(newData.name)
-      const lastName = cleanPartnerData(newData.last_name)
-
-      const freePass = newData.free_pass
-
-      const body = {
+      const apiValidation = await editPartnerAction({
         ...newData,
-        name,
-        last_name: lastName,
-        free_pass: freePass,
-      }
+        name: cleanPartnerData(newData.name),
+        last_name: cleanPartnerData(newData.last_name),
+        free_pass: newData.free_pass,
+      })
 
-      const apiValidation = await editPartner(body)
-
-      if (apiValidation.message === "partner updated successfully") {
+      if (apiValidation) {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",

@@ -5,13 +5,11 @@ import {
   editLesson,
   deleteLessonPurchase,
 } from "services/Trainers/LessonsPurchased.service"
-import { createBoulderPurchase } from "services/Finances/Boulderpurchases.service"
-import {
-  createDigitalPayment,
-  searchDigitalPaymentByUserAndDate,
-  updateDigitalPayment,
-} from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
+import {
+  createBoulderPurchaseAction,
+  makeAppropiatePayment,
+} from "reducers/payments"
 import { GeneralContext } from "contexts/GeneralContext"
 import { Lessons } from "@contexts/Lessons"
 import { paymentMethods, paymentUsers } from "const/finances"
@@ -94,7 +92,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
         changePaymentState.message === "Lesson purchase updated successfully"
     }
 
-    const boulderPurchaseBody = {
+    const boulderPurchaseCall = await createBoulderPurchaseAction({
       id: 0,
       date: `${day}-${month}-${year}`,
       item_id: 4,
@@ -103,39 +101,14 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
       profit: finalPrice,
       payment_method_id: paymentMethodSelected.id,
       created_by: parseInt(localStorage.getItem("id"), 10),
-    }
-    const boulderPurchaseCall = await createBoulderPurchase(boulderPurchaseBody)
+    })
 
-    success =
-      boulderPurchaseCall.message === "bouderPayment created successfully"
+    success = boulderPurchaseCall
     if (paymentMethodSelected.id === 2) {
-      const searchIfExists = await searchDigitalPaymentByUserAndDate(
+      const makePayment = await makeAppropiatePayment(
         paymentUserSelected.id,
-        `${day}-${month}-${year}`,
-      )
-
-      if (searchIfExists.data.length > 0) {
-        const digitalPaymentBody = {
-          id: searchIfExists.data[0].id,
-          user_id: searchIfExists.data[0].user_id,
-          user_name: searchIfExists.data[0].user_name,
-          date: searchIfExists.data[0].date,
-          month: searchIfExists.data[0].month,
-          month_id: searchIfExists.data[0].month_id,
-          total_profit: searchIfExists.data[0].total_profit + finalPrice,
-          created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-        const editDigitalPayment = await updateDigitalPayment(
-          digitalPaymentBody,
-        )
-
-        if (editDigitalPayment.message === "payment updated successfully") {
-          success = true
-        } else {
-          success = false
-        }
-      } else {
-        const digitalPaymentBody = {
+        finalPrice,
+        {
           id: 0,
           user_id: paymentUserSelected.id,
           user_name: paymentUserSelected.display_name,
@@ -145,16 +118,9 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
           month_id: parseInt(`${month}`, 10),
           total_profit: finalPrice,
           created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-
-        const createDigital = await createDigitalPayment(digitalPaymentBody)
-
-        if (createDigital.message === "payment created successfully") {
-          success = true
-        } else {
-          success = false
-        }
-      }
+        },
+      )
+      success = makePayment
     }
 
     if (success) {

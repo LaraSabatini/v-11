@@ -4,7 +4,7 @@ import React, {
   //  useContext
 } from "react"
 import ModalForm from "components/UI/ModalForm"
-import calcTotalEarnings from "utils/calcTotalEarnings"
+import { calcTotalEarnings } from "utils"
 // import { day, month, year } from "const/time"
 // import { GeneralContext } from "contexts/GeneralContext"
 // import sendEmail from "services/SendEmail"

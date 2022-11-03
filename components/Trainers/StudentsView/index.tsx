@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react"
 // SERVICES
-import { getStudents, searchPartner } from "services/Partners/Partner.service"
+import { getStudents } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { searchPartnerAction } from "reducers/partners"
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import { day, month, year } from "const/time"
@@ -64,7 +65,7 @@ function StudentsView() {
 
   const searchStudentInDB = async () => {
     setStudentSelected(null)
-    const searchPartnerCall = await searchPartner(searchValue, 1)
+    const searchPartnerCall = await searchPartnerAction(searchValue)
     setStudents(searchPartnerCall.data)
     setTotalPages(searchPartnerCall.meta.totalPages)
   }

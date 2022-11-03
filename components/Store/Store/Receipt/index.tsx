@@ -6,13 +6,9 @@ import {
   createStorePurchase,
   editStorePurchase,
 } from "services/Store/storePurchases.service"
-import {
-  searchDigitalPaymentByUserAndDate,
-  updateDigitalPayment,
-  createDigitalPayment,
-} from "services/Finances/DigitalPayments.service"
 import { editProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
+import { makeAppropiatePayment } from "reducers/payments"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
@@ -89,44 +85,6 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
     setTriggerListUpdate(triggerListUpdate + 1)
   }
 
-  const makeDigitalPayment = async searchIfExistsCall => {
-    let success = false
-    if (searchIfExistsCall.data.length) {
-      const digitalPaymentBody = {
-        id: searchIfExistsCall.data[0].id,
-        user_id: searchIfExistsCall.data[0].user_id,
-        user_name: searchIfExistsCall.data[0].user_name,
-        date: searchIfExistsCall.data[0].date,
-        month: searchIfExistsCall.data[0].month,
-        month_id: searchIfExistsCall.data[0].month_id,
-        total_profit: searchIfExistsCall.data[0].total_profit + finalPrice,
-        created_by: parseInt(localStorage.getItem("id"), 10),
-      }
-
-      const editDigitalPaymentCall = await updateDigitalPayment(
-        digitalPaymentBody,
-      )
-      success =
-        editDigitalPaymentCall.message === "payment updated successfully"
-    } else {
-      const digitalPaymentBody = {
-        id: 0,
-        user_id: paymentUserSelected.id,
-        user_name: paymentUserSelected.display_name,
-        date: `${day}-${month}-${year}`,
-        month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-          .display_name,
-        month_id: parseInt(`${month}`, 10),
-        total_profit: finalPrice,
-        created_by: parseInt(localStorage.getItem("id"), 10),
-      }
-
-      const createDigitalCall = await createDigitalPayment(digitalPaymentBody)
-      success = createDigitalCall.message === "payment created successfully"
-    }
-    return success
-  }
-
   const executePurchase = async () => {
     let success = false
     setDisabledButton(true)
@@ -191,12 +149,21 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
     }
 
     if (paymentMethodSelected === 2) {
-      const searchIfExistsCall = await searchDigitalPaymentByUserAndDate(
+      const executePayment = await makeAppropiatePayment(
         paymentUserSelected.id,
-        `${day}-${month}-${year}`,
+        finalPrice,
+        {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
+          date: `${day}-${month}-${year}`,
+          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+            .display_name,
+          month_id: parseInt(`${month}`, 10),
+          total_profit: finalPrice,
+          created_by: parseInt(localStorage.getItem("id"), 10),
+        },
       )
-
-      const executePayment = await makeDigitalPayment(searchIfExistsCall)
       success = executePayment
     }
 
