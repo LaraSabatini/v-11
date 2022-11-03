@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import { getBoulderPurchaseByDate } from "services/Finances/Boulderpurchases.service"
@@ -5,7 +6,7 @@ import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.se
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import { day, month, year } from "const/time"
 
-const calcTotalEarnings = async () => {
+export const calcTotalEarnings = async () => {
   const today = `${day}-${month}-${year}`
   const productPurchasesCall = await getStorePurchasesByDate(today)
 
@@ -46,5 +47,3 @@ const calcTotalEarnings = async () => {
 
   return earnings
 }
-
-export default calcTotalEarnings

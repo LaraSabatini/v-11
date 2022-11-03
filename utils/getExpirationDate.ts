@@ -1,9 +1,7 @@
+/* eslint-disable import/prefer-default-export */
 import { today } from "const/time"
 
-export default function getExpirationDate(
-  paidTime: number,
-  comboSelected: number,
-) {
+export const getExpirationDate = (paidTime: number, comboSelected: number) => {
   const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
   const expireDate = newDate.getDate()
   const expireMonth = newDate.getMonth()
