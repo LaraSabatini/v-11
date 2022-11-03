@@ -9,9 +9,7 @@ import { day, month, year } from "const/time"
 export const calcTotalEarnings = async () => {
   const today = `${day}-${month}-${year}`
   const productPurchasesCall = await getStorePurchasesByDate(today)
-
   const getBoulderPaymentsCall = await getBoulderPurchaseByDate(today)
-
   const digitalPaymentByDateCall = await searchDigitalPaymentByDate(today)
 
   const cashEarningsFromStore = productPurchasesCall.data.filter(

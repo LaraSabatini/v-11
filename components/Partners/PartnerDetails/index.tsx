@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect } from "react"
 // SERVICES
-import getUsers from "services/Users/GetUsers.service"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
+import { getUsersAction } from "reducers/users"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
@@ -36,9 +36,9 @@ function PartnerDetails({ permits }: ActionsPermissions) {
   const [partnerInfo, setPartnerInfo] = useState<PartnerInterface>()
 
   const getUsersInfo = async (creatorId: number) => {
-    const data = await getUsers()
+    const data = await getUsersAction()
 
-    const creator = data.data.filter(user => user.id === creatorId)
+    const creator = data.filter(user => user.id === creatorId)
     setCreatedBy(creator[0].name)
   }
 

@@ -1,11 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 // SERVICES
-import validateUser from "services/Users/ValidateUser.service"
-import getUsers from "services/Users/GetUsers.service"
 // DATA STORAGE & TYPES
 import { GeneralContext } from "contexts/GeneralContext"
 import texts from "strings/loginPage.json"
+import { getUsersAction, validateUserAction } from "reducers/users"
 // COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"
@@ -57,20 +56,17 @@ function Login() {
       userNameRef.current.attributes.getNamedItem("data-error").value ===
         "false"
     ) {
-      const data = { name: userName, password }
-      const res = await validateUser(data)
-      if (res.data.length) {
+      const res = await validateUserAction(userName, password)
+      if (res.length) {
         setSuccess(true)
-        localStorage.setItem("user", res.data[0].name)
-        localStorage.setItem("id", res.data[0].id)
+        localStorage.setItem("user", res[0].name)
+        localStorage.setItem("id", res[0].id)
         localStorage.setItem("isLoggedIn", "true")
-        localStorage.setItem("permissions", res.data[0].permissions)
+        localStorage.setItem("permissions", res[0].permissions)
 
-        const getUserData = await getUsers()
+        const getUserData = await getUsersAction()
 
-        const cleanedUserArray = getUserData.data.filter(
-          user => user.admin === 1,
-        )
+        const cleanedUserArray = getUserData.filter(user => user.admin === 1)
         setUsers(cleanedUserArray)
 
         router.push("home?clients=true")
