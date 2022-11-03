@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 // SERVICES
-import { getStudents } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import { searchPartnerAction } from "helpers/partners"
+import { searchPartnerAction, getStudentsAction } from "helpers/partners"
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import { day, month, year } from "const/time"
@@ -53,7 +52,7 @@ function StudentsView() {
 
   const getStudentsList = async () => {
     setStudentSelected(null)
-    const getStudentsCall = await getStudents(currentPage)
+    const getStudentsCall = await getStudentsAction(currentPage)
     setStudents(getStudentsCall.data)
     setTotalPages(getStudentsCall.meta.totalPages)
   }

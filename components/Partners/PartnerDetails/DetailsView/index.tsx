@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react"
 // SERVICES
-import { getPartnerPaymentsById } from "@services/Partners/PartnerPayments.service"
 // DATA STORAGE & TYPES
 import {
   createPartnerPaymentAction,
   editPartnerPaymentAction,
   deletePartnerAction,
+  getPartnerPaymentsByIdAction,
 } from "helpers/partners"
 import {
   createBoulderPurchaseAction,
@@ -323,16 +323,16 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
   }
 
   const getPayment = async () => {
-    const data = await getPartnerPaymentsById(partnerInfo.id)
+    const data = await getPartnerPaymentsByIdAction(partnerInfo.id)
 
-    if (data.data.length > 0) {
-      setInitialPayment(data.data[data.data.length - 1]) // ACA SETEAR AL ULTIMO
+    if (data.length > 0) {
+      setInitialPayment(data[data.length - 1]) // ACA SETEAR AL ULTIMO
       setVariableValues([
         {
           name: "days",
           value:
-            data.data[data.data.length - 1].time_paid_unit === 1
-              ? data.data[data.data.length - 1].time_paid
+            data[data.length - 1].time_paid_unit === 1
+              ? data[data.length - 1].time_paid
               : 0,
         },
       ])

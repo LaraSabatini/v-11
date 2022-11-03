@@ -1,12 +1,12 @@
-import { getPartnerPaymentsById } from "services/Partners/PartnerPayments.service"
+import { getPartnerPaymentsByIdAction } from "helpers/partners"
 import { day, month, year } from "const/time"
 
 const checkDiscount = async (clientId: number) => {
-  const checkPayment = await getPartnerPaymentsById(clientId) // clientSelected.id
+  const checkPayment = await getPartnerPaymentsByIdAction(clientId) // clientSelected.id
 
-  if (checkPayment.data.length) {
+  if (checkPayment.length) {
     const expirationDate =
-      checkPayment.data[checkPayment.data.length - 1].payment_expire_date
+      checkPayment[checkPayment.length - 1].payment_expire_date
 
     const expirationDay = expirationDate.slice(0, 2)
     const expirationMonth = expirationDate.slice(3, 5)

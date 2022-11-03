@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
-// SERVICES
-import {
-  getPartners,
-  getStudents,
-  getFreePassPartners,
-} from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import { searchPartnerAction } from "helpers/partners"
+import {
+  searchPartnerAction,
+  getPartnersAction,
+  getStudentsAction,
+  getFreePassPartnersAction,
+} from "helpers/partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
@@ -72,15 +71,15 @@ function PartnersView() {
 
   const setPartnerList = async () => {
     if (filterSelected === "all") {
-      const data = await getPartners(currentPage)
+      const data = await getPartnersAction(currentPage)
       setPartners(data.data)
       setTotalPages(data.meta.totalPages)
     } else if (filterSelected === "students") {
-      const data = await getStudents(currentPage)
+      const data = await getStudentsAction(currentPage)
       setPartners(data.data)
       setTotalPages(data.meta.totalPages)
     } else {
-      const data = await getFreePassPartners(currentPage)
+      const data = await getFreePassPartnersAction(currentPage)
       setPartners(data.data)
       setTotalPages(data.meta.totalPages)
     }
