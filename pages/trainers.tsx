@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react"
 import TrainersView from "components/Trainers"
 import LessonsProvider from "@contexts/Lessons"
 import { GeneralContext } from "contexts/GeneralContext"
-import { getPrices } from "services/Partners/Prices.service"
+import { getPricesAction } from "helpers/partners"
 import { useRouter } from "next/router"
 
 function Trainers() {
@@ -22,8 +22,8 @@ function Trainers() {
   }, [isLoggedIn])
 
   const setPricesData = async () => {
-    const pricesData = await getPrices()
-    setPrices(pricesData.data)
+    const pricesData = await getPricesAction()
+    setPrices(pricesData)
   }
 
   useEffect(() => {

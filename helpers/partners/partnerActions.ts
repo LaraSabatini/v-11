@@ -3,6 +3,9 @@ import {
   editPartner,
   searchPartner,
   deletePartner,
+  getPartners,
+  getStudents,
+  getFreePassPartners,
 } from "services/Partners/Partner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 
@@ -29,4 +32,19 @@ export const searchPartnerAction = async (searchValue: string) => {
 export const deletePartnerAction = async (id: number) => {
   const handleDelete = await deletePartner(id)
   return handleDelete.message === "Product deleted successfully"
+}
+
+export const getPartnersAction = async (page: number) => {
+  const getData = await getPartners(page)
+  return getData
+}
+
+export const getStudentsAction = async (page: number) => {
+  const getData = await getStudents(page)
+  return getData
+}
+
+export const getFreePassPartnersAction = async (page: number) => {
+  const getData = await getFreePassPartners(page)
+  return getData
 }

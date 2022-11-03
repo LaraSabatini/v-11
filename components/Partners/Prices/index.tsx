@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from "react"
 // SERVICES
-import { editPrices } from "services/Partners/Prices.service"
 // DATA STORAGE & TYPES
+import { editPricesAction } from "helpers/partners"
 import { GeneralContext } from "contexts/GeneralContext"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import generalTexts from "strings/general.json"
@@ -50,9 +50,9 @@ function Prices({ canEdit }: ActionsInterface) {
   }
 
   const saveChanges = async () => {
-    const editData = await editPrices(newPrices)
+    const editData = await editPricesAction(newPrices)
 
-    if (editData.message === "price updated successfully") {
+    if (editData) {
       setTriggerListUpdate(triggerListUpdate + 1)
       setActiveRow(null)
       setNewPrices(null)

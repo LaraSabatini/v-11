@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import { GeneralContext } from "contexts/GeneralContext"
-import { getPrices } from "services/Partners/Prices.service"
+import { getPricesAction } from "helpers/partners"
 import Login from "components/Login"
 import useStorage from "hooks/useStorage"
 
@@ -18,8 +18,8 @@ function Home() {
   }
 
   const setPricesData = async () => {
-    const pricesData = await getPrices()
-    setPrices(pricesData.data)
+    const pricesData = await getPricesAction()
+    setPrices(pricesData)
   }
 
   useEffect(() => {
