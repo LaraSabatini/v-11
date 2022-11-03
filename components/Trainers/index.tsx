@@ -261,7 +261,7 @@ function TrainersView() {
           success = pur
         }
 
-        if (paid && !buyedCombo) {
+        if (paid) {
           const boulderPurchase = await createBoulderPurchaseCallFunc()
           success = boulderPurchase
         }
