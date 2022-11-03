@@ -1,11 +1,10 @@
 import React, { useContext, useState, useEffect } from "react"
-// SERVICES
-import getCombos from "services/Partners/GetCombos.service"
 // DATA STORAGE & TYPES
 import {
   createPartnerAction,
   searchPartnerAction,
   createPartnerPaymentAction,
+  getCombosAction,
 } from "helpers/partners"
 import {
   createBoulderPurchaseAction,
@@ -270,8 +269,8 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
   }
 
   const getCombosData = async () => {
-    const combosData = await getCombos()
-    setCombos(combosData.data)
+    const combosData = await getCombosAction()
+    setCombos(combosData)
   }
 
   useEffect(() => {

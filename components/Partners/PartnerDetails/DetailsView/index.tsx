@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from "react"
 // SERVICES
 import { getPartnerPaymentsById } from "@services/Partners/PartnerPayments.service"
-import { deletePartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
 import {
   createPartnerPaymentAction,
   editPartnerPaymentAction,
+  deletePartnerAction,
 } from "helpers/partners"
 import {
   createBoulderPurchaseAction,
@@ -83,9 +83,9 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
   const canDeletePartner = permissions.actions.delete
 
   const deletePartnerFunction = async () => {
-    const deletion = await deletePartner(partnerInfo.id)
+    const deletion = await deletePartnerAction(partnerInfo.id)
 
-    if (deletion.message === "Product deleted successfully") {
+    if (deletion) {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
