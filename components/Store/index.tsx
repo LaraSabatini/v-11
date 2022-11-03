@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 // SERVICES
-import {
-  getProducts,
-  productByCategory,
-  searchProducts,
-} from "services/Store/Products.service"
-import getCategories from "services/Store/getCategories.service"
-import getBrands from "services/Store/getBrands.service"
 // DATA STORAGE & TYPES
+import {
+  getBrandsAction,
+  getCategoriesAction,
+  getProductsAction,
+  searchProductsAction,
+  getproductByCategoryAction,
+} from "helpers/store"
 import PartnersProvider from "contexts/Partners"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
@@ -71,11 +71,11 @@ function StoreView() {
   const permissions = JSON.parse(getPermissions)[0].sections[2].sub_sections
 
   const getStaticData = async () => {
-    const categoriesListCall = await getCategories()
-    setCategories(categoriesListCall.data)
+    const categoriesListCall = await getCategoriesAction()
+    setCategories(categoriesListCall)
 
-    const brandsListCall = await getBrands()
-    setBrands(brandsListCall.data)
+    const brandsListCall = await getBrandsAction()
+    setBrands(brandsListCall)
   }
 
   useEffect(() => {
@@ -85,14 +85,14 @@ function StoreView() {
 
   const getListOfProducts = async () => {
     if (filterSelected === null) {
-      const productListCall = await getProducts(currentPage)
-      setProductsList(productListCall.data)
+      const productListCall = await getProductsAction(currentPage)
+      setProductsList(productListCall)
     } else {
-      const productListByCategoryCall = await productByCategory(
+      const productListByCategoryCall = await getproductByCategoryAction(
         filterSelected,
         1,
       )
-      setProductsList(productListByCategoryCall.data)
+      setProductsList(productListByCategoryCall)
     }
   }
 
@@ -114,11 +114,11 @@ function StoreView() {
   }, [triggerListUpdate, currentPage, filterSelected])
 
   const searchInDB = async () => {
-    const search = await searchProducts(searchValueForStock, 1)
-    setProductsList(search.data)
+    const search = await searchProductsAction(searchValueForStock, 1)
+    setProductsList(search)
     const rowsCleaned: RowsInterface[] = []
 
-    search.data.map((product: ProductInterface) => {
+    search.map((product: ProductInterface) => {
       const marginString = `${product.margin}`
       const arrOfMargin = marginString.split(".")
       const first = arrOfMargin[0]

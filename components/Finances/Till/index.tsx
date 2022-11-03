@@ -2,10 +2,10 @@
 import React, { useContext, useEffect } from "react"
 // SERVICES
 import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
-import { getProducts } from "services/Store/Products.service"
 import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
 import { getBoulderPurchaseByDate } from "services/Finances/Boulderpurchases.service"
 // DATA STORAGE & TYPES
+import { getProductsAction } from "helpers/store"
 import { Finances } from "contexts/Finances"
 import generalTexts from "strings/general.json"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
@@ -105,8 +105,8 @@ function Till() {
   }, [tillDateSelected])
 
   const fillProducts = async () => {
-    const getProductsCall = await getProducts(1)
-    setProductList(getProductsCall.data)
+    const getProductsCall = await getProductsAction(1)
+    setProductList(getProductsCall)
   }
 
   useEffect(() => {

@@ -6,8 +6,8 @@ import {
   createStorePurchase,
   editStorePurchase,
 } from "services/Store/storePurchases.service"
-import { editProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
+import { editProductAction } from "helpers/store"
 import { makeAppropiatePayment } from "helpers/payments"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
@@ -93,7 +93,8 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
       const filterProduct = productsList.filter(
         (product: ProductInterface) => product.id === purchase[i].product_id,
       )
-      const editStockBody = {
+
+      const editStockCall = await editProductAction({
         id: purchase[i].product_id,
         stock: filterProduct[0].stock - purchase[i].product_amount,
         name: filterProduct[0].name,
@@ -104,10 +105,8 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         cost: filterProduct[0].cost,
         sales_contact_name: filterProduct[0].sales_contact_name,
         sales_contact_information: filterProduct[0].sales_contact_information,
-      }
-
-      const editStockCall = await editProduct(editStockBody)
-      success = editStockCall.message === "product updated successfully"
+      })
+      success = editStockCall
 
       const checkIfPurchasedToday = await getStorePurchasesByDateAndPaymentMethodAndProduct(
         `${day}-${month}-${year}`,

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 // SERVICES
-import { createProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
+import { createProductAction } from "helpers/store"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
@@ -88,13 +88,13 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
       priceRef.current.attributes.getNamedItem("data-error").value === "false"
     ) {
       setDisabledButton(true)
-      const body = {
+
+      const data = await createProductAction({
         ...newProductData,
         name: `${newProductData.name} ${brandSelected}`,
-      }
-      const data = await createProduct(body)
+      })
 
-      if (data.message === "Product created successfully") {
+      if (data) {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",

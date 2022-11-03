@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
 // SERVICES
-import { editProduct, getProducts } from "services/Store/Products.service"
+// import { getProducts } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
+import { editProductAction, getProductsAction } from "helpers/store"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
@@ -58,12 +59,12 @@ function Stock({ editPermits }: StockInterface) {
   const rowRef = useRef(null)
 
   const fillRows = async () => {
-    const data = await getProducts(currentPage)
-    setProductsList(data.data)
+    const data = await getProductsAction(currentPage)
+    setProductsList(data)
 
     const rowsCleaned: RowsInterface[] = []
 
-    data.data.map((product: ProductInterface) => {
+    data.map((product: ProductInterface) => {
       const marginString = `${product.margin}`
       const arrOfMargin = marginString.split(".")
       const first = arrOfMargin[0]
@@ -337,8 +338,8 @@ function Stock({ editPermits }: StockInterface) {
       newValues.cost !== undefined
     ) {
       setValidationError(false)
-      const executeEdition = await editProduct(body)
-      if (executeEdition.message === "product updated successfully") {
+      const executeEdition = await editProductAction(body)
+      if (executeEdition) {
         discardChanges()
       }
     } else {
