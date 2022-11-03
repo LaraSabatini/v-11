@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { getStorePurchasesByDateAction } from "helpers/store"
+import { getBoulderPurchaseByDateAction } from "helpers/payments"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
-import { getBoulderPurchaseByDate } from "services/Finances/Boulderpurchases.service"
 import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import { day, month, year } from "const/time"
@@ -9,7 +9,7 @@ import { day, month, year } from "const/time"
 export const calcTotalEarnings = async () => {
   const today = `${day}-${month}-${year}`
   const productPurchasesCall = await getStorePurchasesByDateAction(today)
-  const getBoulderPaymentsCall = await getBoulderPurchaseByDate(today)
+  const getBoulderPaymentsCall = await getBoulderPurchaseByDateAction(today)
   const digitalPaymentByDateCall = await searchDigitalPaymentByDate(today)
 
   const cashEarningsFromStore = productPurchasesCall.filter(
@@ -21,7 +21,7 @@ export const calcTotalEarnings = async () => {
     cashEarningsFinal += p.profit
     return 0
   })
-  const cashEarningsFromBoulderPayments = getBoulderPaymentsCall.data.filter(
+  const cashEarningsFromBoulderPayments = getBoulderPaymentsCall.filter(
     (purchase: PartnerPaymentsHistoryInterface) =>
       purchase.payment_method_id === 1,
   )

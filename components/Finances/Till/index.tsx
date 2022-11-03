@@ -2,8 +2,8 @@
 import React, { useContext, useEffect } from "react"
 // SERVICES
 import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
-import { getBoulderPurchaseByDate } from "services/Finances/Boulderpurchases.service"
 // DATA STORAGE & TYPES
+import { getBoulderPurchaseByDateAction } from "helpers/payments"
 import { getProductsAction, getStorePurchasesByDateAction } from "helpers/store"
 import { Finances } from "contexts/Finances"
 import generalTexts from "strings/general.json"
@@ -56,11 +56,11 @@ function Till() {
 
     setBoulderProductsPurchasedByDate(filterBoulderProducts)
 
-    const getBoulderPaymentsCall = await getBoulderPurchaseByDate(
+    const getBoulderPaymentsCall = await getBoulderPurchaseByDateAction(
       tillDateSelected,
     )
 
-    setPartnerPaymentsByDate(getBoulderPaymentsCall.data)
+    setPartnerPaymentsByDate(getBoulderPaymentsCall)
 
     const digitalPaymentByDateCall = await searchDigitalPaymentByDate(
       tillDateSelected,
@@ -77,7 +77,7 @@ function Till() {
       cashEarningsFinal += p.profit
       return 0
     })
-    const cashEarningsFromBoulderPayments = getBoulderPaymentsCall.data.filter(
+    const cashEarningsFromBoulderPayments = getBoulderPaymentsCall.filter(
       (purchase: PartnerPaymentsHistoryInterface) =>
         purchase.payment_method_id === 1,
     )
