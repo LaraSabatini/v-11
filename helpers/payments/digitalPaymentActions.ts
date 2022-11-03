@@ -3,6 +3,7 @@ import {
   updateDigitalPayment,
   createDigitalPayment,
   searchDigitalPaymentByUserAndDate,
+  searchDigitalPaymentByDate,
 } from "services/Finances/DigitalPayments.service"
 import MPUserPayment from "interfaces/finances/MPUserPayments"
 import { day, month, year } from "const/time"
@@ -27,6 +28,11 @@ export const searchDigitalPaymentByUserAndDateAction = async (
     `${day}-${month}-${year}`,
   )
 
+  return handleSearch.data
+}
+
+export const searchDigitalPaymentByDateAction = async (date: string) => {
+  const handleSearch = await searchDigitalPaymentByDate(date)
   return handleSearch.data
 }
 

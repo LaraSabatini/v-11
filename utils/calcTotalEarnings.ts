@@ -1,8 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import { getStorePurchasesByDateAction } from "helpers/store"
-import { getBoulderPurchaseByDateAction } from "helpers/payments"
+import {
+  getBoulderPurchaseByDateAction,
+  searchDigitalPaymentByDateAction,
+} from "helpers/payments"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
-import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import { day, month, year } from "const/time"
 
@@ -10,7 +12,7 @@ export const calcTotalEarnings = async () => {
   const today = `${day}-${month}-${year}`
   const productPurchasesCall = await getStorePurchasesByDateAction(today)
   const getBoulderPaymentsCall = await getBoulderPurchaseByDateAction(today)
-  const digitalPaymentByDateCall = await searchDigitalPaymentByDate(today)
+  const digitalPaymentByDateCall = await searchDigitalPaymentByDateAction(today)
 
   const cashEarningsFromStore = productPurchasesCall.filter(
     (purchase: ProductsPurchasedByDateInterface) =>
@@ -33,7 +35,7 @@ export const calcTotalEarnings = async () => {
   })
 
   let mpEarningsFinal = 0
-  digitalPaymentByDateCall.data.map(p => {
+  digitalPaymentByDateCall.map(p => {
     mpEarningsFinal += p.total_profit
     return 0
   })

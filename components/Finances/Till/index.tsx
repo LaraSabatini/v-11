@@ -1,9 +1,10 @@
 /* eslint-disable no-console */
 import React, { useContext, useEffect } from "react"
-// SERVICES
-import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
 // DATA STORAGE & TYPES
-import { getBoulderPurchaseByDateAction } from "helpers/payments"
+import {
+  getBoulderPurchaseByDateAction,
+  searchDigitalPaymentByDateAction,
+} from "helpers/payments"
 import { getProductsAction, getStorePurchasesByDateAction } from "helpers/store"
 import { Finances } from "contexts/Finances"
 import generalTexts from "strings/general.json"
@@ -62,11 +63,11 @@ function Till() {
 
     setPartnerPaymentsByDate(getBoulderPaymentsCall)
 
-    const digitalPaymentByDateCall = await searchDigitalPaymentByDate(
+    const digitalPaymentByDateCall = await searchDigitalPaymentByDateAction(
       tillDateSelected,
     )
 
-    setDigitalPaymentsList(digitalPaymentByDateCall.data)
+    setDigitalPaymentsList(digitalPaymentByDateCall)
 
     const cashEarningsFromStore = productPurchasesCall.filter(
       (purchase: ProductsPurchasedByDateInterface) =>
@@ -89,7 +90,7 @@ function Till() {
     })
 
     let mpEarningsFinal = 0
-    digitalPaymentByDateCall.data.map(p => {
+    digitalPaymentByDateCall.map(p => {
       mpEarningsFinal += p.total_profit
       return 0
     })
