@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 // DATA STORAGE & TYPES
-import { editPartnerAction } from "reducers/partners"
+import { editPartnerAction } from "helpers/partners"
 import { PartnersContext } from "contexts/Partners"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"

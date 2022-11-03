@@ -6,11 +6,11 @@ import { deletePartner } from "services/Partners/Partner.service"
 import {
   createPartnerPaymentAction,
   editPartnerPaymentAction,
-} from "reducers/partners"
+} from "helpers/partners"
 import {
   createBoulderPurchaseAction,
   makeAppropiatePayment,
-} from "reducers/payments"
+} from "helpers/payments"
 import { GeneralContext } from "contexts/GeneralContext"
 import { months, day, month, year } from "const/time"
 import PartnerInterface from "interfaces/partners/PartnerInterface"

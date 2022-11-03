@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import { getStudents } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import { searchPartnerAction } from "reducers/partners"
+import { searchPartnerAction } from "helpers/partners"
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import { day, month, year } from "const/time"

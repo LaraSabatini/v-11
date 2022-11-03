@@ -5,12 +5,12 @@ import {
   createPartnerAction,
   searchPartnerAction,
   editPartnerAction,
-} from "reducers/partners"
+} from "helpers/partners"
 import {
   makeAppropiatePayment,
   createBoulderPurchaseAction,
-} from "reducers/payments"
-import { createLessonPurchaseAction } from "reducers/lessons"
+} from "helpers/payments"
+import { createLessonPurchaseAction } from "helpers/lessons"
 import PartnersProvider from "contexts/Partners"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"

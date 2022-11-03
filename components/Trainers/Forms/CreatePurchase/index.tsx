@@ -3,7 +3,7 @@
 import React, { useState, useContext, useEffect } from "react"
 // SERVICES
 // DATA STORAGE & TYPES
-import { searchPartnerAction } from "reducers/partners"
+import { searchPartnerAction } from "helpers/partners"
 import { GeneralContext } from "contexts/GeneralContext"
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"

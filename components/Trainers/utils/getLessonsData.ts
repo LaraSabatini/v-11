@@ -1,4 +1,4 @@
-import { getLessonsByWeekAction } from "reducers/lessons"
+import { getLessonsByWeekAction } from "helpers/lessons"
 import { shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 

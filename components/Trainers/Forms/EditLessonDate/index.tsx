@@ -3,7 +3,7 @@ import React, { useContext, useRef, useState, useEffect } from "react"
 import {
   getLessonsByPartnerAndPaidAction,
   editLessonAction,
-} from "reducers/lessons"
+} from "helpers/lessons"
 import { Lessons } from "contexts/Lessons"
 import generalTexts from "strings/general.json"
 import trainerTexts from "strings/trainers.json"

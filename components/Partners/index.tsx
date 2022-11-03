@@ -7,7 +7,7 @@ import {
   getFreePassPartners,
 } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
-import { searchPartnerAction } from "reducers/partners"
+import { searchPartnerAction } from "helpers/partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"

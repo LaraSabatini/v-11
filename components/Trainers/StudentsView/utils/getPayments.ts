@@ -1,4 +1,4 @@
-import { getLessonsByPartnerAndPaidAction } from "reducers/lessons"
+import { getLessonsByPartnerAndPaidAction } from "helpers/lessons"
 
 const getPayments = async (studentSelected: number) => {
   const lessonsPaid = await getLessonsByPartnerAndPaidAction(

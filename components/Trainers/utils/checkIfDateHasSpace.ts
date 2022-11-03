@@ -1,4 +1,4 @@
-import { getLessonsByDateAndShiftAction } from "reducers/lessons"
+import { getLessonsByDateAndShiftAction } from "helpers/lessons"
 import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 
 const checkIfDateHasSpace = async (

@@ -4,7 +4,7 @@ import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
 import { GeneralContext } from "contexts/GeneralContext"
 import texts from "strings/loginPage.json"
-import { getUsersAction, validateUserAction } from "reducers/users"
+import { getUsersAction, validateUserAction } from "helpers/users"
 // COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"

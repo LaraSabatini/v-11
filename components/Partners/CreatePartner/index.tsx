@@ -6,11 +6,11 @@ import {
   createPartnerAction,
   searchPartnerAction,
   createPartnerPaymentAction,
-} from "reducers/partners"
+} from "helpers/partners"
 import {
   createBoulderPurchaseAction,
   makeAppropiatePayment,
-} from "reducers/payments"
+} from "helpers/payments"
 import { GeneralContext } from "contexts/GeneralContext"
 import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"

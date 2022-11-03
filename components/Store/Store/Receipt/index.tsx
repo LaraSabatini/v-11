@@ -8,7 +8,7 @@ import {
 } from "services/Store/storePurchases.service"
 import { editProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
-import { makeAppropiatePayment } from "reducers/payments"
+import { makeAppropiatePayment } from "helpers/payments"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"

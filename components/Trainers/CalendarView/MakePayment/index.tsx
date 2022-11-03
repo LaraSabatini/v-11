@@ -1,15 +1,14 @@
 import React, { useContext, useEffect, useState, useRef } from "react"
-// SERVICES
 // DATA STORAGE & TYPES
 import {
   createBoulderPurchaseAction,
   makeAppropiatePayment,
-} from "reducers/payments"
+} from "helpers/payments"
 import {
   getLessonsByPartnerAndPaidAction,
   editLessonAction,
   deleteLessonAction,
-} from "reducers/lessons"
+} from "helpers/lessons"
 import { GeneralContext } from "contexts/GeneralContext"
 import { Lessons } from "@contexts/Lessons"
 import { paymentMethods, paymentUsers } from "const/finances"

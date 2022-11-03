@@ -5,7 +5,7 @@ import { PartnersContext } from "contexts/Partners"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
-import { getUsersAction } from "reducers/users"
+import { getUsersAction } from "helpers/users"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import Icon from "components/UI/Assets/Icon"
