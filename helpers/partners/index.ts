@@ -1,3 +1,4 @@
 export * from "./partnerActions"
 export * from "./partnerPaymentActions"
-export * from "./getCombos"
+export * from "./comboActions"
+export * from "./pricesActions"
