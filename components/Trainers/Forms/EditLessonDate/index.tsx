@@ -1,11 +1,10 @@
 import React, { useContext, useRef, useState, useEffect } from "react"
-// SERVICES
-import {
-  getLessonsByPartnerAndPaid,
-  editLesson,
-} from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Lessons } from "@contexts/Lessons"
+import {
+  getLessonsByPartnerAndPaidAction,
+  editLessonAction,
+} from "reducers/lessons"
+import { Lessons } from "contexts/Lessons"
 import generalTexts from "strings/general.json"
 import trainerTexts from "strings/trainers.json"
 import { shifts, day, month, year } from "const/time"
@@ -83,19 +82,16 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
       )
       const weekNumber = Math.ceil(days / 7)
 
-      const editLessonBody = {
+      const editLessonCall = await editLessonAction({
         ...purchaseSelected,
         lesson_date: dateSelected.date,
         shift: dateSelected.shift,
         day_id: currentDate.getDay(),
         week_id: weekNumber,
         created_by: parseInt(localStorage.getItem("id"), 10),
-      }
+      })
 
-      const editLessonCall = await editLesson(editLessonBody)
-
-      const success =
-        editLessonCall.message === "Lesson purchase updated successfully"
+      const success = editLessonCall
 
       if (success) {
         setModalSuccess({
@@ -118,16 +114,16 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
   }
 
   const checkLessonsPurchased = async () => {
-    const checkLessonsCallPaid = await getLessonsByPartnerAndPaid(
+    const checkLessonsCallPaid = await getLessonsByPartnerAndPaidAction(
       purchaseSelected.partner_id,
       `${yesOrNoArr[0].display_name}`,
     )
-    const checkLessonsCallNotPaid = await getLessonsByPartnerAndPaid(
+    const checkLessonsCallNotPaid = await getLessonsByPartnerAndPaidAction(
       purchaseSelected.partner_id,
       `${yesOrNoArr[1].display_name}`,
     )
 
-    const filterActualLesson = checkLessonsCallPaid.data.filter(
+    const filterActualLesson = checkLessonsCallPaid.filter(
       (lesson: ClasesPurchasedInterface) =>
         lesson.id !== purchaseSelected.id && lesson.id > purchaseSelected.id,
     )
@@ -136,7 +132,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
     if (filterActualLesson.length) {
       newArrayOfLessons = [...newArrayOfLessons, filterActualLesson]
     } else {
-      newArrayOfLessons = checkLessonsCallNotPaid.data
+      newArrayOfLessons = checkLessonsCallNotPaid
     }
     setFutureLessons(newArrayOfLessons[0])
   }

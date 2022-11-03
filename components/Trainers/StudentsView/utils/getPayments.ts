@@ -1,10 +1,16 @@
-import { getLessonsByPartnerAndPaid } from "services/Trainers/LessonsPurchased.service"
+import { getLessonsByPartnerAndPaidAction } from "reducers/lessons"
 
 const getPayments = async (studentSelected: number) => {
-  const lessonsPaid = await getLessonsByPartnerAndPaid(studentSelected, "SI")
-  const lessonsNotPaid = await getLessonsByPartnerAndPaid(studentSelected, "NO")
+  const lessonsPaid = await getLessonsByPartnerAndPaidAction(
+    studentSelected,
+    "SI",
+  )
+  const lessonsNotPaid = await getLessonsByPartnerAndPaidAction(
+    studentSelected,
+    "NO",
+  )
 
-  const finalArr = lessonsPaid.data.concat(lessonsNotPaid.data).sort((a, b) => {
+  const finalArr = lessonsPaid.concat(lessonsNotPaid).sort((a, b) => {
     return b.id - a.id
   })
 

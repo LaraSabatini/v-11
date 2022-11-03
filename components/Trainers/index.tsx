@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react"
 import { useRouter } from "next/router"
-// SERVICES
-import { createLessonPurchase } from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import {
   createPartnerAction,
@@ -12,6 +10,7 @@ import {
   makeAppropiatePayment,
   createBoulderPurchaseAction,
 } from "reducers/payments"
+import { createLessonPurchaseAction } from "reducers/lessons"
 import PartnersProvider from "contexts/Partners"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
@@ -19,7 +18,6 @@ import { Lessons } from "@contexts/Lessons"
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
 import { cleanPartnerData } from "utils"
-import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import NoPermissionsView from "components/UI/NoPermitsView"
 import Header from "components/UI/Header"
@@ -95,7 +93,8 @@ function TrainersView() {
       )
       const weekNumber = Math.ceil(days / 7)
 
-      const body: ClasesPurchasedInterface = {
+      //  eslint-disable-next-line no-await-in-loop
+      const createLessonPurchaseCall = await createLessonPurchaseAction({
         id: 0,
         lesson_date: `${datesSelected[i].date.slice(0, 2)}-${datesSelected[
           i
@@ -117,13 +116,8 @@ function TrainersView() {
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
         paid_day: paid ? `${day}-${month}-${year}` : "",
         created_by: parseInt(localStorage.getItem("id"), 10),
-      }
-
-      //  eslint-disable-next-line no-await-in-loop
-      const createLessonPurchaseCall = await createLessonPurchase(body)
-      success =
-        createLessonPurchaseCall.message ===
-        "Lesson purchase created successfully"
+      })
+      success = createLessonPurchaseCall
     }
     return success
   }

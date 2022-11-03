@@ -1,4 +1,4 @@
-import { getLessonsByDateAndShift } from "services/Trainers/LessonsPurchased.service"
+import { getLessonsByDateAndShiftAction } from "reducers/lessons"
 import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 
 const checkIfDateHasSpace = async (
@@ -21,12 +21,12 @@ const checkIfDateHasSpace = async (
     10,
   )}`
 
-  const checkAvailability = await getLessonsByDateAndShift(
+  const checkAvailability = await getLessonsByDateAndShiftAction(
     dateCleaned,
     provisionalSelection.shift,
   )
 
-  if (checkAvailability.data.length >= 10) {
+  if (checkAvailability.length >= 10) {
     response = {
       can: false,
       newDates: null,

@@ -1,15 +1,15 @@
 import React, { useContext, useEffect, useState, useRef } from "react"
 // SERVICES
-import {
-  getLessonsByPartnerAndPaid,
-  editLesson,
-  deleteLessonPurchase,
-} from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
 import {
   createBoulderPurchaseAction,
   makeAppropiatePayment,
 } from "reducers/payments"
+import {
+  getLessonsByPartnerAndPaidAction,
+  editLessonAction,
+  deleteLessonAction,
+} from "reducers/lessons"
 import { GeneralContext } from "contexts/GeneralContext"
 import { Lessons } from "@contexts/Lessons"
 import { paymentMethods, paymentUsers } from "const/finances"
@@ -77,19 +77,16 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
   const executePayment = async () => {
     let success: boolean = false
     for (let i = 0; i < lessonsSelectedToPay.length; i += 1) {
-      const body: ClasesPurchasedInterface = {
+      // eslint-disable-next-line no-await-in-loop
+      const changePaymentState = await editLessonAction({
         ...lessonsSelectedToPay[i],
         paid: "SI",
         payment_method_id: paymentMethodSelected.id,
         final_price: finalPrice / lessonsSelectedToPay.length,
         paid_day: `${day}-${month}-${year}`,
         created_by: parseInt(localStorage.getItem("id"), 10),
-      }
-
-      // eslint-disable-next-line no-await-in-loop
-      const changePaymentState = await editLesson(body)
-      success =
-        changePaymentState.message === "Lesson purchase updated successfully"
+      })
+      success = changePaymentState
     }
 
     const boulderPurchaseCall = await createBoulderPurchaseAction({
@@ -171,11 +168,11 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
   }
 
   const checkTypeOfPayment = async () => {
-    const checkListOfToPay = await getLessonsByPartnerAndPaid(
+    const checkListOfToPay = await getLessonsByPartnerAndPaidAction(
       data.partner_id,
       "NO",
     )
-    setListOfLessonsToPay(checkListOfToPay.data)
+    setListOfLessonsToPay(checkListOfToPay)
     setLessonsSelectedToPay([data])
     const checkPayment = await checkDiscount(data.partner_id)
     setHasDiscount(checkPayment)
@@ -233,8 +230,8 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
     let success: boolean = false
     for (let i = 0; i < lessonsSelectedToPay.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
-      const deleteCall = await deleteLessonPurchase(lessonsSelectedToPay[i].id)
-      success = deleteCall.message === "purchase deleted successfully"
+      const deleteCall = await deleteLessonAction(lessonsSelectedToPay[i].id)
+      success = deleteCall
     }
 
     if (success) {
