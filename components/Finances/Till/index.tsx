@@ -1,11 +1,10 @@
 /* eslint-disable no-console */
 import React, { useContext, useEffect } from "react"
 // SERVICES
-import { getStorePurchasesByDate } from "services/Store/storePurchases.service"
 import { searchDigitalPaymentByDate } from "services/Finances/DigitalPayments.service"
 import { getBoulderPurchaseByDate } from "services/Finances/Boulderpurchases.service"
 // DATA STORAGE & TYPES
-import { getProductsAction } from "helpers/store"
+import { getProductsAction, getStorePurchasesByDateAction } from "helpers/store"
 import { Finances } from "contexts/Finances"
 import generalTexts from "strings/general.json"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
@@ -30,11 +29,13 @@ function Till() {
   } = useContext(Finances)
 
   const fillData = async () => {
-    const productPurchasesCall = await getStorePurchasesByDate(tillDateSelected)
+    const productPurchasesCall = await getStorePurchasesByDateAction(
+      tillDateSelected,
+    )
 
     const filterProducts =
-      productPurchasesCall.data.length > 0
-        ? productPurchasesCall.data.filter(
+      productPurchasesCall.length > 0
+        ? productPurchasesCall.filter(
             (purchase: ProductsPurchasedByDateInterface) =>
               purchase.product_id !== 1 &&
               purchase.product_id !== 2 &&
@@ -44,8 +45,8 @@ function Till() {
     setProductsPurchasedByDate(filterProducts)
 
     const filterBoulderProducts =
-      productPurchasesCall.data.length > 0
-        ? productPurchasesCall.data.filter(
+      productPurchasesCall.length > 0
+        ? productPurchasesCall.filter(
             (purchase: ProductsPurchasedByDateInterface) =>
               purchase.product_id === 1 ||
               purchase.product_id === 2 ||
@@ -67,7 +68,7 @@ function Till() {
 
     setDigitalPaymentsList(digitalPaymentByDateCall.data)
 
-    const cashEarningsFromStore = productPurchasesCall.data.filter(
+    const cashEarningsFromStore = productPurchasesCall.filter(
       (purchase: ProductsPurchasedByDateInterface) =>
         purchase.payment_method_id === 1,
     )

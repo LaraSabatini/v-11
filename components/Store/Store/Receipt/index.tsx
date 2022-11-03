@@ -1,13 +1,13 @@
 /* eslint-disable no-await-in-loop */
 import React, { useContext, useState, useEffect, useRef } from "react"
 // SERVICES
-import {
-  getStorePurchasesByDateAndPaymentMethodAndProduct,
-  createStorePurchase,
-  editStorePurchase,
-} from "services/Store/storePurchases.service"
 // DATA STORAGE & TYPES
-import { editProductAction } from "helpers/store"
+import {
+  editProductAction,
+  getStorePurchasesByDatePMAndProductAction,
+  createStorePurchaseAction,
+  editStorePurchaseAction,
+} from "helpers/store"
 import { makeAppropiatePayment } from "helpers/payments"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
@@ -108,30 +108,28 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
       })
       success = editStockCall
 
-      const checkIfPurchasedToday = await getStorePurchasesByDateAndPaymentMethodAndProduct(
+      const checkIfPurchasedToday = await getStorePurchasesByDatePMAndProductAction(
         `${day}-${month}-${year}`,
         purchase[i].product_id,
         paymentMethodSelected,
       )
 
-      if (checkIfPurchasedToday.data.length > 0) {
-        const editBody = {
-          id: checkIfPurchasedToday.data[0].id,
-          product_id: checkIfPurchasedToday.data[0].product_id,
-          product_name: checkIfPurchasedToday.data[0].product_name,
+      if (checkIfPurchasedToday.length > 0) {
+        const edit = await editStorePurchaseAction({
+          id: checkIfPurchasedToday[0].id,
+          product_id: checkIfPurchasedToday[0].product_id,
+          product_name: checkIfPurchasedToday[0].product_name,
           amount_of_items:
-            checkIfPurchasedToday.data[0].amount_of_items +
+            checkIfPurchasedToday[0].amount_of_items +
             purchase[i].product_amount,
-          profit:
-            checkIfPurchasedToday.data[0].profit + purchase[i].final_price,
+          profit: checkIfPurchasedToday[0].profit + purchase[i].final_price,
           payment_method_id: paymentMethodSelected,
-          date: checkIfPurchasedToday.data[0].date,
+          date: checkIfPurchasedToday[0].date,
           created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-        const edit = await editStorePurchase(editBody)
-        success = edit.message === "store_payments updated successfully"
+        })
+        success = edit
       } else {
-        const createBody = {
+        const createCall = await createStorePurchaseAction({
           id: 0,
           product_id: purchase[i].product_id,
           product_name: purchase[i].product_name,
@@ -140,10 +138,8 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           payment_method_id: paymentMethodSelected,
           date: `${day}-${month}-${year}`,
           created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-
-        const createCall = await createStorePurchase(createBody)
-        success = createCall.message === "productPurchase created successfully"
+        })
+        success = createCall
       }
     }
 
