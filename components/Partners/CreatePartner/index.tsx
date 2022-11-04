@@ -22,7 +22,7 @@ import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
 import InputCalendar from "components/UI/InputCalendar"
 import Checkbox from "components/UI/Checkbox"
-import calcPriceMonthOrDay from "../utils/calcPriceForMonthOrDayPurchase"
+import calcPriceMonthOrDay from "../helpers/calcPriceForMonthOrDayPurchase"
 import MakePayment from "./MakePayment"
 import { Form, HorizontalGroup, CheckboxContainer } from "./styles"
 

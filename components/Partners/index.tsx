@@ -1,12 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
-import {
-  searchPartnerAction,
-  getPartnersAction,
-  getStudentsAction,
-  getFreePassPartnersAction,
-} from "helpers/partners"
+import { searchPartnerAction } from "helpers/partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
@@ -24,6 +19,7 @@ import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import Prices from "./Prices"
+import setPartnerList from "./helpers/setPartnersList"
 import {
   Container,
   Title,
@@ -69,20 +65,10 @@ function PartnersView() {
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 
-  const setPartnerList = async () => {
-    if (filterSelected === "all") {
-      const data = await getPartnersAction(currentPage)
-      setPartners(data.data)
-      setTotalPages(data.meta.totalPages)
-    } else if (filterSelected === "students") {
-      const data = await getStudentsAction(currentPage)
-      setPartners(data.data)
-      setTotalPages(data.meta.totalPages)
-    } else {
-      const data = await getFreePassPartnersAction(currentPage)
-      setPartners(data.data)
-      setTotalPages(data.meta.totalPages)
-    }
+  const getPartnersList = async () => {
+    const data = await setPartnerList(filterSelected, currentPage)
+    setPartners(data.list)
+    setTotalPages(data.numberOfPages)
   }
 
   const goPrev = () => {
@@ -108,7 +94,7 @@ function PartnersView() {
   }
 
   useEffect(() => {
-    setPartnerList()
+    getPartnersList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterSelected, currentPage, triggerListUpdate, canViewClients])
 
@@ -148,7 +134,7 @@ function PartnersView() {
                 searchValue={searchValue}
                 onChangeSearch={e => {
                   if (e.target.value === "") {
-                    setPartnerList()
+                    getPartnersList()
                     setSearchValue("")
                   } else {
                     setSearchValue(e.target.value)

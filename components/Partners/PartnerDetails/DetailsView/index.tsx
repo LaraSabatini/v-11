@@ -25,7 +25,7 @@ import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
 import Icon from "components/UI/Assets/Icon"
 import EditPayment from "./EditPayment"
-import calcPriceMonthOrDay from "../../utils/calcPriceForMonthOrDayPurchase"
+import calcPriceMonthOrDay from "../../helpers/calcPriceForMonthOrDayPurchase"
 import {
   PartnerData,
   Details,
