@@ -25,6 +25,7 @@ import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
 import Icon from "components/UI/Assets/Icon"
 import EditPayment from "./EditPayment"
+import ModalChanges from "../ModalChanges"
 import calcPriceMonthOrDay from "../../helpers/calcPriceForMonthOrDayPurchase"
 import {
   PartnerData,
@@ -375,19 +376,9 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
   return (
     <Details>
       {modalHasChanges && (
-        <ModalAlert
-          success={false}
-          message={{
-            status: `alert`,
-            icon: `IconAlert`,
-            title: `${generalTexts.modalTitles.discard}`,
-            content: `${generalTexts.modalContent.discard}`,
-          }}
-          closeModal={cancelDiscard}
-          closeRefresh={cancelDiscard}
-          mainButtonContent={generalTexts.actions.confirm}
-          secondButtonContent={generalTexts.actions.cancel}
-          mainAction={() => {
+        <ModalChanges
+          cancelDiscard={cancelDiscard}
+          discardChanges={() => {
             setModalHasChanges(false)
             setHasChanges(false)
             setChanges(false)
@@ -395,7 +386,6 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
               { name: "days", value: initialPayment.time_paid },
             ])
           }}
-          isNotice
         />
       )}
       {modalErrorAddDays !== null && (

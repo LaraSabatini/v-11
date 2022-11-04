@@ -7,10 +7,10 @@ import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { cleanPartnerData } from "utils"
 // COMPONENTS & STYLING
-import ModalAlert from "components/UI/ModalAlert"
 import TextField from "components/UI/TextField"
 import TextButton from "components/UI/TextButton"
 import Checkbox from "components/UI/Checkbox"
+import ModalChanges from "../ModalChanges"
 import {
   PartnerData,
   Details,
@@ -123,20 +123,9 @@ function DetailsEdition({ partnerInfo, createdBy }: DetailEditInterface) {
   return (
     <Details>
       {modalHasChanges && (
-        <ModalAlert
-          success={false}
-          message={{
-            status: `alert`,
-            icon: `IconAlert`,
-            title: `${generalTexts.modalTitles.discard}`,
-            content: `${generalTexts.modalContent.discard}`,
-          }}
-          closeModal={cancelDiscard}
-          closeRefresh={cancelDiscard}
-          mainButtonContent={generalTexts.actions.confirm}
-          secondButtonContent={generalTexts.actions.cancel}
-          mainAction={discardChanges}
-          isNotice
+        <ModalChanges
+          cancelDiscard={cancelDiscard}
+          discardChanges={discardChanges}
         />
       )}
       <PartnerData>
