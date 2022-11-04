@@ -110,14 +110,8 @@ function CreatePurchaseModal({
     }
   }
 
-  const handle = err => {
-    console.log("hubo un error", err)
-  }
-
   useEffect(() => {
     searchClients()
-      // eslint-disable-next-line no-console
-      .catch(err => handle(err))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchValue])
 
