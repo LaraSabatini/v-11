@@ -7,8 +7,8 @@ import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterfa
 import Pagination from "components/UI/Pagination"
 import ScrollView from "components/UI/ScrollView"
 import { calculateActualWeek } from "utils"
-import getDayOfWeek from "../utils/getDayOfTheWeek"
-import getLessonsData from "../utils/getLessonsData"
+import getDayOfWeek from "../helpers/getDayOfTheWeek"
+import getLessonsData from "../helpers/getLessonsData"
 import MakePayment from "./MakePayment"
 import {
   MainContainer,

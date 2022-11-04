@@ -21,11 +21,11 @@ import InputCalendar from "components/UI/InputCalendar"
 import Icon from "components/UI/Assets/Icon"
 import PopOver from "components/UI/PopOver"
 import ScrollView from "components/UI/ScrollView"
-import deleteLessonFromList from "../../utils/deleteLessonFromList"
-import checkIfDateHasSpace from "../../utils/checkIfDateHasSpace"
-import calculatePriceWithoutDiscount from "../../utils/calculatePriceWithoutDiscount"
-import checkDiscount from "../../utils/checkDiscount"
-import calculatePriceWithDiscount from "../../utils/calculatePriceWithDiscount"
+import deleteLessonFromList from "../../helpers/deleteLessonFromList"
+import checkIfDateHasSpace from "../../helpers/checkIfDateHasSpace"
+import calculatePriceWithoutDiscount from "../../helpers/calculatePriceWithoutDiscount"
+import checkDiscount from "../../helpers/checkDiscount"
+import calculatePriceWithDiscount from "../../helpers/calculatePriceWithDiscount"
 import {
   FormContainer,
   HorizontalGroup,

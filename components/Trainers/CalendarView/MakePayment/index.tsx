@@ -23,9 +23,9 @@ import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
 import Autocomplete from "components/UI/Autocomplete"
 import ModalForm from "components/UI/ModalForm"
-import checkDiscount from "../../utils/checkDiscount"
-import calculatePriceWithoutDiscount from "../../utils/calculatePriceWithoutDiscount"
-import calculatePriceWithDiscount from "../../utils/calculatePriceWithDiscount"
+import checkDiscount from "../../helpers/checkDiscount"
+import calculatePriceWithoutDiscount from "../../helpers/calculatePriceWithoutDiscount"
+import calculatePriceWithDiscount from "../../helpers/calculatePriceWithDiscount"
 import {
   Form,
   HorizontalGroup,
