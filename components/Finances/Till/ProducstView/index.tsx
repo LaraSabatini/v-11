@@ -1,9 +1,10 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 // DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
 import generalTexts from "strings/general.json"
+import setProfitsForProducts from "../helpers/setProfitsForProducts"
 // COMPONENTS & STYLING
 import HistoryCard from "./ProductCard"
 import { FinalProfit } from "../BoulderView/styles"
@@ -11,38 +12,25 @@ import { Container, CardsContainer, ProfitsContainer } from "./styles"
 
 function ProductsView() {
   const { productsPurchasedByDate, productList } = useContext(Finances)
-
-  const filterProfitsCash = productsPurchasedByDate.filter(
-    (purchase: ProductsPurchasedByDateInterface) =>
-      purchase.payment_method_id === 1,
-  )
-  const filterProfitsMP = productsPurchasedByDate.filter(
-    (purchase: ProductsPurchasedByDateInterface) =>
-      purchase.payment_method_id === 2,
-  )
-
-  let profitsCash = 0
-  let profitsMP = 0
-
-  filterProfitsCash.map((purchase: ProductsPurchasedByDateInterface) => {
-    profitsCash += purchase.profit
-    return 0
+  const [profits, setProfits] = useState({
+    cash: 0,
+    digital: 0,
   })
 
-  filterProfitsMP.map((purchase: ProductsPurchasedByDateInterface) => {
-    profitsMP += purchase.profit
-    return 0
-  })
+  useEffect(() => {
+    setProfits(setProfitsForProducts(productsPurchasedByDate))
+  }, [productsPurchasedByDate])
 
   return (
     <Container>
       <ProfitsContainer>
         <FinalProfit>
           <p>
-            <span>{generalTexts.payments.cash}:</span> <b>$ {profitsCash}</b>
+            <span>{generalTexts.payments.cash}:</span> <b>$ {profits.cash}</b>
           </p>
           <p>
-            <span>{generalTexts.payments.digital}:</span> <b>$ {profitsMP}</b>
+            <span>{generalTexts.payments.digital}:</span>{" "}
+            <b>$ {profits.digital}</b>
           </p>
         </FinalProfit>
       </ProfitsContainer>

@@ -6,6 +6,8 @@ import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
+import cleanProfit from "../../helpers/cleanProfit"
+import cleanMargin from "../../helpers/cleanMargin"
 import {
   Card,
   ComponentContainer,
@@ -26,28 +28,6 @@ function HistoryCard({
   payment,
   id,
 }: HistoryCardInterface) {
-  const finalProfit = final_sells - cost * amount
-
-  const splittedProfit = `${finalProfit}`.split(".")
-
-  let finalProfitString = ""
-
-  if (splittedProfit.length > 1) {
-    finalProfitString = `${splittedProfit[0]}.${splittedProfit[1].slice(0, 2)}`
-  } else {
-    finalProfitString = `${splittedProfit[0]}`
-  }
-
-  const splittedMargin = `${margin}`.split(".")
-
-  let marginString = ""
-
-  if (splittedMargin.length > 1) {
-    marginString = `${splittedMargin[0]}.${splittedMargin[1].slice(0, 2)}`
-  } else {
-    marginString = `${splittedMargin[0]}`
-  }
-
   return (
     <div>
       {id !== 1 && id !== 2 && id !== 3 && (
@@ -84,7 +64,8 @@ function HistoryCard({
             <p className="profits">
               {financesTexts.profits}:
               <span>
-                ${finalProfitString} <p>(${marginString})</p>
+                ${cleanProfit(final_sells - cost * amount)}{" "}
+                <p>(${cleanMargin(`${margin}`.split("."))})</p>
               </span>
             </p>
             <HorizontalGroup>

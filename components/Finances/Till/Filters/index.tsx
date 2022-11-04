@@ -5,6 +5,7 @@ import { tillFilters } from "const/finances"
 // COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import InputCalendar from "components/UI/InputCalendar"
+import cleanDate from "../helpers/cleanDate"
 import {
   FiltersContainer,
   Filter,
@@ -25,13 +26,6 @@ function TillFilters() {
   const [openFilters, setOpenFilters] = useState<boolean>(false)
 
   const calendarRef = useRef(null)
-
-  const cleanDate = (e: string) => {
-    const day = e.slice(0, 2)
-    const month = e.slice(3, 5)
-    const year = e.slice(6, 10)
-    setTillDateSelected(`${day}-${month}-${year}`)
-  }
 
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections[3].sub_sections
@@ -76,7 +70,7 @@ function TillFilters() {
               10,
             )}`}
             reference={calendarRef}
-            onChange={e => cleanDate(e.selectedChangeDate)}
+            onChange={e => setTillDateSelected(cleanDate(e.selectedChangeDate))}
           />
         </CalendarContainer>
       )}
