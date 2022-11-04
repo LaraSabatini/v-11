@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
-// SERVICES
-// import { getProducts } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
 import { editProductAction, getProductsAction } from "helpers/store"
 import { StoreContext } from "contexts/Store"
@@ -16,6 +14,7 @@ import TextButton from "components/UI/TextButton"
 import TextField from "components/UI/TextField"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
+import cleanMargin from "utils/cleanMargin"
 import columns from "./const/content"
 import {
   Container,
@@ -66,15 +65,10 @@ function Stock({ editPermits }: StockInterface) {
 
     data.map((product: ProductInterface) => {
       const marginString = `${product.margin}`
-      const arrOfMargin = marginString.split(".")
-      const first = arrOfMargin[0]
-      let finalMargin = 0
-      if (arrOfMargin.length > 1) {
-        const second = arrOfMargin[1].slice(0, 2)
-        finalMargin = parseFloat(`${first}.${second}`)
-      } else {
-        finalMargin = parseInt(first, 10)
-      }
+      const cleanIt = cleanMargin(marginString.split("."))
+      const finalMargin = cleanIt.includes(".")
+        ? parseFloat(cleanIt)
+        : parseInt(cleanIt, 10)
 
       rowsCleaned.push({
         id: product.id,

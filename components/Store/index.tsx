@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
-// SERVICES
 // DATA STORAGE & TYPES
 import {
   getBrandsAction,
@@ -16,6 +15,7 @@ import generalTexts from "strings/general.json"
 import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
 import OptionsInterface from "interfaces/store/OptionsInterface"
+import cleanMargin from "utils/cleanMargin"
 // COMPONENTS & STYLING
 import theme from "theme/index"
 import NoPermissionsView from "components/UI/NoPermitsView"
@@ -120,15 +120,11 @@ function StoreView() {
 
     search.map((product: ProductInterface) => {
       const marginString = `${product.margin}`
-      const arrOfMargin = marginString.split(".")
-      const first = arrOfMargin[0]
-      let finalMargin = 0
-      if (arrOfMargin.length > 1) {
-        const second = arrOfMargin[1].slice(0, 2)
-        finalMargin = parseFloat(`${first}.${second}`)
-      } else {
-        finalMargin = parseInt(first, 10)
-      }
+      const cleanIt = cleanMargin(marginString.split("."))
+      const finalMargin = cleanIt.includes(".")
+        ? parseFloat(cleanIt)
+        : parseInt(cleanIt, 10)
+
       rowsCleaned.push({
         id: product.id,
         item: product.name,

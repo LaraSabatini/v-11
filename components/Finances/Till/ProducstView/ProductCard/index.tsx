@@ -6,8 +6,8 @@ import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
+import cleanMargin from "utils/cleanMargin"
 import cleanProfit from "../../helpers/cleanProfit"
-import cleanMargin from "../../helpers/cleanMargin"
 import {
   Card,
   ComponentContainer,
