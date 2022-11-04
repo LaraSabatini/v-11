@@ -22,6 +22,7 @@ import { cleanPartnerData } from "utils"
 import NoPermissionsView from "components/UI/NoPermitsView"
 import Header from "components/UI/Header"
 import Icon from "components/UI/Assets/Icon"
+import calculateLessonWeek from "./helpers/calculateLessonWeek"
 import Modals from "./Modals"
 import CalendarView from "./CalendarView"
 import StudentsView from "./StudentsView"
@@ -83,15 +84,7 @@ function TrainersView() {
   ) => {
     let success = false
     for (let i = 0; i < amountOfLessons; i += 1) {
-      const lessonDay = `${datesSelected[i].date.slice(6, 10)}-${datesSelected[
-        i
-      ].date.slice(3, 5)}-${datesSelected[i].date.slice(0, 2)}`
-      const currentDate = new Date(lessonDay)
-      const startDate = new Date(currentDate.getFullYear(), 0, 1)
-      const days = Math.floor(
-        (currentDate.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000),
-      )
-      const weekNumber = Math.ceil(days / 7)
+      const finalLessonDate = calculateLessonWeek(datesSelected[i].date)
 
       //  eslint-disable-next-line no-await-in-loop
       const createLessonPurchaseCall = await createLessonPurchaseAction({
@@ -105,12 +98,12 @@ function TrainersView() {
         partner_last_name: partnerLastName,
         trainer_id: 0,
         trainer_name: "",
-        week_id: weekNumber,
+        week_id: finalLessonDate.week,
         paid:
           paid || buyedCombo
             ? `${yesOrNoArr[0].display_name}`
             : `${yesOrNoArr[1].display_name}`,
-        day_id: currentDate.getDay(),
+        day_id: finalLessonDate.day.getDay(),
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
@@ -199,19 +192,16 @@ function TrainersView() {
         canShowModalError = true
         setIdentificationError(false)
 
-        const formatName = cleanPartnerData(newPartnerData.name)
-        const formatLastName = cleanPartnerData(newPartnerData.last_name)
-
         const createPartnerCall = await createPartnerAction({
           ...newPartnerData,
-          name: formatName,
-          last_name: formatLastName,
+          name: cleanPartnerData(newPartnerData.name),
+          last_name: cleanPartnerData(newPartnerData.last_name),
         })
         if (createPartnerCall.success) {
           const pur = await createLessonPurchaseFunc(
             createPartnerCall.partnerId,
-            formatName,
-            formatLastName,
+            cleanPartnerData(newPartnerData.name),
+            cleanPartnerData(newPartnerData.last_name),
           )
           success = pur
         }

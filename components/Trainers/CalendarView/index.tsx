@@ -57,8 +57,7 @@ function CalendarView() {
 
   useEffect(() => {
     if (weekNumberSelected === null) {
-      const calc = calculateActualWeek()
-      setWeekNumberSelected(calc)
+      setWeekNumberSelected(calculateActualWeek())
     } else {
       setDataForLessons()
     }

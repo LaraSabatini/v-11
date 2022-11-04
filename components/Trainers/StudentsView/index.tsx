@@ -14,8 +14,9 @@ import theme from "theme/index"
 import ScrollView from "components/UI/ScrollView"
 import SearchBar from "components/UI/SearchBar"
 import Pagination from "components/UI/Pagination"
-import getPayments from "./utils/getPayments"
-import calcExpireDate from "./utils/calcExpireDate"
+import getPayments from "./helpers/getPayments"
+import calcExpireDate from "./helpers/calcExpireDate"
+import formatDescDate from "../helpers/formatDescDate"
 import {
   ListContainer,
   ListItem,
@@ -90,12 +91,7 @@ function StudentsView() {
   }, [studentSelected])
 
   const checkPastDate = date => {
-    const cleanDate = `${date.slice(6, 10)}-${date.slice(3, 5)}-${date.slice(
-      0,
-      2,
-    )}`
-
-    const lessonDate = new Date(cleanDate)
+    const lessonDate = new Date(formatDescDate(date))
     const isDisabled = lessonDate < todayDate
     return isDisabled
   }

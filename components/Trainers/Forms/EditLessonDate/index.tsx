@@ -17,6 +17,7 @@ import ModalForm from "components/UI/ModalForm"
 import InputCalendar from "components/UI/InputCalendar"
 import Autocomplete from "components/UI/Autocomplete"
 import checkIfDateHasSpace from "../../helpers/checkIfDateHasSpace"
+import calculateLessonWeek from "../../helpers/calculateLessonWeek"
 import { AcceptButton, Warning } from "../CreatePurchase/styles"
 import {
   Form,
@@ -71,23 +72,14 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
       dateSelected !== null
     ) {
       setDisabledButton(true)
-      const lessonDay = `${dateSelected.date.slice(
-        6,
-        10,
-      )}-${dateSelected.date.slice(3, 5)}-${dateSelected.date.slice(0, 2)}`
-      const currentDate = new Date(lessonDay)
-      const startDate = new Date(currentDate.getFullYear(), 0, 1)
-      const days = Math.floor(
-        (currentDate.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000),
-      )
-      const weekNumber = Math.ceil(days / 7)
+      const lessonDate = calculateLessonWeek(dateSelected.date)
 
       const editLessonCall = await editLessonAction({
         ...purchaseSelected,
         lesson_date: dateSelected.date,
         shift: dateSelected.shift,
-        day_id: currentDate.getDay(),
-        week_id: weekNumber,
+        day_id: lessonDate.day.getDay(),
+        week_id: lessonDate.week,
         created_by: parseInt(localStorage.getItem("id"), 10),
       })
 
