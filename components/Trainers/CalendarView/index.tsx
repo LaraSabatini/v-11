@@ -5,23 +5,21 @@ import { year, daysOfTheWeek, shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import Pagination from "components/UI/Pagination"
-import ScrollView from "components/UI/ScrollView"
 import { calculateActualWeek } from "utils"
 import getDayOfWeek from "../helpers/getDayOfTheWeek"
 import getLessonsData from "../helpers/getLessonsData"
 import MakePayment from "./MakePayment"
+import LessonPurchasedView from "./LessonPurchasedView"
+import formatCalendarDate from "../helpers/formatCalendarDate"
 import {
   MainContainer,
   Column,
-  LessonPurchased,
   StudentsList,
   ColumnTitle,
   DividerRowTitles,
   DividerRowShifts,
   PaginatorContainer,
   SectionContainer,
-  Scroll,
-  ScrollContainer,
 } from "./styles"
 
 function CalendarView() {
@@ -108,250 +106,81 @@ function CalendarView() {
             <p>{shifts[1].display_name}</p>
           </StudentsList>
         </Column>
+
         <Column>
           <ColumnTitle>
             <p>
               {daysOfTheWeek[0].display_name}
               {weekDays.length && (
-                <span>
-                  {weekDays[0].getDate()}/{weekDays[0].getMonth() + 1}/
-                  {weekDays[0].getFullYear()}
-                </span>
+                <span>{formatCalendarDate(weekDays[0])}</span>
               )}
             </p>
           </ColumnTitle>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.monday.am.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.monday.pm.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
+          <LessonPurchasedView
+            cleanedLessons={cleanedLessons.monday}
+            purchaseSelected={purchaseSelected}
+            selectPurchase={e => selectPurchase(e)}
+          />
         </Column>
         <Column>
           <ColumnTitle>
             <p>
               {daysOfTheWeek[1].display_name}
               {weekDays.length && (
-                <span>
-                  {weekDays[1].getDate()}/{weekDays[1].getMonth() + 1}/
-                  {weekDays[1].getFullYear()}
-                </span>
+                <span>{formatCalendarDate(weekDays[1])}</span>
               )}
             </p>
           </ColumnTitle>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.tuesday.am.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.tuesday.pm.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
+          <LessonPurchasedView
+            cleanedLessons={cleanedLessons.tuesday}
+            purchaseSelected={purchaseSelected}
+            selectPurchase={e => selectPurchase(e)}
+          />
         </Column>
         <Column>
           <ColumnTitle>
             <p>
               {daysOfTheWeek[2].display_name}
               {weekDays.length && (
-                <span>
-                  {weekDays[2].getDate()}/{weekDays[2].getMonth() + 1}/
-                  {weekDays[2].getFullYear()}
-                </span>
+                <span>{formatCalendarDate(weekDays[2])}</span>
               )}
             </p>
           </ColumnTitle>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.wednesday.am.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.wednesday.pm.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
+          <LessonPurchasedView
+            cleanedLessons={cleanedLessons.wednesday}
+            purchaseSelected={purchaseSelected}
+            selectPurchase={e => selectPurchase(e)}
+          />
         </Column>
         <Column>
           <ColumnTitle>
             <p>
               {daysOfTheWeek[3].display_name}
               {weekDays.length && (
-                <span>
-                  {weekDays[3].getDate()}/{weekDays[3].getMonth() + 1}/
-                  {weekDays[3].getFullYear()}
-                </span>
+                <span>{formatCalendarDate(weekDays[3])}</span>
               )}
             </p>
           </ColumnTitle>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.thursday.am.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.thursday.pm.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
+          <LessonPurchasedView
+            cleanedLessons={cleanedLessons.thursday}
+            purchaseSelected={purchaseSelected}
+            selectPurchase={e => selectPurchase(e)}
+          />
         </Column>
         <Column>
           <ColumnTitle>
             <p>
               {daysOfTheWeek[4].display_name}
               {weekDays.length && (
-                <span>
-                  {weekDays[4].getDate()}/{weekDays[4].getMonth() + 1}/
-                  {weekDays[4].getFullYear()}
-                </span>
+                <span>{formatCalendarDate(weekDays[4])}</span>
               )}
             </p>
           </ColumnTitle>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.friday.am.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
-          <StudentsList>
-            <ScrollContainer>
-              <ScrollView height={160}>
-                <Scroll>
-                  {cleanedLessons.friday.pm.map(lesson => (
-                    <LessonPurchased
-                      paid={lesson.paid === "SI"}
-                      type="button"
-                      selected={purchaseSelected?.id === lesson.id}
-                      onClick={() => selectPurchase(lesson)}
-                    >
-                      {lesson.partner_name} {lesson.partner_last_name}
-                    </LessonPurchased>
-                  ))}
-                </Scroll>
-              </ScrollView>
-            </ScrollContainer>
-          </StudentsList>
+          <LessonPurchasedView
+            cleanedLessons={cleanedLessons.friday}
+            purchaseSelected={purchaseSelected}
+            selectPurchase={e => selectPurchase(e)}
+          />
         </Column>
         {modalMakeAPayment && (
           <MakePayment
