@@ -197,30 +197,19 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     if (comboSelected === null) {
       await paidTimeRef.current?.focus()
       await paidTimeUnitRef.current?.focus()
-
-      if (
+      canPurchase =
         paidTimeRef.current.attributes.getNamedItem("data-error").value ===
           "false" &&
         paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
           "false"
-      ) {
-        canPurchase = true
-      } else {
-        canPurchase = false
-      }
     }
     await paymentRef.current?.focus()
 
     if (paymentMethodSelected === 2) {
       await paymentUserRef.current?.focus()
-      if (
+      canPurchase =
         paymentUserRef.current.attributes.getNamedItem("data-error").value ===
         "false"
-      ) {
-        canPurchase = true
-      } else {
-        canPurchase = false
-      }
     }
 
     const canAddDays =

@@ -120,12 +120,10 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
         lesson.id !== purchaseSelected.id && lesson.id > purchaseSelected.id,
     )
 
-    let newArrayOfLessons = []
-    if (filterActualLesson.length) {
-      newArrayOfLessons = [...newArrayOfLessons, filterActualLesson]
-    } else {
-      newArrayOfLessons = checkLessonsCallNotPaid
-    }
+    const newArrayOfLessons = filterActualLesson.length
+      ? filterActualLesson
+      : checkLessonsCallNotPaid
+
     setFutureLessons(newArrayOfLessons[0])
   }
 

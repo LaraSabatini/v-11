@@ -108,7 +108,6 @@ function PartnersProvider({ children }) {
       let price = 0
       if (comboSelected !== null && comboSelected !== undefined) {
         const comboCash = combos.filter(combo => combo.id === comboSelected)
-
         price += comboCash[0].price_cash
       }
       if (

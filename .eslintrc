@@ -6,6 +6,7 @@
   ],
   "rules": {
     "@typescript-eslint/no-floating-promises": "off",
+    "no-nested-ternary": "off",
     "react/function-component-definition": [
       2,
       {
