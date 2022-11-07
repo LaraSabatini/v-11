@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
+import { GeneralContext } from "contexts/GeneralContext"
+import { getPricesAction } from "helpers/partners"
 import PartnersView from "components/Partners"
 import PartnersProvider from "contexts/Partners"
 
 function Home() {
   const router = useRouter()
+  const { setPrices, triggerPricesUpdate } = useContext(GeneralContext)
 
   const [isLoggedIn, setIsLoggedIn] = useState<any>()
 
@@ -17,6 +20,16 @@ function Home() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn])
+
+  const setPricesData = async () => {
+    const pricesData = await getPricesAction()
+    setPrices(pricesData)
+  }
+
+  useEffect(() => {
+    setPricesData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [triggerPricesUpdate])
 
   return (
     <div>
