@@ -64,7 +64,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
   const { prices } = useContext(GeneralContext)
 
-  const goNextForm = async e => {
+  const goNextForm = async (e: any) => {
     e.preventDefault()
 
     await nameRef.current?.focus()
@@ -169,86 +169,75 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     return createBoulderPurchaseCall
   }
 
-  const finalizeCreate = async e => {
-    e.preventDefault()
+  const makePaymentsRequests = async (partnerId: number) => {
+    let success = false
 
+    const executePurchase = await createPayment(partnerId)
+    success = executePurchase
+
+    if (paymentMethodSelected === 2) {
+      const executeDigitalPayment = await makeAppropiatePayment(
+        paymentUserSelected.id,
+        finalPrice,
+        {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
+          date: `${day}-${month}-${year}`,
+          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+            .display_name,
+          month_id: parseInt(`${month}`, 10),
+          total_profit: finalPrice,
+          created_by: parseInt(localStorage.getItem("id"), 10),
+        },
+      )
+      success = executeDigitalPayment
+    }
+    if (
+      comboSelected !== null &&
+      comboSelected !== undefined &&
+      comboSelected !== 0
+    ) {
+      const createBoulderPurchaseCall = await createBoulderPurchaseAction({
+        id: 0,
+        date: `${day}-${month}-${year}`,
+        item_id: 1,
+        item_name: `${partnerTexts.combo}`,
+        amount_of_items: 1,
+        profit:
+          paymentMethodSelected === 1
+            ? combos[0].price_cash
+            : combos[0].price_mp,
+        payment_method_id: paymentMethodSelected,
+        created_by: parseInt(localStorage.getItem("id"), 10),
+      })
+      success = createBoulderPurchaseCall
+    }
+    if (paidTime !== 0) {
+      const executeBoulderPurchase = await createDayOrMonthPurchase()
+      success = executeBoulderPurchase
+    }
+
+    return success
+  }
+
+  const validateInputs = async () => {
     await paidTimeUnitRef.current?.focus()
     await paidTimeRef.current?.focus()
     await paymentRef.current?.focus()
     await paymentUserRef.current?.focus()
 
-    let success = false
-    if (
+    const canValidate =
       paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       paidTimeRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       paymentRef.current.attributes.getNamedItem("data-error").value === "false"
-    ) {
-      setDisableCreatePartnerFormButton(true)
 
-      const createPartner = await createPartnerAction({
-        ...newPartnerData,
-        free_pass:
-          paidTimeUnit?.id !== null &&
-          paidTimeUnit !== undefined &&
-          paidTimeUnit?.id !== 1
-            ? 1
-            : 0,
-        is_student: `${generalTexts.no.toUpperCase()}`,
-      })
+    return canValidate
+  }
 
-      if (createPartner.success) {
-        const executePurchase = await createPayment(createPartner.partnerId)
-        success = executePurchase
-      }
-
-      if (paymentMethodSelected === 2 && createPartner.success) {
-        const executePurchase = await makeAppropiatePayment(
-          paymentUserSelected.id,
-          finalPrice,
-          {
-            id: 0,
-            user_id: paymentUserSelected.id,
-            user_name: paymentUserSelected.display_name,
-            date: `${day}-${month}-${year}`,
-            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-              .display_name,
-            month_id: parseInt(`${month}`, 10),
-            total_profit: finalPrice,
-            created_by: parseInt(localStorage.getItem("id"), 10),
-          },
-        )
-        success = executePurchase
-      }
-
-      const comboCondition =
-        comboSelected !== null &&
-        comboSelected !== undefined &&
-        comboSelected !== 0
-
-      if (comboCondition) {
-        const createBoulderPurchaseCall = await createBoulderPurchaseAction({
-          id: 0,
-          date: `${day}-${month}-${year}`,
-          item_id: 1,
-          item_name: `${partnerTexts.combo}`,
-          amount_of_items: 1,
-          profit:
-            paymentMethodSelected === 1
-              ? combos[0].price_cash
-              : combos[0].price_mp,
-          payment_method_id: paymentMethodSelected,
-          created_by: parseInt(localStorage.getItem("id"), 10),
-        })
-        success = createBoulderPurchaseCall
-      }
-      if (paidTime !== 0) {
-        const executePurchase = await createDayOrMonthPurchase()
-        success = executePurchase
-      }
-    }
-
+  const showModal = (success: boolean) => {
     if (success) {
       setModalSuccess({
         status: "success",
@@ -266,6 +255,36 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
       })
       setDisableCreatePartnerFormButton(false)
     }
+  }
+
+  const finalizeCreate = async (e: any) => {
+    e.preventDefault()
+    let success = false
+
+    const executeFunction = await validateInputs()
+    if (executeFunction) {
+      setDisableCreatePartnerFormButton(true)
+
+      const createPartner = await createPartnerAction({
+        ...newPartnerData,
+        free_pass:
+          paidTimeUnit?.id !== null &&
+          paidTimeUnit !== undefined &&
+          paidTimeUnit?.id !== 1
+            ? 1
+            : 0,
+        is_student: `${generalTexts.no.toUpperCase()}`,
+      })
+
+      if (createPartner.success) {
+        const makePaymentsCall = await makePaymentsRequests(
+          createPartner.partnerId,
+        )
+        success = makePaymentsCall
+      }
+    }
+
+    showModal(success)
   }
 
   const getCombosData = async () => {

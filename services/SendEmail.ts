@@ -22,5 +22,4 @@ const sendEmail = async (body: {
   return data
 }
 
-// req.body.recipients, req.body.subject, req.body.text, req.body.category
 export default sendEmail

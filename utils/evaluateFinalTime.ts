@@ -1,8 +1,14 @@
 /* eslint-disable import/prefer-default-export */
 export const evaluateFinalTime = (paidTime: number, usesDay: boolean) => {
-  return paidTime !== null && paidTime !== 0
-    ? usesDay
-      ? paidTime - 1
-      : paidTime
-    : 0
+  let finalTime = 0
+
+  if (paidTime !== null && paidTime !== 0) {
+    if (usesDay) {
+      finalTime = paidTime - 1
+    } else {
+      finalTime = paidTime
+    }
+  }
+
+  return finalTime
 }
