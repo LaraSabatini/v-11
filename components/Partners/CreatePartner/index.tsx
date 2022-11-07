@@ -146,29 +146,6 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     return createPaymentCall
   }
 
-  const createDayOrMonthPurchase = async () => {
-    const finalProfit = calcPriceMonthOrDay(
-      paidTimeUnit.id,
-      paidTime,
-      paymentMethodSelected,
-      prices,
-    )
-
-    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
-      id: 0,
-      date: `${day}-${month}-${year}`,
-      item_id: paidTimeUnit.id === 1 ? 2 : 3,
-      item_name:
-        paidTimeUnit.id === 1 ? `${partnerTexts.day}` : `${partnerTexts.month}`,
-      amount_of_items: paidTime,
-      profit: finalProfit,
-      payment_method_id: paymentMethodSelected,
-      created_by: parseInt(localStorage.getItem("id"), 10),
-    })
-
-    return createBoulderPurchaseCall
-  }
-
   const makePaymentsRequests = async (partnerId: number) => {
     let success = false
 
@@ -193,30 +170,46 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
       )
       success = executeDigitalPayment
     }
-    if (
+
+    const comboCondition =
       comboSelected !== null &&
       comboSelected !== undefined &&
       comboSelected !== 0
-    ) {
-      const createBoulderPurchaseCall = await createBoulderPurchaseAction({
-        id: 0,
-        date: `${day}-${month}-${year}`,
-        item_id: 1,
-        item_name: `${partnerTexts.combo}`,
-        amount_of_items: 1,
-        profit:
-          paymentMethodSelected === 1
-            ? combos[0].price_cash
-            : combos[0].price_mp,
-        payment_method_id: paymentMethodSelected,
-        created_by: parseInt(localStorage.getItem("id"), 10),
-      })
-      success = createBoulderPurchaseCall
+
+    let itemId = 0
+    let itemName = ""
+    let profit = 0
+
+    if (comboCondition) {
+      itemId = 1
+      itemName = `${partnerTexts.combo}`
+      profit =
+        paymentMethodSelected === 1 ? combos[0].price_cash : combos[0].price_mp
+    } else {
+      itemId = paidTimeUnit.id === 1 ? 2 : 3
+      itemName =
+        paidTimeUnit.id === 1 ? `${partnerTexts.day}` : `${partnerTexts.month}`
+
+      profit = calcPriceMonthOrDay(
+        paidTimeUnit.id,
+        paidTime,
+        paymentMethodSelected,
+        prices,
+      )
     }
-    if (paidTime !== 0) {
-      const executeBoulderPurchase = await createDayOrMonthPurchase()
-      success = executeBoulderPurchase
-    }
+
+    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
+      id: 0,
+      date: `${day}-${month}-${year}`,
+      item_id: itemId,
+      item_name: itemName,
+      amount_of_items: 1,
+      profit,
+      payment_method_id: paymentMethodSelected,
+      created_by: parseInt(localStorage.getItem("id"), 10),
+    })
+
+    success = createBoulderPurchaseCall
 
     return success
   }
