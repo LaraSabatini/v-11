@@ -73,6 +73,8 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
     null,
   )
 
+  const today = `${day}-${month}-${year}`
+
   const executePayment = async () => {
     let success: boolean = false
     for (let i = 0; i < lessonsSelectedToPay.length; i += 1) {
@@ -82,7 +84,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
         paid: "SI",
         payment_method_id: paymentMethodSelected.id,
         final_price: finalPrice / lessonsSelectedToPay.length,
-        paid_day: `${day}-${month}-${year}`,
+        paid_day: today,
         created_by: parseInt(localStorage.getItem("id"), 10),
       })
       success = changePaymentState
@@ -90,7 +92,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
 
     const boulderPurchaseCall = await createBoulderPurchaseAction({
       id: 0,
-      date: `${day}-${month}-${year}`,
+      date: today,
       item_id: 4,
       item_name: "Clases",
       amount_of_items: lessonsSelectedToPay.length,
@@ -108,7 +110,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
           id: 0,
           user_id: paymentUserSelected.id,
           user_name: paymentUserSelected.display_name,
-          date: `${day}-${month}-${year}`,
+          date: today,
           month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
             .display_name,
           month_id: parseInt(`${month}`, 10),
