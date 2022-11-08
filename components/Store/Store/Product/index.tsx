@@ -167,7 +167,7 @@ function Product({
 
   return (
     <ProductCard stock={stock === 0}>
-      {category_id === 1 && brand !== 12 && brand !== 11 && (
+      {category_id === 1 && brand !== 12 && brand !== 11 && brand !== 14 && (
         <img className="zapas" src="/beer.png" alt="beer" />
       )}
       {category_id === 4 && (
@@ -188,6 +188,9 @@ function Product({
       )}
       {category_id === 1 && brand === 12 && (
         <img className="coca" src="/coca.png" alt="beer" />
+      )}
+      {category_id === 1 && brand === 14 && (
+        <img className="sprite" src="/sprite.png" alt="beer" />
       )}
       {category_id === 1 && brand === 11 && (
         <img className="powerade" src="/powerade.png" alt="beer" />

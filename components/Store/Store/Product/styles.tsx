@@ -36,6 +36,10 @@ const ProductCard = styled.div<{ stock: boolean }>`
     width: 80px;
   }
 
+  .sprite {
+    width: 80px;
+  }
+
   .powerade {
     width: 70px;
   }

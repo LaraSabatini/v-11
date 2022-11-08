@@ -32,9 +32,12 @@ function HistoryCard({
     <div>
       {id !== 1 && id !== 2 && id !== 3 && (
         <Card>
-          {type === 1 && brand_id !== 12 && brand_id !== 11 && (
-            <img className="zapas" src="/beer.png" alt="beer" />
-          )}
+          {type === 1 &&
+            brand_id !== 12 &&
+            brand_id !== 11 &&
+            brand_id !== 14 && (
+              <img className="zapas" src="/beer.png" alt="beer" />
+            )}
           {type === 4 && (
             <img className="monster" src="/monster.webp" alt="beer" />
           )}
@@ -53,6 +56,9 @@ function HistoryCard({
           )}
           {type === 1 && brand_id === 12 && (
             <img className="coca" src="/coca.png" alt="beer" />
+          )}
+          {type === 1 && brand_id === 14 && (
+            <img className="sprite" src="/sprite.png" alt="beer" />
           )}
           {type === 1 && brand_id === 11 && (
             <img className="powerade" src="/powerade.png" alt="beer" />
