@@ -4,7 +4,7 @@ import {
   createPartnerAction,
   searchPartnerAction,
   createPartnerPaymentAction,
-  getCombosAction,
+  // getCombosAction,
 } from "helpers/partners"
 import {
   createBoulderPurchaseAction,
@@ -46,7 +46,6 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     paymentRef,
     paidTimeUnit,
     paidTime,
-    setCombos,
     comboSelected,
     paymentMethodSelected,
     finalPrice,
@@ -281,16 +280,6 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
 
     showModal(success)
   }
-
-  const getCombosData = async () => {
-    const combosData = await getCombosAction()
-    setCombos(combosData)
-  }
-
-  useEffect(() => {
-    getCombosData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   useEffect(() => {
     if (view === 2) {

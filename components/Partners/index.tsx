@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
 // DATA STORAGE & TYPES
-import { searchPartnerAction } from "helpers/partners"
+import { searchPartnerAction, getCombosAction } from "helpers/partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
@@ -49,6 +49,7 @@ function PartnersView() {
     setCreateModal,
     cleanStates,
     setPartnerSelected,
+    setCombos,
   } = useContext(PartnersContext)
 
   const router = useRouter()
@@ -97,6 +98,16 @@ function PartnersView() {
     getPartnersList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterSelected, currentPage, triggerListUpdate, canViewClients])
+
+  const getCombosData = async () => {
+    const combosData = await getCombosAction()
+    setCombos(combosData)
+  }
+
+  useEffect(() => {
+    getCombosData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Container>
