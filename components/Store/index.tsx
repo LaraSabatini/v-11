@@ -150,6 +150,12 @@ function StoreView() {
     })
   }
 
+  useEffect(() => {
+    // console.log("cambio ruta", Object.keys(router.query)[0])
+    getListOfProducts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Object.keys(router.query)[0]])
+
   return (
     <Container>
       <Modals />

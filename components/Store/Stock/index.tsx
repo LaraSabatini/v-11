@@ -192,12 +192,19 @@ function Stock({ editPermits }: StockInterface) {
             type="text"
             width={60}
             value={`${newValues.stock}` || ""}
-            onChange={e =>
-              setNewValues({
-                ...newValues,
-                stock: parseInt(e.target.value, 10),
-              })
-            }
+            onChange={e => {
+              if (e.target.value === "-" || e.target.value === "") {
+                setNewValues({
+                  ...newValues,
+                  stock: 0,
+                })
+              } else {
+                setNewValues({
+                  ...newValues,
+                  stock: parseInt(e.target.value, 10),
+                })
+              }
+            }}
           />
         </TextFieldContainer>
       ),
@@ -209,12 +216,19 @@ function Stock({ editPermits }: StockInterface) {
             type="text"
             width={70}
             value={`${newValues.price}` || ""}
-            onChange={e =>
-              setNewValues({
-                ...newValues,
-                price: parseFloat(e.target.value),
-              })
-            }
+            onChange={e => {
+              if (e.target.value === "-" || e.target.value === "") {
+                setNewValues({
+                  ...newValues,
+                  price: 0,
+                })
+              } else {
+                setNewValues({
+                  ...newValues,
+                  price: parseFloat(e.target.value),
+                })
+              }
+            }}
           />
         </TextFieldContainer>
       ),
@@ -226,7 +240,14 @@ function Stock({ editPermits }: StockInterface) {
             width={70}
             value={`${newValues.cost}` || ""}
             onChange={e => {
-              setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
+              if (e.target.value === "-" || e.target.value === "") {
+                setNewValues({
+                  ...newValues,
+                  cost: 0,
+                })
+              } else {
+                setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
+              }
             }}
           />
         </TextFieldContainer>
