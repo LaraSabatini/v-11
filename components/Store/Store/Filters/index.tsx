@@ -1,13 +1,16 @@
-import React, { useContext, useState } from "react"
+import React, {
+  useContext,
+  // useState
+} from "react"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
 import OptionsInterface from "interfaces/store/OptionsInterface"
 // COMPONENTS & STYLING
-import TextButton from "components/UI/TextButton"
+// import TextButton from "components/UI/TextButton"
 import Icon from "components/UI/Assets/Icon"
-import TillPreview from "./TillPreview"
+// import TillPreview from "./TillPreview"
 import {
   FiltersContainer,
   Select,
@@ -24,14 +27,14 @@ function Filters() {
     selectFilter,
   } = useContext(StoreContext)
 
-  const [tillPreview, setTillPreview] = useState<boolean>(false)
+  // const [tillPreview, setTillPreview] = useState<boolean>(false)
 
   return (
     <FiltersContainer>
-      <TextButton onClick={() => setTillPreview(true)} content="Caja" cta />
+      {/* <TextButton onClick={() => setTillPreview(true)} content="Caja" cta />
       {tillPreview && (
         <TillPreview closeTillPreview={() => setTillPreview(false)} />
-      )}
+      )} */}
       <Select
         onClick={() => {
           setOpenTypeMenu(!openTypeMenu)
