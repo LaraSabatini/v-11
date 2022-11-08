@@ -229,6 +229,7 @@ function CreatePurchaseModal({
                 searchValue={searchValue}
                 onChangeSearch={e => setSearchValue(e.target.value)}
                 width={220}
+                enterSearch={e => e.preventDefault()}
               />
               <PopOverContainer>
                 <PopOver
@@ -467,6 +468,12 @@ function CreatePurchaseModal({
                               datesSelected,
                             )
                             setDatesSelected(newArrayOfDates)
+                            if (newArrayOfDates.length !== amountOfLessons) {
+                              setBuyedCombo(true)
+                              setFinalPrice(0)
+                              setPaid(null)
+                              setPaymentMethodSelected(null)
+                            }
                           }}
                         >
                           <Icon icon="IconMenuOff" />

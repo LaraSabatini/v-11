@@ -65,6 +65,8 @@ function TrainersView() {
 
   const calendarActions = permissions.sub_sections[0].actions
 
+  const today = `${day}-${month}-${year}`
+
   const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
   const [
     createLessonPurchaseView,
@@ -77,7 +79,7 @@ function TrainersView() {
     cleanStates()
   }
 
-  const createLessonPurchaseFunc = async (
+  const createLessonPurchase = async (
     partnerId: number,
     partnerName: string,
     partnerLastName: string,
@@ -107,7 +109,7 @@ function TrainersView() {
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
-        paid_day: paid ? `${day}-${month}-${year}` : "",
+        paid_day: paid ? today : "",
         created_by: parseInt(localStorage.getItem("id"), 10),
       })
       success = createLessonPurchaseCall
@@ -115,12 +117,12 @@ function TrainersView() {
     return success
   }
 
-  const createBoulderPurchaseCallFunc = async () => {
+  const createBoulderPurchase = async () => {
     let success: boolean = false
 
     const createBoulderPurchaseCall = await createBoulderPurchaseAction({
       id: 0,
-      date: `${day}-${month}-${year}`,
+      date: today,
       item_id: 4,
       item_name: `${trainerTexts.lessons}`,
       amount_of_items: amountOfLessons,
@@ -138,7 +140,7 @@ function TrainersView() {
           id: 0,
           user_id: paymentUserSelected.id,
           user_name: paymentUserSelected.display_name,
-          date: `${day}-${month}-${year}`,
+          date: today,
           month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
             .display_name,
           month_id: parseInt(`${month}`, 10),
@@ -155,7 +157,7 @@ function TrainersView() {
     e.preventDefault()
     setDisablePurchaseButton(true)
 
-    let success: boolean = false
+    let success = false
     let canShowModalError = true
 
     if (clientIsRegistered) {
@@ -168,47 +170,51 @@ function TrainersView() {
         })
         success = editPartnerCall
       }
-
-      const createPur = await createLessonPurchaseFunc(
+      const createLessonPurchases = await createLessonPurchase(
         clientSelected.id,
         clientSelected.name,
         clientSelected.last_name,
       )
 
-      success = createPur
+      success = createLessonPurchases
 
       if (paid && !buyedCombo) {
-        const boulderPurchase = await createBoulderPurchaseCallFunc()
-        success = boulderPurchase && createPur
+        const createBoulderPurchases = await createBoulderPurchase()
+        success = createBoulderPurchases
       }
     } else {
       const seeDuplicated = await searchPartnerAction(
         newPartnerData.identification_number,
       )
+
       if (seeDuplicated.data.length > 0) {
         setIdentificationError(true)
         canShowModalError = false
       } else {
-        canShowModalError = true
         setIdentificationError(false)
+        canShowModalError = true
+
+        const name = cleanPartnerData(newPartnerData.name)
+        const lastName = cleanPartnerData(newPartnerData.last_name)
 
         const createPartnerCall = await createPartnerAction({
           ...newPartnerData,
-          name: cleanPartnerData(newPartnerData.name),
-          last_name: cleanPartnerData(newPartnerData.last_name),
+          name,
+          last_name: lastName,
         })
-        if (createPartnerCall.success) {
-          const pur = await createLessonPurchaseFunc(
-            createPartnerCall.partnerId,
-            cleanPartnerData(newPartnerData.name),
-            cleanPartnerData(newPartnerData.last_name),
-          )
-          success = pur
-        }
+
+        success = createPartnerCall.success
+
+        const createLessonPurchases = await createLessonPurchase(
+          createPartnerCall.partnerId,
+          name,
+          lastName,
+        )
+        success = createLessonPurchases
 
         if (paid) {
-          const boulderPurchase = await createBoulderPurchaseCallFunc()
-          success = boulderPurchase
+          const createBoulderPurchases = await createBoulderPurchase()
+          success = createBoulderPurchases
         }
       }
     }
