@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react"
-// SERVICES
 // DATA STORAGE & TYPES
 import {
   createPartnerPaymentAction,
@@ -19,11 +18,12 @@ import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import financesTexts from "strings/finances.json"
-import { evaluateFinalTime, getExpirationDate } from "utils"
+import { getExpirationDate } from "utils"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
 import Icon from "components/UI/Assets/Icon"
+import checkIfCanUpdatePayment from "../../helpers/checkIfCanUpdatePayment"
 import EditPayment from "./EditPayment"
 import ModalChanges from "../ModalChanges"
 import calcPriceMonthOrDay from "../../helpers/calcPriceForMonthOrDayPurchase"
@@ -83,6 +83,8 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
   const permissions = JSON.parse(getPermissions)[0].sections[0].sub_sections[0]
   const canDeletePartner = permissions.actions.delete
 
+  const today = `${day}-${month}-${year}`
+
   const deletePartnerFunction = async () => {
     const deletion = await deletePartnerAction(partnerInfo.id)
 
@@ -103,89 +105,48 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     }
   }
 
-  const createComboPurchase = async () => {
-    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
-      id: 0,
-      date: `${day}-${month}-${year}`,
-      item_id: 1,
-      item_name: `${financesTexts.combo}`,
-      amount_of_items: 1,
-      profit:
-        paymentMethodSelected === 1 ? combos[0].price_cash : combos[0].price_mp,
-      payment_method_id: paymentMethodSelected,
-      created_by: parseInt(localStorage.getItem("id"), 10),
-    })
-
-    return createBoulderPurchaseCall
-  }
-
-  const createDayOrMonthPurchase = async () => {
-    const finalProfit = calcPriceMonthOrDay(
-      paidTimeUnit.id,
-      paidTime,
-      paymentMethodSelected,
-      prices,
-    )
-
-    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
-      id: 0,
-      date: `${day}-${month}-${year}`,
-      item_id: paidTimeUnit.id === 1 ? 2 : 3,
-      item_name:
-        paidTimeUnit.id === 1
-          ? `${financesTexts.day}`
-          : `${financesTexts.month}`,
-      amount_of_items: paidTime,
-      profit: finalProfit,
-      payment_method_id: paymentMethodSelected,
-      created_by: parseInt(localStorage.getItem("id"), 10),
-    })
-
-    return createBoulderPurchaseCall
-  }
+  const comboCondition =
+    newValues?.combo !== null &&
+    newValues?.combo !== undefined &&
+    newValues?.combo !== 0
 
   const addPayment = async () => {
-    let success: boolean = false
-
-    const comboCondition =
-      newValues.combo !== null &&
-      newValues.combo !== undefined &&
-      newValues.combo !== 0
-
+    let itemId = 0
+    let itemName = ""
+    let profit = 0
     if (comboCondition) {
-      const executePurchase = await createComboPurchase()
-      success = executePurchase
-    }
-    if (paidTime !== 0) {
-      const executePurchase = await createDayOrMonthPurchase()
-      success = executePurchase
-    }
-
-    return success
-  }
-
-  const addDaysFunc = async (expirationDate: string) => {
-    let success: boolean = false
-
-    const createPayment = await createPartnerPaymentAction({
-      ...newValues,
-      time_paid:
+      itemId = 1
+      itemName = `${financesTexts.combo}`
+      profit =
+        paymentMethodSelected === 1 ? combos[0].price_cash : combos[0].price_mp
+    } else {
+      itemId = paidTimeUnit.id === 1 ? 2 : 3
+      itemName =
         paidTimeUnit.id === 1
-          ? evaluateFinalTime(paidTime, usesDay) + initialPayment.time_paid
-          : initialPayment.time_paid + newValues.time_paid,
-      price_paid: finalPrice,
-      payment_expire_date:
-        (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-        (comboSelected !== null && comboSelected !== undefined)
-          ? expirationDate
-          : "",
-      date: `${day}-${month}-${year}`,
+          ? `${financesTexts.day}`
+          : `${financesTexts.month}`
+
+      const finalProfit = calcPriceMonthOrDay(
+        paidTimeUnit.id,
+        paidTime,
+        paymentMethodSelected,
+        prices,
+      )
+      profit = finalProfit
+    }
+
+    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
+      id: 0,
+      date: today,
+      item_id: itemId,
+      item_name: itemName,
+      amount_of_items: comboCondition ? 1 : paidTime,
+      profit,
+      payment_method_id: paymentMethodSelected,
       created_by: parseInt(localStorage.getItem("id"), 10),
     })
-    const addPaymentFunc = await addPayment()
 
-    success = createPayment && addPaymentFunc
-    return success
+    return createBoulderPurchaseCall
   }
 
   const handleEdit = async e => {
@@ -202,6 +163,8 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
           "false" &&
         paidTimeUnitRef.current.attributes.getNamedItem("data-error").value ===
           "false"
+    } else {
+      canPurchase = true
     }
     await paymentRef.current?.focus()
 
@@ -212,29 +175,67 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         "false"
     }
 
-    const canAddDays =
-      initialPayment.time_paid_unit === 0 ||
-      initialPayment.time_paid_unit === newValues.time_paid_unit
+    const checkAvailability = checkIfCanUpdatePayment(initialPayment)
 
-    if (canAddDays === false) {
+    if (comboCondition && checkAvailability.combos) {
+      canPurchase = true
+    } else if (
+      paidTime > 0 &&
+      paidTimeUnit.id === 1 &&
+      checkAvailability.days
+    ) {
+      canPurchase = true
+    } else if (
+      paidTime > 0 &&
+      paidTimeUnit.id === 2 &&
+      checkAvailability.months
+    ) {
+      canPurchase = true
+    } else {
+      canPurchase = false
+    }
+
+    if (!canPurchase) {
       setModalErrorAddDays({
         status: "alert",
         icon: "IconExclamation",
         title: `${partnerTexts.cannotAddDays.title}`,
         content: `${partnerTexts.cannotAddDays.content}`,
       })
-      cleanStates()
     }
 
-    if (canPurchase && canAddDays) {
+    if (canPurchase) {
       setDisabledButton(true)
-      const expirationDate = getExpirationDate(paidTime, comboSelected)
 
-      const addDays = await addDaysFunc(expirationDate)
-      success = addDays
+      const makeBoulderPurchase = await addPayment()
+      success = makeBoulderPurchase
 
-      if (initialPayment === undefined) {
-        const createPayment = await createPartnerPaymentAction({
+      if (paymentMethodSelected === 2) {
+        const executePurchase = await makeAppropiatePayment(
+          paymentUserSelected.id,
+          finalPrice,
+          {
+            id: 0,
+            user_id: paymentUserSelected.id,
+            user_name: paymentUserSelected.display_name,
+            date: today,
+            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+              .display_name,
+            month_id: parseInt(`${month}`, 10),
+            total_profit: finalPrice,
+            created_by: parseInt(localStorage.getItem("id"), 10),
+          },
+        )
+        success = executePurchase
+      }
+
+      if (
+        checkAvailability.combos &&
+        checkAvailability.days &&
+        checkAvailability.months
+      ) {
+        const expirationDate = getExpirationDate(paidTime, comboSelected)
+        const createPartnerPayment = await createPartnerPaymentAction({
           ...newValues,
           time_paid: newValues.time_paid,
           price_paid: finalPrice,
@@ -247,32 +248,21 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
           created_by: parseInt(localStorage.getItem("id"), 10),
         })
 
-        const addPaymentFunc = await addPayment()
-
-        success = createPayment && addPaymentFunc
-      }
-
-      if (paymentMethodSelected === 2) {
-        const executePurchase = await makeAppropiatePayment(
-          paymentUserSelected.id,
-          finalPrice,
-          {
-            id: 0,
-            user_id: paymentUserSelected.id,
-            user_name: paymentUserSelected.display_name,
-            date: `${day}-${month}-${year}`,
-            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-              .display_name,
-            month_id: parseInt(`${month}`, 10),
-            total_profit: finalPrice,
-            created_by: parseInt(localStorage.getItem("id"), 10),
-          },
-        )
-        success = executePurchase
+        success = createPartnerPayment
+      } else {
+        const updatePartnerPayment = await editPartnerPaymentAction({
+          ...initialPayment,
+          time_paid: usesDay
+            ? initialPayment.time_paid + paidTime - 1
+            : initialPayment.time_paid + paidTime,
+          date: today,
+          created_by: parseInt(localStorage.getItem("id"), 10),
+        })
+        success = updatePartnerPayment
       }
     }
 
-    if (success && canPurchase) {
+    if (success) {
       setModalSuccess({
         status: "success",
         icon: "IconCheckModal",
