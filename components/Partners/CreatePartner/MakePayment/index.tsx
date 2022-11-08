@@ -64,6 +64,7 @@ function MakePayment() {
           ref={comboRef}
           onChangeProps={(e: { id: number; display_name: string }) => {
             setComboSelected(e.id)
+            setPaidTime(0)
           }}
         />
         <TextField

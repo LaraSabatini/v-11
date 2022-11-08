@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
-import { today } from "const/time"
 
 export const getExpirationDate = (paidTime: number, comboSelected: number) => {
+  const today = new Date()
+
   const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
   const expireDate = newDate.getDate()
   const expireMonth = newDate.getMonth()
@@ -17,5 +18,5 @@ export const getExpirationDate = (paidTime: number, comboSelected: number) => {
       expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
   }
 
-  return `${finalExpireDay}/${finalExpireMonth}/${expireYear}`
+  return `${finalExpireDay}-${finalExpireMonth}-${expireYear}`
 }

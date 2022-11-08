@@ -64,6 +64,8 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
   const { prices } = useContext(GeneralContext)
 
+  const today = `${day}-${month}-${year}`
+
   const goNextForm = async (e: any) => {
     e.preventDefault()
 
@@ -100,7 +102,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
           last_name: cleanPartnerData(newPartnerData.last_name),
           birth_date:
             newPartnerData.birth_date === "" ? "-" : newPartnerData.birth_date,
-          membership_start_date: `${day}/${month}/${year}`,
+          membership_start_date: today,
           created_by: parseInt(localStorage.getItem("id"), 10),
         }
 
@@ -110,6 +112,9 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
       }
     }
   }
+
+  const comboCondition =
+    comboSelected !== null && comboSelected !== undefined && comboSelected !== 0
 
   const createPayment = async (partnerId: number) => {
     const expirationDate = getExpirationDate(paidTime, comboSelected)
@@ -134,7 +139,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         pm => pm.id === paymentMethodSelected,
       )[0].display_name,
       price_paid: finalPrice,
-      date: `${day}-${month}-${year}`,
+      date: today,
       payment_expire_date:
         (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
         (comboSelected !== null && comboSelected !== undefined)
@@ -160,7 +165,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
           id: 0,
           user_id: paymentUserSelected.id,
           user_name: paymentUserSelected.display_name,
-          date: `${day}-${month}-${year}`,
+          date: today,
           month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
             .display_name,
           month_id: parseInt(`${month}`, 10),
@@ -170,11 +175,6 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
       )
       success = executeDigitalPayment
     }
-
-    const comboCondition =
-      comboSelected !== null &&
-      comboSelected !== undefined &&
-      comboSelected !== 0
 
     let itemId = 0
     let itemName = ""
@@ -200,10 +200,10 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
 
     const createBoulderPurchaseCall = await createBoulderPurchaseAction({
       id: 0,
-      date: `${day}-${month}-${year}`,
+      date: today,
       item_id: itemId,
       item_name: itemName,
-      amount_of_items: 1,
+      amount_of_items: comboCondition ? 1 : paidTime,
       profit,
       payment_method_id: paymentMethodSelected,
       created_by: parseInt(localStorage.getItem("id"), 10),
@@ -266,7 +266,9 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
           paidTimeUnit?.id !== 1
             ? 1
             : 0,
-        is_student: `${generalTexts.no.toUpperCase()}`,
+        is_student: comboCondition
+          ? `${generalTexts.yes}`
+          : `${generalTexts.no}`,
       })
 
       if (createPartner.success) {
