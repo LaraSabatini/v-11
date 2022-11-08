@@ -1,11 +1,10 @@
 import React, { useContext, useRef, useState, useEffect } from "react"
-// SERVICES
-import {
-  getLessonsByPartnerAndPaid,
-  editLesson,
-} from "services/Trainers/LessonsPurchased.service"
 // DATA STORAGE & TYPES
-import { Lessons } from "@contexts/Lessons"
+import {
+  getLessonsByPartnerAndPaidAction,
+  editLessonAction,
+} from "helpers/lessons"
+import { Lessons } from "contexts/Lessons"
 import generalTexts from "strings/general.json"
 import trainerTexts from "strings/trainers.json"
 import { shifts, day, month, year } from "const/time"
@@ -17,7 +16,8 @@ import Icon from "components/UI/Assets/Icon"
 import ModalForm from "components/UI/ModalForm"
 import InputCalendar from "components/UI/InputCalendar"
 import Autocomplete from "components/UI/Autocomplete"
-import checkIfDateHasSpace from "../../utils/checkIfDateHasSpace"
+import checkIfDateHasSpace from "../../helpers/checkIfDateHasSpace"
+import calculateLessonWeek from "../../helpers/calculateLessonWeek"
 import { AcceptButton, Warning } from "../CreatePurchase/styles"
 import {
   Form,
@@ -72,30 +72,18 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
       dateSelected !== null
     ) {
       setDisabledButton(true)
-      const lessonDay = `${dateSelected.date.slice(
-        6,
-        10,
-      )}-${dateSelected.date.slice(3, 5)}-${dateSelected.date.slice(0, 2)}`
-      const currentDate = new Date(lessonDay)
-      const startDate = new Date(currentDate.getFullYear(), 0, 1)
-      const days = Math.floor(
-        (currentDate.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000),
-      )
-      const weekNumber = Math.ceil(days / 7)
+      const lessonDate = calculateLessonWeek(dateSelected.date)
 
-      const editLessonBody = {
+      const editLessonCall = await editLessonAction({
         ...purchaseSelected,
         lesson_date: dateSelected.date,
         shift: dateSelected.shift,
-        day_id: currentDate.getDay(),
-        week_id: weekNumber,
+        day_id: lessonDate.day.getDay(),
+        week_id: lessonDate.week,
         created_by: parseInt(localStorage.getItem("id"), 10),
-      }
+      })
 
-      const editLessonCall = await editLesson(editLessonBody)
-
-      const success =
-        editLessonCall.message === "Lesson purchase updated successfully"
+      const success = editLessonCall
 
       if (success) {
         setModalSuccess({
@@ -118,26 +106,24 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
   }
 
   const checkLessonsPurchased = async () => {
-    const checkLessonsCallPaid = await getLessonsByPartnerAndPaid(
+    const checkLessonsCallPaid = await getLessonsByPartnerAndPaidAction(
       purchaseSelected.partner_id,
       `${yesOrNoArr[0].display_name}`,
     )
-    const checkLessonsCallNotPaid = await getLessonsByPartnerAndPaid(
+    const checkLessonsCallNotPaid = await getLessonsByPartnerAndPaidAction(
       purchaseSelected.partner_id,
       `${yesOrNoArr[1].display_name}`,
     )
 
-    const filterActualLesson = checkLessonsCallPaid.data.filter(
+    const filterActualLesson = checkLessonsCallPaid.filter(
       (lesson: ClasesPurchasedInterface) =>
         lesson.id !== purchaseSelected.id && lesson.id > purchaseSelected.id,
     )
 
-    let newArrayOfLessons = []
-    if (filterActualLesson.length) {
-      newArrayOfLessons = [...newArrayOfLessons, filterActualLesson]
-    } else {
-      newArrayOfLessons = checkLessonsCallNotPaid.data
-    }
+    const newArrayOfLessons = filterActualLesson.length
+      ? filterActualLesson
+      : checkLessonsCallNotPaid
+
     setFutureLessons(newArrayOfLessons[0])
   }
 

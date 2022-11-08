@@ -1,13 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { useRouter } from "next/router"
-// SERVICES
-import {
-  searchPartner,
-  getPartners,
-  getStudents,
-  getFreePassPartners,
-} from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { searchPartnerAction, getCombosAction } from "helpers/partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { PartnersContext } from "contexts/Partners"
@@ -25,6 +19,7 @@ import PartnerDetails from "./PartnerDetails"
 import CreatePartner from "./CreatePartner"
 import Filters from "./Filters"
 import Prices from "./Prices"
+import setPartnerList from "./helpers/setPartnersList"
 import {
   Container,
   Title,
@@ -54,6 +49,7 @@ function PartnersView() {
     setCreateModal,
     cleanStates,
     setPartnerSelected,
+    setCombos,
   } = useContext(PartnersContext)
 
   const router = useRouter()
@@ -70,20 +66,10 @@ function PartnersView() {
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 
-  const setPartnerList = async () => {
-    if (filterSelected === "all") {
-      const data = await getPartners(currentPage)
-      setPartners(data.data)
-      setTotalPages(data.meta.totalPages)
-    } else if (filterSelected === "students") {
-      const data = await getStudents(currentPage)
-      setPartners(data.data)
-      setTotalPages(data.meta.totalPages)
-    } else {
-      const data = await getFreePassPartners(currentPage)
-      setPartners(data.data)
-      setTotalPages(data.meta.totalPages)
-    }
+  const getPartnersList = async () => {
+    const data = await setPartnerList(filterSelected, currentPage)
+    setPartners(data.list)
+    setTotalPages(data.numberOfPages)
   }
 
   const goPrev = () => {
@@ -104,14 +90,24 @@ function PartnersView() {
     setFilterSelected("all")
     setPartnerSelected(null)
 
-    const executeSearch = await searchPartner(searchValue, 1)
+    const executeSearch = await searchPartnerAction(searchValue)
     setPartners(executeSearch.data)
   }
 
   useEffect(() => {
-    setPartnerList()
+    getPartnersList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterSelected, currentPage, triggerListUpdate, canViewClients])
+
+  const getCombosData = async () => {
+    const combosData = await getCombosAction()
+    setCombos(combosData)
+  }
+
+  useEffect(() => {
+    getCombosData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <Container>
@@ -149,7 +145,7 @@ function PartnersView() {
                 searchValue={searchValue}
                 onChangeSearch={e => {
                   if (e.target.value === "") {
-                    setPartnerList()
+                    getPartnersList()
                     setSearchValue("")
                   } else {
                     setSearchValue(e.target.value)

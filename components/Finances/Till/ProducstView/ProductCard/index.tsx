@@ -6,6 +6,8 @@ import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
+import cleanMargin from "utils/cleanMargin"
+import cleanProfit from "../../helpers/cleanProfit"
 import {
   Card,
   ComponentContainer,
@@ -26,35 +28,16 @@ function HistoryCard({
   payment,
   id,
 }: HistoryCardInterface) {
-  const finalProfit = final_sells - cost * amount
-
-  const splittedProfit = `${finalProfit}`.split(".")
-
-  let finalProfitString = ""
-
-  if (splittedProfit.length > 1) {
-    finalProfitString = `${splittedProfit[0]}.${splittedProfit[1].slice(0, 2)}`
-  } else {
-    finalProfitString = `${splittedProfit[0]}`
-  }
-
-  const splittedMargin = `${margin}`.split(".")
-
-  let marginString = ""
-
-  if (splittedMargin.length > 1) {
-    marginString = `${splittedMargin[0]}.${splittedMargin[1].slice(0, 2)}`
-  } else {
-    marginString = `${splittedMargin[0]}`
-  }
-
   return (
     <div>
       {id !== 1 && id !== 2 && id !== 3 && (
         <Card>
-          {type === 1 && brand_id !== 12 && brand_id !== 11 && (
-            <img className="zapas" src="/beer.png" alt="beer" />
-          )}
+          {type === 1 &&
+            brand_id !== 12 &&
+            brand_id !== 11 &&
+            brand_id !== 14 && (
+              <img className="zapas" src="/beer.png" alt="beer" />
+            )}
           {type === 4 && (
             <img className="monster" src="/monster.webp" alt="beer" />
           )}
@@ -74,6 +57,9 @@ function HistoryCard({
           {type === 1 && brand_id === 12 && (
             <img className="coca" src="/coca.png" alt="beer" />
           )}
+          {type === 1 && brand_id === 14 && (
+            <img className="sprite" src="/sprite.png" alt="beer" />
+          )}
           {type === 1 && brand_id === 11 && (
             <img className="powerade" src="/powerade.png" alt="beer" />
           )}
@@ -84,7 +70,8 @@ function HistoryCard({
             <p className="profits">
               {financesTexts.profits}:
               <span>
-                ${finalProfitString} <p>(${marginString})</p>
+                ${cleanProfit(final_sells - cost * amount)}{" "}
+                <p>(${cleanMargin(`${margin}`.split("."))})</p>
               </span>
             </p>
             <HorizontalGroup>

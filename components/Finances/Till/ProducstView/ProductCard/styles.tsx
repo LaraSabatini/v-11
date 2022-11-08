@@ -18,6 +18,10 @@ const Card = styled.div`
     width: 50px;
   }
 
+  .sprite {
+    width: 80px;
+  }
+
   .calendar {
     width: 103px;
     height: 95px;

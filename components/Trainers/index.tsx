@@ -1,34 +1,28 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState } from "react"
 import { useRouter } from "next/router"
-// SERVICES
-import { getPrices } from "services/Partners/Prices.service"
-import { createLessonPurchase } from "services/Trainers/LessonsPurchased.service"
-import { createBoulderPurchase } from "services/Finances/Bouderpurchases.service"
-import {
-  createDigitalPayment,
-  searchDigitalPaymentByUserAndDate,
-  updateDigitalPayment,
-} from "services/Finances/DigitalPayments.service"
-import {
-  createPartner,
-  searchPartner,
-  editPartner,
-} from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import {
+  createPartnerAction,
+  searchPartnerAction,
+  editPartnerAction,
+} from "helpers/partners"
+import {
+  makeAppropiatePayment,
+  createBoulderPurchaseAction,
+} from "helpers/payments"
+import { createLessonPurchaseAction } from "helpers/lessons"
 import PartnersProvider from "contexts/Partners"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
 import { Lessons } from "@contexts/Lessons"
-import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
-import cleanPartnerData from "utils/cleanPartnerData"
-import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
-import MPUserPayment from "interfaces/finances/MPUserPayments"
+import { cleanPartnerData } from "utils"
 // COMPONENTS & STYLING
 import NoPermissionsView from "components/UI/NoPermitsView"
 import Header from "components/UI/Header"
 import Icon from "components/UI/Assets/Icon"
+import calculateLessonWeek from "./helpers/calculateLessonWeek"
 import Modals from "./Modals"
 import CalendarView from "./CalendarView"
 import StudentsView from "./StudentsView"
@@ -45,7 +39,6 @@ import {
 function TrainersView() {
   const {
     purchaseSelected,
-    setPrices,
     clientIsRegistered,
     paid,
     amountOfLessons,
@@ -72,6 +65,8 @@ function TrainersView() {
 
   const calendarActions = permissions.sub_sections[0].actions
 
+  const today = `${day}-${month}-${year}`
+
   const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
   const [
     createLessonPurchaseView,
@@ -84,24 +79,17 @@ function TrainersView() {
     cleanStates()
   }
 
-  const createLessonPurchaseFunc = async (
+  const createLessonPurchase = async (
     partnerId: number,
     partnerName: string,
     partnerLastName: string,
   ) => {
     let success = false
     for (let i = 0; i < amountOfLessons; i += 1) {
-      const lessonDay = `${datesSelected[i].date.slice(6, 10)}-${datesSelected[
-        i
-      ].date.slice(3, 5)}-${datesSelected[i].date.slice(0, 2)}`
-      const currentDate = new Date(lessonDay)
-      const startDate = new Date(currentDate.getFullYear(), 0, 1)
-      const days = Math.floor(
-        (currentDate.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000),
-      )
-      const weekNumber = Math.ceil(days / 7)
+      const finalLessonDate = calculateLessonWeek(datesSelected[i].date)
 
-      const body: ClasesPurchasedInterface = {
+      //  eslint-disable-next-line no-await-in-loop
+      const createLessonPurchaseCall = await createLessonPurchaseAction({
         id: 0,
         lesson_date: `${datesSelected[i].date.slice(0, 2)}-${datesSelected[
           i
@@ -112,90 +100,55 @@ function TrainersView() {
         partner_last_name: partnerLastName,
         trainer_id: 0,
         trainer_name: "",
-        week_id: weekNumber,
+        week_id: finalLessonDate.week,
         paid:
           paid || buyedCombo
             ? `${yesOrNoArr[0].display_name}`
             : `${yesOrNoArr[1].display_name}`,
-        day_id: currentDate.getDay(),
+        day_id: finalLessonDate.day.getDay(),
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
-        paid_day: paid ? `${day}-${month}-${year}` : "",
+        paid_day: paid ? today : "",
         created_by: parseInt(localStorage.getItem("id"), 10),
-      }
-
-      //  eslint-disable-next-line no-await-in-loop
-      const createLessonPurchaseCall = await createLessonPurchase(body)
-      success =
-        createLessonPurchaseCall.message ===
-        "Lesson purchase created successfully"
+      })
+      success = createLessonPurchaseCall
     }
     return success
   }
 
-  const createBoulderPurchaseCallFunc = async () => {
+  const createBoulderPurchase = async () => {
     let success: boolean = false
 
-    const boulderPurchaseBody: PartnerPaymentsHistoryInterface = {
+    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
       id: 0,
-      date: `${day}-${month}-${year}`,
+      date: today,
       item_id: 4,
       item_name: `${trainerTexts.lessons}`,
       amount_of_items: amountOfLessons,
       profit: finalPrice,
       payment_method_id: paymentMethodSelected.id,
       created_by: parseInt(localStorage.getItem("id"), 10),
-    }
-
-    const createBoulderPurchaseCall = await createBoulderPurchase(
-      boulderPurchaseBody,
-    )
-    success =
-      createBoulderPurchaseCall.message === "bouderPayment created successfully"
+    })
+    success = createBoulderPurchaseCall
 
     if (paymentMethodSelected.id === 2) {
-      const searchIfExists = await searchDigitalPaymentByUserAndDate(
+      const makePayment = await makeAppropiatePayment(
         paymentUserSelected.id,
-        `${day}-${month}-${year}`,
-      )
-
-      if (searchIfExists.data.length > 0) {
-        const digitalPaymentBody: MPUserPayment = {
-          id: searchIfExists.data[0].id,
-          user_id: searchIfExists.data[0].user_id,
-          user_name: searchIfExists.data[0].user_name,
-          date: searchIfExists.data[0].date,
-          month: searchIfExists.data[0].month,
-          month_id: searchIfExists.data[0].month_id,
-          total_profit: searchIfExists.data[0].total_profit + finalPrice,
-          created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-
-        const editDigitalPayment = await updateDigitalPayment(
-          digitalPaymentBody,
-        )
-
-        success = editDigitalPayment.message === "payment updated successfully"
-      } else {
-        const digitalPaymentBody: MPUserPayment = {
+        finalPrice,
+        {
           id: 0,
           user_id: paymentUserSelected.id,
           user_name: paymentUserSelected.display_name,
-          date: `${day}-${month}-${year}`,
+          date: today,
           month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
             .display_name,
           month_id: parseInt(`${month}`, 10),
           total_profit: finalPrice,
           created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-
-        const createDigitalPaymentCall = await createDigitalPayment(
-          digitalPaymentBody,
-        )
-        success =
-          createDigitalPaymentCall.message === "payment created successfully"
-      }
+        },
+      )
+      success = makePayment
     }
     return success
   }
@@ -204,68 +157,64 @@ function TrainersView() {
     e.preventDefault()
     setDisablePurchaseButton(true)
 
-    let success: boolean = false
+    let success = false
     let canShowModalError = true
 
     if (clientIsRegistered) {
       canShowModalError = true
 
       if (clientSelected.is_student === `${yesOrNoArr[1].display_name}`) {
-        const bodyEditPartner = {
+        const editPartnerCall = await editPartnerAction({
           ...clientSelected,
           is_student: `${yesOrNoArr[0].display_name}`,
-        }
-
-        const editPartnerCall = await editPartner(bodyEditPartner)
-        success = editPartnerCall.message === "partner updated successfully"
+        })
+        success = editPartnerCall
       }
-
-      const createPur = await createLessonPurchaseFunc(
+      const createLessonPurchases = await createLessonPurchase(
         clientSelected.id,
         clientSelected.name,
         clientSelected.last_name,
       )
 
-      success = createPur
+      success = createLessonPurchases
 
       if (paid && !buyedCombo) {
-        const boulderPurchase = await createBoulderPurchaseCallFunc()
-        success = boulderPurchase && createPur
+        const createBoulderPurchases = await createBoulderPurchase()
+        success = createBoulderPurchases
       }
     } else {
-      const seeDuplicated = await searchPartner(
+      const seeDuplicated = await searchPartnerAction(
         newPartnerData.identification_number,
-        1,
       )
+
       if (seeDuplicated.data.length > 0) {
         setIdentificationError(true)
         canShowModalError = false
       } else {
-        canShowModalError = true
         setIdentificationError(false)
+        canShowModalError = true
 
-        const formatName = cleanPartnerData(newPartnerData.name)
-        const formatLastName = cleanPartnerData(newPartnerData.last_name)
+        const name = cleanPartnerData(newPartnerData.name)
+        const lastName = cleanPartnerData(newPartnerData.last_name)
 
-        const createBody = {
+        const createPartnerCall = await createPartnerAction({
           ...newPartnerData,
-          name: formatName,
-          last_name: formatLastName,
-        }
+          name,
+          last_name: lastName,
+        })
 
-        const createPartnerCall = await createPartner(createBody)
-        if (createPartnerCall.message === "partner created successfully") {
-          const pur = await createLessonPurchaseFunc(
-            createPartnerCall.partnerId,
-            formatName,
-            formatLastName,
-          )
-          success = pur
-        }
+        success = createPartnerCall.success
+
+        const createLessonPurchases = await createLessonPurchase(
+          createPartnerCall.partnerId,
+          name,
+          lastName,
+        )
+        success = createLessonPurchases
 
         if (paid) {
-          const boulderPurchase = await createBoulderPurchaseCallFunc()
-          success = boulderPurchase
+          const createBoulderPurchases = await createBoulderPurchase()
+          success = createBoulderPurchases
         }
       }
     }
@@ -289,16 +238,6 @@ function TrainersView() {
       setCreateLessonPurchaseView(false)
     }
   }
-
-  const fillData = async () => {
-    const pricesCall = await getPrices()
-    setPrices(pricesCall.data)
-  }
-
-  useEffect(() => {
-    fillData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <>

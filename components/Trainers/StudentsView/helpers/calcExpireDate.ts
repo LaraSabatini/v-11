@@ -1,10 +1,7 @@
-const calcExpireDate = (initialDate: string) => {
-  const cleanDate = `${initialDate.slice(6, 10)}-${initialDate.slice(
-    3,
-    5,
-  )}-${initialDate.slice(0, 2)}`
+import formatDescDate from "../../helpers/formatDescDate"
 
-  const newDate = new Date(cleanDate)
+const calcExpireDate = (initialDate: string) => {
+  const newDate = new Date(formatDescDate(initialDate))
 
   newDate.setMonth(newDate.getMonth() + 1)
 

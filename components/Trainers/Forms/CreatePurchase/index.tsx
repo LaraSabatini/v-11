@@ -2,8 +2,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useContext, useEffect } from "react"
 // SERVICES
-import { searchPartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { searchPartnerAction } from "helpers/partners"
+import { GeneralContext } from "contexts/GeneralContext"
 import { paymentMethods, paymentUsers } from "const/finances"
 import yesOrNoArr from "const/fixedVariables"
 import { shifts, day, month, year } from "const/time"
@@ -20,11 +21,11 @@ import InputCalendar from "components/UI/InputCalendar"
 import Icon from "components/UI/Assets/Icon"
 import PopOver from "components/UI/PopOver"
 import ScrollView from "components/UI/ScrollView"
-import deleteLessonFromList from "../../utils/deleteLessonFromList"
-import checkIfDateHasSpace from "../../utils/checkIfDateHasSpace"
-import calculatePriceWithoutDiscount from "../../utils/calculatePriceWithoutDiscount"
-import checkDiscount from "../../utils/checkDiscount"
-import calculatePriceWithDiscount from "../../utils/calculatePriceWithDiscount"
+import deleteLessonFromList from "../../helpers/deleteLessonFromList"
+import checkIfDateHasSpace from "../../helpers/checkIfDateHasSpace"
+import calculatePriceWithoutDiscount from "../../helpers/calculatePriceWithoutDiscount"
+import checkDiscount from "../../helpers/checkDiscount"
+import calculatePriceWithDiscount from "../../helpers/calculatePriceWithDiscount"
 import {
   FormContainer,
   HorizontalGroup,
@@ -67,7 +68,6 @@ function CreatePurchaseModal({
     paid,
     setPaid,
     finalPrice,
-    prices,
     setFinalPrice,
     setPaymentUserSelected,
     setNewPartnerData,
@@ -85,6 +85,7 @@ function CreatePurchaseModal({
     cleanStates,
     disablePurchaseButton,
   } = useContext(Lessons)
+  const { prices } = useContext(GeneralContext)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 
@@ -102,7 +103,7 @@ function CreatePurchaseModal({
 
   const searchClients = async () => {
     if (searchValue.length > 3) {
-      const searchCall = await searchPartner(searchValue, 1)
+      const searchCall = await searchPartnerAction(searchValue)
       setSearchResults(searchCall.data)
     } else {
       setSearchResults([])
@@ -228,6 +229,7 @@ function CreatePurchaseModal({
                 searchValue={searchValue}
                 onChangeSearch={e => setSearchValue(e.target.value)}
                 width={220}
+                enterSearch={e => e.preventDefault()}
               />
               <PopOverContainer>
                 <PopOver
@@ -466,6 +468,12 @@ function CreatePurchaseModal({
                               datesSelected,
                             )
                             setDatesSelected(newArrayOfDates)
+                            if (newArrayOfDates.length !== amountOfLessons) {
+                              setBuyedCombo(true)
+                              setFinalPrice(0)
+                              setPaid(null)
+                              setPaymentMethodSelected(null)
+                            }
                           }}
                         >
                           <Icon icon="IconMenuOff" />

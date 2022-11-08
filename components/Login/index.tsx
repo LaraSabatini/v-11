@@ -1,9 +1,10 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 // SERVICES
-import validateUser from "services/Users/ValidateUser.service"
 // DATA STORAGE & TYPES
+import { GeneralContext } from "contexts/GeneralContext"
 import texts from "strings/loginPage.json"
+import { getUsersAction, validateUserAction } from "helpers/users"
 // COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
 import ErrorMessage from "components/UI/ErrorMessage"
@@ -20,6 +21,8 @@ import {
 function Login() {
   const router = useRouter()
   const [logged, setLogged] = useState(false)
+
+  const { setUsers } = useContext(GeneralContext)
 
   const [userName, setUserName] = useState<string>("")
   const [password, setPassword] = useState<string>("")
@@ -53,14 +56,20 @@ function Login() {
       userNameRef.current.attributes.getNamedItem("data-error").value ===
         "false"
     ) {
-      const data = { name: userName, password }
-      const res = await validateUser(data)
-      if (res.data.length) {
+      const res = await validateUserAction(userName, password)
+      if (res.length) {
         setSuccess(true)
-        localStorage.setItem("user", res.data[0].name)
-        localStorage.setItem("id", res.data[0].id)
+        localStorage.setItem("user", res[0].name)
+        localStorage.setItem("id", res[0].id)
         localStorage.setItem("isLoggedIn", "true")
-        localStorage.setItem("permissions", res.data[0].permissions)
+        localStorage.setItem("permissions", res[0].permissions)
+
+        const getUserData = await getUsersAction()
+
+        const cleanedUserArray = getUserData.filter(user => user.admin === 1)
+        setUsers(cleanedUserArray)
+
+        router.push("home?clients=true")
         // eslint-disable-next-line no-restricted-globals
         location.reload()
       } else {

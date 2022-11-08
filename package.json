@@ -2,6 +2,10 @@
   "name": "v-11",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "yarn": ">=1.22.17",
+    "npm": "please-use-yarn"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,6 +17,8 @@
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
     "@next/eslint-plugin-next": "^12.2.5",
+    "@reduxjs/toolkit": "^1.8.6",
+    "@types/react-redux": "^7.1.24",
     "@types/styled-components": "5.1.11",
     "axios": "0.24.0",
     "babel-plugin-styled-components": "1.13.2",
@@ -22,10 +28,13 @@
     "eslint-config-prettier": "8.2.0",
     "eslint-config-typescript": "3.0.0",
     "eslint-plugin-prettier": "3.4.0",
+    "mailtrap": "^3.0.1",
     "next": "10.0.5",
     "next-transpile-modules": "6.4.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-redux": "^8.0.4",
+    "redux": "^4.2.0",
     "styled-components": "5.3.1"
   },
   "devDependencies": {

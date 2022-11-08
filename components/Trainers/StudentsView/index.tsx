@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 // SERVICES
-import { getStudents, searchPartner } from "services/Partners/Partner.service"
 // DATA STORAGE & TYPES
+import { searchPartnerAction, getStudentsAction } from "helpers/partners"
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import { day, month, year } from "const/time"
@@ -14,8 +14,9 @@ import theme from "theme/index"
 import ScrollView from "components/UI/ScrollView"
 import SearchBar from "components/UI/SearchBar"
 import Pagination from "components/UI/Pagination"
-import getPayments from "./utils/getPayments"
-import calcExpireDate from "./utils/calcExpireDate"
+import getPayments from "./helpers/getPayments"
+import calcExpireDate from "./helpers/calcExpireDate"
+import formatDescDate from "../helpers/formatDescDate"
 import {
   ListContainer,
   ListItem,
@@ -52,7 +53,7 @@ function StudentsView() {
 
   const getStudentsList = async () => {
     setStudentSelected(null)
-    const getStudentsCall = await getStudents(currentPage)
+    const getStudentsCall = await getStudentsAction(currentPage)
     setStudents(getStudentsCall.data)
     setTotalPages(getStudentsCall.meta.totalPages)
   }
@@ -64,7 +65,7 @@ function StudentsView() {
 
   const searchStudentInDB = async () => {
     setStudentSelected(null)
-    const searchPartnerCall = await searchPartner(searchValue, 1)
+    const searchPartnerCall = await searchPartnerAction(searchValue)
     setStudents(searchPartnerCall.data)
     setTotalPages(searchPartnerCall.meta.totalPages)
   }
@@ -90,12 +91,7 @@ function StudentsView() {
   }, [studentSelected])
 
   const checkPastDate = date => {
-    const cleanDate = `${date.slice(6, 10)}-${date.slice(3, 5)}-${date.slice(
-      0,
-      2,
-    )}`
-
-    const lessonDate = new Date(cleanDate)
+    const lessonDate = new Date(formatDescDate(date))
     const isDisabled = lessonDate < todayDate
     return isDisabled
   }

@@ -5,7 +5,6 @@ import PartnerInterface from "interfaces/partners/PartnerInterface"
 import { day, month, year } from "const/time"
 import ModalInterface from "interfaces/components/ModalInterface"
 import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
-import PricesInterface from "interfaces/partners/PricesInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 
 export const Lessons = createContext(null)
@@ -48,8 +47,6 @@ function LessonsProvider({ children }) {
   const [datesSelected, setDatesSelected] = useState<
     LessonsSelectedInterface[]
   >([])
-
-  const [prices, setPrices] = useState<PricesInterface[]>([])
 
   const [
     paymentMethodSelected,
@@ -190,8 +187,6 @@ function LessonsProvider({ children }) {
       lessonRef,
       datesSelected,
       setDatesSelected,
-      prices,
-      setPrices,
       paymentMethodSelected,
       setPaymentMethodSelected,
       paid,
@@ -240,7 +235,6 @@ function LessonsProvider({ children }) {
       trainersList,
       amountOfLessons,
       datesSelected,
-      prices,
       paymentMethodSelected,
       paid,
       clientSelected,

@@ -1,8 +1,8 @@
 import React, { useEffect, useContext, useState } from "react"
 // SERVICES
-import { getPrices, editPrices } from "services/Partners/Prices.service"
 // DATA STORAGE & TYPES
-import { PartnersContext } from "contexts/Partners"
+import { editPricesAction } from "helpers/partners"
+import { GeneralContext } from "contexts/GeneralContext"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import generalTexts from "strings/general.json"
 // COMPONENTS & STYLING
@@ -24,21 +24,13 @@ interface ActionsInterface {
 }
 
 function Prices({ canEdit }: ActionsInterface) {
-  const { setPrices, prices } = useContext(PartnersContext)
+  const { prices, setTriggerListUpdate, triggerListUpdate } = useContext(
+    GeneralContext,
+  )
+
   const [newPrices, setNewPrices] = useState<PricesInterface>(null)
 
   const [activeRow, setActiveRow] = useState<number>(null)
-  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
-
-  const fillPrices = async () => {
-    const pricesData = await getPrices()
-    setPrices(pricesData.data)
-  }
-
-  useEffect(() => {
-    fillPrices()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [triggerListUpdate])
 
   const fillInputs = () => {
     const pricesObj = prices.filter(price => price.id === activeRow)
@@ -58,9 +50,9 @@ function Prices({ canEdit }: ActionsInterface) {
   }
 
   const saveChanges = async () => {
-    const editData = await editPrices(newPrices)
+    const editData = await editPricesAction(newPrices)
 
-    if (editData.message === "price updated successfully") {
+    if (editData) {
       setTriggerListUpdate(triggerListUpdate + 1)
       setActiveRow(null)
       setNewPrices(null)

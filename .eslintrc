@@ -5,6 +5,9 @@
     "prettier"
   ],
   "rules": {
+    "@typescript-eslint/no-floating-promises": "off",
+    "no-nested-ternary": "off",
+    "avoid-implicit-dependencies": "off",
     "react/function-component-definition": [
       2,
       {

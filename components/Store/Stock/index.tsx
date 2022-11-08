@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
-// SERVICES
-import { editProduct, getProducts } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
+import { editProductAction, getProductsAction } from "helpers/store"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
@@ -15,6 +14,7 @@ import TextButton from "components/UI/TextButton"
 import TextField from "components/UI/TextField"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
+import cleanMargin from "utils/cleanMargin"
 import columns from "./const/content"
 import {
   Container,
@@ -58,22 +58,17 @@ function Stock({ editPermits }: StockInterface) {
   const rowRef = useRef(null)
 
   const fillRows = async () => {
-    const data = await getProducts(currentPage)
-    setProductsList(data.data)
+    const data = await getProductsAction(currentPage)
+    setProductsList(data)
 
     const rowsCleaned: RowsInterface[] = []
 
-    data.data.map((product: ProductInterface) => {
+    data.map((product: ProductInterface) => {
       const marginString = `${product.margin}`
-      const arrOfMargin = marginString.split(".")
-      const first = arrOfMargin[0]
-      let finalMargin = 0
-      if (arrOfMargin.length > 1) {
-        const second = arrOfMargin[1].slice(0, 2)
-        finalMargin = parseFloat(`${first}.${second}`)
-      } else {
-        finalMargin = parseInt(first, 10)
-      }
+      const cleanIt = cleanMargin(marginString.split("."))
+      const finalMargin = cleanIt.includes(".")
+        ? parseFloat(cleanIt)
+        : parseInt(cleanIt, 10)
 
       rowsCleaned.push({
         id: product.id,
@@ -197,12 +192,19 @@ function Stock({ editPermits }: StockInterface) {
             type="text"
             width={60}
             value={`${newValues.stock}` || ""}
-            onChange={e =>
-              setNewValues({
-                ...newValues,
-                stock: parseInt(e.target.value, 10),
-              })
-            }
+            onChange={e => {
+              if (e.target.value === "-" || e.target.value === "") {
+                setNewValues({
+                  ...newValues,
+                  stock: 0,
+                })
+              } else {
+                setNewValues({
+                  ...newValues,
+                  stock: parseInt(e.target.value, 10),
+                })
+              }
+            }}
           />
         </TextFieldContainer>
       ),
@@ -214,12 +216,19 @@ function Stock({ editPermits }: StockInterface) {
             type="text"
             width={70}
             value={`${newValues.price}` || ""}
-            onChange={e =>
-              setNewValues({
-                ...newValues,
-                price: parseFloat(e.target.value),
-              })
-            }
+            onChange={e => {
+              if (e.target.value === "-" || e.target.value === "") {
+                setNewValues({
+                  ...newValues,
+                  price: 0,
+                })
+              } else {
+                setNewValues({
+                  ...newValues,
+                  price: parseFloat(e.target.value),
+                })
+              }
+            }}
           />
         </TextFieldContainer>
       ),
@@ -231,7 +240,14 @@ function Stock({ editPermits }: StockInterface) {
             width={70}
             value={`${newValues.cost}` || ""}
             onChange={e => {
-              setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
+              if (e.target.value === "-" || e.target.value === "") {
+                setNewValues({
+                  ...newValues,
+                  cost: 0,
+                })
+              } else {
+                setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
+              }
             }}
           />
         </TextFieldContainer>
@@ -337,8 +353,8 @@ function Stock({ editPermits }: StockInterface) {
       newValues.cost !== undefined
     ) {
       setValidationError(false)
-      const executeEdition = await editProduct(body)
-      if (executeEdition.message === "product updated successfully") {
+      const executeEdition = await editProductAction(body)
+      if (executeEdition) {
         discardChanges()
       }
     } else {

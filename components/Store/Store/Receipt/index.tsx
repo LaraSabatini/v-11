@@ -1,18 +1,14 @@
 /* eslint-disable no-await-in-loop */
 import React, { useContext, useState, useEffect, useRef } from "react"
 // SERVICES
-import {
-  getStorePurchasesByDateAndPaymentMethodAndProduct,
-  createStorePurchase,
-  editStorePurchase,
-} from "services/Store/storePurchases.service"
-import {
-  searchDigitalPaymentByUserAndDate,
-  updateDigitalPayment,
-  createDigitalPayment,
-} from "services/Finances/DigitalPayments.service"
-import { editProduct } from "services/Store/Products.service"
 // DATA STORAGE & TYPES
+import {
+  editProductAction,
+  getStorePurchasesByDatePMAndProductAction,
+  createStorePurchaseAction,
+  editStorePurchaseAction,
+} from "helpers/store"
+import { makeAppropiatePayment } from "helpers/payments"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
@@ -89,44 +85,6 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
     setTriggerListUpdate(triggerListUpdate + 1)
   }
 
-  const makeDigitalPayment = async searchIfExistsCall => {
-    let success = false
-    if (searchIfExistsCall.data.length) {
-      const digitalPaymentBody = {
-        id: searchIfExistsCall.data[0].id,
-        user_id: searchIfExistsCall.data[0].user_id,
-        user_name: searchIfExistsCall.data[0].user_name,
-        date: searchIfExistsCall.data[0].date,
-        month: searchIfExistsCall.data[0].month,
-        month_id: searchIfExistsCall.data[0].month_id,
-        total_profit: searchIfExistsCall.data[0].total_profit + finalPrice,
-        created_by: parseInt(localStorage.getItem("id"), 10),
-      }
-
-      const editDigitalPaymentCall = await updateDigitalPayment(
-        digitalPaymentBody,
-      )
-      success =
-        editDigitalPaymentCall.message === "payment updated successfully"
-    } else {
-      const digitalPaymentBody = {
-        id: 0,
-        user_id: paymentUserSelected.id,
-        user_name: paymentUserSelected.display_name,
-        date: `${day}-${month}-${year}`,
-        month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-          .display_name,
-        month_id: parseInt(`${month}`, 10),
-        total_profit: finalPrice,
-        created_by: parseInt(localStorage.getItem("id"), 10),
-      }
-
-      const createDigitalCall = await createDigitalPayment(digitalPaymentBody)
-      success = createDigitalCall.message === "payment created successfully"
-    }
-    return success
-  }
-
   const executePurchase = async () => {
     let success = false
     setDisabledButton(true)
@@ -135,7 +93,8 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
       const filterProduct = productsList.filter(
         (product: ProductInterface) => product.id === purchase[i].product_id,
       )
-      const editStockBody = {
+
+      const editStockCall = await editProductAction({
         id: purchase[i].product_id,
         stock: filterProduct[0].stock - purchase[i].product_amount,
         name: filterProduct[0].name,
@@ -146,35 +105,31 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         cost: filterProduct[0].cost,
         sales_contact_name: filterProduct[0].sales_contact_name,
         sales_contact_information: filterProduct[0].sales_contact_information,
-      }
+      })
+      success = editStockCall
 
-      const editStockCall = await editProduct(editStockBody)
-      success = editStockCall.message === "product updated successfully"
-
-      const checkIfPurchasedToday = await getStorePurchasesByDateAndPaymentMethodAndProduct(
+      const checkIfPurchasedToday = await getStorePurchasesByDatePMAndProductAction(
         `${day}-${month}-${year}`,
         purchase[i].product_id,
         paymentMethodSelected,
       )
 
-      if (checkIfPurchasedToday.data.length > 0) {
-        const editBody = {
-          id: checkIfPurchasedToday.data[0].id,
-          product_id: checkIfPurchasedToday.data[0].product_id,
-          product_name: checkIfPurchasedToday.data[0].product_name,
+      if (checkIfPurchasedToday.length > 0) {
+        const edit = await editStorePurchaseAction({
+          id: checkIfPurchasedToday[0].id,
+          product_id: checkIfPurchasedToday[0].product_id,
+          product_name: checkIfPurchasedToday[0].product_name,
           amount_of_items:
-            checkIfPurchasedToday.data[0].amount_of_items +
+            checkIfPurchasedToday[0].amount_of_items +
             purchase[i].product_amount,
-          profit:
-            checkIfPurchasedToday.data[0].profit + purchase[i].final_price,
+          profit: checkIfPurchasedToday[0].profit + purchase[i].final_price,
           payment_method_id: paymentMethodSelected,
-          date: checkIfPurchasedToday.data[0].date,
+          date: checkIfPurchasedToday[0].date,
           created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-        const edit = await editStorePurchase(editBody)
-        success = edit.message === "store_payments updated successfully"
+        })
+        success = edit
       } else {
-        const createBody = {
+        const createCall = await createStorePurchaseAction({
           id: 0,
           product_id: purchase[i].product_id,
           product_name: purchase[i].product_name,
@@ -183,20 +138,27 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           payment_method_id: paymentMethodSelected,
           date: `${day}-${month}-${year}`,
           created_by: parseInt(localStorage.getItem("id"), 10),
-        }
-
-        const createCall = await createStorePurchase(createBody)
-        success = createCall.message === "productPurchase created successfully"
+        })
+        success = createCall
       }
     }
 
     if (paymentMethodSelected === 2) {
-      const searchIfExistsCall = await searchDigitalPaymentByUserAndDate(
+      const executePayment = await makeAppropiatePayment(
         paymentUserSelected.id,
-        `${day}-${month}-${year}`,
+        finalPrice,
+        {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
+          date: `${day}-${month}-${year}`,
+          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+            .display_name,
+          month_id: parseInt(`${month}`, 10),
+          total_profit: finalPrice,
+          created_by: parseInt(localStorage.getItem("id"), 10),
+        },
       )
-
-      const executePayment = await makeDigitalPayment(searchIfExistsCall)
       success = executePayment
     }
 

@@ -1,23 +1,21 @@
-import { getLessonsByWeek } from "services/Trainers/LessonsPurchased.service"
+import { getLessonsByWeekAction } from "helpers/lessons"
 import { shifts } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 
 const getLessonsData = async (weekNumberSelected: number) => {
-  const getLessonsByWeekCall = await getLessonsByWeek(weekNumberSelected)
+  const getLessonsByWeekCall = await getLessonsByWeekAction(weekNumberSelected)
 
-  const monday = getLessonsByWeekCall.data.filter(
+  const monday = getLessonsByWeekCall.filter(
     (lesson: ClasesPurchasedInterface) => lesson.day_id === 0,
   )
-  const tuesday = getLessonsByWeekCall.data.filter(
-    lesson => lesson.day_id === 1,
-  )
-  const wednesday = getLessonsByWeekCall.data.filter(
+  const tuesday = getLessonsByWeekCall.filter(lesson => lesson.day_id === 1)
+  const wednesday = getLessonsByWeekCall.filter(
     (lesson: ClasesPurchasedInterface) => lesson.day_id === 2,
   )
-  const thursday = getLessonsByWeekCall.data.filter(
+  const thursday = getLessonsByWeekCall.filter(
     (lesson: ClasesPurchasedInterface) => lesson.day_id === 3,
   )
-  const friday = getLessonsByWeekCall.data.filter(
+  const friday = getLessonsByWeekCall.filter(
     (lesson: ClasesPurchasedInterface) => lesson.day_id === 4,
   )
   const newArrayForCalendar = {
@@ -74,7 +72,6 @@ const getLessonsData = async (weekNumberSelected: number) => {
   }
 
   return newArrayForCalendar
-  //   setCleanedLessons(newArrayForCalendar)
 }
 
 export default getLessonsData
