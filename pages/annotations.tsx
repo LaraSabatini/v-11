@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { useRouter } from "next/router"
+import AnnotationsProvider from "contexts/Annotations"
 import AnnotationsView from "components/Annotations"
 
 function Annotations() {
@@ -17,7 +18,15 @@ function Annotations() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn])
 
-  return <div>{isLoggedIn !== null && <AnnotationsView />}</div>
+  return (
+    <div>
+      {isLoggedIn !== null && (
+        <AnnotationsProvider>
+          <AnnotationsView />
+        </AnnotationsProvider>
+      )}
+    </div>
+  )
 }
 
 export default Annotations
