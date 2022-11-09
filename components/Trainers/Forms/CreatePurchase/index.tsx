@@ -24,7 +24,7 @@ import ScrollView from "components/UI/ScrollView"
 import deleteLessonFromList from "../../helpers/deleteLessonFromList"
 import checkIfDateHasSpace from "../../helpers/checkIfDateHasSpace"
 import calculatePriceWithoutDiscount from "../../helpers/calculatePriceWithoutDiscount"
-import checkDiscount from "../../helpers/checkDiscount"
+import checkDiscountForLessons from "../../helpers/checkDiscountForLessons"
 import calculatePriceWithDiscount from "../../helpers/calculatePriceWithDiscount"
 import {
   FormContainer,
@@ -125,19 +125,27 @@ function CreatePurchaseModal({
   }
 
   const calculatePrice = async () => {
-    const hasDiscount = await checkDiscount(clientSelected.id)
-    let price: number = 0
+    const lessonDiscounts = await checkDiscountForLessons(
+      clientSelected.id,
+      datesSelected,
+    )
 
-    if (hasDiscount) {
-      price = calculatePriceWithDiscount(
-        amountOfLessons,
-        paymentMethodSelected.id,
-        prices,
-      )
-      setFinalPrice(price)
-    } else {
-      setFinalPriceFunction()
-    }
+    const withDiscount = lessonDiscounts.filter(lesson => lesson.hasDiscount)
+    const withoutDiscount = lessonDiscounts.filter(
+      lesson => !lesson.hasDiscount,
+    )
+    const priceWithoutDiscount = calculatePriceWithoutDiscount(
+      withoutDiscount.length,
+      paymentMethodSelected.id,
+      prices,
+    )
+    const priceWithDiscount = calculatePriceWithDiscount(
+      withDiscount.length,
+      paymentMethodSelected,
+      prices,
+    )
+
+    setFinalPrice(priceWithDiscount + priceWithoutDiscount)
   }
 
   useEffect(() => {
