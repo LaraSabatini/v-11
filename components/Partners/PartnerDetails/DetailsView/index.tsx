@@ -64,6 +64,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
     setHasChanges,
     modalHasChanges,
     setModalHasChanges,
+    dateSelectedToStart,
   } = useContext(PartnersContext)
   const { prices } = useContext(GeneralContext)
 
@@ -234,7 +235,11 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         checkAvailability.days &&
         checkAvailability.months
       ) {
-        const expirationDate = getExpirationDate(paidTime, comboSelected)
+        const expirationDate = getExpirationDate(
+          dateSelectedToStart,
+          paidTime,
+          comboSelected,
+        )
         const createPartnerPayment = await createPartnerPaymentAction({
           ...newValues,
           time_paid: newValues.time_paid,
@@ -244,7 +249,7 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
             (comboSelected !== null && comboSelected !== undefined)
               ? expirationDate
               : "",
-          date: `${day}-${month}-${year}`,
+          date: dateSelectedToStart,
           created_by: parseInt(localStorage.getItem("id"), 10),
         })
 
