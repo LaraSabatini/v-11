@@ -4,7 +4,8 @@
         "trainers": "Profesores",
         "store": "Tienda",
         "finances": "Finanzas",
-        "prices": "Precios"
+        "prices": "Precios",
+        "annotations": "Anotaciones"
     },
     "actions": {
         "delete": "Borrar",
