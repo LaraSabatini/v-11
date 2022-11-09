@@ -9,17 +9,6 @@ const Content = styled.div`
   padding-top: 30px;
   height: 80vh;
   position: relative;
-  font-family: ${theme.fonts.primary};
-`
-
-const Title = styled.h4`
-  font-size: 25px;
-  margin: 0;
-
-  span {
-    font-weight: ${theme.fontWeights.regular};
-    font-size: 20px;
-  }
 `
 
 const HeadContent = styled.div`
@@ -168,7 +157,6 @@ const SearchBarContainer = styled.div`
 export {
   Container,
   Content,
-  Title,
   HeadContent,
   FiltersContainer,
   Select,

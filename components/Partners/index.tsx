@@ -13,6 +13,7 @@ import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import Header from "components/UI/Header"
 import NoPermissionsView from "components/UI/NoPermitsView"
+import { Title, HeadContent } from "theme/globalComponentStyles"
 import Modals from "./Modals"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
@@ -22,9 +23,7 @@ import Prices from "./Prices"
 import setPartnerList from "./helpers/setPartnersList"
 import {
   Container,
-  Title,
   Content,
-  HeadContent,
   AddPartner,
   MainButton,
   ListAndDetailContainer,

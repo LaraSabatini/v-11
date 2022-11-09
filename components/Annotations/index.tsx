@@ -5,7 +5,15 @@ import generalTexts from "strings/general.json"
 import annotationTexts from "strings/annotations.json"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
-import { MainContainer, Content, HeadContent, Title } from "./styles"
+import {
+  MainContainer,
+  Content,
+  HeadContent,
+  Title,
+} from "theme/globalComponentStyles"
+import ToDosCard from "./ToDosCard"
+import NotesCard from "./NotesCard"
+import { CardsContainer } from "./styles"
 
 function AnnotationsView() {
   return (
@@ -23,6 +31,10 @@ function AnnotationsView() {
             </span>
           </Title>
         </HeadContent>
+        <CardsContainer>
+          <ToDosCard />
+          <NotesCard />
+        </CardsContainer>
       </Content>
     </MainContainer>
   )

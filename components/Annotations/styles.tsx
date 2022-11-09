@@ -1,34 +1,25 @@
 import styled from "styled-components"
-import theme from "theme/index"
 
-const MainContainer = styled.div`
+const CardsContainer = styled.div`
   display: flex;
-  flex-direction: column;
-`
-
-const Content = styled.div`
-  width: 90vw;
-  margin: 0 auto;
   padding-top: 30px;
-`
-
-const HeadContent = styled.div`
-  display: flex;
-  align-items: flex-end;
+  width: 70%;
+  margin: 0 auto;
   justify-content: space-between;
-  width: 83%;
 `
 
-const Title = styled.h4`
-  font-family: ${theme.fonts.primary};
-  font-size: 25px;
+const Card = styled.div`
+  display: flex;
+  width: 400px;
+  height: 520px;
+  background-color: #f6f6f6;
+  border-radius: 10px;
+  padding: 20px;
+`
+
+const CardTitle = styled.h5`
   margin: 0;
-  padding-top: 31px;
-
-  span {
-    font-weight: ${theme.fontWeights.regular};
-    font-size: 20px;
-  }
+  font-size: 18px;
 `
 
-export { MainContainer, Content, HeadContent, Title }
+export { CardsContainer, Card, CardTitle }
