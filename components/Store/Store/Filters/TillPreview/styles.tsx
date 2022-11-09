@@ -2,10 +2,11 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const View = styled.div`
-  width: 400px;
+  width: 500px;
   font-family: ${theme.fonts.primary};
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 15px;
 `
 
 const Row = styled.div`
@@ -21,7 +22,7 @@ const Row = styled.div`
 `
 
 const Title = styled.p`
-  width: 170px;
+  width: 220px;
   text-decoration: underline;
 `
 
@@ -29,4 +30,16 @@ const Amount = styled.p`
   font-weight: ${theme.fontWeights.semiBold};
 `
 
-export { View, Title, Row, Amount }
+const RowContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  .software {
+    background-color: white;
+  }
+`
+
+const DifferenceData = styled.p``
+
+export { View, Title, Row, Amount, RowContainer, DifferenceData }
