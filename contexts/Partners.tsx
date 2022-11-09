@@ -1,4 +1,5 @@
 import { createContext, useState, useRef, useMemo } from "react"
+import { day, month, year } from "const/time"
 import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
@@ -92,6 +93,10 @@ function PartnersProvider({ children }) {
   const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
 
   const [trainerSelected, setTrainerSelected] = useState<DefaultInterface>()
+
+  const [dateSelectedToStart, setDateSelectedToStart] = useState<string>(
+    `${day}-${month}-${year}`,
+  )
 
   // EDIT *************************************************************
 
@@ -297,6 +302,8 @@ function PartnersProvider({ children }) {
       setSectionSelected,
       disableCreatePartnerFormButton,
       setDisableCreatePartnerFormButton,
+      dateSelectedToStart,
+      setDateSelectedToStart,
     }),
     [
       isChecked,
@@ -332,6 +339,7 @@ function PartnersProvider({ children }) {
       paymentUserSelected,
       sectionSelected,
       disableCreatePartnerFormButton,
+      dateSelectedToStart,
     ],
   )
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useRef } from "react"
 // DATA STORAGE & TYPES
 import { PartnersContext } from "contexts/Partners"
 import { paymentMethods, paymentUsers } from "const/finances"
@@ -8,6 +8,7 @@ import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import { GeneralContext } from "contexts/GeneralContext"
 // COMPONENTS & STYLING
+import InputCalendar from "components/UI/InputCalendar"
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
@@ -57,9 +58,13 @@ function EditPayment({
     paymentUserRef,
     usesDay,
     setUsesDay,
+    dateSelectedToStart,
+    setDateSelectedToStart,
   } = useContext(PartnersContext)
 
   const { prices } = useContext(GeneralContext)
+
+  const startDateRef = useRef(null)
 
   useEffect(() => {
     calculatePrice(prices)
@@ -216,6 +221,22 @@ function EditPayment({
           />
         </HorizontalGroup>
       )}
+      <HorizontalGroup>
+        <InputCalendar
+          reference={startDateRef}
+          label="Fecha de inicio"
+          width={200}
+          valueCalendar={dateSelectedToStart}
+          onChange={e =>
+            setDateSelectedToStart(
+              `${e.selectedChangeDate.slice(0, 2)}-${e.selectedChangeDate.slice(
+                3,
+                5,
+              )}-${e.selectedChangeDate.slice(6, 10)}`,
+            )
+          }
+        />
+      </HorizontalGroup>
       <div style={{ display: "flex", gap: "10px" }}>
         <CheckboxContainer>
           <Checkbox checked={isChecked} isDisabled idParam="free-pass" />

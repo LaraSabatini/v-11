@@ -57,6 +57,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     combos,
     disableCreatePartnerFormButton,
     setDisableCreatePartnerFormButton,
+    dateSelectedToStart,
   } = useContext(PartnersContext)
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
@@ -115,7 +116,11 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
     comboSelected !== null && comboSelected !== undefined && comboSelected !== 0
 
   const createPayment = async (partnerId: number) => {
-    const expirationDate = getExpirationDate(paidTime, comboSelected)
+    const expirationDate = getExpirationDate(
+      dateSelectedToStart,
+      paidTime,
+      comboSelected,
+    )
 
     const createPaymentCall = await createPartnerPaymentAction({
       id: 0,
@@ -137,7 +142,7 @@ function CreatePartner({ cancelCreate }: CreateInterface) {
         pm => pm.id === paymentMethodSelected,
       )[0].display_name,
       price_paid: finalPrice,
-      date: today,
+      date: dateSelectedToStart,
       payment_expire_date:
         (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
         (comboSelected !== null && comboSelected !== undefined)

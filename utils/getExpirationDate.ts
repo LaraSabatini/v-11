@@ -1,9 +1,16 @@
 /* eslint-disable import/prefer-default-export */
+import formatDescDate from "components/Trainers/helpers/formatDescDate"
 
-export const getExpirationDate = (paidTime: number, comboSelected: number) => {
-  const today = new Date()
+export const getExpirationDate = (
+  date: string,
+  paidTime: number,
+  comboSelected: number,
+) => {
+  const dateToStart = new Date(formatDescDate(date))
 
-  const newDate = new Date(today.setMonth(today.getMonth() + paidTime))
+  const newDate = new Date(
+    dateToStart.setMonth(dateToStart.getMonth() + paidTime),
+  )
   const expireDate = newDate.getDate()
   const expireMonth = newDate.getMonth()
   const expireYear = newDate.getFullYear()
