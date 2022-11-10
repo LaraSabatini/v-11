@@ -1,10 +1,37 @@
-import React from "react"
+import React, { useContext } from "react"
+import { AnnotationsContext } from "contexts/Annotations"
 import Card from "../Card"
 import NoteItem from "./NoteItem"
 
 function NotesCard() {
+  const { notesPagination, setNotesPagination } = useContext(AnnotationsContext)
+
+  const goNext = () => {
+    if (notesPagination.total < notesPagination.current) {
+      setNotesPagination({
+        ...notesPagination,
+        current: notesPagination.current + 1,
+      })
+    }
+  }
+  const goPrev = () => {
+    if (notesPagination.current > 1) {
+      setNotesPagination({
+        ...notesPagination,
+        current: notesPagination.current - 1,
+      })
+    }
+  }
+
   return (
-    <Card title="Notas" type="note">
+    <Card
+      title="Notas"
+      type="note"
+      currentPage={notesPagination.current}
+      totalPages={notesPagination.total}
+      onClickNext={goNext}
+      onClickBack={goPrev}
+    >
       <NoteItem
         annotation={{
           id: 1,

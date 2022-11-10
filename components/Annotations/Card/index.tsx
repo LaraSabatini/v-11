@@ -3,6 +3,7 @@ import { todosFilters } from "const/annotations"
 import { AnnotationsContext } from "contexts/Annotations"
 import Icon from "components/UI/Assets/Icon"
 import ScrollView from "components/UI/ScrollView"
+import Pagination from "components/UI/Pagination"
 import CreateAnnotation from "../CreateAnnotation"
 import {
   CardLayout,
@@ -13,15 +14,28 @@ import {
   IconContainer,
   CardContent,
   Add,
+  PaginationContainer,
 } from "./styles"
 
 interface CardInterface {
   title: string
   type: "todo" | "note"
   children: JSX.Element | JSX.Element[]
+  currentPage: number
+  totalPages: number
+  onClickNext: () => void
+  onClickBack: () => void
 }
 
-function Card({ title, type, children }: CardInterface) {
+function Card({
+  title,
+  type,
+  children,
+  currentPage,
+  totalPages,
+  onClickNext,
+  onClickBack,
+}: CardInterface) {
   const {
     filterSelected,
     setFilterSelected,
@@ -100,6 +114,14 @@ function Card({ title, type, children }: CardInterface) {
           cancelAction={cancelCreateAnnotation}
         />
       )}
+      <PaginationContainer>
+        <Pagination
+          totalPages={totalPages}
+          setPage={currentPage}
+          onClickBack={onClickBack}
+          onClickNext={onClickNext}
+        />
+      </PaginationContainer>
     </CardLayout>
   )
 }

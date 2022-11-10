@@ -1,4 +1,9 @@
-import React, { useContext } from "react"
+import React, {
+  useContext,
+  //  useEffect
+} from "react"
+// SERVICES
+// import { getAllTodos } from "services/Annotations/Annotations.service"
 // DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
 import generalTexts from "strings/general.json"
@@ -39,6 +44,15 @@ function AnnotationsView() {
     setEditModal(false)
     setAnnotationSelected(null)
   }
+
+  // const fillData = async () => {
+  //   const getTodos = await getAllTodos(1)
+  //   console.log(getTodos)
+  // }
+
+  // useEffect(() => {
+  //   fillData()
+  // }, [])
 
   return (
     <MainContainer>

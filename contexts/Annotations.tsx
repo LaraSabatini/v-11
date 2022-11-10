@@ -40,6 +40,21 @@ function AnnotationsProvider({ children }) {
 
   const [editModal, setEditModal] = useState<boolean>(false)
 
+  const [toDosPagination, setToDosPagination] = useState<{
+    current: number
+    total: number
+  }>({
+    current: 1,
+    total: 1,
+  })
+  const [notesPagination, setNotesPagination] = useState<{
+    current: number
+    total: number
+  }>({
+    current: 1,
+    total: 1,
+  })
+
   const value = useMemo(
     () => ({
       filterSelected,
@@ -58,6 +73,10 @@ function AnnotationsProvider({ children }) {
       setAnnotationSelected,
       editModal,
       setEditModal,
+      toDosPagination,
+      setToDosPagination,
+      notesPagination,
+      setNotesPagination,
     }),
     [
       filterSelected,
@@ -69,6 +88,8 @@ function AnnotationsProvider({ children }) {
       warningModal,
       annotationSelected,
       editModal,
+      toDosPagination,
+      notesPagination,
     ],
   )
 

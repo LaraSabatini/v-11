@@ -91,6 +91,10 @@ const Add = styled.button<{ disabled: boolean }>`
     `};
 `
 
+const PaginationContainer = styled.div`
+  margin-top: 10px;
+`
+
 export {
   CardLayout,
   CardTitle,
@@ -100,4 +104,5 @@ export {
   IconContainer,
   CardContent,
   Add,
+  PaginationContainer,
 }

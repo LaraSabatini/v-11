@@ -1,10 +1,37 @@
-import React from "react"
+import React, { useContext } from "react"
+import { AnnotationsContext } from "contexts/Annotations"
 import Card from "../Card"
 import TodoItem from "./TodoItem"
 
 function ToDosCard() {
+  const { toDosPagination, setToDosPagination } = useContext(AnnotationsContext)
+
+  const goNext = () => {
+    if (toDosPagination.total < toDosPagination.current) {
+      setToDosPagination({
+        ...toDosPagination,
+        current: toDosPagination.current + 1,
+      })
+    }
+  }
+  const goPrev = () => {
+    if (toDosPagination.current > 1) {
+      setToDosPagination({
+        ...toDosPagination,
+        current: toDosPagination.current - 1,
+      })
+    }
+  }
+
   return (
-    <Card title="Pendientes" type="todo">
+    <Card
+      title="Pendientes"
+      type="todo"
+      currentPage={toDosPagination.current}
+      totalPages={toDosPagination.total}
+      onClickNext={goNext}
+      onClickBack={goPrev}
+    >
       <TodoItem
         annotation={{
           id: 1,
