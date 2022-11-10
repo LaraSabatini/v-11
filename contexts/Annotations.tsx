@@ -14,6 +14,11 @@ function AnnotationsProvider({ children }) {
   const [todos, setTodos] = useState<AnnotationsInterface[]>([])
   const [notes, setNotes] = useState<AnnotationsInterface[]>([])
 
+  const [
+    annotationSelected,
+    setAnnotationSelected,
+  ] = useState<AnnotationsInterface>(null)
+
   const [newAnnotation, setNewAnnotation] = useState<AnnotationsInterface>({
     id: 0,
     title: "",
@@ -25,6 +30,13 @@ function AnnotationsProvider({ children }) {
     created_by: parseInt(localStorage.getItem("id"), 10),
     done_by: 0,
   })
+
+  const [warningModal, setWarningModal] = useState<{
+    status: string
+    icon: string
+    title: string
+    content: string
+  } | null>(null)
 
   const value = useMemo(
     () => ({
@@ -38,8 +50,21 @@ function AnnotationsProvider({ children }) {
       setNotes,
       newAnnotation,
       setNewAnnotation,
+      warningModal,
+      setWarningModal,
+      annotationSelected,
+      setAnnotationSelected,
     }),
-    [filterSelected, order, todos, notes, newAnnotation, setNewAnnotation],
+    [
+      filterSelected,
+      order,
+      todos,
+      notes,
+      newAnnotation,
+      setNewAnnotation,
+      warningModal,
+      annotationSelected,
+    ],
   )
 
   return (

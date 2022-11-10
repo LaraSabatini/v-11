@@ -1,6 +1,7 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import Checkbox from "components/UI/Checkbox"
 import Icon from "components/UI/Assets/Icon"
+import { AnnotationsContext } from "contexts/Annotations"
 import {
   Item,
   ItemHeader,
@@ -13,13 +14,18 @@ import {
 } from "../../styles"
 
 interface TodoItemInterface {
+  id: number
   done: boolean
   title: string
   description: string
   date: string
 }
 
-function TodoItem({ title, done, date, description }: TodoItemInterface) {
+function TodoItem({ id, title, done, date, description }: TodoItemInterface) {
+  const { setWarningModal, setAnnotationSelected } = useContext(
+    AnnotationsContext,
+  )
+
   const [menu, setMenu] = useState<boolean>(false)
 
   return (
@@ -35,8 +41,22 @@ function TodoItem({ title, done, date, description }: TodoItemInterface) {
             <Icon icon="IconSeeMore" />
             {menu && (
               <Menu>
-                <p>Editar</p>
-                <p>Eliminar</p>
+                <button type="button">Editar</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAnnotationSelected(id)
+                    setWarningModal({
+                      status: `alert`,
+                      icon: `IconAlert`,
+                      title:
+                        "Estas seguro de que deseas eliminar la tarea/nota?",
+                      content: "Se eliminara su registro de la base de datos.",
+                    })
+                  }}
+                >
+                  Eliminar
+                </button>
               </Menu>
             )}
           </TodoMenu>
