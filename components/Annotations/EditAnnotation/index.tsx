@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext } from "react"
 import ModalForm from "components/UI/ModalForm"
 import { AnnotationsContext } from "contexts/Annotations"
 import TextField from "components/UI/TextField"
@@ -7,7 +7,7 @@ import { annotationTypes } from "const/annotations"
 import HorizontalContainer from "../CreateAnnotation/styles"
 
 interface EditAnnotationInterface {
-  submitAction: () => void
+  submitAction: (arg?: any) => void
   cancelAction: () => void
 }
 
@@ -23,11 +23,6 @@ function EditAnnotation({
     titleRef,
     descriptionRef,
   } = useContext(AnnotationsContext)
-
-  useEffect(() => {
-    setNewAnnotation(annotationSelected)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <ModalForm
@@ -58,6 +53,7 @@ function EditAnnotation({
             ref={typeRef}
             options={annotationTypes}
             width={140}
+            setValue={newAnnotation.type}
             onChangeProps={e =>
               setNewAnnotation({ ...newAnnotation, type: e.display_name })
             }

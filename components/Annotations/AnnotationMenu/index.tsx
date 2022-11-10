@@ -8,9 +8,12 @@ interface AnnotationMenuInterface {
 }
 
 function AnnotationMenu({ annotation }: AnnotationMenuInterface) {
-  const { setWarningModal, setAnnotationSelected, setEditModal } = useContext(
-    AnnotationsContext,
-  )
+  const {
+    setWarningModal,
+    setAnnotationSelected,
+    setEditModal,
+    setNewAnnotation,
+  } = useContext(AnnotationsContext)
 
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections[4].sub_sections[0]
@@ -18,10 +21,11 @@ function AnnotationMenu({ annotation }: AnnotationMenuInterface) {
   return (
     <Menu>
       <button
-        disabled={permissions.actions.edit}
+        disabled={!permissions.actions.update}
         type="button"
         onClick={() => {
           setAnnotationSelected(annotation)
+          setNewAnnotation(annotation)
           setEditModal(true)
         }}
       >
@@ -29,7 +33,7 @@ function AnnotationMenu({ annotation }: AnnotationMenuInterface) {
       </button>
       <button
         type="button"
-        disabled={permissions.actions.delete}
+        disabled={!permissions.actions.delete}
         onClick={() => {
           setAnnotationSelected(annotation)
           setWarningModal({

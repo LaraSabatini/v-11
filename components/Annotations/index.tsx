@@ -6,6 +6,7 @@ import {
   getNotes,
   createAnnotation,
   getTodosByDone,
+  editAnnotation,
 } from "services/Annotations/Annotations.service"
 // DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
@@ -55,17 +56,53 @@ function AnnotationsView() {
     newAnnotation,
     setModalResponse,
     filterSelected,
+    typeRef,
   } = useContext(AnnotationsContext)
 
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections[4].sub_sections[0]
 
+  const validateInputs = async () => {
+    await titleRef.current?.focus()
+    await descriptionRef.current?.focus()
+    await typeRef.current?.focus()
+    await titleRef.current?.focus()
+
+    return (
+      titleRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      descriptionRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      typeRef.current.attributes.getNamedItem("data-error").value === "false"
+    )
+  }
+
   const deleteAnnotation = () => {
     // annotationSelected
   }
 
-  const editAnnotation = () => {
-    // edit annotation
+  const editAnnotationFunction = async e => {
+    e.preventDefault()
+
+    const validate = await validateInputs()
+
+    if (validate) {
+      const edit = await editAnnotation(newAnnotation)
+
+      const success = edit.message === "Annotation updated successfully"
+
+      setModalResponse({
+        success,
+        message: {
+          status: success ? "success" : "alert",
+          icon: success ? "IconCheck" : "IconExclamation",
+          title: success ? "Excelente!" : "UPS!",
+          content: success
+            ? "La anotacion se ha editado exitosamente."
+            : "Ocurrio un error al editar la anotacion, por favor intentalo de nuevo o contactate con un administrador",
+        },
+      })
+    }
   }
 
   const cancelEdition = () => {
@@ -76,16 +113,9 @@ function AnnotationsView() {
   const createAnnotationFunction = async e => {
     e.preventDefault()
 
-    await titleRef.current?.focus()
-    await descriptionRef.current?.focus()
-    await titleRef.current?.focus()
+    const validate = await validateInputs()
 
-    if (
-      titleRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
-      descriptionRef.current.attributes.getNamedItem("data-error").value ===
-        "false"
-    ) {
+    if (validate) {
       const newAnnotationBody = {
         ...newAnnotation,
         creation_date: `${day}-${month}-${year}`,
@@ -144,7 +174,7 @@ function AnnotationsView() {
 
   useEffect(() => {
     fillDataForTodos()
-  }, [toDosPagination.current, filterSelected])
+  }, [toDosPagination.current, filterSelected, triggerListUpdate])
 
   useEffect(() => {
     fillDataForNotes()
@@ -185,7 +215,7 @@ function AnnotationsView() {
         )}
         {editModal && (
           <EditAnnotation
-            submitAction={editAnnotation}
+            submitAction={editAnnotationFunction}
             cancelAction={cancelEdition}
           />
         )}
