@@ -94,6 +94,24 @@ const Menu = styled.div`
   }
 `
 
+const NoInfoToShow = styled.p`
+  text-transform: uppercase;
+  font-weight: ${theme.fontWeights.bold};
+  color: ${theme.colors.focus};
+  margin-top: 40%;
+  font-size: 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+
+  span {
+    text-transform: none;
+    font-size: 15px;
+    font-weight: ${theme.fontWeights.medium};
+    padding-top: 10px;
+  }
+`
+
 export {
   CardsContainer,
   Item,
@@ -104,4 +122,5 @@ export {
   Description,
   Menu,
   SubContent,
+  NoInfoToShow,
 }

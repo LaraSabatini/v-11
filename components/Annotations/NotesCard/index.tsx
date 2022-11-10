@@ -1,13 +1,17 @@
 import React, { useContext } from "react"
 import { AnnotationsContext } from "contexts/Annotations"
+import AnnotationsInterface from "interfaces/annotations/annotationInterface"
 import Card from "../Card"
 import NoteItem from "./NoteItem"
+import { NoInfoToShow } from "../styles"
 
 function NotesCard() {
-  const { notesPagination, setNotesPagination } = useContext(AnnotationsContext)
+  const { notesPagination, setNotesPagination, notes } = useContext(
+    AnnotationsContext,
+  )
 
   const goNext = () => {
-    if (notesPagination.total < notesPagination.current) {
+    if (notesPagination.total > notesPagination.current) {
       setNotesPagination({
         ...notesPagination,
         current: notesPagination.current + 1,
@@ -32,20 +36,16 @@ function NotesCard() {
       onClickNext={goNext}
       onClickBack={goPrev}
     >
-      <NoteItem
-        annotation={{
-          id: 1,
-          title: "Tarea",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam magni voluptatibus perferendis dignissimos, unde dolore!",
-          creation_date: "11-20-2022",
-          type: "note",
-          done: 0,
-          done_date: "09-11-2022",
-          created_by: 1,
-          done_by: 0,
-        }}
-      />
+      {notes.length ? (
+        notes.map((note: AnnotationsInterface) => (
+          <NoteItem key={note.id} annotation={note} />
+        ))
+      ) : (
+        <NoInfoToShow>
+          No hay notas para mostrar
+          <span>Crea una nota para empezar a visualizarlas</span>
+        </NoInfoToShow>
+      )}
     </Card>
   )
 }

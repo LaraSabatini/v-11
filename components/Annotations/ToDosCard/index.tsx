@@ -1,13 +1,17 @@
 import React, { useContext } from "react"
 import { AnnotationsContext } from "contexts/Annotations"
+import AnnotationsInterface from "interfaces/annotations/annotationInterface"
 import Card from "../Card"
 import TodoItem from "./TodoItem"
+import { NoInfoToShow } from "../styles"
 
 function ToDosCard() {
-  const { toDosPagination, setToDosPagination } = useContext(AnnotationsContext)
+  const { toDosPagination, setToDosPagination, todos } = useContext(
+    AnnotationsContext,
+  )
 
   const goNext = () => {
-    if (toDosPagination.total < toDosPagination.current) {
+    if (toDosPagination.total > toDosPagination.current) {
       setToDosPagination({
         ...toDosPagination,
         current: toDosPagination.current + 1,
@@ -32,34 +36,16 @@ function ToDosCard() {
       onClickNext={goNext}
       onClickBack={goPrev}
     >
-      <TodoItem
-        annotation={{
-          id: 1,
-          title: "Tarea",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam magni voluptatibus perferendis dignissimos, unde dolore!",
-          creation_date: "11-20-2022",
-          type: "todo",
-          done: 0,
-          done_date: "09-11-2022",
-          created_by: 0,
-          done_by: 0,
-        }}
-      />
-      <TodoItem
-        annotation={{
-          id: 1,
-          title: "Tarea",
-          description:
-            "Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam magni voluptatibus perferendis dignissimos, unde dolore!",
-          creation_date: "11-20-2022",
-          type: "todo",
-          done: 1,
-          done_date: "09-11-2022",
-          created_by: 0,
-          done_by: 0,
-        }}
-      />
+      {todos.length ? (
+        todos.map((todo: AnnotationsInterface) => (
+          <TodoItem key={todo.id} annotation={todo} />
+        ))
+      ) : (
+        <NoInfoToShow>
+          No hay tareas para mostrar
+          <span>Crea una tarea para empezar a visualizarlas</span>
+        </NoInfoToShow>
+      )}
     </Card>
   )
 }

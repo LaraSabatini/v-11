@@ -1,9 +1,7 @@
-import React, {
-  useContext,
-  //  useEffect
-} from "react"
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useContext, useEffect } from "react"
 // SERVICES
-// import { getAllTodos } from "services/Annotations/Annotations.service"
+import { getAllTodos, getNotes } from "services/Annotations/Annotations.service"
 // DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
 import generalTexts from "strings/general.json"
@@ -30,6 +28,13 @@ function AnnotationsView() {
     setAnnotationSelected,
     editModal,
     setEditModal,
+    toDosPagination,
+    setToDosPagination,
+    setNotesPagination,
+    notesPagination,
+    order,
+    setTodos,
+    setNotes,
   } = useContext(AnnotationsContext)
 
   const deleteAnnotation = () => {
@@ -45,14 +50,32 @@ function AnnotationsView() {
     setAnnotationSelected(null)
   }
 
-  // const fillData = async () => {
-  //   const getTodos = await getAllTodos(1)
-  //   console.log(getTodos)
-  // }
+  const fillDataForTodos = async () => {
+    const getTodosCall = await getAllTodos(toDosPagination.current)
+    setTodos(getTodosCall.data)
 
-  // useEffect(() => {
-  //   fillData()
-  // }, [])
+    setToDosPagination({
+      ...toDosPagination,
+      total: getTodosCall.meta.totalPages,
+    })
+  }
+
+  const fillDataForNotes = async () => {
+    const getNotesCall = await getNotes(notesPagination.current, order)
+    setNotes(getNotesCall.data)
+    setNotesPagination({
+      ...notesPagination,
+      total: getNotesCall.meta.totalPages,
+    })
+  }
+
+  useEffect(() => {
+    fillDataForTodos()
+  }, [toDosPagination.current])
+
+  useEffect(() => {
+    fillDataForNotes()
+  }, [notesPagination.current, order])
 
   return (
     <MainContainer>
