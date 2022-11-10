@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const CardsContainer = styled.div`
@@ -7,6 +7,7 @@ const CardsContainer = styled.div`
   width: 80%;
   margin: 0 auto;
   justify-content: space-between;
+  position: relative;
 `
 
 const Item = styled.div`
@@ -112,6 +113,30 @@ const NoInfoToShow = styled.p`
   }
 `
 
+const Add = styled.button<{ disabled: boolean }>`
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${theme.colors.primary};
+  cursor: pointer;
+  box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
+  -webkit-box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
+  -moz-box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
+  bottom: 10px;
+  right: -100px;
+  position: absolute;
+  ${props =>
+    props.disabled &&
+    css`
+      opacity: 0.4;
+      cursor: not-allowed;
+    `};
+`
+
 export {
   CardsContainer,
   Item,
@@ -123,4 +148,5 @@ export {
   Menu,
   SubContent,
   NoInfoToShow,
+  Add,
 }

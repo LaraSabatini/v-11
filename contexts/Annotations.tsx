@@ -59,6 +59,7 @@ function AnnotationsProvider({ children }) {
 
   const titleRef = useRef(null)
   const descriptionRef = useRef(null)
+  const typeRef = useRef(null)
 
   const [modalResponse, setModalResponse] = useState<{
     success: boolean
@@ -106,6 +107,7 @@ function AnnotationsProvider({ children }) {
       setTriggerListUpdate,
       openCreateModal,
       setOpenCreateModal,
+      typeRef,
     }),
     [
       filterSelected,

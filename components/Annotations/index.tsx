@@ -1,7 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect } from "react"
 // SERVICES
-import { getAllTodos, getNotes } from "services/Annotations/Annotations.service"
+import {
+  getAllTodos,
+  getNotes,
+  createAnnotation,
+} from "services/Annotations/Annotations.service"
 // DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
 import generalTexts from "strings/general.json"
@@ -16,10 +20,14 @@ import {
   HeadContent,
   Title,
 } from "theme/globalComponentStyles"
+
+import { day, month, year } from "const/time"
+import Icon from "components/UI/Assets/Icon"
+import CreateAnnotation from "./CreateAnnotation"
 import EditAnnotation from "./EditAnnotation"
 import ToDosCard from "./ToDosCard"
 import NotesCard from "./NotesCard"
-import { CardsContainer } from "./styles"
+import { CardsContainer, Add } from "./styles"
 
 function AnnotationsView() {
   const {
@@ -38,7 +46,17 @@ function AnnotationsView() {
     modalResponse,
     cleanStates,
     triggerListUpdate,
+    openCreateModal,
+    setOpenCreateModal,
+    setNewAnnotation,
+    titleRef,
+    descriptionRef,
+    newAnnotation,
+    setModalResponse,
   } = useContext(AnnotationsContext)
+
+  const getPermissions = localStorage.getItem("permissions")
+  const permissions = JSON.parse(getPermissions)[0].sections[4].sub_sections[0]
 
   const deleteAnnotation = () => {
     // annotationSelected
@@ -51,6 +69,43 @@ function AnnotationsView() {
   const cancelEdition = () => {
     setEditModal(false)
     setAnnotationSelected(null)
+  }
+
+  const createAnnotationFunction = async e => {
+    e.preventDefault()
+
+    await titleRef.current?.focus()
+    await descriptionRef.current?.focus()
+    await titleRef.current?.focus()
+
+    if (
+      titleRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      descriptionRef.current.attributes.getNamedItem("data-error").value ===
+        "false"
+    ) {
+      const newAnnotationBody = {
+        ...newAnnotation,
+        creation_date: `${day}-${month}-${year}`,
+        done_date: "",
+        done_by: 0,
+      }
+      const create = await createAnnotation(newAnnotationBody)
+
+      const success = create.message === "Annotation created successfully"
+
+      setModalResponse({
+        success,
+        message: {
+          status: success ? "success" : "alert",
+          icon: success ? "IconCheck" : "IconExclamation",
+          title: success ? "Excelente!" : "UPS!",
+          content: success
+            ? "La anotacion se ha creado exitosamente."
+            : "Ocurrio un error al crear la anotacion, por favor intentalo de nuevo o contactate con un administrador",
+        },
+      })
+    }
   }
 
   const fillDataForTodos = async () => {
@@ -79,6 +134,21 @@ function AnnotationsView() {
   useEffect(() => {
     fillDataForNotes()
   }, [notesPagination.current, order, triggerListUpdate])
+
+  const cancelCreateAnnotation = () => {
+    setOpenCreateModal(false)
+    setNewAnnotation({
+      id: 0,
+      title: "",
+      description: "",
+      creation_date: "",
+      type: "todo",
+      done: 0,
+      done_date: "",
+      created_by: parseInt(localStorage.getItem("id"), 10),
+      done_by: 0,
+    })
+  }
 
   return (
     <MainContainer>
@@ -128,8 +198,22 @@ function AnnotationsView() {
         <CardsContainer>
           <ToDosCard />
           <NotesCard />
+          <Add
+            disabled={!permissions.actions.create}
+            onClick={() => {
+              setOpenCreateModal(true)
+            }}
+          >
+            <Icon icon="IconAdd" color="#fff" />
+          </Add>
         </CardsContainer>
       </Content>
+      {openCreateModal && (
+        <CreateAnnotation
+          submitAction={createAnnotationFunction}
+          cancelAction={cancelCreateAnnotation}
+        />
+      )}
     </MainContainer>
   )
 }
