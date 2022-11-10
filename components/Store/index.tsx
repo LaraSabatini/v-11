@@ -24,7 +24,6 @@ import PopOver from "components/UI/PopOver"
 import Icon from "components/UI/Assets/Icon"
 import Header from "components/UI/Header"
 import SearchBar from "components/UI/SearchBar"
-import { Title } from "theme/globalComponentStyles"
 import Modals from "./UI/Modals"
 import ProductsView from "./Store/ProductList"
 import Receipt from "./Store/Receipt"
@@ -41,6 +40,7 @@ import {
   NoPermissionsViewContainer,
   HelpContainer,
   SearchBarContainer,
+  Title,
 } from "./styles"
 
 function StoreView() {

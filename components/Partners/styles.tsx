@@ -8,6 +8,23 @@ const Content = styled.div`
   margin: 0 auto;
   height: 80vh;
   position: relative;
+  padding-top: 30px;
+`
+
+const Title = styled.h4`
+  font-family: ${theme.fonts.primary};
+  font-size: 25px;
+  margin: 0;
+  span {
+    font-weight: ${theme.fontWeights.regular};
+    font-size: 20px;
+  }
+`
+
+const HeadContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 const FiltersContainer = styled.div`
@@ -96,4 +113,6 @@ export {
   ListAndDetailContainer,
   SearchBarContainer,
   HelpContainer,
+  Title,
+  HeadContent,
 }

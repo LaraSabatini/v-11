@@ -7,13 +7,7 @@ import financesTexts from "strings/finances.json"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
 import NoPermissionsView from "components/UI/NoPermitsView"
-
-import {
-  MainContainer,
-  Content,
-  Title,
-  HeadContent,
-} from "theme/globalComponentStyles"
+import { MainContainer, Content, Title, HeadContent } from "./styles"
 import Bills from "./Bills"
 import Till from "./Till"
 import Earnings from "./Earnings"

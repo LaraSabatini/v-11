@@ -13,7 +13,6 @@ import SearchBar from "components/UI/SearchBar"
 import Tooptip from "components/UI/Tooltip"
 import Header from "components/UI/Header"
 import NoPermissionsView from "components/UI/NoPermitsView"
-import { Title, HeadContent } from "theme/globalComponentStyles"
 import Modals from "./Modals"
 import PartnersList from "./PartnersList"
 import PartnerDetails from "./PartnerDetails"
@@ -29,6 +28,8 @@ import {
   ListAndDetailContainer,
   SearchBarContainer,
   HelpContainer,
+  Title,
+  HeadContent,
 } from "./styles"
 
 function PartnersView() {
