@@ -13,6 +13,7 @@ import {
   HeadContent,
   Title,
 } from "theme/globalComponentStyles"
+import EditAnnotation from "./EditAnnotation"
 import ToDosCard from "./ToDosCard"
 import NotesCard from "./NotesCard"
 import { CardsContainer } from "./styles"
@@ -21,11 +22,22 @@ function AnnotationsView() {
   const {
     warningModal,
     setWarningModal,
-    // annotationSelected
+    setAnnotationSelected,
+    editModal,
+    setEditModal,
   } = useContext(AnnotationsContext)
 
   const deleteAnnotation = () => {
     // annotationSelected
+  }
+
+  const editAnnotation = () => {
+    // edit annotation
+  }
+
+  const cancelEdition = () => {
+    setEditModal(false)
+    setAnnotationSelected(null)
   }
 
   return (
@@ -44,6 +56,12 @@ function AnnotationsView() {
             secondButtonContent={generalTexts.actions.cancel}
             mainAction={deleteAnnotation}
             isNotice
+          />
+        )}
+        {editModal && (
+          <EditAnnotation
+            submitAction={editAnnotation}
+            cancelAction={cancelEdition}
           />
         )}
         <HeadContent>

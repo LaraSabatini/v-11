@@ -1,7 +1,9 @@
-import React, { useState, useContext } from "react"
+import React, { useState } from "react"
 import Checkbox from "components/UI/Checkbox"
 import Icon from "components/UI/Assets/Icon"
-import { AnnotationsContext } from "contexts/Annotations"
+import AnnotationsInterface from "interfaces/annotations/annotationInterface"
+import AnnotationMenu from "../../AnnotationMenu"
+
 import {
   Item,
   ItemHeader,
@@ -10,59 +12,33 @@ import {
   TodoMenu,
   Description,
   TaskTitle,
-  Menu,
 } from "../../styles"
 
 interface TodoItemInterface {
-  id: number
-  done: boolean
-  title: string
-  description: string
-  date: string
+  annotation: AnnotationsInterface
 }
 
-function TodoItem({ id, title, done, date, description }: TodoItemInterface) {
-  const { setWarningModal, setAnnotationSelected } = useContext(
-    AnnotationsContext,
-  )
-
+function TodoItem({ annotation }: TodoItemInterface) {
   const [menu, setMenu] = useState<boolean>(false)
 
   return (
     <Item>
       <ItemHeader>
         <SubContent>
-          <Checkbox checked={done} idParam="done" />
-          <TaskTitle done={done}>{title}</TaskTitle>
+          <Checkbox checked={annotation.done === 1} idParam="done" />
+          <TaskTitle done={annotation.done === 1}>{annotation.title}</TaskTitle>
         </SubContent>
         <SubContent>
-          <TodoDate>{date}</TodoDate>
+          <TodoDate>{annotation.creation_date}</TodoDate>
           <TodoMenu onClick={() => setMenu(!menu)}>
             <Icon icon="IconSeeMore" />
-            {menu && (
-              <Menu>
-                <button type="button">Editar</button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAnnotationSelected(id)
-                    setWarningModal({
-                      status: `alert`,
-                      icon: `IconAlert`,
-                      title:
-                        "Estas seguro de que deseas eliminar la tarea/nota?",
-                      content: "Se eliminara su registro de la base de datos.",
-                    })
-                  }}
-                >
-                  Eliminar
-                </button>
-              </Menu>
-            )}
+            {menu && <AnnotationMenu annotation={annotation} />}
           </TodoMenu>
         </SubContent>
       </ItemHeader>
-      <Description done={done}>{description}</Description>
+      <Description done={annotation.done === 1}>
+        {annotation.description}
+      </Description>
     </Item>
   )
 }

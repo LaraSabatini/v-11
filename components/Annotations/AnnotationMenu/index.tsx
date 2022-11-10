@@ -1,14 +1,31 @@
-import React from "react"
-import { Menu } from "../../styles"
+import React, { useContext } from "react"
+import { AnnotationsContext } from "contexts/Annotations"
+import AnnotationsInterface from "interfaces/annotations/annotationInterface"
+import Menu from "./styles"
 
-function AnnotationMenu() {
+interface AnnotationMenuInterface {
+  annotation: AnnotationsInterface
+}
+
+function AnnotationMenu({ annotation }: AnnotationMenuInterface) {
+  const { setWarningModal, setAnnotationSelected, setEditModal } = useContext(
+    AnnotationsContext,
+  )
   return (
     <Menu>
-      <button type="button">Editar</button>
       <button
         type="button"
         onClick={() => {
-          setAnnotationSelected(id)
+          setAnnotationSelected(annotation)
+          setEditModal(true)
+        }}
+      >
+        Editar
+      </button>
+      <button
+        type="button"
+        onClick={() => {
+          setAnnotationSelected(annotation)
           setWarningModal({
             status: `alert`,
             icon: `IconAlert`,

@@ -1,5 +1,8 @@
 import React, { useState } from "react"
 import Icon from "components/UI/Assets/Icon"
+import AnnotationsInterface from "interfaces/annotations/annotationInterface"
+import AnnotationMenu from "../../AnnotationMenu"
+
 import {
   Item,
   ItemHeader,
@@ -8,52 +11,30 @@ import {
   TodoMenu,
   Description,
   TaskTitle,
-  Menu,
 } from "../../styles"
 
 interface NoteItemInterface {
-  title: string
-  description: string
-  date: string
+  annotation: AnnotationsInterface
 }
 
-function NoteItem({ title, date, description }: NoteItemInterface) {
+function NoteItem({ annotation }: NoteItemInterface) {
   const [menu, setMenu] = useState<boolean>(false)
 
   return (
     <Item>
       <ItemHeader>
         <SubContent>
-          <TaskTitle>{title}</TaskTitle>
+          <TaskTitle>{annotation.title}</TaskTitle>
         </SubContent>
         <SubContent>
-          <TodoDate>{date}</TodoDate>
+          <TodoDate>{annotation.creation_date}</TodoDate>
           <TodoMenu onClick={() => setMenu(!menu)}>
             <Icon icon="IconSeeMore" />
-            {menu && (
-              <Menu>
-                <button type="button">Editar</button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setAnnotationSelected(id)
-                    setWarningModal({
-                      status: `alert`,
-                      icon: `IconAlert`,
-                      title:
-                        "Estas seguro de que deseas eliminar la tarea/nota?",
-                      content: "Se eliminara su registro de la base de datos.",
-                    })
-                  }}
-                >
-                  Eliminar
-                </button>
-              </Menu>
-            )}
+            {menu && <AnnotationMenu annotation={annotation} />}
           </TodoMenu>
         </SubContent>
       </ItemHeader>
-      <Description>{description}</Description>
+      <Description>{annotation.description}</Description>
     </Item>
   )
 }

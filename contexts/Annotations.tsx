@@ -38,6 +38,8 @@ function AnnotationsProvider({ children }) {
     content: string
   } | null>(null)
 
+  const [editModal, setEditModal] = useState<boolean>(false)
+
   const value = useMemo(
     () => ({
       filterSelected,
@@ -54,6 +56,8 @@ function AnnotationsProvider({ children }) {
       setWarningModal,
       annotationSelected,
       setAnnotationSelected,
+      editModal,
+      setEditModal,
     }),
     [
       filterSelected,
@@ -64,6 +68,7 @@ function AnnotationsProvider({ children }) {
       setNewAnnotation,
       warningModal,
       annotationSelected,
+      editModal,
     ],
   )
 
