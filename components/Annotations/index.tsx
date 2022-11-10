@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useContext, useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 // SERVICES
 import {
   getAllTodos,
@@ -64,6 +64,9 @@ function AnnotationsView() {
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections[4].sub_sections[0]
 
+  const [disableCreateButton, setDisableCreateButton] = useState<boolean>(false)
+  const [disableEditButton, setDisableEditButton] = useState<boolean>(false)
+
   const validateInputs = async () => {
     await titleRef.current?.focus()
     await descriptionRef.current?.focus()
@@ -99,6 +102,7 @@ function AnnotationsView() {
 
   const editAnnotationFunction = async e => {
     e.preventDefault()
+    setDisableEditButton(true)
 
     const validate = await validateInputs()
 
@@ -118,6 +122,7 @@ function AnnotationsView() {
             : "Ocurrio un error al editar la anotacion, por favor intentalo de nuevo o contactate con un administrador",
         },
       })
+      setDisableEditButton(false)
     }
   }
 
@@ -128,6 +133,7 @@ function AnnotationsView() {
 
   const createAnnotationFunction = async e => {
     e.preventDefault()
+    setDisableCreateButton(true)
 
     const validate = await validateInputs()
 
@@ -153,6 +159,7 @@ function AnnotationsView() {
             : "Ocurrio un error al crear la anotacion, por favor intentalo de nuevo o contactate con un administrador",
         },
       })
+      setDisableCreateButton(false)
     }
   }
 
@@ -233,6 +240,7 @@ function AnnotationsView() {
           <EditAnnotation
             submitAction={editAnnotationFunction}
             cancelAction={cancelEdition}
+            disabledButton={disableEditButton}
           />
         )}
         {modalResponse !== null && (
@@ -273,6 +281,7 @@ function AnnotationsView() {
         <CreateAnnotation
           submitAction={createAnnotationFunction}
           cancelAction={cancelCreateAnnotation}
+          disabledButton={disableCreateButton}
         />
       )}
     </MainContainer>

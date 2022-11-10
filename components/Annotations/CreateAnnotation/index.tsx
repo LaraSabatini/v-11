@@ -9,11 +9,13 @@ import HorizontalContainer from "./styles"
 interface CreateAnnotationInterface {
   submitAction: (arg?: any) => void
   cancelAction: () => void
+  disabledButton: boolean
 }
 
 function CreateAnnotation({
   submitAction,
   cancelAction,
+  disabledButton,
 }: CreateAnnotationInterface) {
   const {
     setNewAnnotation,
@@ -30,6 +32,7 @@ function CreateAnnotation({
       submitButtonContent="Crear"
       submit={submitAction}
       cancelFunction={cancelAction}
+      disabledButton={disabledButton}
     >
       <>
         <HorizontalContainer>
