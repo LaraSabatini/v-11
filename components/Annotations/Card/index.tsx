@@ -30,6 +30,9 @@ function Card({ title, type, children }: CardInterface) {
     setNewAnnotation,
   } = useContext(AnnotationsContext)
 
+  const getPermissions = localStorage.getItem("permissions")
+  const permissions = JSON.parse(getPermissions)[0].sections[4].sub_sections[0]
+
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false)
 
   const createAnnotation = () => {}
@@ -83,7 +86,10 @@ function Card({ title, type, children }: CardInterface) {
       <ScrollView height={450}>
         <CardContent>{children}</CardContent>
       </ScrollView>
-      <Add disabled={false} onClick={() => setOpenCreateModal(true)}>
+      <Add
+        disabled={!permissions.actions.create}
+        onClick={() => setOpenCreateModal(true)}
+      >
         <Icon icon="IconAdd" color="#fff" />
       </Add>
       {openCreateModal && (

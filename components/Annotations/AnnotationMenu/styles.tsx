@@ -24,6 +24,13 @@ const Menu = styled.div`
     font-family: ${theme.fonts.primary};
     font-weight: ${theme.fontWeights.light};
 
+    &:disabled {
+      cursor: not-allowed;
+      &:hover {
+        font-weight: ${theme.fontWeights.light};
+      }
+    }
+
     &:hover {
       font-weight: ${theme.fontWeights.regular};
     }
