@@ -74,6 +74,7 @@ function AnnotationsProvider({ children }) {
     setTriggerListUpdate(triggerListUpdate + 1)
     setEditModal(null)
     setOpenCreateModal(null)
+    setWarningModal(null)
   }
 
   const value = useMemo(

@@ -7,6 +7,7 @@ import {
   createAnnotation,
   getTodosByDone,
   editAnnotation,
+  deleteAnnotation,
 } from "services/Annotations/Annotations.service"
 // DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
@@ -57,6 +58,7 @@ function AnnotationsView() {
     setModalResponse,
     filterSelected,
     typeRef,
+    annotationSelected,
   } = useContext(AnnotationsContext)
 
   const getPermissions = localStorage.getItem("permissions")
@@ -77,8 +79,22 @@ function AnnotationsView() {
     )
   }
 
-  const deleteAnnotation = () => {
-    // annotationSelected
+  const deleteAnnotationFunction = async () => {
+    const deleteAnn = await deleteAnnotation(annotationSelected.id)
+
+    const success = deleteAnn.message === "Annotation deleted successfully"
+
+    setModalResponse({
+      success,
+      message: {
+        status: success ? "success" : "alert",
+        icon: success ? "IconCheckModal" : "IconExclamation",
+        title: success ? "Excelente!" : "UPS!",
+        content: success
+          ? "La anotacion se ha eliminado exitosamente."
+          : "Ocurrio un error al eliminar la anotacion, por favor intentalo de nuevo o contactate con un administrador",
+      },
+    })
   }
 
   const editAnnotationFunction = async e => {
@@ -95,7 +111,7 @@ function AnnotationsView() {
         success,
         message: {
           status: success ? "success" : "alert",
-          icon: success ? "IconCheck" : "IconExclamation",
+          icon: success ? "IconCheckModal" : "IconExclamation",
           title: success ? "Excelente!" : "UPS!",
           content: success
             ? "La anotacion se ha editado exitosamente."
@@ -130,7 +146,7 @@ function AnnotationsView() {
         success,
         message: {
           status: success ? "success" : "alert",
-          icon: success ? "IconCheck" : "IconExclamation",
+          icon: success ? "IconCheckModal" : "IconExclamation",
           title: success ? "Excelente!" : "UPS!",
           content: success
             ? "La anotacion se ha creado exitosamente."
@@ -209,7 +225,7 @@ function AnnotationsView() {
             closeRefresh={() => setWarningModal(null)}
             mainButtonContent={generalTexts.actions.confirm}
             secondButtonContent={generalTexts.actions.cancel}
-            mainAction={deleteAnnotation}
+            mainAction={deleteAnnotationFunction}
             isNotice
           />
         )}
