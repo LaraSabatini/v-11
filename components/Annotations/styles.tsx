@@ -104,6 +104,7 @@ const NoInfoToShow = styled.p`
   text-align: center;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   span {
     text-transform: none;

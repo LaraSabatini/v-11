@@ -5,6 +5,7 @@ import {
   getAllTodos,
   getNotes,
   createAnnotation,
+  getTodosByDone,
 } from "services/Annotations/Annotations.service"
 // DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
@@ -53,6 +54,7 @@ function AnnotationsView() {
     descriptionRef,
     newAnnotation,
     setModalResponse,
+    filterSelected,
   } = useContext(AnnotationsContext)
 
   const getPermissions = localStorage.getItem("permissions")
@@ -109,13 +111,26 @@ function AnnotationsView() {
   }
 
   const fillDataForTodos = async () => {
-    const getTodosCall = await getAllTodos(toDosPagination.current)
-    setTodos(getTodosCall.data)
+    if (filterSelected === "all") {
+      const getTodosCall = await getAllTodos(toDosPagination.current)
+      setTodos(getTodosCall.data)
 
-    setToDosPagination({
-      ...toDosPagination,
-      total: getTodosCall.meta.totalPages,
-    })
+      setToDosPagination({
+        ...toDosPagination,
+        total: getTodosCall.meta.totalPages,
+      })
+    } else {
+      const getTodosCall = await getTodosByDone(
+        toDosPagination.current,
+        filterSelected.id === 1 ? 1 : 0,
+      )
+      setTodos(getTodosCall.data)
+
+      setToDosPagination({
+        ...toDosPagination,
+        total: getTodosCall.meta.totalPages,
+      })
+    }
   }
 
   const fillDataForNotes = async () => {
@@ -129,7 +144,7 @@ function AnnotationsView() {
 
   useEffect(() => {
     fillDataForTodos()
-  }, [toDosPagination.current])
+  }, [toDosPagination.current, filterSelected])
 
   useEffect(() => {
     fillDataForNotes()
