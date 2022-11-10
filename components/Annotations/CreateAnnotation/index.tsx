@@ -3,6 +3,8 @@ import ModalForm from "components/UI/ModalForm"
 import { AnnotationsContext } from "contexts/Annotations"
 import TextField from "components/UI/TextField"
 import Autocomplete from "components/UI/Autocomplete"
+import generalTexts from "strings/general.json"
+import annotationsTexts from "strings/annotations.json"
 import { annotationTypes } from "const/annotations"
 import HorizontalContainer from "./styles"
 
@@ -27,9 +29,9 @@ function CreateAnnotation({
 
   return (
     <ModalForm
-      title="Crear Anotacion"
-      cancelButtonContent="Cancelar"
-      submitButtonContent="Crear"
+      title={annotationsTexts.createAnnotation}
+      cancelButtonContent={generalTexts.actions.cancel}
+      submitButtonContent={generalTexts.actions.create}
       submit={submitAction}
       cancelFunction={cancelAction}
       disabledButton={disabledButton}
@@ -37,7 +39,7 @@ function CreateAnnotation({
       <>
         <HorizontalContainer>
           <TextField
-            label="Titulo"
+            label={annotationsTexts.titleLabel}
             required
             type="text"
             width={230}
@@ -47,7 +49,7 @@ function CreateAnnotation({
             }
           />
           <Autocomplete
-            label="Tipo"
+            label={annotationsTexts.typeLabel}
             required
             ref={typeRef}
             options={annotationTypes}
@@ -58,7 +60,7 @@ function CreateAnnotation({
           />
         </HorizontalContainer>
         <TextField
-          label="Descripcion"
+          label={annotationsTexts.descriptionLabel}
           max={200}
           required
           type="textarea"

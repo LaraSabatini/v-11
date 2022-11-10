@@ -1,5 +1,7 @@
 import React, { useContext } from "react"
 import { AnnotationsContext } from "contexts/Annotations"
+import generalTexts from "strings/general.json"
+import annotationsTexts from "strings/annotations.json"
 import AnnotationsInterface from "interfaces/annotations/annotationInterface"
 import Menu from "./styles"
 
@@ -29,7 +31,7 @@ function AnnotationMenu({ annotation }: AnnotationMenuInterface) {
           setEditModal(true)
         }}
       >
-        Editar
+        {generalTexts.actions.edit}
       </button>
       <button
         type="button"
@@ -39,12 +41,12 @@ function AnnotationMenu({ annotation }: AnnotationMenuInterface) {
           setWarningModal({
             status: `alert`,
             icon: `IconAlert`,
-            title: "Estas seguro de que deseas eliminar la tarea/nota?",
-            content: "Se eliminara su registro de la base de datos.",
+            title: `${annotationsTexts.modals.warnignModal.title}`,
+            content: `${annotationsTexts.modals.warnignModal.content}`,
           })
         }}
       >
-        Eliminar
+        {generalTexts.actions.removeRecord}
       </button>
     </Menu>
   )

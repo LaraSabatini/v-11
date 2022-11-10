@@ -92,10 +92,12 @@ function AnnotationsView() {
       message: {
         status: success ? "success" : "alert",
         icon: success ? "IconCheckModal" : "IconExclamation",
-        title: success ? "Excelente!" : "UPS!",
+        title: success
+          ? `${annotationTexts.modals.successDelete.title}`
+          : `${annotationTexts.modals.errorDelete.title}`,
         content: success
-          ? "La anotacion se ha eliminado exitosamente."
-          : "Ocurrio un error al eliminar la anotacion, por favor intentalo de nuevo o contactate con un administrador",
+          ? `${annotationTexts.modals.successDelete.content}`
+          : `${annotationTexts.modals.errorDelete.content}`,
       },
     })
   }
@@ -116,10 +118,12 @@ function AnnotationsView() {
         message: {
           status: success ? "success" : "alert",
           icon: success ? "IconCheckModal" : "IconExclamation",
-          title: success ? "Excelente!" : "UPS!",
+          title: success
+            ? `${annotationTexts.modals.successEdit.title}`
+            : `${annotationTexts.modals.errorEdit.title}`,
           content: success
-            ? "La anotacion se ha editado exitosamente."
-            : "Ocurrio un error al editar la anotacion, por favor intentalo de nuevo o contactate con un administrador",
+            ? `${annotationTexts.modals.successEdit.content}`
+            : `${annotationTexts.modals.errorEdit.content}`,
         },
       })
       setDisableEditButton(false)
@@ -153,10 +157,12 @@ function AnnotationsView() {
         message: {
           status: success ? "success" : "alert",
           icon: success ? "IconCheckModal" : "IconExclamation",
-          title: success ? "Excelente!" : "UPS!",
+          title: success
+            ? `${annotationTexts.modals.successCreate.title}`
+            : `${annotationTexts.modals.errorCreate.title}`,
           content: success
-            ? "La anotacion se ha creado exitosamente."
-            : "Ocurrio un error al crear la anotacion, por favor intentalo de nuevo o contactate con un administrador",
+            ? `${annotationTexts.modals.successCreate.content}`
+            : `${annotationTexts.modals.errorCreate.content}`,
         },
       })
       setDisableCreateButton(false)

@@ -1,3 +1,40 @@
 {
-    "notes": "Notas"
+    "notes": "Notas",
+    "pending": "Pendientes",
+    "editNote": "Editar Nota",
+    "editTask": "Editar Tarea",
+    "titleLabel": "Titulo",
+    "typeLabel": "Tipo",
+    "descriptionLabel": "Descripcion",
+    "createAnnotation": "Crear Anotacion",
+    "modals": {
+        "successDelete": {
+            "title": "Excelente!",
+            "content": "La anotacion se ha eliminado exitosamente."
+        },
+        "errorDelete": {
+            "title": "UPS!",
+            "content": "Ocurrio un error al eliminar la anotacion, por favor intentalo de nuevo o contactate con un administrador"
+        },
+        "successEdit": {
+            "title": "Excelente!",
+            "content": "La anotacion se ha editado exitosamente."
+        },
+        "errorEdit": {
+            "title": "UPS!",
+            "content": "Ocurrio un error al editar la anotacion, por favor intentalo de nuevo o contactate con un administrador"
+        },
+        "successCreate": {
+            "title": "Excelente!",
+            "content": "La anotacion se ha creado exitosamente."
+        },
+        "errorCreate": {
+            "title": "UPS!",
+            "content": "Ocurrio un error al crear la anotacion, por favor intentalo de nuevo o contactate con un administrador"
+        },
+        "warnignModal" : {
+            "title": "Estas seguro de que deseas eliminar la tarea/nota?",
+            "content": "Se eliminara su registro de la base de datos."
+        }
+    }
 }

@@ -1,5 +1,6 @@
 import React, { useContext } from "react"
 import { AnnotationsContext } from "contexts/Annotations"
+import annotationTexts from "strings/annotations.json"
 import AnnotationsInterface from "interfaces/annotations/annotationInterface"
 import Card from "../Card"
 import NoteItem from "./NoteItem"
@@ -29,7 +30,7 @@ function NotesCard() {
 
   return (
     <Card
-      title="Notas"
+      title={annotationTexts.notes}
       type="note"
       currentPage={notesPagination.current}
       totalPages={notesPagination.total}

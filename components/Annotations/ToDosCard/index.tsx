@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { AnnotationsContext } from "contexts/Annotations"
 import AnnotationsInterface from "interfaces/annotations/annotationInterface"
+import annotationTexts from "strings/annotations.json"
 import Card from "../Card"
 import TodoItem from "./TodoItem"
 import { NoInfoToShow } from "../styles"
@@ -29,7 +30,7 @@ function ToDosCard() {
 
   return (
     <Card
-      title="Pendientes"
+      title={annotationTexts.pending}
       type="todo"
       currentPage={toDosPagination.current}
       totalPages={toDosPagination.total}
