@@ -157,7 +157,7 @@ function AnnotationsView() {
   }
 
   const fillDataForTodos = async () => {
-    if (filterSelected === "all") {
+    if (filterSelected.id === 3) {
       const getTodosCall = await getAllTodos(toDosPagination.current)
       setTodos(getTodosCall.data)
 
