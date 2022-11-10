@@ -6,7 +6,7 @@ import TextField from "components/UI/TextField"
 interface CreateAnnotationInterface {
   title: string
   type: "todo" | "note"
-  submitAction: () => void
+  submitAction: (arg?: any) => void
   cancelAction: () => void
 }
 
@@ -16,7 +16,12 @@ function CreateAnnotation({
   cancelAction,
   type,
 }: CreateAnnotationInterface) {
-  const { setNewAnnotation, newAnnotation } = useContext(AnnotationsContext)
+  const {
+    setNewAnnotation,
+    newAnnotation,
+    titleRef,
+    descriptionRef,
+  } = useContext(AnnotationsContext)
 
   useEffect(() => {
     setNewAnnotation({ ...newAnnotation, type })
@@ -37,6 +42,7 @@ function CreateAnnotation({
           required
           type="text"
           width={230}
+          reference={titleRef}
           onChange={e =>
             setNewAnnotation({ ...newAnnotation, title: e.target.value })
           }
@@ -47,6 +53,7 @@ function CreateAnnotation({
           required
           type="textarea"
           width={380}
+          reference={descriptionRef}
           onChange={e =>
             setNewAnnotation({ ...newAnnotation, description: e.target.value })
           }

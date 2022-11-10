@@ -35,6 +35,9 @@ function AnnotationsView() {
     order,
     setTodos,
     setNotes,
+    modalResponse,
+    cleanStates,
+    triggerListUpdate,
   } = useContext(AnnotationsContext)
 
   const deleteAnnotation = () => {
@@ -75,7 +78,7 @@ function AnnotationsView() {
 
   useEffect(() => {
     fillDataForNotes()
-  }, [notesPagination.current, order])
+  }, [notesPagination.current, order, triggerListUpdate])
 
   return (
     <MainContainer>
@@ -99,6 +102,18 @@ function AnnotationsView() {
           <EditAnnotation
             submitAction={editAnnotation}
             cancelAction={cancelEdition}
+          />
+        )}
+        {modalResponse !== null && (
+          <ModalAlert
+            success={modalResponse.success}
+            message={modalResponse.message}
+            closeModal={() => {
+              cleanStates()
+            }}
+            closeRefresh={() => {
+              cleanStates()
+            }}
           />
         )}
         <HeadContent>

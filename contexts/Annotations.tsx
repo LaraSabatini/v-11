@@ -1,4 +1,4 @@
-import { createContext, useState, useMemo } from "react"
+import { createContext, useState, useMemo, useRef } from "react"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 import AnnotationsInterface from "interfaces/annotations/annotationInterface"
 
@@ -13,6 +13,8 @@ function AnnotationsProvider({ children }) {
 
   const [todos, setTodos] = useState<AnnotationsInterface[]>([])
   const [notes, setNotes] = useState<AnnotationsInterface[]>([])
+
+  const [triggerListUpdate, setTriggerListUpdate] = useState<number>(0)
 
   const [
     annotationSelected,
@@ -55,6 +57,24 @@ function AnnotationsProvider({ children }) {
     total: 1,
   })
 
+  const titleRef = useRef(null)
+  const descriptionRef = useRef(null)
+
+  const [modalResponse, setModalResponse] = useState<{
+    success: boolean
+    message: { status: string; icon: string; title: string; content: string }
+  } | null>(null)
+
+  const [openCreateModal, setOpenCreateModal] = useState<boolean>(false)
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const cleanStates = () => {
+    setModalResponse(null)
+    setTriggerListUpdate(triggerListUpdate + 1)
+    setEditModal(null)
+    setOpenCreateModal(null)
+  }
+
   const value = useMemo(
     () => ({
       filterSelected,
@@ -77,6 +97,15 @@ function AnnotationsProvider({ children }) {
       setToDosPagination,
       notesPagination,
       setNotesPagination,
+      titleRef,
+      descriptionRef,
+      modalResponse,
+      setModalResponse,
+      cleanStates,
+      triggerListUpdate,
+      setTriggerListUpdate,
+      openCreateModal,
+      setOpenCreateModal,
     }),
     [
       filterSelected,
@@ -90,6 +119,10 @@ function AnnotationsProvider({ children }) {
       editModal,
       toDosPagination,
       notesPagination,
+      modalResponse,
+      triggerListUpdate,
+      cleanStates,
+      openCreateModal,
     ],
   )
 
