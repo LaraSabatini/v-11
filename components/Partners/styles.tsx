@@ -6,16 +6,15 @@ const Container = styled.div``
 const Content = styled.div`
   width: 90vw;
   margin: 0 auto;
-  padding-top: 30px;
   height: 80vh;
   position: relative;
+  padding-top: 30px;
 `
 
 const Title = styled.h4`
   font-family: ${theme.fonts.primary};
   font-size: 25px;
   margin: 0;
-
   span {
     font-weight: ${theme.fontWeights.regular};
     font-size: 20px;
@@ -106,14 +105,14 @@ const HelpContainer = styled.div`
 
 export {
   Container,
-  Title,
   Content,
   FiltersContainer,
   Filter,
-  HeadContent,
   AddPartner,
   MainButton,
   ListAndDetailContainer,
   SearchBarContainer,
   HelpContainer,
+  Title,
+  HeadContent,
 }

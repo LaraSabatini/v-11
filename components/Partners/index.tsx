@@ -22,14 +22,14 @@ import Prices from "./Prices"
 import setPartnerList from "./helpers/setPartnersList"
 import {
   Container,
-  Title,
   Content,
-  HeadContent,
   AddPartner,
   MainButton,
   ListAndDetailContainer,
   SearchBarContainer,
   HelpContainer,
+  Title,
+  HeadContent,
 } from "./styles"
 
 function PartnersView() {

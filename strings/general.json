@@ -4,12 +4,14 @@
         "trainers": "Profesores",
         "store": "Tienda",
         "finances": "Finanzas",
-        "prices": "Precios"
+        "prices": "Precios",
+        "annotations": "Anotaciones"
     },
     "actions": {
         "delete": "Borrar",
         "cancel": "Cancelar",
         "confirm": "Confirmar",
+        "edit": "Editar",
         "save": "Guardar",
         "discardChanges": "Descartar cambios",
         "create": "Crear",

@@ -7,13 +7,12 @@ import financesTexts from "strings/finances.json"
 // COMPONENTS & STYLING
 import Header from "components/UI/Header"
 import NoPermissionsView from "components/UI/NoPermitsView"
-
+import { MainContainer, Content, Title, HeadContent } from "./styles"
 import Bills from "./Bills"
 import Till from "./Till"
 import Earnings from "./Earnings"
 import WorkingHours from "./WorkingHours"
 import TillFilters from "./Till/Filters"
-import { MainContainer, Content, Title, HeadContent } from "./styles"
 
 function FinancesView() {
   const router = useRouter()

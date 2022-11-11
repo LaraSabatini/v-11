@@ -70,6 +70,16 @@ const routes: {
       },
     ],
   },
+  {
+    route: "annotations",
+    name: "Anotaciones",
+    queries: [
+      {
+        name: "Notas",
+        query: "?notes=true",
+      },
+    ],
+  },
 ]
 
 export default routes
