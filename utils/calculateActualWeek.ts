@@ -1,7 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { today } from "const/time"
-
-export const calculateActualWeek = () => {
+export const calculateActualWeek = (today: Date) => {
   const startDate = new Date(today.getFullYear(), 0, 1)
   const days = Math.floor(
     (today.valueOf() - startDate.valueOf()) / (24 * 60 * 60 * 1000),

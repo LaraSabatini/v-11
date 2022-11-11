@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 // DATA STORAGE & TYPES
 import { Lessons } from "@contexts/Lessons"
-import { year, daysOfTheWeek, shifts } from "const/time"
+import { year, daysOfTheWeek, shifts, today } from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 // COMPONENTS & STYLING
 import Pagination from "components/UI/Pagination"
@@ -55,7 +55,7 @@ function CalendarView() {
 
   useEffect(() => {
     if (weekNumberSelected === null) {
-      setWeekNumberSelected(calculateActualWeek())
+      setWeekNumberSelected(calculateActualWeek(today))
     } else {
       setDataForLessons()
     }

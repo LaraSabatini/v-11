@@ -12,7 +12,13 @@
       "@interfaces/*": ["interfaces/*"],
       "@pages/*": ["pages/*"],
       "@services/*": ["services/*"],
-      "@theme/*": ["theme/*"]
+      "@theme/*": ["theme/*"],
+      "@const/*": ["const/*"],
+      "@helpers/*": ["helpers/*"],
+      "@mails/*": ["mails/*"],
+      "@routes/*": ["routes/*"],
+      "@strings/*": ["strings/*"],
+      "@utils/*": ["utils/*"],
     },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -31,6 +37,6 @@
     "**/*.ts",
     "**/*.tsx",
     "context/RolesComparisonContext.jsx"
-  ],
+, "jest.config.js"  ],
   "exclude": ["node_modules"]
 }

@@ -7,7 +7,6 @@ import generalTexts from "strings/general.json"
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
 import cleanMargin from "utils/cleanMargin"
-import cleanProfit from "../../helpers/cleanProfit"
 import {
   Card,
   ComponentContainer,
@@ -28,6 +27,8 @@ function HistoryCard({
   payment,
   id,
 }: HistoryCardInterface) {
+  const profit = final_sells - cost * amount
+
   return (
     <div>
       {id !== 1 && id !== 2 && id !== 3 && (
@@ -70,7 +71,7 @@ function HistoryCard({
             <p className="profits">
               {financesTexts.profits}:
               <span>
-                ${cleanProfit(final_sells - cost * amount)}{" "}
+                {cleanMargin(`${profit}`.split("."))}{" "}
                 <p>(${cleanMargin(`${margin}`.split("."))})</p>
               </span>
             </p>
