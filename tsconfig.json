@@ -13,7 +13,6 @@
       "@pages/*": ["pages/*"],
       "@services/*": ["services/*"],
       "@theme/*": ["theme/*"],
-      "@theme/*": ["theme/*"],
       "@const/*": ["const/*"],
       "@helpers/*": ["helpers/*"],
       "@mails/*": ["mails/*"],
