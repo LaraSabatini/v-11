@@ -13,6 +13,7 @@
       "@pages/*": ["pages/*"],
       "@services/*": ["services/*"],
       "@theme/*": ["theme/*"],
+      "@theme/*": ["theme/*"],
       "@const/*": ["const/*"],
       "@helpers/*": ["helpers/*"],
       "@mails/*": ["mails/*"],
@@ -31,12 +32,12 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true
-, "jest.config.js"  },
+  },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "context/RolesComparisonContext.jsx"
-, "jest.config.js"  ],
+  ],
   "exclude": ["node_modules"]
 }
