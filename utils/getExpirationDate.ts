@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
-import formatDescDate from "components/Trainers/helpers/formatDescDate"
+// import formatDescDate from "components/Trainers/helpers/formatDescDate"
+import formatDescDate from "../components/Trainers/helpers/formatDescDate"
 
 export const getExpirationDate = (
   date: string,
@@ -19,7 +20,7 @@ export const getExpirationDate = (
   let finalExpireMonth: string | number
   if (comboSelected !== null && comboSelected !== undefined) {
     finalExpireMonth =
-      expireMonth + 2 > 9 ? expireMonth + 2 : `0${expireMonth + 2}`
+      expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`
   } else {
     finalExpireMonth =
       expireMonth + 1 > 9 ? expireMonth + 1 : `0${expireMonth + 1}`

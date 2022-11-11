@@ -12,7 +12,7 @@ describe("getDayOfWeek", () => {
       new Date("2022-11-10T03:00:00.000Z"),
       new Date("2022-11-11T03:00:00.000Z"),
     ]
-    // expect(getDayOfWeek(week, year)).toEqual(expectedOutcome)
+
     expect(getDayOfWeek(week, year)).toEqual(
       expect.arrayContaining(expectedOutcome),
     )
