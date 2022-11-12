@@ -6,6 +6,8 @@ const View = styled.div`
   font-family: ${theme.fonts.primary};
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
+  gap: 15px;
 `
 
 const Row = styled.div`
@@ -15,6 +17,7 @@ const Row = styled.div`
   padding: 10px;
   gap: 10px;
   border-radius: 10px;
+
   p {
     margin: 0;
   }
@@ -29,4 +32,11 @@ const Amount = styled.p`
   font-weight: ${theme.fontWeights.semiBold};
 `
 
-export { View, Title, Row, Amount }
+const HorizontalGroup = styled.div`
+  display: flex;
+  gap: 10px;
+`
+
+const DifferenceContainer = styled.div``
+
+export { View, Title, Row, Amount, HorizontalGroup, DifferenceContainer }
