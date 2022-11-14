@@ -12,7 +12,7 @@ export const createPartnerPaymentAction = async (payment: PaymentInterface) => {
 
 export const editPartnerPaymentAction = async (payment: PaymentInterface) => {
   const editPayment = await editPartnerPayment(payment)
-  return editPayment.message === "partnerPayment updated successfully"
+  return editPayment.message === "payment updated successfully"
 }
 
 export const getPartnerPaymentsByIdAction = async (id: number) => {
