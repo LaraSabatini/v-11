@@ -1,10 +1,10 @@
 const transformHTML = (
   till: {
-    software: { cash: string; mp: string }
-    real: { cash: string; mp: string }
+    software: { cash: number; mp: number }
+    real: { cash: number; mp: number }
   },
-  earningsStore: { cash: string; mp: string },
-  earningsBoulder: { cash: string; mp: string },
+  earningsStore: { cash: number; mp: number },
+  earningsBoulder: { cash: number; mp: number },
   user: string,
   freePass: {
     fourPack: number
@@ -19,6 +19,7 @@ const transformHTML = (
   amountOfPeople: number,
   date: string,
   hour: string,
+  month: number,
 ) => {
   const HTML = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="es">
@@ -658,7 +659,7 @@ const transformHTML = (
   <table class=t626 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t627 style="overflow:hidden;width:600px;"><p class=t633 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:600;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#333333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">Mes</p></td>
   </tr></table>
   </td></tr><tr><td><div class=t634 style="mso-line-height-rule:exactly;mso-line-height-alt:5px;line-height:5px;font-size:1px;display:block;">&nbsp;</div></td></tr><tr><td>
-  <table class=t636 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t637 style="overflow:hidden;width:600px;"><p class=t643 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">@mes-total</p></td>
+  <table class=t636 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t637 style="overflow:hidden;width:600px;"><p class=t643 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">${month}</p></td>
   </tr></table>
   </td></tr></table></td>
   </tr></table>
@@ -704,7 +705,7 @@ const transformHTML = (
   </td></tr></table></td>
   </tr></table>
   </td></tr><tr><td><div class=t12 style="mso-line-height-rule:exactly;mso-line-height-alt:14px;line-height:14px;font-size:1px;display:block;">&nbsp;</div></td></tr><tr><td>
-  <table class=t14 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t15 style="overflow:hidden;width:600px;"><p class=t21 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Josefin Sans';line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">La caja fue cerrada por ${user} a las ${hour} hs</p></td>
+  <table class=t14 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t15 style="overflow:hidden;width:600px;"><p class=t21 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Josefin Sans';line-height:24px;font-weight:400;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#111111;text-align:left;mso-line-height-rule:exactly;mso-text-raise:3px;">La caja fue cerrada por @${user} a las ${hour} hs</p></td>
   </tr></table>
   </td></tr><tr><td><div class=t121 style="mso-line-height-rule:exactly;mso-line-height-alt:14px;line-height:14px;font-size:1px;display:block;">&nbsp;</div></td></tr><tr><td>
   <table class=t123 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t124 style="overflow:hidden;width:800px;"><div class=t130 style="display:inline-table;width:100%;text-align:left;vertical-align:top;">

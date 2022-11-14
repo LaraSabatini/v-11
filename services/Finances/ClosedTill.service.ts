@@ -15,7 +15,7 @@ export const createTillClosure = async (body: ClosedTillInterface) => {
   return res
 }
 
-export const updateDigitalPayment = async (body: ClosedTillInterface) => {
+export const updateTillClosure = async (body: ClosedTillInterface) => {
   const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }

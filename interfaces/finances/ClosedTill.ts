@@ -5,5 +5,5 @@ export default interface ClosedTillInterface {
   software_mp: number
   real_cash: number
   real_mp: number
-  closed_by: number
+  closed_by: string
 }
