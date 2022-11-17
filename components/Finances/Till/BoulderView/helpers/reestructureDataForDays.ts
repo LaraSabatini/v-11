@@ -5,7 +5,7 @@ import financesTexts from "strings/finances.json"
 const reestructureDataForDays = (
   partnerPaymentsByDate: PartnerPaymentsHistoryInterface[],
   boulderProductsPurchasedByDate: ProductsPurchasedByDateInterface[],
-  boulderPurchasesViewData,
+  boulderPurchasesViewData?: any,
 ) => {
   const finalEarningsForDays = {
     individualEarningsCash: 0,

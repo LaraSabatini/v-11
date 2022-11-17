@@ -28,6 +28,7 @@
     "eslint-config-prettier": "8.2.0",
     "eslint-config-typescript": "3.0.0",
     "eslint-plugin-prettier": "3.4.0",
+    "mailtrap": "^3.0.1",
     "next": "10.0.5",
     "next-transpile-modules": "6.4.0",
     "react": "17.0.1",
