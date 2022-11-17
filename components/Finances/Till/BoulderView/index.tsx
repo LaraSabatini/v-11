@@ -58,14 +58,21 @@ function BoulderView() {
   }
 
   useEffect(() => {
-    setFinalData()
-    setDataForDays()
     setBoulderPurchasesViewData(
       fillDataForOtherThanDays(partnerPaymentsByDate, boulderPurchasesViewData),
     )
+    setFinalData()
+    setDataForDays()
     setLessonPacks(setLessonsData(partnerPaymentsByDate))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [boulderProductsPurchasedByDate, partnerPaymentsByDate])
+
+  useEffect(() => {
+    setBoulderPurchasesViewData(
+      fillDataForOtherThanDays(partnerPaymentsByDate, boulderPurchasesViewData),
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [partnerPaymentsByDate, boulderPurchasesViewData])
 
   return (
     <Container>
