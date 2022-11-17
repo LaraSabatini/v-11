@@ -19,3 +19,11 @@ export const updateTillClosure = async (body: ClosedTillInterface) => {
   const res = await axios.put(`${apiURL}/${body.id}`, body, axiosHeader)
   return res.data
 }
+
+export const getEarningsByDate = async (date: string) => {
+  const res = await axios.get(
+    `${apiURL}/boulder-earnings/date=${date}`,
+    axiosHeader,
+  )
+  return res.data
+}

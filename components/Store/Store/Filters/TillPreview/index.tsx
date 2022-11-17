@@ -1,19 +1,17 @@
-import React, {
-  useEffect,
-  useState,
-  //  useContext
-} from "react"
+import React, { useEffect, useState, useContext } from "react"
 import {
   getTillByDate,
   createTillClosure,
   updateTillClosure,
+  getEarningsByDate,
 } from "services/Finances/ClosedTill.service"
 import ModalForm from "components/UI/ModalForm"
+import { StoreContext } from "contexts/Store"
+import { GeneralContext } from "contexts/GeneralContext"
 import { calcTotalEarnings } from "utils"
 import { day, month, year } from "const/time"
-// import { GeneralContext } from "contexts/GeneralContext"
-// import sendEmail from "services/SendEmail"
-// import transformHTML from "mails/closeTill"
+import sendEmail from "services/SendEmail.service"
+import transformHTML from "mails/tillPreview"
 import TextField from "components/UI/TextField"
 import {
   View,
@@ -29,7 +27,8 @@ interface TillPreviewInterface {
 }
 
 function TillPreview({ closeTillPreview }: TillPreviewInterface) {
-  // const { users } = useContext(GeneralContext)
+  const { users } = useContext(GeneralContext)
+  const { setModalSuccess, setModalError } = useContext(StoreContext)
 
   const [totalEarnings, setTotalEarnings] = useState<{
     cash: number
@@ -57,104 +56,140 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
   const closeTill = async e => {
     e.preventDefault()
 
-    // const checkIfTillClosed = await getTillByDate(today)
+    const checkIfTillClosed = await getTillByDate(today)
 
-    // let success = false
+    let success = false
 
-    // if (checkIfTillClosed.data.length > 0) {
-    //   const tillBody = {
-    //     id: checkIfTillClosed.data[0].id,
-    //     date: checkIfTillClosed.data[0].date,
-    //     software_cash: totalEarnings.cash,
-    //     software_mp: totalEarnings.mp,
-    //     real_cash: totalEarningsMofified.cash,
-    //     real_mp: totalEarningsMofified.mp,
-    //     closed_by: currentUser,
-    //   }
-    //   const updateTill = await updateTillClosure(tillBody)
-    //   success = updateTill.message === "Till updated successfully"
-    // } else {
-    //   const tillBody = {
-    //     id: 0,
-    //     date: today,
-    //     software_cash: totalEarnings.cash,
-    //     software_mp: totalEarnings.mp,
-    //     real_cash: totalEarningsMofified.cash,
-    //     real_mp: totalEarningsMofified.mp,
-    //     closed_by: currentUser,
-    //   }
-    //   const createTill = await createTillClosure(tillBody)
-    //   success = createTill.message === "Till closed successfully"
-    // }
+    if (checkIfTillClosed.data.length > 0) {
+      const tillBody = {
+        id: checkIfTillClosed.data[0].id,
+        date: checkIfTillClosed.data[0].date,
+        software_cash: totalEarnings.cash,
+        software_mp: totalEarnings.mp,
+        real_cash: totalEarningsMofified.cash,
+        real_mp: totalEarningsMofified.mp,
+        closed_by: currentUser,
+      }
+      const updateTill = await updateTillClosure(tillBody)
+      success = updateTill.message === "Till updated successfully"
+    } else {
+      const tillBody = {
+        id: 0,
+        date: today,
+        software_cash: totalEarnings.cash,
+        software_mp: totalEarnings.mp,
+        real_cash: totalEarningsMofified.cash,
+        real_mp: totalEarningsMofified.mp,
+        closed_by: currentUser,
+      }
+      const createTill = await createTillClosure(tillBody)
+      success = createTill.message === "Till closed successfully"
+    }
 
-    // if (success) {
-    // till: {
-    //   software: { cash: string; mp: string }
-    //   real: { cash: string; mp: string }
-    // },
-    // earningsStore: { cash: string; mp: string },
-    // earningsBoulder: { cash: string; mp: string },
-    // user: string,
-    // freePass: {
-    //   fourPack: number
-    //   eightPack: number
-    //   total: number
-    // },
-    // lessons: {
-    //   fourPack: number
-    //   eightPack: number
-    //   total: number
-    // },
-    // amountOfPeople: number,
-    // date: string,
-    // hour: string,
+    if (success) {
+      const getDataForMail = await getEarningsByDate(today)
 
-    // const htmlBody = {
-    //   till: {
-    //     software: totalEarnings,
-    //     real: totalEarningsMofified,
-    //   },
-    //   earningsStore: earnigsStoreData,
-    //   earningsBoulder: 0,
-    //   user: currentUser,
-    //   freePass: {
-    //     fourPack: 0,
-    //     eightPack: 0,
-    //     total: 0,
-    //   },
-    //   lessons: {
-    //     fourPack: 0,
-    //     eightPack: 0,
-    //     total: 0,
-    //   },
-    //   amountOfPeople: 0,
-    //   date: today,
-    //   hour: `${now.getHours()}:${now.getMinutes()}`,
-    //   month: 0
-    // }
+      const checkFourPackPass =
+        getDataForMail.data.boulderData.freePass.packFour > 0
+      const checkEightPackPass =
+        getDataForMail.data.boulderData.freePass.packEight > 0
 
-    //
-    // const getMails = users.map(user => user.email).filter(mail => mail !== "")
-    // getMails.forEach((email, i) => {
-    //   getMails[i] = { email }
-    // })
-    // const pruebaMail = [{ email: "sabatinilara@gmail.com" }]
-    // const recipients = getMails
-    // const recipients = pruebaMail
-    // const HTMLToSend = transformHTML(totalEarnings, earningsStore, earningsBoulder, currentUser)
-    // const html = HTMLToSend
-    // const body = {
-    //   recipients,
-    //   subject: "otra prueba",
-    //   text: html,
-    //   category: "test",
-    // }
-    // eslint-disable-next-line no-console
-    // console.log(body)
-    // const send = sendEmail(body)
-    // console.log(body, getMails)
-    // condicional => "Mail sent successfully"
-    // }
+      let totalPeople =
+        getDataForMail.data.boulderData.freePass.total -
+        getDataForMail.data.boulderData.freePass.packFour * 4 -
+        getDataForMail.data.boulderData.freePass.packEight * 8
+
+      totalPeople = checkFourPackPass
+        ? totalPeople + getDataForMail.data.boulderData.freePass.packFour
+        : totalPeople
+
+      totalPeople = checkEightPackPass
+        ? totalPeople + getDataForMail.data.boulderData.freePass.packEight
+        : totalPeople
+
+      const checkFourPackLessons =
+        getDataForMail.data.boulderData.lessons.packFour > 0
+      const checkEightPackLessons =
+        getDataForMail.data.boulderData.lessons.packEight > 0
+
+      let totalPeopleLessons =
+        getDataForMail.data.boulderData.lessons.total -
+        getDataForMail.data.boulderData.lessons.packFour * 4 -
+        getDataForMail.data.boulderData.lessons.packEight * 8
+
+      totalPeopleLessons = checkFourPackLessons
+        ? totalPeopleLessons + getDataForMail.data.boulderData.lessons.packFour
+        : totalPeopleLessons
+
+      totalPeopleLessons = checkEightPackLessons
+        ? totalPeopleLessons + getDataForMail.data.boulderData.lessons.packEight
+        : totalPeopleLessons
+
+      const htmlBody = {
+        till: {
+          software: totalEarnings,
+          real: totalEarningsMofified,
+        },
+        earningsStore: {
+          cash: getDataForMail.data.storeData.cash,
+          mp: getDataForMail.data.storeData.mp,
+        },
+        earningsBoulder: {
+          cash: getDataForMail.data.boulderData.cash,
+          mp: getDataForMail.data.boulderData.mp,
+        },
+        user: currentUser,
+        freePass: {
+          fourPack: getDataForMail.data.boulderData.freePass.packFour,
+          eightPack: getDataForMail.data.boulderData.freePass.packEight,
+          total: getDataForMail.data.boulderData.freePass.total,
+        },
+        lessons: {
+          fourPack: getDataForMail.data.boulderData.lessons.packFour,
+          eightPack: getDataForMail.data.boulderData.lessons.packEight,
+          total: getDataForMail.data.boulderData.lessons.total,
+        },
+        amountOfPeople:
+          totalPeople +
+          totalPeopleLessons +
+          getDataForMail.data.boulderData.month,
+        date: `${day}/${month}/${year}`,
+        hour: `${now.getHours()}:${now.getMinutes()}`,
+        month: getDataForMail.data.boulderData.month,
+      }
+
+      const getMails = users.map(user => user.email).filter(mail => mail !== "")
+      getMails.forEach((email, i) => {
+        getMails[i] = { email }
+      })
+      const recipients = getMails
+
+      const transformBody = transformHTML(htmlBody)
+      const body = {
+        recipients,
+        subject: "Cierre de caja",
+        text: transformBody,
+        category: "finanzas",
+      }
+      const send = await sendEmail(body)
+
+      if (send.info === "Mail sent successfully") {
+        setModalSuccess({
+          status: "success",
+          icon: "IconCheckModal",
+          title: "Excelente!",
+          content: "La caja se ha cerrado correctamente",
+        })
+      } else {
+        setModalError({
+          status: "alert",
+          icon: "IconExclamation",
+          title: "UPS!",
+          content:
+            "Ha ocurrido un error al cerrar la caja, por favor intentalo nuevamente o comunicate con el administrador.",
+        })
+      }
+    }
   }
 
   const getFinalEarings = async () => {

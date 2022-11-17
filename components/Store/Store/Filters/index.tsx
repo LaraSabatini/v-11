@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 // DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
@@ -22,9 +22,9 @@ function Filters() {
     openTypeMenu,
     setOpenTypeMenu,
     selectFilter,
+    tillPreview,
+    setTillPreview,
   } = useContext(StoreContext)
-
-  const [tillPreview, setTillPreview] = useState<boolean>(false)
 
   return (
     <FiltersContainer>

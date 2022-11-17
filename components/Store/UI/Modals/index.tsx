@@ -13,6 +13,7 @@ function Modals() {
     setExecuteCleanPurchase,
     setTriggerListUpdate,
     triggerListUpdate,
+    setTillPreview,
   } = useContext(StoreContext)
 
   return (
@@ -26,6 +27,7 @@ function Modals() {
             setExecuteCleanPurchase(executeCleanPurchase + 1)
             setTriggerListUpdate(triggerListUpdate + 1)
             setModalSuccess(null)
+            setTillPreview(false)
           }}
         />
       )}
@@ -37,6 +39,7 @@ function Modals() {
             setPurchase([])
             setExecuteCleanPurchase(executeCleanPurchase + 1)
             setModalError(null)
+            setTillPreview(false)
           }}
         />
       )}

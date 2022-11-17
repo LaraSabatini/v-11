@@ -1,26 +1,39 @@
-const transformHTML = (
+interface TillBodyInterface {
   till: {
     software: { cash: number; mp: number }
     real: { cash: number; mp: number }
-  },
-  earningsStore: { cash: number; mp: number },
-  earningsBoulder: { cash: number; mp: number },
-  user: string,
+  }
+  earningsStore: { cash: number; mp: number }
+  earningsBoulder: { cash: number; mp: number }
+  user: string
   freePass: {
     fourPack: number
     eightPack: number
     total: number
-  },
+  }
   lessons: {
     fourPack: number
     eightPack: number
     total: number
-  },
-  amountOfPeople: number,
-  date: string,
-  hour: string,
-  month: number,
-) => {
+  }
+  amountOfPeople: number
+  date: string
+  hour: string
+  month: number
+}
+
+const transformHTML = ({
+  till,
+  earningsStore,
+  earningsBoulder,
+  user,
+  freePass,
+  lessons,
+  amountOfPeople,
+  date,
+  hour,
+  month,
+}: TillBodyInterface) => {
   const HTML = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
   <html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" lang="es">
   <head>
@@ -224,7 +237,7 @@ const transformHTML = (
   </td><td width=80.66501 valign=top><![endif]-->
   <div class=t116 style="display:inline-table;text-align:initial;vertical-align:inherit;width:52.57353%;max-width:143px;">
   <table role=presentation width=100% cellpadding=0 cellspacing=0 class=t118><tr>
-  <td class=t119 style="overflow:hidden;"><p class=t120 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">$ @${
+  <td class=t119 style="overflow:hidden;"><p class=t120 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:14px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">$ ${
     till.software.cash + till.software.mp
   }</p></td>
   </tr></table>
