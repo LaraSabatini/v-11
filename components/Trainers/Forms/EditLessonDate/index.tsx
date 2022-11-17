@@ -78,7 +78,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
         ...purchaseSelected,
         lesson_date: dateSelected.date,
         shift: dateSelected.shift,
-        day_id: lessonDate.day.getDay(),
+        day_id: lessonDate.day.getDay() - 1,
         week_id: lessonDate.week,
         created_by: parseInt(localStorage.getItem("id"), 10),
       })

@@ -38,7 +38,7 @@ const checkIfDateHasSpace = async (
         ...datesSelected,
         {
           id: datesSelected.length + 1,
-          date: provisionalSelection.date,
+          date: dateCleaned,
           shift: provisionalSelection.shift,
         },
       ],
