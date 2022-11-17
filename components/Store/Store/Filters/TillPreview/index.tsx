@@ -5,6 +5,7 @@ import {
   updateTillClosure,
   getEarningsByDate,
 } from "services/Finances/ClosedTill.service"
+import { getUsersAction } from "helpers/users"
 import ModalForm from "components/UI/ModalForm"
 import { StoreContext } from "contexts/Store"
 import { GeneralContext } from "contexts/GeneralContext"
@@ -27,7 +28,7 @@ interface TillPreviewInterface {
 }
 
 function TillPreview({ closeTillPreview }: TillPreviewInterface) {
-  const { users } = useContext(GeneralContext)
+  const { users, setUsers } = useContext(GeneralContext)
   const { setModalSuccess, setModalError } = useContext(StoreContext)
 
   const [totalEarnings, setTotalEarnings] = useState<{
@@ -198,8 +199,19 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
     setTotalEarningsModified(res)
   }
 
+  const setUsersList = async () => {
+    const getUserData = await getUsersAction()
+
+    const cleanedUserArray = getUserData.filter(
+      user => user.admin === 1 && user.email !== "",
+    )
+    setUsers(cleanedUserArray)
+  }
+
   useEffect(() => {
     getFinalEarings()
+    setUsersList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const calcDifference = () => {
