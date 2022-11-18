@@ -7,11 +7,13 @@ interface TillBodyInterface {
   earningsBoulder: { cash: number; mp: number }
   user: string
   freePass: {
+    individual: number
     fourPack: number
     eightPack: number
     total: number
   }
   lessons: {
+    individual: number
     fourPack: number
     eightPack: number
     total: number
@@ -530,7 +532,9 @@ const transformHTML = ({
   <table class=t319 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t320 style="overflow:hidden;width:600px;"><p class=t326 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:600;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#333333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">Item</p></td>
   </tr></table>
   </td></tr><tr><td><div class=t327 style="mso-line-height-rule:exactly;mso-line-height-alt:5px;line-height:5px;font-size:1px;display:block;">&nbsp;</div></td></tr><tr><td>
-  <table class=t329 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t330 style="overflow:hidden;width:600px;"><p class=t336 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">Pase diario</p></td>
+  <table class=t329 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t330 style="overflow:hidden;width:600px;"><p class=t336 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">${
+    freePass.individual
+  }</p></td>
   </tr></table>
   </td></tr></table></td>
   </tr></table>
@@ -601,7 +605,9 @@ const transformHTML = ({
   <table class=t472 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t473 style="overflow:hidden;width:600px;"><p class=t479 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:600;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#333333;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">Item</p></td>
   </tr></table>
   </td></tr><tr><td><div class=t480 style="mso-line-height-rule:exactly;mso-line-height-alt:5px;line-height:5px;font-size:1px;display:block;">&nbsp;</div></td></tr><tr><td>
-  <table class=t482 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t483 style="overflow:hidden;width:600px;"><p class=t489 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">Clases</p></td>
+  <table class=t482 role=presentation cellpadding=0 cellspacing=0 align=center><tr><td class=t483 style="overflow:hidden;width:600px;"><p class=t489 style="font-family:BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif, 'Inter Tight';line-height:22px;font-weight:500;font-style:normal;font-size:16px;text-decoration:none;text-transform:none;direction:ltr;color:#787878;text-align:left;mso-line-height-rule:exactly;mso-text-raise:2px;">${
+    lessons.individual
+  }</p></td>
   </tr></table>
   </td></tr></table></td>
   </tr></table>
