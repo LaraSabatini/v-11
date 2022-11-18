@@ -12,7 +12,6 @@ import { GeneralContext } from "contexts/GeneralContext"
 import { calcTotalEarnings } from "utils"
 import { day, month, year } from "const/time"
 import sendEmail from "services/SendEmail.service"
-import transformHTML from "mails/tillPreview"
 import TextField from "components/UI/TextField"
 import {
   View,
@@ -163,20 +162,19 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
 
       const getMails = users.map(user => user.email).filter(mail => mail !== "")
       getMails.forEach((email, i) => {
-        getMails[i] = { email }
+        getMails[i] = email
       })
-      const recipients = getMails
+      const recipients = getMails.join(", ")
 
-      const transformBody = transformHTML(htmlBody)
       const body = {
         recipients,
         subject: "Cierre de caja",
-        text: transformBody,
-        category: "finanzas",
+        data: htmlBody,
       }
+
       const send = await sendEmail(body)
 
-      if (send.info === "Mail sent successfully") {
+      if (send.status === 200) {
         setModalSuccess({
           status: "success",
           icon: "IconCheckModal",
