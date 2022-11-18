@@ -11,7 +11,8 @@ const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
 
   if (
     initialPayment.time_paid === 0 &&
-    initialPayment.time_paid_unit === 1 &&
+    (initialPayment.time_paid_unit === 1 ||
+      initialPayment.time_paid_unit === 0) &&
     initialPayment.combo === 0
   ) {
     canUpdatePayment = {
