@@ -143,11 +143,13 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
         freePass: {
           fourPack: getDataForMail.data.boulderData.freePass.packFour,
           eightPack: getDataForMail.data.boulderData.freePass.packEight,
+          individual: totalPeople,
           total: getDataForMail.data.boulderData.freePass.total,
         },
         lessons: {
           fourPack: getDataForMail.data.boulderData.lessons.packFour,
           eightPack: getDataForMail.data.boulderData.lessons.packEight,
+          individual: totalPeopleLessons,
           total: getDataForMail.data.boulderData.lessons.total,
         },
         amountOfPeople:
