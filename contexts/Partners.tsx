@@ -180,6 +180,12 @@ function PartnersProvider({ children }) {
     setModalErrorAddDays,
   ] = useState<ModalInterface | null>(null)
 
+  // NUEVO
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [searchValue, setSearchValue] = useState<string>("")
+  const [safeModal, setSafeModal] = useState<boolean>(false)
+  const [updatePaymentModal, setUpdatePaymentModal] = useState<boolean>(false)
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanStates = () => {
     setModalSuccess(null)
@@ -212,6 +218,7 @@ function PartnersProvider({ children }) {
     setCreateModal(false)
     setModalErrorAddDays(null)
     setUsesDay(true)
+    setUpdatePaymentModal(false)
   }
 
   const [
@@ -304,6 +311,14 @@ function PartnersProvider({ children }) {
       setDisableCreatePartnerFormButton,
       dateSelectedToStart,
       setDateSelectedToStart,
+      totalPages,
+      setTotalPages,
+      searchValue,
+      setSearchValue,
+      safeModal,
+      setSafeModal,
+      updatePaymentModal,
+      setUpdatePaymentModal,
     }),
     [
       isChecked,
@@ -340,6 +355,10 @@ function PartnersProvider({ children }) {
       sectionSelected,
       disableCreatePartnerFormButton,
       dateSelectedToStart,
+      totalPages,
+      searchValue,
+      safeModal,
+      updatePaymentModal,
     ],
   )
 
