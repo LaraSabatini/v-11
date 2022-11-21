@@ -1,5 +1,6 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { PartnersContext } from "contexts/Partners"
+import { GeneralContext } from "contexts/GeneralContext"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import {
@@ -66,10 +67,12 @@ function UpdatePaymentForm({
     setUsesDay,
     setModalErrorAddDays,
     paymentUserSelected,
-    prices,
     setModalSuccess,
     setModalError,
+    calculatePrice,
   } = useContext(PartnersContext)
+
+  const { prices } = useContext(GeneralContext)
 
   const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
@@ -269,6 +272,11 @@ function UpdatePaymentForm({
       display_name: combo.name,
     }),
   )
+
+  useEffect(() => {
+    calculatePrice(prices)
+    //   eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paidTimeUnit, paidTime, paymentMethodSelected, comboSelected])
 
   return (
     <ModalForm

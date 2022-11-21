@@ -11,7 +11,7 @@ import CreatePartnerForm from "./Forms/CreatePartner"
 import { Content } from "./styles"
 
 function Clients() {
-  const { createModal, hasChanges } = useContext(PartnersContext)
+  const { createModal } = useContext(PartnersContext)
 
   const router = useRouter()
 
@@ -19,8 +19,6 @@ function Clients() {
   const permissions = JSON.parse(getPermissions)[0].sections[0].sub_sections
 
   const canViewClients = permissions[0].view
-
-  console.log("hasChanges", hasChanges)
 
   return (
     <div>
