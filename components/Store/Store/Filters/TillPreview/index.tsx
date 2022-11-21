@@ -89,41 +89,31 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
     if (success) {
       const getDataForMail = await getEarningsByDate(today)
 
-      const checkFourPackPass =
-        getDataForMail.data.boulderData.freePass.packFour > 0
-      const checkEightPackPass =
-        getDataForMail.data.boulderData.freePass.packEight > 0
-
-      let totalPeople =
-        getDataForMail.data.boulderData.freePass.total -
-        getDataForMail.data.boulderData.freePass.packFour * 4 -
+      const fourFreePass = getDataForMail.data.boulderData.freePass.packFour * 4
+      const eightFreePass =
         getDataForMail.data.boulderData.freePass.packEight * 8
 
-      totalPeople = checkFourPackPass
-        ? totalPeople + getDataForMail.data.boulderData.freePass.packFour
-        : totalPeople
+      const totalPassMinusPacks =
+        getDataForMail.data.boulderData.freePass.total -
+        fourFreePass -
+        eightFreePass
 
-      totalPeople = checkEightPackPass
-        ? totalPeople + getDataForMail.data.boulderData.freePass.packEight
-        : totalPeople
+      const fourLessons = getDataForMail.data.boulderData.lessons.packFour * 4
+      const eightLessons = getDataForMail.data.boulderData.lessons.packEight * 8
 
-      const checkFourPackLessons =
-        getDataForMail.data.boulderData.lessons.packFour > 0
-      const checkEightPackLessons =
-        getDataForMail.data.boulderData.lessons.packEight > 0
-
-      let totalPeopleLessons =
+      const totalLessonsMinusPacks =
         getDataForMail.data.boulderData.lessons.total -
-        getDataForMail.data.boulderData.lessons.packFour * 4 -
-        getDataForMail.data.boulderData.lessons.packEight * 8
+        fourLessons -
+        eightLessons
 
-      totalPeopleLessons = checkFourPackLessons
-        ? totalPeopleLessons + getDataForMail.data.boulderData.lessons.packFour
-        : totalPeopleLessons
-
-      totalPeopleLessons = checkEightPackLessons
-        ? totalPeopleLessons + getDataForMail.data.boulderData.lessons.packEight
-        : totalPeopleLessons
+      const amountOfPeople =
+        totalPassMinusPacks +
+        getDataForMail.data.boulderData.freePass.packFour +
+        getDataForMail.data.boulderData.freePass.packEight +
+        totalLessonsMinusPacks +
+        getDataForMail.data.boulderData.lessons.packFour +
+        getDataForMail.data.boulderData.lessons.packEight +
+        getDataForMail.data.boulderData.month
 
       const htmlBody = {
         till: {
@@ -142,19 +132,16 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
         freePass: {
           fourPack: getDataForMail.data.boulderData.freePass.packFour,
           eightPack: getDataForMail.data.boulderData.freePass.packEight,
-          individual: totalPeople,
+          individual: totalPassMinusPacks,
           total: getDataForMail.data.boulderData.freePass.total,
         },
         lessons: {
           fourPack: getDataForMail.data.boulderData.lessons.packFour,
           eightPack: getDataForMail.data.boulderData.lessons.packEight,
-          individual: totalPeopleLessons,
+          individual: totalLessonsMinusPacks,
           total: getDataForMail.data.boulderData.lessons.total,
         },
-        amountOfPeople:
-          totalPeople +
-          totalPeopleLessons +
-          getDataForMail.data.boulderData.month,
+        amountOfPeople,
         date: `${day}/${month}/${year}`,
         hour: `${now.getHours()}:${now.getMinutes()}`,
         month: getDataForMail.data.boulderData.month,
