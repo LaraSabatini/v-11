@@ -18,7 +18,7 @@ import { PartnersContext } from "contexts/Partners"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import financesTexts from "strings/finances.json"
-import { getExpirationDate } from "utils"
+import { getExpirationDate, evaluateFinalTime } from "utils"
 // COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ModalAlert from "components/UI/ModalAlert"
@@ -242,7 +242,10 @@ function DetailsView({ partnerInfo, canUpdate }: DetailViewInterface) {
         )
         const createPartnerPayment = await createPartnerPaymentAction({
           ...newValues,
-          time_paid: newValues.time_paid,
+          time_paid:
+            paidTimeUnit.id === 1
+              ? evaluateFinalTime(newValues.time_paid, usesDay)
+              : newValues.time_paid,
           price_paid: finalPrice,
           payment_expire_date:
             (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
