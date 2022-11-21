@@ -219,6 +219,7 @@ function PartnersProvider({ children }) {
     setModalErrorAddDays(null)
     setUsesDay(true)
     setUpdatePaymentModal(false)
+    setSafeModal(false)
   }
 
   const [

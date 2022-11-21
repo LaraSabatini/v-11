@@ -107,7 +107,10 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           value={newData.name}
           type="text"
           reference={nameRef}
-          onChange={e => setNewData({ ...newData, name: e.target.value })}
+          onChange={e => {
+            setNewData({ ...newData, name: e.target.value })
+            setHasChanges(true)
+          }}
         />
         <TextField
           width={190}
@@ -116,7 +119,10 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           value={newData.last_name}
           type="text"
           reference={lastNameRef}
-          onChange={e => setNewData({ ...newData, last_name: e.target.value })}
+          onChange={e => {
+            setNewData({ ...newData, last_name: e.target.value })
+            setHasChanges(true)
+          }}
         />
       </PartnerData>
       <PartnerData>
@@ -126,7 +132,10 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           value={newData.email}
           type="email"
           reference={emailRef}
-          onChange={e => setNewData({ ...newData, email: e.target.value })}
+          onChange={e => {
+            setNewData({ ...newData, email: e.target.value })
+            setHasChanges(true)
+          }}
         />
         <TextField
           width={190}
@@ -134,9 +143,10 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           value={newData.identification_number}
           type="text"
           reference={identificationRef}
-          onChange={e =>
+          onChange={e => {
             setNewData({ ...newData, identification_number: e.target.value })
-          }
+            setHasChanges(true)
+          }}
         />
       </PartnerData>
       <PartnerData />
@@ -148,12 +158,13 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           type="text"
           value={newData.phone}
           reference={phoneRef}
-          onChange={e =>
+          onChange={e => {
             setNewData({
               ...newData,
               phone: e.target.value,
             })
-          }
+            setHasChanges(true)
+          }}
         />
         <TextField
           width={190}
@@ -168,6 +179,7 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
         <CheckboxContainer>
           <Checkbox
             onChange={() => {
+              setHasChanges(true)
               if (newData.subs === 0) {
                 setNewData({ ...newData, subs: 1 })
                 setWantsSubscription(true)
