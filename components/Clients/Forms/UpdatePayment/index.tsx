@@ -1,20 +1,31 @@
 import React, { useContext, useState } from "react"
 import { PartnersContext } from "contexts/Partners"
-import { timeUnits } from "const/time"
-import { paymentMethods, paymentUsers } from "const/finances"
-import partnerTexts from "strings/partners.json"
-import generalTexts from "strings/general.json"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
+import {
+  createBoulderPurchaseAction,
+  makeAppropiatePayment,
+} from "helpers/payments"
+import {
+  createPartnerPaymentAction,
+  editPartnerPaymentAction,
+} from "helpers/partners"
+import { timeUnits, months, day, month, year } from "const/time"
+import { paymentMethods, paymentUsers } from "const/finances"
+import { getExpirationDate, evaluateFinalTime } from "utils"
+import partnerTexts from "strings/partners.json"
+import generalTexts from "strings/general.json"
+import financesTexts from "strings/finances.json"
 import InputCalendar from "components/UI/InputCalendar"
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
 import checkIfCanUpdatePayment from "../../Helpers/functional/checkIfcanUpdatePayment"
+import calcPriceMonthOrDay from "../../Helpers/functional/calculatePrice"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "./styles"
 
-interface EditPaymentInterface {
+interface UpdatePaymentInterface {
   cancelEdit: (arg?: any) => void
   partnerName: string
   partnerLastName: string
@@ -26,7 +37,7 @@ function UpdatePaymentForm({
   partnerName,
   partnerLastName,
   initialPayment,
-}: EditPaymentInterface) {
+}: UpdatePaymentInterface) {
   const {
     combos,
     setNewValues,
@@ -40,10 +51,10 @@ function UpdatePaymentForm({
     paidTimeUnitRef,
     setPaidTimeUnit,
     setIsChecked,
-    setPaymentUserSelected,
     paymentRef,
     setPaymentMethodSelected,
     finalPrice,
+    setPaymentUserSelected,
     paymentMethodSelected,
     paymentUserRef,
     startDateRef,
@@ -54,16 +65,17 @@ function UpdatePaymentForm({
     usesDay,
     setUsesDay,
     setModalErrorAddDays,
+    paymentUserSelected,
+    prices,
+    setModalSuccess,
+    setModalError,
   } = useContext(PartnersContext)
 
   const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
-  const comboCondition =
-    newValues?.combo !== null &&
-    newValues?.combo !== undefined &&
-    newValues?.combo !== 0
+  const today = `${day}-${month}-${year}`
 
-  const validateComboInputs = async () => {
+  const validateInputs = async () => {
     await paidTimeRef.current?.focus()
     await paidTimeUnitRef.current?.focus()
 
@@ -75,20 +87,63 @@ function UpdatePaymentForm({
     )
   }
 
+  const comboCondition =
+    newValues?.combo !== null &&
+    newValues?.combo !== undefined &&
+    newValues?.combo !== 0
+
+  const addPayment = async () => {
+    let itemId = 0
+    let itemName = ""
+    let profit = 0
+    if (comboCondition) {
+      itemId = 1
+      itemName = `${financesTexts.combo}`
+      profit =
+        paymentMethodSelected === 1 ? combos[0].price_cash : combos[0].price_mp
+    } else {
+      itemId = paidTimeUnit.id === 1 ? 2 : 3
+      itemName =
+        paidTimeUnit.id === 1
+          ? `${financesTexts.day}`
+          : `${financesTexts.month}`
+
+      const finalProfit = calcPriceMonthOrDay(
+        paidTimeUnit.id,
+        paidTime,
+        paymentMethodSelected,
+        prices,
+      )
+      profit = finalProfit
+    }
+
+    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
+      id: 0,
+      date: today,
+      item_id: itemId,
+      item_name: itemName,
+      amount_of_items: comboCondition ? 1 : paidTime,
+      profit,
+      payment_method_id: paymentMethodSelected,
+      created_by: parseInt(localStorage.getItem("id"), 10),
+    })
+
+    return createBoulderPurchaseCall
+  }
+
   const handleEdit = async (e: any) => {
     e.preventDefault()
-    setDisabledButton(true)
 
     let success = false
     let canPurchase = false
 
-    const comboInputValidation = await validateComboInputs()
-
     if (comboSelected === null) {
-      canPurchase = comboInputValidation
+      const validate = await validateInputs()
+      canPurchase = validate
     } else {
-      canPurchase = false
+      canPurchase = true
     }
+
     await paymentRef.current?.focus()
 
     if (paymentMethodSelected === 2) {
@@ -98,13 +153,21 @@ function UpdatePaymentForm({
         "false"
     }
 
-    const checkValidity = checkIfCanUpdatePayment(initialPayment)
+    const checkValidityOfPayment = checkIfCanUpdatePayment(initialPayment)
 
-    if (comboCondition && checkValidity.combos) {
+    if (comboCondition && checkValidityOfPayment.combos) {
       canPurchase = true
-    } else if (paidTime > 0 && paidTimeUnit.id === 1 && checkValidity.days) {
+    } else if (
+      paidTime > 0 &&
+      paidTimeUnit.id === 1 &&
+      checkValidityOfPayment.days
+    ) {
       canPurchase = true
-    } else if (paidTime > 0 && paidTimeUnit.id === 2 && checkValidity.months) {
+    } else if (
+      paidTime > 0 &&
+      paidTimeUnit.id === 2 &&
+      checkValidityOfPayment.months
+    ) {
       canPurchase = true
     } else {
       canPurchase = false
@@ -117,9 +180,7 @@ function UpdatePaymentForm({
         title: `${partnerTexts.cannotAddDays.title}`,
         content: `${partnerTexts.cannotAddDays.content}`,
       })
-    }
-
-    if (canPurchase) {
+    } else {
       setDisabledButton(true)
 
       const makeBoulderPurchase = await addPayment()
@@ -144,7 +205,11 @@ function UpdatePaymentForm({
         success = executePurchase
       }
 
-      if (checkValidity.combos && checkValidity.days && checkValidity.months) {
+      if (
+        checkValidityOfPayment.combos &&
+        checkValidityOfPayment.days &&
+        checkValidityOfPayment.months
+      ) {
         const expirationDate = getExpirationDate(
           dateSelectedToStart,
           paidTime,
@@ -152,7 +217,10 @@ function UpdatePaymentForm({
         )
         const createPartnerPayment = await createPartnerPaymentAction({
           ...newValues,
-          time_paid: newValues.time_paid,
+          time_paid:
+            paidTimeUnit.id === 1
+              ? evaluateFinalTime(newValues.time_paid, usesDay)
+              : newValues.time_paid,
           price_paid: finalPrice,
           payment_expire_date:
             (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
@@ -175,6 +243,22 @@ function UpdatePaymentForm({
         })
         success = updatePartnerPayment
       }
+    }
+
+    if (success) {
+      setModalSuccess({
+        status: "success",
+        icon: "IconCheckModal",
+        title: `${generalTexts.modalTitles.success}`,
+        content: `${partnerTexts.updatePaymentSuccess.content}`,
+      })
+    } else if (!success && canPurchase) {
+      setModalError({
+        status: "alert",
+        icon: "IconExclamation",
+        title: `${generalTexts.modalTitles.error}`,
+        content: `${partnerTexts.updatePaymentError.content}`,
+      })
     }
   }
 
