@@ -8,7 +8,7 @@ import HeadingContent from "./HeadingContent"
 import ClientData from "./ClientData"
 import CreatePartnerButton from "./GeneralContent/CreatePartnerButton"
 import CreatePartnerForm from "./Forms/CreatePartner"
-import { Content } from "./styles"
+import Content from "./styles"
 
 function Clients() {
   const { createModal, cleanStates } = useContext(PartnersContext)

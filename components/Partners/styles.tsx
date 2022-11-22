@@ -7,4 +7,4 @@ const Content = styled.div`
   position: relative;
   padding-top: 30px;
 `
-export { Content }
+export default Content
