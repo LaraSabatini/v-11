@@ -11,7 +11,7 @@ import CreatePartnerForm from "./Forms/CreatePartner"
 import { Content } from "./styles"
 
 function Clients() {
-  const { createModal } = useContext(PartnersContext)
+  const { createModal, cleanStates } = useContext(PartnersContext)
 
   const router = useRouter()
 
@@ -32,7 +32,9 @@ function Clients() {
           <>
             <HeadingContent />
             <CreatePartnerButton canCreate={permissions[0].actions.create} />
-            {createModal && <CreatePartnerForm />}
+            {createModal && (
+              <CreatePartnerForm cancelCreate={() => cleanStates()} />
+            )}
             <ClientData permits={permissions} />
           </>
         )}
