@@ -27,6 +27,7 @@ function HeadingContent() {
     const data = await setPartnerList(filterSelected, currentPage)
     setPartners(data.list)
     setTotalPages(data.numberOfPages)
+    setPartnerSelected(null)
   }
 
   const searchPartnerInDB = async () => {
