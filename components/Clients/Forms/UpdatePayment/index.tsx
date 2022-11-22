@@ -3,6 +3,7 @@ import { PartnersContext } from "contexts/Partners"
 import { GeneralContext } from "contexts/GeneralContext"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 import {
   createBoulderPurchaseAction,
   makeAppropiatePayment,
@@ -10,6 +11,7 @@ import {
 import {
   createPartnerPaymentAction,
   editPartnerPaymentAction,
+  editPartnerAction,
 } from "helpers/partners"
 import { timeUnits, months, day, month, year } from "const/time"
 import { paymentMethods, paymentUsers } from "const/finances"
@@ -28,15 +30,13 @@ import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 
 interface UpdatePaymentInterface {
   cancelEdit: (arg?: any) => void
-  partnerName: string
-  partnerLastName: string
+  partnerInfo: PartnerInterface
   initialPayment: PaymentInterface
 }
 
 function UpdatePaymentForm({
   cancelEdit,
-  partnerName,
-  partnerLastName,
+  partnerInfo,
   initialPayment,
 }: UpdatePaymentInterface) {
   const {
@@ -246,6 +246,17 @@ function UpdatePaymentForm({
         })
         success = updatePartnerPayment
       }
+
+      const newPartnerInfo = { ...partnerInfo }
+      if (partnerInfo.free_pass === 0 && paidTimeUnit.id === 2) {
+        newPartnerInfo.free_pass = 1
+      }
+      if (partnerInfo.free_pass === 1 && paidTimeUnit.id === 1) {
+        newPartnerInfo.free_pass = 0
+      }
+
+      const editPartnerData = await editPartnerAction(newPartnerInfo)
+      success = editPartnerData
     }
 
     if (success) {
@@ -280,7 +291,7 @@ function UpdatePaymentForm({
 
   return (
     <ModalForm
-      title={`${partnerTexts.edit.title} - ${partnerName} ${partnerLastName}`}
+      title={`${partnerTexts.edit.title} - ${partnerInfo.name} ${partnerInfo.last_name}`}
       cancelButtonContent={generalTexts.actions.cancel}
       submitButtonContent={generalTexts.actions.confirm}
       submit={handleEdit}

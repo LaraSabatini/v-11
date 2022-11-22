@@ -247,8 +247,7 @@ function DetailsData({
       {updatePaymentModal && (
         <UpdatePaymentForm
           cancelEdit={() => cleanStates()}
-          partnerName={partnerInfo?.name}
-          partnerLastName={partnerInfo?.last_name}
+          partnerInfo={partnerInfo}
           initialPayment={initialPayment}
         />
       )}
