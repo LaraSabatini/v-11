@@ -1,15 +1,9 @@
 import React, { useContext, useState, useEffect } from "react"
-import {
-  createPartnerAction,
-  searchPartnerAction,
-  createPartnerPaymentAction,
-} from "helpers/partners"
-import {
-  createBoulderPurchaseAction,
-  makeAppropiatePayment,
-} from "helpers/payments"
+import { searchPartnerAction } from "helpers/partners"
+import { makeAppropiatePayment } from "helpers/payments"
+import createPartnerLogic from "services/BusinessLogic/createPartner.service"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 import { PartnersContext } from "contexts/Partners"
-import { GeneralContext } from "contexts/GeneralContext"
 import { months, day, month, year } from "const/time"
 import { paymentMethods } from "const/finances"
 import { getExpirationDate, evaluateFinalTime } from "utils"
@@ -20,7 +14,6 @@ import TextField from "components/UI/TextField"
 import InputCalendar from "components/UI/InputCalendar"
 import Checkbox from "components/UI/Checkbox"
 import cleanPartnerData from "../../Helpers/functional/cleanPartnerData"
-import calcPriceMonthOrDay from "../../Helpers/functional/calculatePrice"
 import PaymentForm from "./PaymentForm"
 import { Form, HorizontalGroup, CheckboxContainer } from "../styles"
 
@@ -53,12 +46,10 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
     usesDay,
     paymentUserRef,
     paymentUserSelected,
-    combos,
     disableCreatePartnerFormButton,
     setDisableCreatePartnerFormButton,
     dateSelectedToStart,
   } = useContext(PartnersContext)
-  const { prices } = useContext(GeneralContext)
 
   const [view, setView] = useState<number>(1)
   const [partnerDuplicated, setPartnerDuplicated] = useState<boolean>(false)
@@ -137,128 +128,6 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
   const comboCondition =
     comboSelected !== null && comboSelected !== undefined && comboSelected !== 0
 
-  const showModal = (success: boolean) => {
-    if (success) {
-      setModalSuccess({
-        status: "success",
-        icon: "IconCheckModal",
-        title: `${generalTexts.modalTitles.success}`,
-        content: `${partnerTexts.create.success.content}`,
-      })
-      setDisableCreatePartnerFormButton(false)
-    } else {
-      setModalError({
-        status: "alert",
-        icon: "IconExclamation",
-        title: `${generalTexts.modalTitles.error}`,
-        content: `${partnerTexts.create.error.content}`,
-      })
-      setDisableCreatePartnerFormButton(false)
-    }
-  }
-
-  const createPayment = async (partnerId: number) => {
-    const expirationDate = getExpirationDate(
-      dateSelectedToStart,
-      paidTime,
-      comboSelected,
-    )
-
-    const createPaymentCall = await createPartnerPaymentAction({
-      id: 0,
-      partner_id: partnerId,
-      partner_name: newPartnerData.name,
-      partner_last_name: newPartnerData.last_name,
-      combo:
-        comboSelected !== null && comboSelected !== undefined
-          ? comboSelected
-          : 0,
-      time_paid:
-        paidTimeUnit.id === 1 ? evaluateFinalTime(paidTime, usesDay) : paidTime,
-      time_paid_unit:
-        paidTimeUnit !== undefined && paidTimeUnit?.id !== null
-          ? paidTimeUnit.id
-          : "",
-      payment_method_id: paymentMethodSelected,
-      payment_method_name: paymentMethods.filter(
-        pm => pm.id === paymentMethodSelected,
-      )[0].display_name,
-      price_paid: finalPrice,
-      date: dateSelectedToStart,
-      payment_expire_date:
-        (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-        (comboSelected !== null && comboSelected !== undefined)
-          ? expirationDate
-          : "",
-      created_by: parseInt(localStorage.getItem("id"), 10),
-    })
-
-    return createPaymentCall
-  }
-
-  const makePaymentsRequests = async (partnerId: number) => {
-    let success = false
-
-    const executePurchase = await createPayment(partnerId)
-    success = executePurchase
-
-    if (paymentMethodSelected === 2) {
-      const executeDigitalPayment = await makeAppropiatePayment(
-        paymentUserSelected.id,
-        finalPrice,
-        {
-          id: 0,
-          user_id: paymentUserSelected.id,
-          user_name: paymentUserSelected.display_name,
-          date: today,
-          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-            .display_name,
-          month_id: parseInt(`${month}`, 10),
-          total_profit: finalPrice,
-          created_by: parseInt(localStorage.getItem("id"), 10),
-        },
-      )
-      success = executeDigitalPayment
-    }
-
-    let itemId = 0
-    let itemName = ""
-    let profit = 0
-
-    if (comboCondition) {
-      itemId = 1
-      itemName = `${partnerTexts.combo}`
-      profit =
-        paymentMethodSelected === 1 ? combos[0].price_cash : combos[0].price_mp
-    } else {
-      itemId = paidTimeUnit.id === 1 ? 2 : 3
-      itemName =
-        paidTimeUnit.id === 1 ? `${partnerTexts.day}` : `${partnerTexts.month}`
-
-      profit = calcPriceMonthOrDay(
-        paidTimeUnit.id,
-        paidTime,
-        paymentMethodSelected,
-        prices,
-      )
-    }
-
-    const createBoulderPurchaseCall = await createBoulderPurchaseAction({
-      id: 0,
-      date: today,
-      item_id: itemId,
-      item_name: itemName,
-      amount_of_items: comboCondition ? 1 : paidTime,
-      profit,
-      payment_method_id: paymentMethodSelected,
-      created_by: parseInt(localStorage.getItem("id"), 10),
-    })
-
-    success = createBoulderPurchaseCall
-
-    return success
-  }
-
   const finalizeCreate = async (e: any) => {
     e.preventDefault()
     let success = false
@@ -267,7 +136,7 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
     if (executeFunction) {
       setDisableCreatePartnerFormButton(true)
 
-      const createPartner = await createPartnerAction({
+      const partnerBody: PartnerInterface = {
         ...newPartnerData,
         free_pass:
           paidTimeUnit?.id !== null &&
@@ -278,17 +147,106 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
         is_student: comboCondition
           ? `${generalTexts.yes}`
           : `${generalTexts.no}`,
+      }
+
+      const expirationDate = getExpirationDate(
+        dateSelectedToStart,
+        paidTime,
+        comboSelected,
+      )
+
+      const partnerPaymentBody: {
+        combo: number
+        time_paid: number
+        time_paid_unit: number
+        payment_method_id: number
+        payment_method_name: string
+        price_paid: number
+        payment_expire_date: string
+      } = {
+        combo:
+          comboSelected !== null && comboSelected !== undefined
+            ? comboSelected
+            : 0,
+        time_paid:
+          paidTimeUnit.id === 1
+            ? evaluateFinalTime(paidTime, usesDay)
+            : paidTime,
+        time_paid_unit:
+          paidTimeUnit !== undefined && paidTimeUnit?.id !== null
+            ? paidTimeUnit.id
+            : "",
+        payment_method_id: paymentMethodSelected,
+        payment_method_name: paymentMethods.filter(
+          pm => pm.id === paymentMethodSelected,
+        )[0].display_name,
+
+        price_paid: finalPrice,
+        payment_expire_date:
+          (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
+          (comboSelected !== null && comboSelected !== undefined)
+            ? expirationDate
+            : "",
+      }
+
+      let itemId = 0
+      let itemName = ""
+
+      if (comboCondition) {
+        itemId = 1
+        itemName = `${partnerTexts.combo}`
+      } else {
+        itemId = paidTimeUnit.id === 1 ? 2 : 3
+        itemName =
+          paidTimeUnit.id === 1
+            ? `${partnerTexts.day}`
+            : `${partnerTexts.month}`
+      }
+
+      const boulderPaymentBody: {
+        id: number
+        item_id: number
+        item_name: string
+        amount_of_items: number
+      } = {
+        id: 0,
+        item_id: itemId,
+        item_name: itemName,
+        amount_of_items: comboCondition ? 1 : paidTime,
+      }
+
+      const callCreatePartner = await createPartnerLogic({
+        partner: partnerBody,
+        partnerPayment: partnerPaymentBody,
+        boulderPayment: boulderPaymentBody,
       })
 
-      if (createPartner.success) {
-        const makePaymentsCall = await makePaymentsRequests(
-          createPartner.partnerId,
+      if (paymentMethodSelected === 2) {
+        const executeDigitalPayment = await makeAppropiatePayment(
+          paymentUserSelected.id,
+          finalPrice,
+          {
+            id: 0,
+            user_id: paymentUserSelected.id,
+            user_name: paymentUserSelected.display_name,
+            date: today,
+            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+              .display_name,
+            month_id: parseInt(`${month}`, 10),
+            total_profit: finalPrice,
+            created_by: parseInt(localStorage.getItem("id"), 10),
+          },
         )
-        success = makePaymentsCall
+        success = executeDigitalPayment
+      }
+      if (success && callCreatePartner.message.status === 200) {
+        setModalSuccess(callCreatePartner.message.message)
+        setDisableCreatePartnerFormButton(false)
+      } else {
+        setModalError(callCreatePartner.message.message)
+        setDisableCreatePartnerFormButton(false)
       }
     }
-
-    showModal(success)
   }
 
   useEffect(() => {
