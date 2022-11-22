@@ -56,14 +56,16 @@ function HeadingContent() {
               : `${generalTexts.sections.home}`}
           </span>
         </Title>
-        <Filters />
+        {router.query.clients === "true" && <Filters />}
       </HeadContent>
-      <Search
-        getVirginList={getPartnersList}
-        searchPartnerInDB={searchPartnerInDB}
-        title={generalTexts.search.title}
-        description={generalTexts.search.description}
-      />
+      {router.query.clients === "true" && (
+        <Search
+          getVirginList={getPartnersList}
+          searchPartnerInDB={searchPartnerInDB}
+          title={generalTexts.search.title}
+          description={generalTexts.search.description}
+        />
+      )}
     </>
   )
 }
