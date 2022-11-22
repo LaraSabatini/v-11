@@ -32,11 +32,10 @@ function Clients() {
         )}
         {((Object.keys(router.query)[0] === "clients" && clientsSection.view) ||
           (Object.keys(router.query)[0] === "prices" &&
-            pricesSection.view)) && (
-          <>
-            <HeadingContent />
-            <Prices canEdit={pricesSection.actions.edit} />
-          </>
+            pricesSection.view)) && <HeadingContent />}
+
+        {Object.keys(router.query)[0] === "prices" && pricesSection.view && (
+          <Prices canEdit={pricesSection.actions.edit} />
         )}
 
         {Object.keys(router.query)[0] === "clients" && clientsSection.view && (

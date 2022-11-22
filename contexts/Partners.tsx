@@ -220,6 +220,7 @@ function PartnersProvider({ children }) {
     setUsesDay(true)
     setUpdatePaymentModal(false)
     setSafeModal(false)
+    setSearchValue("")
   }
 
   const [
