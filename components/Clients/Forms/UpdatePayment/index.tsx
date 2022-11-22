@@ -24,7 +24,7 @@ import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
 import checkIfCanUpdatePayment from "../../Helpers/functional/checkIfcanUpdatePayment"
 import calcPriceMonthOrDay from "../../Helpers/functional/calculatePrice"
-import { HorizontalGroup, SubContainer, CheckboxContainer } from "./styles"
+import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 
 interface UpdatePaymentInterface {
   cancelEdit: (arg?: any) => void

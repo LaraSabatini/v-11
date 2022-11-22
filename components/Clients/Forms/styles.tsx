@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import theme from "theme/index"
 
+const Form = styled.div``
+
 const HorizontalGroup = styled.div`
   display: flex;
   gap: 10px;
@@ -24,4 +26,4 @@ const SubContainer = styled.div`
   gap: 5px;
 `
 
-export { HorizontalGroup, SubContainer, CheckboxContainer }
+export { HorizontalGroup, SubContainer, CheckboxContainer, Form }
