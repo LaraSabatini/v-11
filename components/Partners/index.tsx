@@ -1,6 +1,7 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { useRouter } from "next/router"
 import { PartnersContext } from "contexts/Partners"
+import { getCombosAction } from "helpers/partners"
 import Header from "components/UI/Header"
 import Modals from "./GeneralContent/Modals"
 import NoPermissionsView from "./GeneralContent/NoPermissionsView"
@@ -12,7 +13,7 @@ import Prices from "./Prices"
 import Content from "./styles"
 
 function Clients() {
-  const { createModal, cleanStates } = useContext(PartnersContext)
+  const { createModal, cleanStates, setCombos } = useContext(PartnersContext)
 
   const router = useRouter()
 
@@ -23,6 +24,18 @@ function Clients() {
   const pricesSection = permissions[1]
   const routeIsClients = Object.keys(router.query)[0] === "clients"
   const routeIsPrices = Object.keys(router.query)[0] === "prices"
+
+  const fillCombosData = async () => {
+    const getData = await getCombosAction()
+    setCombos(getData.data)
+  }
+
+  useEffect(() => {
+    if (clientsSection.view) {
+      fillCombosData()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientsSection])
 
   return (
     <div>
