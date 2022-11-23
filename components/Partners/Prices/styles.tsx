@@ -57,10 +57,8 @@ const Item = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  /* width: 90%; */
   width: 445px;
   padding-top: 15px;
-  /* margin-top: 50px; */
 
   .edit {
     border: none;

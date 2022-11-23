@@ -13,7 +13,7 @@ function GeneralProvider({ children }) {
   >([])
 
   const [prices, setPrices] = useState<PricesInterface[]>([])
-  const [triggerPricesUpdate, setTriggerPricesUpdate] = useState<number>()
+  const [triggerPricesUpdate, setTriggerPricesUpdate] = useState<number>(0)
 
   const value = useMemo(
     () => ({

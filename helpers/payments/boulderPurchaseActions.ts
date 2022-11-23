@@ -8,7 +8,7 @@ export const createBoulderPurchaseAction = async (
   purchase: PartnerPaymentsHistoryInterface,
 ) => {
   const handlePurchase = await createBoulderPurchase(purchase)
-  return handlePurchase.message === "bouderPayment created successfully"
+  return handlePurchase.message
 }
 
 export const getBoulderPurchaseByDateAction = async (date: string) => {

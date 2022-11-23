@@ -101,7 +101,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
       created_by: parseInt(localStorage.getItem("id"), 10),
     })
 
-    success = boulderPurchaseCall
+    success = boulderPurchaseCall.status === 200
     if (paymentMethodSelected.id === 2) {
       const makePayment = await makeAppropiatePayment(
         paymentUserSelected.id,
@@ -118,7 +118,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
           created_by: parseInt(localStorage.getItem("id"), 10),
         },
       )
-      success = makePayment
+      success = makePayment.status === 200
     }
 
     if (success) {

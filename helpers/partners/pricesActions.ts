@@ -8,5 +8,5 @@ export const getPricesAction = async () => {
 
 export const editPricesAction = async (body: PricesInterface) => {
   const editData = await editPrices(body)
-  return editData.message === "price updated successfully"
+  return editData.message
 }

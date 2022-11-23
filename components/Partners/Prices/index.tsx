@@ -1,11 +1,8 @@
 import React, { useEffect, useContext, useState } from "react"
-// SERVICES
-// DATA STORAGE & TYPES
-import { editPricesAction } from "helpers/partners"
 import { GeneralContext } from "contexts/GeneralContext"
+import { editPricesAction } from "helpers/partners"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import generalTexts from "strings/general.json"
-// COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ScrollView from "components/UI/ScrollView"
 import {
@@ -24,13 +21,26 @@ interface ActionsInterface {
 }
 
 function Prices({ canEdit }: ActionsInterface) {
-  const { prices, setTriggerListUpdate, triggerListUpdate } = useContext(
+  const { prices, setTriggerPricesUpdate, triggerPricesUpdate } = useContext(
     GeneralContext,
   )
 
   const [newPrices, setNewPrices] = useState<PricesInterface>(null)
-
   const [activeRow, setActiveRow] = useState<number>(null)
+
+  const cancelChanges = () => {
+    setActiveRow(null)
+    setNewPrices(null)
+  }
+
+  const saveChanges = async () => {
+    const editData = await editPricesAction(newPrices)
+
+    if (editData.status === 200) {
+      setTriggerPricesUpdate(triggerPricesUpdate + 1)
+      cancelChanges()
+    }
+  }
 
   const fillInputs = () => {
     const pricesObj = prices.filter(price => price.id === activeRow)
@@ -43,21 +53,6 @@ function Prices({ canEdit }: ActionsInterface) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRow])
-
-  const cancelChanges = () => {
-    setActiveRow(null)
-    setNewPrices(null)
-  }
-
-  const saveChanges = async () => {
-    const editData = await editPricesAction(newPrices)
-
-    if (editData) {
-      setTriggerListUpdate(triggerListUpdate + 1)
-      setActiveRow(null)
-      setNewPrices(null)
-    }
-  }
 
   return (
     <Container>

@@ -23,7 +23,7 @@ const Sections = styled.div`
   gap: 20px;
 `
 
-const SectionTitle = styled.button<{ bold: boolean }>`
+const SectionTitle = styled.div<{ bold: boolean }>`
   position: relative;
   background: none;
   border: none;
