@@ -73,7 +73,7 @@ function DetailsData({
     const data = await getPartnerPaymentsByIdAction(partnerInfo.id)
 
     if (data.length > 0) {
-      setInitialPayment(data[data.length - 1]) // ACA SETEAR AL ULTIMO
+      setInitialPayment(data[data.length - 1])
       setVariableValues([
         {
           name: "days",
@@ -173,9 +173,11 @@ function DetailsData({
                 setChangedDays(true)
                 setChanges(true)
                 setHasChanges(true)
-                setVariableValues([
-                  { name: "days", value: variableValues[0].value - 1 },
-                ])
+                if (variableValues[0].value > 0) {
+                  setVariableValues([
+                    { name: "days", value: variableValues[0].value - 1 },
+                  ])
+                }
               }}
             >
               <Icon icon="IconLess" />

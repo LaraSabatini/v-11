@@ -23,6 +23,8 @@ function HeadingContent() {
 
   const router = useRouter()
 
+  const routeIsClients = router.query.clients === "true"
+
   const getPartnersList = async () => {
     const data = await setPartnerList(filterSelected, currentPage)
     setPartners(data.list)
@@ -51,14 +53,14 @@ function HeadingContent() {
           <span>
             {" "}
             /{" "}
-            {router.query.prices === "true"
-              ? `${generalTexts.sections.prices}`
-              : `${generalTexts.sections.home}`}
+            {routeIsClients
+              ? `${generalTexts.sections.home}`
+              : `${generalTexts.sections.prices}`}
           </span>
         </Title>
-        {router.query.clients === "true" && <Filters />}
+        {routeIsClients && <Filters />}
       </HeadContent>
-      {router.query.clients === "true" && (
+      {routeIsClients && (
         <Search
           getVirginList={getPartnersList}
           searchPartnerInDB={searchPartnerInDB}

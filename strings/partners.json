@@ -23,6 +23,7 @@
     "payment_method": "Metodo de pago",
     "final_price": "Precio final",
     "wants_sub": "Desea recibir noticias",
+    "start_date": "Fecha de inicio",
     "create": {
         "title": "Crear socio",
         "payment": "Pago",

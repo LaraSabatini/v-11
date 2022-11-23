@@ -21,12 +21,26 @@ interface ActionsInterface {
 }
 
 function Prices({ canEdit }: ActionsInterface) {
-  const { prices, setTriggerPricesUpdate, triggerListUpdate } = useContext(
+  const { prices, setTriggerPricesUpdate, triggerPricesUpdate } = useContext(
     GeneralContext,
   )
 
   const [newPrices, setNewPrices] = useState<PricesInterface>(null)
   const [activeRow, setActiveRow] = useState<number>(null)
+
+  const cancelChanges = () => {
+    setActiveRow(null)
+    setNewPrices(null)
+  }
+
+  const saveChanges = async () => {
+    const editData = await editPricesAction(newPrices)
+
+    if (editData.status === 200) {
+      setTriggerPricesUpdate(triggerPricesUpdate + 1)
+      cancelChanges()
+    }
+  }
 
   const fillInputs = () => {
     const pricesObj = prices.filter(price => price.id === activeRow)
@@ -39,21 +53,6 @@ function Prices({ canEdit }: ActionsInterface) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRow])
-
-  const cancelChanges = () => {
-    setActiveRow(null)
-    setNewPrices(null)
-  }
-
-  const saveChanges = async () => {
-    const editData = await editPricesAction(newPrices)
-
-    if (editData.status === 200) {
-      setTriggerPricesUpdate(triggerListUpdate + 1)
-      setActiveRow(null)
-      setNewPrices(null)
-    }
-  }
 
   return (
     <Container>

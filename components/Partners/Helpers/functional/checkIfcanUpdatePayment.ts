@@ -3,11 +3,10 @@ import formatDescDate from "components/Trainers/helpers/formatDescDate"
 import { day, month, year } from "const/time"
 
 const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
-  let canUpdatePayment = {
-    days: false,
-    months: false,
-    combos: false,
-  }
+  const allFalse = { days: false, months: false, combos: false }
+  const allTrue = { days: true, months: true, combos: true }
+
+  let canUpdatePayment = allFalse
 
   if (
     initialPayment.time_paid === 0 &&
@@ -15,11 +14,7 @@ const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
       initialPayment.time_paid_unit === 0) &&
     initialPayment.combo === 0
   ) {
-    canUpdatePayment = {
-      days: true,
-      months: true,
-      combos: true,
-    }
+    canUpdatePayment = allTrue
   }
 
   if (
@@ -47,24 +42,12 @@ const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
       )
 
       if (expirationDateCleaned > todayDate) {
-        canUpdatePayment = {
-          days: false,
-          months: false,
-          combos: false,
-        }
+        canUpdatePayment = allFalse
       } else {
-        canUpdatePayment = {
-          days: true,
-          months: true,
-          combos: true,
-        }
+        canUpdatePayment = allTrue
       }
     } else {
-      canUpdatePayment = {
-        days: true,
-        months: true,
-        combos: true,
-      }
+      canUpdatePayment = allTrue
     }
   }
 
@@ -75,24 +58,12 @@ const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
       )
 
       if (expirationDateCleaned > todayDate) {
-        canUpdatePayment = {
-          days: false,
-          months: false,
-          combos: false,
-        }
+        canUpdatePayment = allFalse
       } else {
-        canUpdatePayment = {
-          days: true,
-          months: true,
-          combos: true,
-        }
+        canUpdatePayment = allTrue
       }
     } else {
-      canUpdatePayment = {
-        days: true,
-        months: true,
-        combos: true,
-      }
+      canUpdatePayment = allTrue
     }
   }
   return canUpdatePayment

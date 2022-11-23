@@ -25,7 +25,7 @@ import Autocomplete from "components/UI/Autocomplete"
 import TextField from "components/UI/TextField"
 import Checkbox from "components/UI/Checkbox"
 import checkIfCanUpdatePayment from "../../Helpers/functional/checkIfcanUpdatePayment"
-import calcPriceMonthOrDay from "../../Helpers/functional/calculatePrice"
+import calculatePriceForMonthOrDay from "../../Helpers/functional/calculatePrice"
 import { HorizontalGroup, SubContainer, CheckboxContainer } from "../styles"
 
 interface UpdatePaymentInterface {
@@ -99,6 +99,7 @@ function UpdatePaymentForm({
     let itemId = 0
     let itemName = ""
     let profit = 0
+
     if (comboCondition) {
       itemId = 1
       itemName = `${financesTexts.combo}`
@@ -111,7 +112,7 @@ function UpdatePaymentForm({
           ? `${financesTexts.day}`
           : `${financesTexts.month}`
 
-      const finalProfit = calcPriceMonthOrDay(
+      const finalProfit = calculatePriceForMonthOrDay(
         paidTimeUnit.id,
         paidTime,
         paymentMethodSelected,
@@ -434,7 +435,7 @@ function UpdatePaymentForm({
       <HorizontalGroup>
         <InputCalendar
           reference={startDateRef}
-          label="Fecha de inicio"
+          label={partnerTexts.start_date}
           width={200}
           valueCalendar={dateSelectedToStart}
           onChange={e =>

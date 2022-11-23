@@ -1,8 +1,6 @@
 import { createContext, useState, useRef, useMemo } from "react"
 import { day, month, year } from "const/time"
-import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
-import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import CombosInterface from "interfaces/partners/CombosInterface"
 import PaymentInterface from "interfaces/partners/PaymentInterface"
 import ModalInterface from "interfaces/components/ModalInterface"
@@ -12,14 +10,6 @@ import PricesInterface from "interfaces/partners/PricesInterface"
 export const PartnersContext = createContext(null)
 
 function PartnersProvider({ children }) {
-  const [sectionSelected, setSectionSelected] = useState<{
-    section: string
-    id: number
-  }>({
-    section: `${generalTexts.sections.home}`,
-    id: 1,
-  })
-
   const [filterSelected, setFilterSelected] = useState<string>("all")
 
   const [partners, setPartners] = useState<PartnerInterface[]>([])
@@ -31,8 +21,6 @@ function PartnersProvider({ children }) {
   const [detailState, setDetailState] = useState<"view" | "edit">("view")
 
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
-
-  const [partnerPayments, setPartnerPayments] = useState<PaymentInterface[]>([])
 
   const [createModal, setCreateModal] = useState<boolean>(false)
 
@@ -52,8 +40,6 @@ function PartnersProvider({ children }) {
     is_student: "NO",
   })
 
-  const [trainersList, setTrainersList] = useState<TrainerInterface[]>([])
-
   const nameRef = useRef(null)
   const lastNameRef = useRef(null)
   const identificationRef = useRef(null)
@@ -61,14 +47,12 @@ function PartnersProvider({ children }) {
   const emailRef = useRef(null)
   const paidTimeRef = useRef(null)
   const paidTimeUnitRef = useRef(null)
-  const trainertRef = useRef(null)
   const comboRef = useRef(null)
   const paymentRef = useRef(null)
   const phoneRef = useRef(null)
   const paymentUserRef = useRef(null)
 
   const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
-
   const [modalError, setModalError] = useState<ModalInterface | null>(null)
 
   const [paidTime, setPaidTime] = useState<number>(1)
@@ -78,7 +62,6 @@ function PartnersProvider({ children }) {
   })
 
   const [combos, setCombos] = useState<CombosInterface[]>([])
-
   const [comboSelected, setComboSelected] = useState<number>()
 
   const [isChecked, setIsChecked] = useState<boolean>(false)
@@ -89,10 +72,6 @@ function PartnersProvider({ children }) {
   const [finalPrice, setFinalPrice] = useState<number>(0)
 
   const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
-
-  const [addPaymentModal, setAddPaymentModal] = useState<boolean>(false)
-
-  const [trainerSelected, setTrainerSelected] = useState<DefaultInterface>()
 
   const [dateSelectedToStart, setDateSelectedToStart] = useState<string>(
     `${day}-${month}-${year}`,
@@ -180,16 +159,24 @@ function PartnersProvider({ children }) {
     setModalErrorAddDays,
   ] = useState<ModalInterface | null>(null)
 
-  // NUEVO
   const [totalPages, setTotalPages] = useState<number>(1)
   const [searchValue, setSearchValue] = useState<string>("")
   const [safeModal, setSafeModal] = useState<boolean>(false)
   const [updatePaymentModal, setUpdatePaymentModal] = useState<boolean>(false)
 
+  const [
+    paymentUserSelected,
+    setPaymentUserSelected,
+  ] = useState<DefaultInterface>(null)
+
+  const [
+    disableCreatePartnerFormButton,
+    setDisableCreatePartnerFormButton,
+  ] = useState<boolean>(false)
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanStates = () => {
     setModalSuccess(null)
-    setAddPaymentModal(false)
     setModalError(null)
     setPartnerSelected(null)
     setNewPartnerData({
@@ -223,16 +210,6 @@ function PartnersProvider({ children }) {
     setSearchValue("")
   }
 
-  const [
-    paymentUserSelected,
-    setPaymentUserSelected,
-  ] = useState<DefaultInterface>(null)
-
-  const [
-    disableCreatePartnerFormButton,
-    setDisableCreatePartnerFormButton,
-  ] = useState<boolean>(false)
-
   const value = useMemo(
     () => ({
       isChecked,
@@ -250,7 +227,6 @@ function PartnersProvider({ children }) {
       emailRef,
       paidTimeRef,
       paidTimeUnitRef,
-      trainertRef,
       modalSuccess,
       setModalSuccess,
       modalError,
@@ -259,8 +235,6 @@ function PartnersProvider({ children }) {
       setCurrentPage,
       detailState,
       setDetailState,
-      trainersList,
-      setTrainersList,
       hasChanges,
       setHasChanges,
       modalHasChanges,
@@ -283,14 +257,8 @@ function PartnersProvider({ children }) {
       setFinalPrice,
       paymentMethodSelected,
       setPaymentMethodSelected,
-      partnerPayments,
-      setPartnerPayments,
-      addPaymentModal,
       createModal,
       setCreateModal,
-      setAddPaymentModal,
-      trainerSelected,
-      setTrainerSelected,
       cleanStates,
       phoneRef,
       wantsSubscription,
@@ -307,8 +275,6 @@ function PartnersProvider({ children }) {
       paymentUserSelected,
       setPaymentUserSelected,
       paymentUserRef,
-      sectionSelected,
-      setSectionSelected,
       disableCreatePartnerFormButton,
       setDisableCreatePartnerFormButton,
       dateSelectedToStart,
@@ -331,7 +297,6 @@ function PartnersProvider({ children }) {
       modalError,
       currentPage,
       detailState,
-      trainersList,
       hasChanges,
       modalHasChanges,
       triggerListUpdate,
@@ -342,10 +307,7 @@ function PartnersProvider({ children }) {
       comboSelected,
       finalPrice,
       paymentMethodSelected,
-      partnerPayments,
-      addPaymentModal,
       createModal,
-      trainerSelected,
       cleanStates,
       wantsSubscription,
       activeEdition,
@@ -354,7 +316,6 @@ function PartnersProvider({ children }) {
       modalErrorAddDays,
       usesDay,
       paymentUserSelected,
-      sectionSelected,
       disableCreatePartnerFormButton,
       dateSelectedToStart,
       totalPages,

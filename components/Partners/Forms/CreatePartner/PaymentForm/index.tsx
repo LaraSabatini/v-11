@@ -1,9 +1,9 @@
 import React, { useContext, useRef, useEffect } from "react"
 import { GeneralContext } from "contexts/GeneralContext"
 import { PartnersContext } from "contexts/Partners"
-import CombosInterface from "interfaces/partners/CombosInterface"
 import { paymentMethods, paymentUsers } from "const/finances"
 import { timeUnits } from "const/time"
+import CombosInterface from "interfaces/partners/CombosInterface"
 import partnerTexts from "strings/partners.json"
 import generalTexts from "strings/general.json"
 import Autocomplete from "components/UI/Autocomplete"
@@ -171,8 +171,9 @@ function PaymentForm() {
       <HorizontalGroup>
         <InputCalendar
           reference={startDateRef}
-          label="Fecha de inicio"
+          label={partnerTexts.start_date}
           width={200}
+          position="top-right"
           valueCalendar={dateSelectedToStart}
           onChange={e =>
             setDateSelectedToStart(
