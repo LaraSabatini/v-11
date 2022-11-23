@@ -173,9 +173,11 @@ function DetailsData({
                 setChangedDays(true)
                 setChanges(true)
                 setHasChanges(true)
-                setVariableValues([
-                  { name: "days", value: variableValues[0].value - 1 },
-                ])
+                if (variableValues[0].value > 0) {
+                  setVariableValues([
+                    { name: "days", value: variableValues[0].value - 1 },
+                  ])
+                }
               }}
             >
               <Icon icon="IconLess" />

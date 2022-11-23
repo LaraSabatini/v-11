@@ -171,8 +171,9 @@ function PaymentForm() {
       <HorizontalGroup>
         <InputCalendar
           reference={startDateRef}
-          label="Fecha de inicio"
+          label={partnerTexts.start_date}
           width={200}
+          position="top-right"
           valueCalendar={dateSelectedToStart}
           onChange={e =>
             setDateSelectedToStart(
