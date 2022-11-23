@@ -31,4 +31,24 @@ const Title = styled.h4`
   }
 `
 
-export { MainContainer, Content, HeadContent, Title }
+const ErrorPage = styled.div`
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: ${theme.fonts.primary};
+
+  img {
+    width: 400px;
+  }
+
+  .text {
+    display: flex;
+    flex-direction: column;
+    font-weight: ${theme.fontWeights.light};
+    /* align-items: center; */
+    justify-content: center;
+  }
+`
+
+export { MainContainer, Content, HeadContent, Title, ErrorPage }
