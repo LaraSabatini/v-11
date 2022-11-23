@@ -11,17 +11,12 @@ import PartnerInterface from "interfaces/partners/PartnerInterface"
 
 export const createPartnerAction = async (partnerData: PartnerInterface) => {
   const handlePost = await createPartner(partnerData)
-
-  const response = {
-    success: handlePost.message === "partner created successfully",
-    partnerId: handlePost.partnerId,
-  }
-  return response
+  return handlePost.message
 }
 
 export const editPartnerAction = async (partnerData: PartnerInterface) => {
   const handleEdit = await editPartner(partnerData)
-  return handleEdit.message === "partner updated successfully"
+  return handleEdit.message
 }
 
 export const searchPartnerAction = async (searchValue: string) => {
@@ -31,7 +26,7 @@ export const searchPartnerAction = async (searchValue: string) => {
 
 export const deletePartnerAction = async (id: number) => {
   const handleDelete = await deletePartner(id)
-  return handleDelete.message === "Product deleted successfully"
+  return handleDelete.message
 }
 
 export const getPartnersAction = async (page: number) => {

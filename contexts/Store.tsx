@@ -88,6 +88,8 @@ function StoreProvider({ children }) {
     rows: any[]
   }>()
 
+  const [tillPreview, setTillPreview] = useState<boolean>(false)
+
   const value = useMemo(
     () => ({
       productsList,
@@ -146,6 +148,8 @@ function StoreProvider({ children }) {
       priceRef,
       rows,
       setRows,
+      tillPreview,
+      setTillPreview,
     }),
     [
       productsList,
@@ -173,6 +177,7 @@ function StoreProvider({ children }) {
       paymentMethodSelected,
       paymentUserSelected,
       rows,
+      tillPreview,
     ],
   )
 

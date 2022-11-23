@@ -23,7 +23,7 @@ import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
 import Autocomplete from "components/UI/Autocomplete"
 import ModalForm from "components/UI/ModalForm"
-import checkDiscount from "../../helpers/checkDiscount"
+import checkDiscountForLessons from "../../helpers/checkDiscountForLessons"
 import calculatePriceWithoutDiscount from "../../helpers/calculatePriceWithoutDiscount"
 import calculatePriceWithDiscount from "../../helpers/calculatePriceWithDiscount"
 import {
@@ -101,7 +101,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
       created_by: parseInt(localStorage.getItem("id"), 10),
     })
 
-    success = boulderPurchaseCall
+    success = boulderPurchaseCall.status === 200
     if (paymentMethodSelected.id === 2) {
       const makePayment = await makeAppropiatePayment(
         paymentUserSelected.id,
@@ -118,7 +118,7 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
           created_by: parseInt(localStorage.getItem("id"), 10),
         },
       )
-      success = makePayment
+      success = makePayment.status === 200
     }
 
     if (success) {
@@ -174,9 +174,6 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
       "NO",
     )
     setListOfLessonsToPay(checkListOfToPay)
-    setLessonsSelectedToPay([data])
-    const checkPayment = await checkDiscount(data.partner_id)
-    setHasDiscount(checkPayment)
   }
 
   useEffect(() => {
@@ -184,24 +181,41 @@ function MakePayment({ data, cancelPayment }: DataInterface) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  const calculateFinalPrice = () => {
-    let price: number = 0
+  const calculateFinalPrice = async () => {
+    const lessonsArray = []
+    lessonsSelectedToPay.forEach(lesson =>
+      lessonsArray.push({
+        id: lesson.id,
+        date: lesson.lesson_date,
+        shift: lesson.shift,
+      }),
+    )
 
-    if (hasDiscount) {
-      price = calculatePriceWithDiscount(
-        lessonsSelectedToPay.length,
-        paymentMethodSelected.id,
-        prices,
-      )
-    } else {
-      price = calculatePriceWithoutDiscount(
-        lessonsSelectedToPay.length,
-        paymentMethodSelected.id,
-        prices,
-      )
-    }
+    const checkPayment = await checkDiscountForLessons(
+      data.partner_id,
+      lessonsArray,
+    )
 
-    setFinalPrice(price)
+    const lessonWithDiscount = checkPayment.filter(lesson => lesson.hasDiscount)
+    const lessonWithoutDiscount = checkPayment.filter(
+      lesson => !lesson.hasDiscount,
+    )
+
+    setHasDiscount(lessonWithDiscount.length > 0)
+
+    const priceWithoutDiscount = calculatePriceWithoutDiscount(
+      lessonWithoutDiscount.length,
+      paymentMethodSelected.id,
+      prices,
+    )
+
+    const priceWithDiscount = calculatePriceWithDiscount(
+      lessonWithDiscount.length,
+      paymentMethodSelected,
+      prices,
+    )
+
+    setFinalPrice(priceWithoutDiscount + priceWithDiscount)
   }
 
   useEffect(() => {

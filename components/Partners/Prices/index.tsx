@@ -1,11 +1,8 @@
 import React, { useEffect, useContext, useState } from "react"
-// SERVICES
-// DATA STORAGE & TYPES
-import { editPricesAction } from "helpers/partners"
 import { GeneralContext } from "contexts/GeneralContext"
+import { editPricesAction } from "helpers/partners"
 import PricesInterface from "interfaces/partners/PricesInterface"
 import generalTexts from "strings/general.json"
-// COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import ScrollView from "components/UI/ScrollView"
 import {
@@ -24,12 +21,11 @@ interface ActionsInterface {
 }
 
 function Prices({ canEdit }: ActionsInterface) {
-  const { prices, setTriggerListUpdate, triggerListUpdate } = useContext(
+  const { prices, setTriggerPricesUpdate, triggerListUpdate } = useContext(
     GeneralContext,
   )
 
   const [newPrices, setNewPrices] = useState<PricesInterface>(null)
-
   const [activeRow, setActiveRow] = useState<number>(null)
 
   const fillInputs = () => {
@@ -52,8 +48,8 @@ function Prices({ canEdit }: ActionsInterface) {
   const saveChanges = async () => {
     const editData = await editPricesAction(newPrices)
 
-    if (editData) {
-      setTriggerListUpdate(triggerListUpdate + 1)
+    if (editData.status === 200) {
+      setTriggerPricesUpdate(triggerListUpdate + 1)
       setActiveRow(null)
       setNewPrices(null)
     }

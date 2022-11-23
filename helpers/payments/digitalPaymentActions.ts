@@ -11,13 +11,13 @@ import { day, month, year } from "const/time"
 export const updateDigitalPaymentAction = async (payment: MPUserPayment) => {
   const handleUpdate = await updateDigitalPayment(payment)
 
-  return handleUpdate.message === "payment updated successfully"
+  return handleUpdate.message
 }
 
 export const createDigitalPaymentAction = async (payment: MPUserPayment) => {
   const handleCreate = await createDigitalPayment(payment)
 
-  return handleCreate.message === "payment created successfully"
+  return handleCreate.message
 }
 
 export const searchDigitalPaymentByUserAndDateAction = async (

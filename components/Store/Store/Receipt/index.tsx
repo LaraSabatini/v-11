@@ -159,7 +159,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           created_by: parseInt(localStorage.getItem("id"), 10),
         },
       )
-      success = executePayment
+      success = executePayment.status === 200
     }
 
     if (success) {

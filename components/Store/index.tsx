@@ -33,7 +33,6 @@ import Stock from "./Stock"
 import {
   Container,
   Content,
-  Title,
   HeadContent,
   CreateProduct,
   MainButton,
@@ -41,6 +40,7 @@ import {
   NoPermissionsViewContainer,
   HelpContainer,
   SearchBarContainer,
+  Title,
 } from "./styles"
 
 function StoreView() {

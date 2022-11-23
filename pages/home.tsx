@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react"
 import { useRouter } from "next/router"
 import { GeneralContext } from "contexts/GeneralContext"
 import { getPricesAction } from "helpers/partners"
-import PartnersView from "components/Partners"
+import Clients from "components/Partners"
 import PartnersProvider from "contexts/Partners"
 
 function Home() {
@@ -35,7 +35,7 @@ function Home() {
     <div>
       {isLoggedIn !== null && (
         <PartnersProvider>
-          <PartnersView />
+          <Clients />
         </PartnersProvider>
       )}
     </div>

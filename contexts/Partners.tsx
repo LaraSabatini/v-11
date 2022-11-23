@@ -1,4 +1,5 @@
 import { createContext, useState, useRef, useMemo } from "react"
+import { day, month, year } from "const/time"
 import generalTexts from "strings/general.json"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import TrainerInterface from "interfaces/trainers/TrainerInterface"
@@ -93,6 +94,10 @@ function PartnersProvider({ children }) {
 
   const [trainerSelected, setTrainerSelected] = useState<DefaultInterface>()
 
+  const [dateSelectedToStart, setDateSelectedToStart] = useState<string>(
+    `${day}-${month}-${year}`,
+  )
+
   // EDIT *************************************************************
 
   const [hasChanges, setHasChanges] = useState<boolean>(false)
@@ -175,6 +180,12 @@ function PartnersProvider({ children }) {
     setModalErrorAddDays,
   ] = useState<ModalInterface | null>(null)
 
+  // NUEVO
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [searchValue, setSearchValue] = useState<string>("")
+  const [safeModal, setSafeModal] = useState<boolean>(false)
+  const [updatePaymentModal, setUpdatePaymentModal] = useState<boolean>(false)
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanStates = () => {
     setModalSuccess(null)
@@ -207,6 +218,9 @@ function PartnersProvider({ children }) {
     setCreateModal(false)
     setModalErrorAddDays(null)
     setUsesDay(true)
+    setUpdatePaymentModal(false)
+    setSafeModal(false)
+    setSearchValue("")
   }
 
   const [
@@ -297,6 +311,16 @@ function PartnersProvider({ children }) {
       setSectionSelected,
       disableCreatePartnerFormButton,
       setDisableCreatePartnerFormButton,
+      dateSelectedToStart,
+      setDateSelectedToStart,
+      totalPages,
+      setTotalPages,
+      searchValue,
+      setSearchValue,
+      safeModal,
+      setSafeModal,
+      updatePaymentModal,
+      setUpdatePaymentModal,
     }),
     [
       isChecked,
@@ -332,6 +356,11 @@ function PartnersProvider({ children }) {
       paymentUserSelected,
       sectionSelected,
       disableCreatePartnerFormButton,
+      dateSelectedToStart,
+      totalPages,
+      searchValue,
+      safeModal,
+      updatePaymentModal,
     ],
   )
 

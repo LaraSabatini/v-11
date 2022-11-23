@@ -105,7 +105,7 @@ function TrainersView() {
           paid || buyedCombo
             ? `${yesOrNoArr[0].display_name}`
             : `${yesOrNoArr[1].display_name}`,
-        day_id: finalLessonDate.day.getDay(),
+        day_id: finalLessonDate.day.getDay() - 1,
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
@@ -130,7 +130,7 @@ function TrainersView() {
       payment_method_id: paymentMethodSelected.id,
       created_by: parseInt(localStorage.getItem("id"), 10),
     })
-    success = createBoulderPurchaseCall
+    success = createBoulderPurchaseCall.status === 200
 
     if (paymentMethodSelected.id === 2) {
       const makePayment = await makeAppropiatePayment(
@@ -148,7 +148,7 @@ function TrainersView() {
           created_by: parseInt(localStorage.getItem("id"), 10),
         },
       )
-      success = makePayment
+      success = makePayment.status === 200
     }
     return success
   }
@@ -161,14 +161,12 @@ function TrainersView() {
     let canShowModalError = true
 
     if (clientIsRegistered) {
-      canShowModalError = true
-
       if (clientSelected.is_student === `${yesOrNoArr[1].display_name}`) {
         const editPartnerCall = await editPartnerAction({
           ...clientSelected,
           is_student: `${yesOrNoArr[0].display_name}`,
         })
-        success = editPartnerCall
+        success = editPartnerCall.status === 200
       }
       const createLessonPurchases = await createLessonPurchase(
         clientSelected.id,
@@ -203,7 +201,7 @@ function TrainersView() {
           last_name: lastName,
         })
 
-        success = createPartnerCall.success
+        success = createPartnerCall.status === 200
 
         const createLessonPurchases = await createLessonPurchase(
           createPartnerCall.partnerId,

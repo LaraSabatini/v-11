@@ -15,7 +15,6 @@ const Content = styled.div`
 const Title = styled.h4`
   font-size: 25px;
   margin: 0;
-
   span {
     font-weight: ${theme.fontWeights.regular};
     font-size: 20px;
@@ -168,7 +167,6 @@ const SearchBarContainer = styled.div`
 export {
   Container,
   Content,
-  Title,
   HeadContent,
   FiltersContainer,
   Select,
@@ -183,4 +181,5 @@ export {
   HelpContainer,
   NoPermissionsViewContainer,
   SearchBarContainer,
+  Title,
 }
