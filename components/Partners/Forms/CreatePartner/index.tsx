@@ -237,7 +237,7 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
             created_by: parseInt(localStorage.getItem("id"), 10),
           },
         )
-        success = executeDigitalPayment
+        success = executeDigitalPayment.status === 200
       }
       if (success && callCreatePartner.message.status === 200) {
         setModalSuccess(callCreatePartner.message.message)

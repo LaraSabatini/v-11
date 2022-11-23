@@ -39,20 +39,10 @@ function Modals() {
   const deletePartner = async () => {
     const deletion = await deletePartnerAction(partnerSelected)
 
-    if (deletion) {
-      setModalSuccess({
-        status: "success",
-        icon: "IconCheckModal",
-        title: `${generalTexts.modalTitles.success}`,
-        content: `${partnerTexts.delete.success.content}`,
-      })
+    if (deletion.status === 200) {
+      setModalSuccess(deletion.message)
     } else {
-      setModalError({
-        status: "alert",
-        icon: "IconExclamation",
-        title: `${generalTexts.modalTitles.error}`,
-        content: `${partnerTexts.delete.error.content}`,
-      })
+      setModalError(deletion.message)
     }
   }
 

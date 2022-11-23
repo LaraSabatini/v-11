@@ -76,22 +76,12 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
         free_pass: newData.free_pass,
       })
 
-      if (editPartner) {
-        setModalSuccess({
-          status: "success",
-          icon: "IconCheckModal",
-          title: `${generalTexts.modalTitles.success}`,
-          content: `${partnerTexts.edit.success.content}`,
-        })
+      if (editPartner.status === 200) {
+        setModalSuccess(editPartner.message)
         setDetailState("view")
         setHasChanges(false)
       } else {
-        setModalError({
-          status: "alert",
-          icon: "IconExclamation",
-          title: `${generalTexts.modalTitles.error}`,
-          content: `${partnerTexts.edit.error.content}`,
-        })
+        setModalError(editPartner.message)
         setHasChanges(false)
       }
     }

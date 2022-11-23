@@ -131,7 +131,7 @@ function UpdatePaymentForm({
       created_by: parseInt(localStorage.getItem("id"), 10),
     })
 
-    return createBoulderPurchaseCall
+    return createBoulderPurchaseCall.status === 200
   }
 
   const handleEdit = async (e: any) => {
@@ -205,7 +205,7 @@ function UpdatePaymentForm({
             created_by: parseInt(localStorage.getItem("id"), 10),
           },
         )
-        success = executePurchase
+        success = executePurchase.status === 200
       }
 
       if (
@@ -234,7 +234,7 @@ function UpdatePaymentForm({
           created_by: parseInt(localStorage.getItem("id"), 10),
         })
 
-        success = createPartnerPayment
+        success = createPartnerPayment.status === 200
       } else {
         const updatePartnerPayment = await editPartnerPaymentAction({
           ...initialPayment,
@@ -244,7 +244,7 @@ function UpdatePaymentForm({
           date: today,
           created_by: parseInt(localStorage.getItem("id"), 10),
         })
-        success = updatePartnerPayment
+        success = updatePartnerPayment.status === 200
       }
 
       const newPartnerInfo = { ...partnerInfo }
@@ -256,7 +256,7 @@ function UpdatePaymentForm({
       }
 
       const editPartnerData = await editPartnerAction(newPartnerInfo)
-      success = editPartnerData
+      success = editPartnerData.status === 200
     }
 
     if (success) {

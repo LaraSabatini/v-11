@@ -59,7 +59,7 @@ function DetailsData({
             variableValues[0].value > 0 ? initialPayment.time_paid_unit : 0,
           created_by: parseInt(localStorage.getItem("id"), 10),
         })
-        success = edit
+        success = edit.status === 200
       }
     }
 

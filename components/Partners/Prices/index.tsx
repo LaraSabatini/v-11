@@ -48,7 +48,7 @@ function Prices({ canEdit }: ActionsInterface) {
   const saveChanges = async () => {
     const editData = await editPricesAction(newPrices)
 
-    if (editData) {
+    if (editData.status === 200) {
       setTriggerPricesUpdate(triggerListUpdate + 1)
       setActiveRow(null)
       setNewPrices(null)
