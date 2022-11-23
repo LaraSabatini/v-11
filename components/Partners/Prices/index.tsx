@@ -21,7 +21,7 @@ interface ActionsInterface {
 }
 
 function Prices({ canEdit }: ActionsInterface) {
-  const { prices, setTriggerPricesUpdate, triggerListUpdate } = useContext(
+  const { prices, setTriggerPricesUpdate, triggerPricesUpdate } = useContext(
     GeneralContext,
   )
 
@@ -37,7 +37,7 @@ function Prices({ canEdit }: ActionsInterface) {
     const editData = await editPricesAction(newPrices)
 
     if (editData.status === 200) {
-      setTriggerPricesUpdate(triggerListUpdate + 1)
+      setTriggerPricesUpdate(triggerPricesUpdate + 1)
       cancelChanges()
     }
   }
