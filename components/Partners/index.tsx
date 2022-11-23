@@ -21,24 +21,23 @@ function Clients() {
 
   const clientsSection = permissions[0]
   const pricesSection = permissions[1]
+  const routeIsClients = Object.keys(router.query)[0] === "clients"
+  const routeIsPrices = Object.keys(router.query)[0] === "prices"
 
   return (
     <div>
       <Modals />
       <Header />
       <Content>
-        {Object.keys(router.query)[0] === "clients" && !clientsSection.view && (
-          <NoPermissionsView />
-        )}
-        {((Object.keys(router.query)[0] === "clients" && clientsSection.view) ||
-          (Object.keys(router.query)[0] === "prices" &&
-            pricesSection.view)) && <HeadingContent />}
+        {routeIsClients && !clientsSection.view && <NoPermissionsView />}
+        {((routeIsClients && clientsSection.view) ||
+          (routeIsPrices && pricesSection.view)) && <HeadingContent />}
 
-        {Object.keys(router.query)[0] === "prices" && pricesSection.view && (
+        {routeIsPrices && pricesSection.view && (
           <Prices canEdit={pricesSection.actions.edit} />
         )}
 
-        {Object.keys(router.query)[0] === "clients" && clientsSection.view && (
+        {routeIsClients && clientsSection.view && (
           <>
             <CreatePartnerButton canCreate={clientsSection.actions.create} />
             {createModal && (

@@ -1,12 +1,13 @@
 import PricesInterface from "interfaces/partners/PricesInterface"
 
-const calcPriceMonthOrDay = (
+const calculatePriceForMonthOrDay = (
   paidTimeUnit: number,
   paidTime: number,
   paymentMethodSelected: number,
   prices: PricesInterface[],
 ) => {
   let finalProfit = 0
+
   if (paidTimeUnit === 1) {
     if (paidTime === 8) {
       finalProfit =
@@ -30,4 +31,4 @@ const calcPriceMonthOrDay = (
   return finalProfit
 }
 
-export default calcPriceMonthOrDay
+export default calculatePriceForMonthOrDay

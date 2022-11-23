@@ -73,7 +73,7 @@ function DetailsData({
     const data = await getPartnerPaymentsByIdAction(partnerInfo.id)
 
     if (data.length > 0) {
-      setInitialPayment(data[data.length - 1]) // ACA SETEAR AL ULTIMO
+      setInitialPayment(data[data.length - 1])
       setVariableValues([
         {
           name: "days",
