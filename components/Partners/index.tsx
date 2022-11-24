@@ -27,7 +27,7 @@ function Clients() {
 
   const fillCombosData = async () => {
     const getData = await getCombosAction()
-    setCombos(getData.data)
+    setCombos(getData)
   }
 
   useEffect(() => {
