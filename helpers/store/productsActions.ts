@@ -9,7 +9,7 @@ import ProductInterface from "interfaces/store/ProductInterface"
 
 export const createProductAction = async (body: ProductInterface) => {
   const handleCreateProduct = await createProduct(body)
-  return handleCreateProduct.message === "Product created successfully"
+  return handleCreateProduct.message
 }
 
 export const editProductAction = async (body: ProductInterface) => {

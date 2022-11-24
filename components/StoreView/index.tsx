@@ -3,16 +3,26 @@ import { useRouter } from "next/router"
 import { StoreContext } from "contexts/Store"
 import { getCategoriesAction, getBrandsAction } from "helpers/store"
 import PartnersProvider from "contexts/Partners"
+import DefaultInterface from "interfaces/components/DefaultInterface"
+import OptionsInterface from "interfaces/store/OptionsInterface"
 import Header from "components/UI/Header"
 import Modals from "./GeneralContent/Modals"
 import NoPermissionsView from "./GeneralContent/NoPermissionsView"
+import CreateProduct from "./Forms/CreateProduct"
 import HeadingContent from "./HeadingContent"
 import Content from "./styles"
 
 function StoreView() {
   const router = useRouter()
 
-  const { setCategories, setBrands } = useContext(StoreContext)
+  const {
+    setCategories,
+    setBrands,
+    createProductModal,
+    setCreateProductModal,
+    setAutoCompleteBrandsValues,
+    setAutoCompleteCategoriesValues,
+  } = useContext(StoreContext)
 
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections[2].sub_sections
@@ -28,6 +38,20 @@ function StoreView() {
 
     const getBrands = await getBrandsAction()
     setBrands(getBrands)
+
+    const autocompleteBrands: DefaultInterface[] = []
+    getBrands.map((brand: OptionsInterface) =>
+      autocompleteBrands.push({ id: brand.id, display_name: brand.name }),
+    )
+    const autocompleteCategories: DefaultInterface[] = []
+    getCategories.map((category: OptionsInterface) =>
+      autocompleteCategories.push({
+        id: category.id,
+        display_name: category.name,
+      }),
+    )
+    setAutoCompleteBrandsValues(autocompleteBrands)
+    setAutoCompleteCategoriesValues(autocompleteCategories)
   }
 
   useEffect(() => {
@@ -46,10 +70,17 @@ function StoreView() {
 
         {((routeIsStore && buySection.view) ||
           (routeIsStock && stockSection.view)) && (
-          <HeadingContent
-            section={routeIsStore ? "store" : "stock"}
-            canView={routeIsStore ? buySection.view : stockSection.view}
-          />
+          <>
+            <HeadingContent
+              section={routeIsStore ? "store" : "stock"}
+              canView={routeIsStore ? buySection.view : stockSection.view}
+            />
+            {createProductModal && (
+              <CreateProduct
+                cancelCreate={() => setCreateProductModal(false)}
+              />
+            )}
+          </>
         )}
       </Content>
     </div>

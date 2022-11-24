@@ -1,6 +1,7 @@
 import React from "react"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
+import CreateProductButton from "../GeneralContent/CreateProductButton"
 import Filters from "./Filters"
 import Search from "./Search"
 import { HeadContent, Title } from "./styles"
@@ -28,6 +29,7 @@ function HeadingContent({ section, canView }: HeadingContentInterface) {
           (section === "store" && canView && <Filters />)}
 
         {section === "stock" && canView && <Search />}
+        <CreateProductButton />
       </HeadContent>
     </>
   )
