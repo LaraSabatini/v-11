@@ -27,7 +27,7 @@ function Clients() {
 
   const fillCombosData = async () => {
     const getData = await getCombosAction()
-    setCombos(getData.data)
+    setCombos(getData)
   }
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function Clients() {
       fillCombosData()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clientsSection])
+  }, [])
 
   return (
     <div>

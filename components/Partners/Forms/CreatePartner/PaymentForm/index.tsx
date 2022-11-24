@@ -44,7 +44,7 @@ function PaymentForm() {
   const startDateRef = useRef(null)
 
   const combosAutocomplete = []
-  combos.map((combo: CombosInterface) =>
+  combos?.map((combo: CombosInterface) =>
     combosAutocomplete.push({
       id: combo.id,
       display_name: combo.name,
