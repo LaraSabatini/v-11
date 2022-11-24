@@ -1,7 +1,11 @@
 import React, { useContext, useEffect } from "react"
 import { useRouter } from "next/router"
 import { StoreContext } from "contexts/Store"
-import { getCategoriesAction, getBrandsAction } from "helpers/store"
+import {
+  getCategoriesAction,
+  getBrandsAction,
+  getProductsAction,
+} from "helpers/store"
 import PartnersProvider from "contexts/Partners"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 import OptionsInterface from "interfaces/store/OptionsInterface"
@@ -10,6 +14,7 @@ import Modals from "./GeneralContent/Modals"
 import NoPermissionsView from "./GeneralContent/NoPermissionsView"
 import CreateProduct from "./Forms/CreateProduct"
 import HeadingContent from "./HeadingContent"
+import Buy from "./Buy"
 import Content from "./styles"
 
 function StoreView() {
@@ -22,6 +27,8 @@ function StoreView() {
     setCreateProductModal,
     setAutoCompleteBrandsValues,
     setAutoCompleteCategoriesValues,
+    setProductsList,
+    currentPage,
   } = useContext(StoreContext)
 
   const getPermissions = localStorage.getItem("permissions")
@@ -32,7 +39,7 @@ function StoreView() {
   const routeIsStore = Object.keys(router.query)[0] === "store"
   const routeIsStock = Object.keys(router.query)[0] === "stock"
 
-  const setCategoriesAndBrandsData = async () => {
+  const setData = async () => {
     const getCategories = await getCategoriesAction()
     setCategories(getCategories)
 
@@ -52,12 +59,15 @@ function StoreView() {
     )
     setAutoCompleteBrandsValues(autocompleteBrands)
     setAutoCompleteCategoriesValues(autocompleteCategories)
+
+    const getProducts = await getProductsAction(currentPage)
+    setProductsList(getProducts)
   }
 
   useEffect(() => {
-    setCategoriesAndBrandsData()
+    setData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [currentPage])
 
   return (
     <div>
@@ -81,6 +91,9 @@ function StoreView() {
               />
             )}
           </>
+        )}
+        {routeIsStore && buySection.view && (
+          <Buy permits={buySection.actions} />
         )}
       </Content>
     </div>
