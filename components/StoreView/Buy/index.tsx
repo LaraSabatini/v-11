@@ -17,7 +17,7 @@ function Buy({ permits }: BuyPermits) {
   return (
     <Container>
       <Products />
-      <Receipt />
+      <Receipt canPurchase={permits.create_purchase} />
     </Container>
   )
 }

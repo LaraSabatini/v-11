@@ -14,7 +14,7 @@ export const createProductAction = async (body: ProductInterface) => {
 
 export const editProductAction = async (body: ProductInterface) => {
   const handleEditProduct = await editProduct(body)
-  return handleEditProduct.message === "product updated successfully"
+  return handleEditProduct.message
 }
 
 export const getProductsAction = async (page: number) => {
