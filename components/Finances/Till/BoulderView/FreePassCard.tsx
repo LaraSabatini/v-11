@@ -9,7 +9,8 @@ interface FreePassCardInterface {
   amountOfSells: number
   byStore: number
   byClient: number
-  packs: number[]
+  packFour: number
+  packEight: number
   people: number
 }
 
@@ -19,7 +20,8 @@ function FreePassCard({
   amountOfSells,
   byStore,
   byClient,
-  packs,
+  packFour,
+  packEight,
   people,
 }: FreePassCardInterface) {
   return (
@@ -50,12 +52,12 @@ function FreePassCard({
       </Earnings>
       <Earnings>
         <p>
-          • Pack x 4: <b>{packs[0]}</b>
+          • Pack x 4: <b>{packFour}</b>
         </p>
       </Earnings>
       <Earnings>
         <p>
-          • Pack x 8: <b>{packs[1]}</b>
+          • Pack x 8: <b>{packEight}</b>
         </p>
       </Earnings>
       <Earnings>
