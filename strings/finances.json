@@ -9,7 +9,7 @@
     "lessons": "Clases",
     "day": "Dia",
     "four_day_pack": "Pack 4",
-    "eight_day_pack": " Pack 8",
+    "eight_day_pack": "Pack 8",
     "packs_sold": "Packs vendidos",
     "shoes": "Alquiler zapatillas",
     "sold_pases": "Pases vendidos",
@@ -17,5 +17,7 @@
     "through_clients": "Por clientes",
     "sells": "Ventas",
     "units_lend": "Unidades alquiladas",
-    "profits": "Ganancias"
+    "profits": "Ganancias",
+    "total_people": "Asistencias totales",
+    "individual": "Individuales"
 }

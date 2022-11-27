@@ -1,11 +1,9 @@
 import React, { useContext, useState, useRef } from "react"
-// DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import { tillFilters } from "const/finances"
-// COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import InputCalendar from "components/UI/InputCalendar"
-import cleanDate from "../helpers/cleanDate"
+import cleanDate from "../../../Helpers/cleanDate"
 import {
   FiltersContainer,
   Filter,
@@ -23,13 +21,11 @@ function TillFilters() {
     tillDateSelected,
   } = useContext(Finances)
 
-  const [openFilters, setOpenFilters] = useState<boolean>(false)
-
   const calendarRef = useRef(null)
+  const [openFilters, setOpenFilters] = useState<boolean>(false)
 
   const getPermissions = localStorage.getItem("permissions")
   const permissions = JSON.parse(getPermissions)[0].sections[3].sub_sections
-
   const billingPermissions = permissions[0].actions
 
   return (

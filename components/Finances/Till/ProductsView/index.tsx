@@ -1,25 +1,21 @@
-import React, { useContext, useEffect, useState } from "react"
-// DATA STORAGE & TYPES
+import React, { useContext } from "react"
 import { Finances } from "contexts/Finances"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
 import generalTexts from "strings/general.json"
-import setProfitsForProducts from "../helpers/setProfitsForProducts"
-// COMPONENTS & STYLING
-import HistoryCard from "./ProductCard"
+import ProductCard from "./ProductCard"
 import { FinalProfit } from "../BoulderView/styles"
 import { Container, CardsContainer, ProfitsContainer } from "./styles"
 
-function ProductsView() {
-  const { productsPurchasedByDate, productList } = useContext(Finances)
-  const [profits, setProfits] = useState({
-    cash: 0,
-    digital: 0,
-  })
+interface ProductsViewInterface {
+  profits: {
+    cash: number
+    mp: number
+  }
+}
 
-  useEffect(() => {
-    setProfits(setProfitsForProducts(productsPurchasedByDate))
-  }, [productsPurchasedByDate])
+function ProductsView({ profits }: ProductsViewInterface) {
+  const { productsPurchasedByDate, productList } = useContext(Finances)
 
   return (
     <Container>
@@ -29,8 +25,7 @@ function ProductsView() {
             <span>{generalTexts.payments.cash}:</span> <b>$ {profits.cash}</b>
           </p>
           <p>
-            <span>{generalTexts.payments.digital}:</span>{" "}
-            <b>$ {profits.digital}</b>
+            <span>{generalTexts.payments.digital}:</span> <b>$ {profits.mp}</b>
           </p>
         </FinalProfit>
       </ProfitsContainer>
@@ -38,7 +33,7 @@ function ProductsView() {
         {productsPurchasedByDate.length > 0 &&
           productsPurchasedByDate.map(
             (purchase: ProductsPurchasedByDateInterface) => (
-              <HistoryCard
+              <ProductCard
                 key={purchase.id}
                 name={purchase.product_name}
                 margin={

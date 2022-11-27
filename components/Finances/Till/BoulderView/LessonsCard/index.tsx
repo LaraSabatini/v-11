@@ -7,7 +7,8 @@ interface LessonsCardInterface {
   earningsCash: number
   earningsDigital: number
   amountOfSells: number
-  packs: number[]
+  packFour: number
+  packEight: number
   nonPacks: number
 }
 
@@ -15,7 +16,8 @@ function LessonsCard({
   earningsCash,
   earningsDigital,
   amountOfSells,
-  packs,
+  packFour,
+  packEight,
   nonPacks,
 }: LessonsCardInterface) {
   return (
@@ -37,15 +39,15 @@ function LessonsCard({
 
       <Earnings>
         <p>
-          • Pack x 4: <b>{packs[0]}</b>
+          • {financesTexts.four_day_pack}: <b>{packFour}</b>
         </p>
         <p>
-          • Pack x 8: <b>{packs[1]}</b>
+          • {financesTexts.eight_day_pack}: <b>{packEight}</b>
         </p>
       </Earnings>
       <Earnings>
         <p>
-          Individuales: <b>{nonPacks}</b>
+          {financesTexts.individual}: <b>{nonPacks}</b>
         </p>
       </Earnings>
     </Card>
