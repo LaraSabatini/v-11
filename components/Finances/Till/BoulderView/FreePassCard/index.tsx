@@ -3,26 +3,30 @@ import financesTexts from "strings/finances.json"
 import generalTexts from "strings/general.json"
 import { Card, Title, Earnings } from "./styles"
 
-interface LessonsCardInterface {
+interface FreePassCardInterface {
   earningsCash: number
   earningsDigital: number
   amountOfSells: number
+  byStore: number
+  byClient: number
   packFour: number
   packEight: number
-  nonPacks: number
+  people: number
 }
 
-function LessonsCard({
+function FreePassCard({
   earningsCash,
   earningsDigital,
   amountOfSells,
+  byStore,
+  byClient,
   packFour,
   packEight,
-  nonPacks,
-}: LessonsCardInterface) {
+  people,
+}: FreePassCardInterface) {
   return (
     <Card>
-      <Title className="lessons">{financesTexts.lessons.toUpperCase()}</Title>
+      <Title className="pass">{financesTexts.day_pass.toUpperCase()}</Title>
       <Earnings>
         <p>
           {generalTexts.payments.cash}: <b>$ {earningsCash}</b>
@@ -31,27 +35,38 @@ function LessonsCard({
           {generalTexts.payments.digital}: <b>$ {earningsDigital}</b>
         </p>
       </Earnings>
+
       <Earnings>
         <p>
-          {financesTexts.sells}: <b>{amountOfSells}</b>
+          {financesTexts.sold_pases}: <b>{amountOfSells}</b>
         </p>
       </Earnings>
 
       <Earnings>
         <p>
-          • Pack x 4: <b>{packFour}</b>
+          • {financesTexts.through_store}: <b>{byStore}</b>
         </p>
         <p>
-          • Pack x 8: <b>{packEight}</b>
+          • {financesTexts.through_clients}: <b>{byClient}</b>
         </p>
       </Earnings>
       <Earnings>
         <p>
-          Individuales: <b>{nonPacks}</b>
+          • {financesTexts.four_day_pack}: <b>{packFour}</b>
+        </p>
+      </Earnings>
+      <Earnings>
+        <p>
+          • {financesTexts.eight_day_pack}: <b>{packEight}</b>
+        </p>
+      </Earnings>
+      <Earnings>
+        <p className="asistencies">
+          {financesTexts.total_people}: <b>{people}</b>
         </p>
       </Earnings>
     </Card>
   )
 }
 
-export default LessonsCard
+export default FreePassCard

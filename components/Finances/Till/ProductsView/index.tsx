@@ -1,11 +1,9 @@
 import React, { useContext } from "react"
-// DATA STORAGE & TYPES
 import { Finances } from "contexts/Finances"
 import ProductsPurchasedByDateInterface from "interfaces/finances/StorePurchases"
 import ProductInterface from "interfaces/store/ProductInterface"
 import generalTexts from "strings/general.json"
-// COMPONENTS & STYLING
-import HistoryCard from "./ProductCard"
+import ProductCard from "./ProductCard"
 import { FinalProfit } from "../BoulderView/styles"
 import { Container, CardsContainer, ProfitsContainer } from "./styles"
 
@@ -35,7 +33,7 @@ function ProductsView({ profits }: ProductsViewInterface) {
         {productsPurchasedByDate.length > 0 &&
           productsPurchasedByDate.map(
             (purchase: ProductsPurchasedByDateInterface) => (
-              <HistoryCard
+              <ProductCard
                 key={purchase.id}
                 name={purchase.product_name}
                 margin={

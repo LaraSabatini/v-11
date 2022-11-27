@@ -1,13 +1,11 @@
 import React from "react"
-// DATA STORAGE & TYPES
 import HistoryCardInterface from "interfaces/finances/HistoryCard"
 import financesTexts from "strings/finances.json"
 import generalTexts from "strings/general.json"
-// COMPONENTS & STYLING
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
 import cleanMargin from "utils/cleanMargin"
-import cleanProfit from "../../helpers/cleanProfit"
+import cleanProfit from "../../../Helpers/cleanProfit"
 import {
   Card,
   ComponentContainer,
@@ -16,7 +14,7 @@ import {
   ComponentContainerZapas,
 } from "./styles"
 
-function HistoryCard({
+function ProductCard({
   name,
   margin,
   cost,
@@ -92,4 +90,4 @@ function HistoryCard({
   )
 }
 
-export default HistoryCard
+export default ProductCard

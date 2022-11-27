@@ -1,11 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useContext, useEffect } from "react"
-// DATA STORAGE & TYPES
+import React, { useContext } from "react"
 import { Finances } from "contexts/Finances"
 import { paymentUsers } from "const/finances"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 import MPUserPayment from "interfaces/finances/MPUserPayments"
-// COMPONENTS & STYLING
 import { MainContainer, CardContainer, Card, User } from "./styles"
 
 function TillByUser() {

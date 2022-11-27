@@ -1,12 +1,11 @@
 import React, { useContext, useEffect, useState } from "react"
-// DATA STORAGE & TYPES
+import { Finances } from "contexts/Finances"
 import { getProductsAction, getStorePurchasesByDateAction } from "helpers/store"
 import { searchDigitalPaymentByDateAction } from "helpers/payments"
 import getFinancesData from "services/BusinessLogic/getFinancesData.service"
-import { Finances } from "contexts/Finances"
+import FinancialDataInterface from "interfaces/finances/FinancialData"
 import generalTexts from "strings/general.json"
-// COMPONENTS & STYLING
-import ProductsView from "./ProducstView"
+import ProductsView from "./ProductsView"
 import BoulderView from "./BoulderView"
 import TillByUser from "./TillByUser"
 import TotalEarnings from "./styles"
@@ -20,73 +19,7 @@ function Till() {
     setProductsPurchasedByDate,
   } = useContext(Finances)
 
-  const [financialData, setFinancialData] = useState<{
-    tillEarnings: {
-      cash: number
-      mp: number
-    }
-    boulder: {
-      earnings: {
-        cash: number
-        mp: number
-      }
-      freePass: {
-        earnings: {
-          cash: number
-          mp: number
-        }
-        individual: number
-        packFour: number
-        packEight: number
-        total: number
-        amountOfPeople: number
-      }
-      lessons: {
-        earnings: {
-          cash: number
-          mp: number
-        }
-        individual: number
-        packFour: number
-        packEight: number
-        total: number
-      }
-      month: {
-        earnings: {
-          cash: number
-          mp: number
-        }
-        total: number
-      }
-      combo: {
-        earnings: {
-          cash: number
-          mp: number
-        }
-        total: number
-      }
-      shoes: {
-        earnings: {
-          cash: number
-          mp: number
-        }
-        total: number
-      }
-      freePassWithDiscount: {
-        earnings: {
-          cash: number
-          mp: number
-        }
-        total: number
-      }
-    }
-    store: {
-      earnings: {
-        cash: number
-        mp: number
-      }
-    }
-  }>({
+  const [financialData, setFinancialData] = useState<FinancialDataInterface>({
     tillEarnings: {
       cash: 0,
       mp: 0,
@@ -157,7 +90,6 @@ function Till() {
   const fillData = async () => {
     const getData = await getFinancesData(tillDateSelected)
     setFinancialData(getData.data)
-
     const getStorePurchases = await getStorePurchasesByDateAction(
       tillDateSelected,
     )
@@ -174,11 +106,6 @@ function Till() {
     setDigitalPaymentsList(getDigitalPayments)
   }
 
-  useEffect(() => {
-    fillData()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tillDateSelected])
-
   const fillProducts = async () => {
     const getProductsCall = await getProductsAction(1)
     setProductList(getProductsCall)
@@ -188,6 +115,11 @@ function Till() {
     fillProducts()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    fillData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tillDateSelected])
 
   return (
     <div>
@@ -200,11 +132,11 @@ function Till() {
             <TotalEarnings>
               <p>
                 <span>{generalTexts.payments.cash.toUpperCase()}:</span>{" "}
-                <b>$ {financialData.tillEarnings?.cash}</b>
+                <b>$ {financialData.tillEarnings.cash}</b>
               </p>
               <p>
                 <span>{generalTexts.payments.digital.toUpperCase()}:</span>{" "}
-                <b>$ {financialData.tillEarnings?.mp}</b>
+                <b>$ {financialData.tillEarnings.mp}</b>
               </p>
             </TotalEarnings>
           ),
