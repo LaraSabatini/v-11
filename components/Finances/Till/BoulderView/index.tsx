@@ -1,8 +1,6 @@
 import React from "react"
-// DATA STORAGE & TYPES
 import financesTexts from "strings/finances.json"
 import generalTexts from "strings/general.json"
-// COMPONENTS & STYLING
 import FreePassCard from "./FreePassCard"
 import LessonsCard from "./LessonsCard"
 import {
@@ -15,7 +13,61 @@ import {
 } from "./styles"
 
 interface BoulderViewInterface {
-  data: any
+  data: {
+    earnings: {
+      cash: number
+      mp: number
+    }
+    freePass: {
+      earnings: {
+        cash: number
+        mp: number
+      }
+      individual: number
+      packFour: number
+      packEight: number
+      total: number
+      amountOfPeople: number
+    }
+    lessons: {
+      earnings: {
+        cash: number
+        mp: number
+      }
+      individual: number
+      packFour: number
+      packEight: number
+      total: number
+    }
+    month: {
+      earnings: {
+        cash: number
+        mp: number
+      }
+      total: number
+    }
+    combo: {
+      earnings: {
+        cash: number
+        mp: number
+      }
+      total: number
+    }
+    shoes: {
+      earnings: {
+        cash: number
+        mp: number
+      }
+      total: number
+    }
+    freePassWithDiscount: {
+      earnings: {
+        cash: number
+        mp: number
+      }
+      total: number
+    }
+  }
 }
 
 function BoulderView({ data }: BoulderViewInterface) {
@@ -23,10 +75,12 @@ function BoulderView({ data }: BoulderViewInterface) {
     <Container>
       <FinalProfit>
         <p>
-          <span>{generalTexts.payments.cash}:</span> <b>$ {data.cash}</b>
+          <span>{generalTexts.payments.cash}:</span>{" "}
+          <b>$ {data.earnings.cash}</b>
         </p>
         <p>
-          <span>{generalTexts.payments.digital}:</span> <b>$ {data.mp}</b>
+          <span>{generalTexts.payments.digital}:</span>{" "}
+          <b>$ {data.earnings.mp}</b>
         </p>
       </FinalProfit>
       <CardsContainer>

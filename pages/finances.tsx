@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
-// import FinancesView from "components/Finances"
-import FinancesView from "components/FinancesView"
+import FinancesView from "components/Finances"
 import FinancesProvider from "contexts/Finances"
 import { useRouter } from "next/router"
 
