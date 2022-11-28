@@ -9,6 +9,7 @@ import SelectPartner from "./SelectPartner"
 import SelectLessons from "./SelectLessons"
 import SearchResults from "./SearchResults"
 import PaymentSection from "./PaymentSection"
+import CreateClient from "./CreatePartner"
 import { Form, HorizontalGroup } from "./styles"
 
 interface CreatePurchaseInterface {
@@ -37,7 +38,12 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     paymentMethodRef,
     paymentUserRef,
     paymentMethodSelected,
+    nameRef,
+    lastNameRef,
+    identificationNumberRef,
   } = useContext(Lessons)
+
+  console.log(clientIsRegistered)
 
   const validateInputs = async () => {
     await clientRef.current?.focus()
@@ -59,7 +65,7 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     }
 
     const checkPaid = !buyedCombo
-      ? paysNowRef.current.attributes.getNamedItem("data-error").value ===
+      ? paysNowRef.current?.attributes.getNamedItem("data-error").value ===
         "false"
       : true
 
@@ -80,17 +86,32 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     return (
       clientRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
-      amountOfLessonsRef.current.attributes.getNamedItem("data-error").value ===
+      amountOfLessonsRef.current?.attributes.getNamedItem("data-error")
+        .value === "false" &&
+      lessonRef.current?.attributes.getNamedItem("data-error").value ===
         "false" &&
-      lessonRef.current.attributes.getNamedItem("data-error").value ===
+      shiftRef.current?.attributes.getNamedItem("data-error").value ===
         "false" &&
-      shiftRef.current.attributes.getNamedItem("data-error").value ===
-        "false" &&
-      buyedComboRef.current.attributes.getNamedItem("data-error").value ===
+      buyedComboRef.current?.attributes.getNamedItem("data-error").value ===
         "false" &&
       checkPaid &&
       checkPaymentMethod &&
       checkPaymentUser
+    )
+  }
+
+  const validatePartnerInputs = async () => {
+    await nameRef.current?.focus()
+    await lastNameRef.current?.focus()
+    await identificationNumberRef.current?.focus()
+
+    return (
+      nameRef.current?.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      lastNameRef.current?.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      identificationNumberRef.current?.attributes.getNamedItem("data-error")
+        .value === "false"
     )
   }
 
@@ -104,6 +125,16 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         // eslint-disable-next-line no-console
         console.log("crear")
         setDisablePurchaseButton(true)
+      }
+    } else {
+      const validatePartner = await validatePartnerInputs()
+      const validate = await validateInputs()
+
+      if (validatePartner && validate) {
+        // validar dni
+        console.log("se puede")
+      } else {
+        console.log("no se puede")
       }
     }
   }
@@ -138,6 +169,7 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
           {clientIsRegistered && <SelectPartner />}
         </HorizontalGroup>
         <SearchResults />
+        {!clientIsRegistered && clientIsRegistered !== null && <CreateClient />}
 
         {((clientIsRegistered && clientSelected !== null) ||
           (!clientIsRegistered &&

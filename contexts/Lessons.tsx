@@ -42,6 +42,9 @@ function LessonsProvider({ children }) {
   const paymentMethodRef = useRef(null)
   const paymentUserRef = useRef(null)
   const buyedComboRef = useRef(null)
+  const nameRef = useRef(null)
+  const lastNameRef = useRef(null)
+  const identificationNumberRef = useRef(null)
 
   const [amountOfLessons, setAmountOfLessons] = useState<number>(0)
 
@@ -228,6 +231,9 @@ function LessonsProvider({ children }) {
       paysNowRef,
       paymentMethodRef,
       buyedComboRef,
+      nameRef,
+      lastNameRef,
+      identificationNumberRef,
       paymentUserRef,
       trainerSelected,
       setTrainerSelected,
