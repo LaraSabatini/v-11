@@ -351,7 +351,7 @@ function Stock({ editPermits }: StockInterface) {
     ) {
       setValidationError(false)
       const executeEdition = await editProductAction(body)
-      if (executeEdition) {
+      if (executeEdition.status === 200) {
         discardChanges()
       }
     } else {
