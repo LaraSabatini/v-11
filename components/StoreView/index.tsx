@@ -15,6 +15,7 @@ import NoPermissionsView from "./GeneralContent/NoPermissionsView"
 import CreateProduct from "./Forms/CreateProduct"
 import HeadingContent from "./HeadingContent"
 import Buy from "./Buy"
+import Stock from "./Stock"
 import Content from "./styles"
 
 function StoreView() {
@@ -69,6 +70,11 @@ function StoreView() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage])
 
+  useEffect(() => {
+    setData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Object.keys(router.query)[0]])
+
   return (
     <div>
       <PartnersProvider>
@@ -94,6 +100,9 @@ function StoreView() {
         )}
         {routeIsStore && buySection.view && (
           <Buy permits={buySection.actions} />
+        )}
+        {routeIsStock && stockSection.view && (
+          <Stock editPermits={stockSection.actions.update} />
         )}
       </Content>
     </div>
