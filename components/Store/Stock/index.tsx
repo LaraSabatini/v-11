@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext, useRef } from "react"
-// DATA STORAGE & TYPES
 import { editProductAction, getProductsAction } from "helpers/store"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
 import OptionsInterface from "interfaces/store/OptionsInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
-// COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
@@ -15,7 +13,7 @@ import TextField from "components/UI/TextField"
 import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
 import cleanMargin from "utils/cleanMargin"
-import columns from "./const/content"
+import columns from "const/stockTable"
 import {
   Container,
   ButtonsContainer,
@@ -50,7 +48,6 @@ function Stock({ editPermits }: StockInterface) {
 
   const [activeEdition, setActiveEdition] = useState<boolean>(false)
   const [productSelected, setProductSelected] = useState<number>()
-
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [newValues, setNewValues] = useState<ProductInterface>(null)
   const [validationError, setValidationError] = useState<boolean>(false)
@@ -354,7 +351,7 @@ function Stock({ editPermits }: StockInterface) {
     ) {
       setValidationError(false)
       const executeEdition = await editProductAction(body)
-      if (executeEdition) {
+      if (executeEdition.status === 200) {
         discardChanges()
       }
     } else {

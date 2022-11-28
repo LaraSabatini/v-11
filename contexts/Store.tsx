@@ -90,6 +90,8 @@ function StoreProvider({ children }) {
 
   const [tillPreview, setTillPreview] = useState<boolean>(false)
 
+  const [createProductModal, setCreateProductModal] = useState<boolean>(false)
+
   const value = useMemo(
     () => ({
       productsList,
@@ -150,6 +152,8 @@ function StoreProvider({ children }) {
       setRows,
       tillPreview,
       setTillPreview,
+      createProductModal,
+      setCreateProductModal,
     }),
     [
       productsList,
@@ -178,6 +182,7 @@ function StoreProvider({ children }) {
       paymentUserSelected,
       rows,
       tillPreview,
+      createProductModal,
     ],
   )
 

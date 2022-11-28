@@ -29,10 +29,10 @@ export const createStorePurchaseAction = async (
   body: StorePurchaseInterface,
 ) => {
   const handleCreatePurchase = await createStorePurchase(body)
-  return handleCreatePurchase.message === "productPurchase created successfully"
+  return handleCreatePurchase.message
 }
 
 export const editStorePurchaseAction = async (body: StorePurchaseInterface) => {
   const handleEditPurchase = await editStorePurchase(body)
-  return handleEditPurchase.message === "store_payments updated successfully"
+  return handleEditPurchase.message
 }

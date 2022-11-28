@@ -1,14 +1,9 @@
 import React, { useContext, useState, useEffect } from "react"
-// SERVICES
-// DATA STORAGE & TYPES
-import { createProductAction } from "helpers/store"
 import { StoreContext } from "contexts/Store"
+import { createProductAction } from "helpers/store"
+import ProductInterface from "interfaces/store/ProductInterface"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
-import ProductInterface from "interfaces/store/ProductInterface"
-import DefaultInterface from "interfaces/components/DefaultInterface"
-import OptionsInterface from "interfaces/store/OptionsInterface"
-// COMPONENTS & STYLING
 import TextField from "components/UI/TextField"
 import Autocomplete from "components/UI/Autocomplete"
 import ModalForm from "components/UI/ModalForm"
@@ -18,12 +13,8 @@ interface CreateInterface {
   cancelCreate: () => void
 }
 
-function CreateProductForm({ cancelCreate }: CreateInterface) {
+function CreateProduct({ cancelCreate }: CreateInterface) {
   const {
-    categories,
-    brands,
-    setModalSuccess,
-    setModalError,
     nameRef,
     brandsRef,
     categoriesRef,
@@ -31,13 +22,13 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
     marginRef,
     stockRef,
     autoCompleteCategoriesValues,
-    setAutoCompleteCategoriesValues,
     autoCompleteBrandsValues,
-    setAutoCompleteBrandsValues,
     priceRef,
+    setModalSuccess,
+    setModalError,
   } = useContext(StoreContext)
-  const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
   const [brandSelected, setBrandSelected] = useState<string>("")
   const [newProductData, setNewProductData] = useState<ProductInterface>({
     id: 0,
@@ -52,25 +43,7 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
     sales_contact_information: "",
   })
 
-  const fillAutocompletes = () => {
-    const autocompleteBrands: DefaultInterface[] = []
-    brands.map((brand: OptionsInterface) =>
-      autocompleteBrands.push({ id: brand.id, display_name: brand.name }),
-    )
-    const autocompleteCategories: DefaultInterface[] = []
-    categories.map((category: OptionsInterface) =>
-      autocompleteCategories.push({
-        id: category.id,
-        display_name: category.name,
-      }),
-    )
-    setAutoCompleteBrandsValues(autocompleteBrands)
-    setAutoCompleteCategoriesValues(autocompleteCategories)
-  }
-
-  const handleCreate = async e => {
-    e.preventDefault()
-
+  const validateInputs = async () => {
     await nameRef.current?.focus()
     await brandsRef.current?.focus()
     await costRef.current?.focus()
@@ -78,7 +51,7 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
     await categoriesRef.current?.focus()
     await nameRef.current?.focus()
 
-    if (
+    return (
       nameRef.current.attributes.getNamedItem("data-error").value === "false" &&
       brandsRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
@@ -86,30 +59,28 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
         "false" &&
       costRef.current.attributes.getNamedItem("data-error").value === "false" &&
       priceRef.current.attributes.getNamedItem("data-error").value === "false"
-    ) {
+    )
+  }
+
+  const handleCreate = async e => {
+    e.preventDefault()
+
+    const validation = await validateInputs()
+
+    if (validation) {
       setDisabledButton(true)
 
-      const data = await createProductAction({
+      const createAction = await createProductAction({
         ...newProductData,
         name: `${newProductData.name} ${brandSelected}`,
       })
 
-      if (data) {
-        setModalSuccess({
-          status: "success",
-          icon: "IconCheckModal",
-          title: `${generalTexts.modalTitles.success}`,
-          content: `${storeTexts.create.success.content}`,
-        })
+      if (createAction.status === 200) {
+        setModalSuccess(createAction.message)
         cancelCreate()
         setDisabledButton(false)
       } else {
-        setModalError({
-          status: "alert",
-          icon: "IconExclamation",
-          title: `${generalTexts.modalTitles.error}`,
-          content: `${storeTexts.create.error.content}`,
-        })
+        setModalError(createAction.message)
         setDisabledButton(false)
       }
     }
@@ -129,11 +100,6 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
     calculateMargin()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newProductData.price, newProductData.cost])
-
-  useEffect(() => {
-    fillAutocompletes()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <ModalForm
@@ -264,4 +230,4 @@ function CreateProductForm({ cancelCreate }: CreateInterface) {
   )
 }
 
-export default CreateProductForm
+export default CreateProduct

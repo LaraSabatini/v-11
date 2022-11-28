@@ -1,8 +1,6 @@
 import styled from "styled-components"
 import theme from "theme/index"
 
-const Container = styled.div``
-
 const Paginator = styled.div`
   font-family: ${theme.fonts.primary};
   display: flex;
@@ -26,5 +24,4 @@ const ProductsContainer = styled.div`
   gap: 15px;
   padding: 10px 0 20px 5px;
 `
-
-export { Container, Paginator, Navigate, ProductsContainer }
+export { ProductsContainer, Paginator, Navigate }

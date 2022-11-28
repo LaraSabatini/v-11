@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components"
 import theme from "theme/index"
 
-const ProductCard = styled.div<{ stock: boolean }>`
+const Card = styled.div<{ stock: boolean }>`
   ${props =>
     props.stock &&
     css`
@@ -45,6 +45,18 @@ const ProductCard = styled.div<{ stock: boolean }>`
   }
 `
 
+const Amount = styled.p`
+  font-size: 25px;
+`
+
+const ComponentContainer = styled.div`
+  margin-top: 10px;
+`
+
+const ComponentContainerZapas = styled.div`
+  margin-top: 30px;
+`
+
 const ProductName = styled.p``
 
 const Description = styled.div`
@@ -80,25 +92,13 @@ const IconContainer = styled.div`
   }
 `
 
-const Amount = styled.p`
-  font-size: 25px;
-`
-
-const ComponentContainer = styled.div`
-  margin-top: 10px;
-`
-
-const ComponentContainerZapas = styled.div`
-  margin-top: 30px;
-`
-
 export {
-  ProductCard,
-  ProductName,
+  Card,
+  ComponentContainer,
+  ComponentContainerZapas,
   Description,
+  ProductName,
   ProductPrice,
   IconContainer,
   Amount,
-  ComponentContainer,
-  ComponentContainerZapas,
 }

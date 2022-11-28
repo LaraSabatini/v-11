@@ -1,20 +1,18 @@
 import React, { useContext } from "react"
-// DATA STORAGE & TYPES
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
 import OptionsInterface from "interfaces/store/OptionsInterface"
-// COMPONENTS & STYLING
 import TextButton from "components/UI/TextButton"
 import Icon from "components/UI/Assets/Icon"
-import TillPreview from "./TillPreview"
+import TillClosure from "../../Forms/TillClosure"
 import {
   FiltersContainer,
   Select,
   IconContainer,
   Selector,
   Option,
-} from "../../styles"
+} from "./styles"
 
 function Filters() {
   const {
@@ -30,7 +28,7 @@ function Filters() {
     <FiltersContainer>
       <TextButton onClick={() => setTillPreview(true)} content="Caja" cta />
       {tillPreview && (
-        <TillPreview closeTillPreview={() => setTillPreview(false)} />
+        <TillClosure closeTillPreview={() => setTillPreview(false)} />
       )}
       <Select
         onClick={() => {

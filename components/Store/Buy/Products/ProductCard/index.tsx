@@ -1,35 +1,28 @@
 import React, { useState, useContext, useEffect } from "react"
-// DATA STORAGE & TYPES
-import { StoreContext } from "contexts/Store"
-import ProductCardInterface from "interfaces/store/ProductCard"
+import ProductInterface from "interfaces/store/ProductInterface"
 import PurchaseProductsInterface from "interfaces/store/PurchaseProducts"
+import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
-// COMPONENTS & STYLING
 import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
 import Magnesiera from "components/UI/Assets/images/Magnesiera"
 import Zapas from "components/UI/Assets/images/Zapas"
 import {
-  ProductCard,
-  ProductName,
+  Card,
+  ComponentContainer,
+  ComponentContainerZapas,
   Description,
+  ProductName,
   ProductPrice,
   IconContainer,
   Amount,
-  ComponentContainer,
-  ComponentContainerZapas,
 } from "./styles"
 
-function Product({
-  name,
-  category_id,
-  price,
-  id,
-  cost,
-  margin,
-  brand,
-  stock,
-}: ProductCardInterface) {
+interface ProductCardInterface {
+  data: ProductInterface
+}
+
+function ProductCard({ data }: ProductCardInterface) {
   const {
     setPurchase,
     purchase,
@@ -49,67 +42,40 @@ function Product({
     cost: 0,
     margin: 0,
   })
+
   const [buttonAddDisabled, setButtonAddDisabled] = useState<boolean>(false)
 
-  const removeProduct = () => {
-    const checkPurchase = purchase.filter(
-      (pur: PurchaseProductsInterface) => pur.product_id === id,
-    )
-    if (checkPurchase.length > 0) {
-      setPurchaseProducts({
-        product_id: id,
-        product_name: name,
-        product_amount: purchaseProducts.product_amount - 1,
-        final_price: price * (purchaseProducts.product_amount - 1),
-        cost,
-        margin,
-      })
-      const index = purchase.indexOf(checkPurchase[0])
-      const newPurchase = purchase
-      newPurchase[index] = {
-        product_id: id,
-        product_name: name,
-        product_amount: purchaseProducts.product_amount - 1,
-        final_price: price * (purchaseProducts.product_amount - 1),
-        cost,
-        margin,
-      }
-      if (newPurchase[index].product_amount === 0) {
-        const finalPurchase = purchase.filter(
-          (pur: PurchaseProductsInterface) => pur.product_id !== id,
-        )
-        setPurchase(finalPurchase)
-      } else {
-        setPurchase(newPurchase)
-      }
+  const typeIsDrink = data.category_id === 1
 
-      setPurchaseChange(purchaseChange + 1)
-    }
-  }
+  const isShoes =
+    typeIsDrink &&
+    data.brand_id !== 12 &&
+    data.brand_id !== 11 &&
+    data.brand_id !== 14
 
   const addProduct = () => {
     setPurchaseProducts({
-      product_id: id,
-      product_name: name,
+      product_id: data.id,
+      product_name: data.name,
       product_amount: purchaseProducts.product_amount + 1,
-      final_price: price * (purchaseProducts.product_amount + 1),
-      cost,
-      margin,
+      final_price: data.price * (purchaseProducts.product_amount + 1),
+      cost: data.cost,
+      margin: data.margin,
     })
 
     const checkPurchase = purchase.filter(
-      (pur: PurchaseProductsInterface) => pur.product_id === id,
+      (pur: PurchaseProductsInterface) => pur.product_id === data.id,
     )
     if (checkPurchase.length === 0) {
       setPurchase([
         ...purchase,
         {
-          product_id: id,
-          product_name: name,
+          product_id: data.id,
+          product_name: data.name,
           product_amount: purchaseProducts.product_amount + 1,
-          final_price: price * (purchaseProducts.product_amount + 1),
-          cost,
-          margin,
+          final_price: data.price * (purchaseProducts.product_amount + 1),
+          cost: data.cost,
+          margin: data.margin,
         },
       ])
       setPurchaseChange(purchaseChange + 1)
@@ -118,14 +84,71 @@ function Product({
 
       const newPurchase = purchase
       newPurchase[index] = {
-        product_id: id,
-        product_name: name,
+        product_id: data.id,
+        product_name: data.name,
         product_amount: purchaseProducts.product_amount + 1,
-        final_price: price * (purchaseProducts.product_amount + 1),
-        cost,
-        margin,
+        final_price: data.price * (purchaseProducts.product_amount + 1),
+        cost: data.cost,
+        margin: data.margin,
       }
       setPurchase(newPurchase)
+      setPurchaseChange(purchaseChange + 1)
+    }
+  }
+
+  const checkButtonDisabled = () => {
+    const purHasCashPass = purchase.filter(
+      (product: PurchaseProductsInterface) => product.product_id === 1,
+    )
+    const purHasMPPass = purchase.filter(
+      (product: PurchaseProductsInterface) => product.product_id === 2,
+    )
+    if (purHasCashPass.length > 0 && data.id === 2) {
+      setButtonAddDisabled(true)
+    } else if (purHasMPPass.length > 0 && data.id === 1) {
+      setButtonAddDisabled(true)
+    } else {
+      setButtonAddDisabled(false)
+      if (data.stock === 0) {
+        setButtonAddDisabled(true)
+      } else {
+        addProduct()
+      }
+    }
+  }
+
+  const removeProduct = () => {
+    const checkPurchase = purchase.filter(
+      (pur: PurchaseProductsInterface) => pur.product_id === data.id,
+    )
+    if (checkPurchase.length > 0) {
+      setPurchaseProducts({
+        product_id: data.id,
+        product_name: data.name,
+        product_amount: purchaseProducts.product_amount - 1,
+        final_price: data.price * (purchaseProducts.product_amount - 1),
+        cost: data.cost,
+        margin: data.margin,
+      })
+      const index = purchase.indexOf(checkPurchase[0])
+      const newPurchase = purchase
+      newPurchase[index] = {
+        product_id: data.id,
+        product_name: data.name,
+        product_amount: purchaseProducts.product_amount - 1,
+        final_price: data.price * (purchaseProducts.product_amount - 1),
+        cost: data.cost,
+        margin: data.margin,
+      }
+      if (newPurchase[index].product_amount === 0) {
+        const finalPurchase = purchase.filter(
+          (pur: PurchaseProductsInterface) => pur.product_id !== data.id,
+        )
+        setPurchase(finalPurchase)
+      } else {
+        setPurchase(newPurchase)
+      }
+
       setPurchaseChange(purchaseChange + 1)
     }
   }
@@ -144,60 +167,37 @@ function Product({
     }
   }, [executeCleanPurchase])
 
-  const checkButtonDisabled = () => {
-    const purHasCashPass = purchase.filter(
-      (product: PurchaseProductsInterface) => product.product_id === 1,
-    )
-    const purHasMPPass = purchase.filter(
-      (product: PurchaseProductsInterface) => product.product_id === 2,
-    )
-    if (purHasCashPass.length > 0 && id === 2) {
-      setButtonAddDisabled(true)
-    } else if (purHasMPPass.length > 0 && id === 1) {
-      setButtonAddDisabled(true)
-    } else {
-      setButtonAddDisabled(false)
-      if (stock === 0) {
-        setButtonAddDisabled(true)
-      } else {
-        addProduct()
-      }
-    }
-  }
-
   return (
-    <ProductCard stock={stock === 0}>
-      {category_id === 1 && brand !== 12 && brand !== 11 && brand !== 14 && (
-        <img className="zapas" src="/beer.png" alt="beer" />
-      )}
-      {category_id === 4 && (
+    <Card stock={data.stock === 0}>
+      {isShoes && <img className="zapas" src="/beer.png" alt="beer" />}
+      {data.category_id === 4 && (
         <img className="monster" src="/monster.webp" alt="beer" />
       )}
-      {category_id === 5 && (
+      {data.category_id === 5 && (
         <img className="calendar" src="/calendar.png" alt="beer" />
       )}
-      {category_id === 2 && (
+      {data.category_id === 2 && (
         <ComponentContainer>
           <Magnesiera />
         </ComponentContainer>
       )}
-      {category_id === 3 && (
+      {data.category_id === 3 && (
         <ComponentContainerZapas>
           <Zapas />
         </ComponentContainerZapas>
       )}
-      {category_id === 1 && brand === 12 && (
+      {typeIsDrink && data.brand_id === 12 && (
         <img className="coca" src="/coca.png" alt="beer" />
       )}
-      {category_id === 1 && brand === 14 && (
+      {typeIsDrink && data.brand_id === 14 && (
         <img className="sprite" src="/sprite.png" alt="beer" />
       )}
-      {category_id === 1 && brand === 11 && (
+      {typeIsDrink && data.brand_id === 11 && (
         <img className="powerade" src="/powerade.png" alt="beer" />
       )}
       <Description>
-        <ProductName>{name}</ProductName>
-        <ProductPrice>$ {price}</ProductPrice>
+        <ProductName>{data.name}</ProductName>
+        <ProductPrice>$ {data.price}</ProductPrice>
         <IconContainer>
           <button type="button" onClick={removeProduct}>
             <Icon icon="IconLess" />
@@ -227,8 +227,8 @@ function Product({
           )}
         </IconContainer>
       </Description>
-    </ProductCard>
+    </Card>
   )
 }
 
-export default Product
+export default ProductCard

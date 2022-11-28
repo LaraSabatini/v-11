@@ -1,7 +1,8 @@
 /* eslint-disable no-await-in-loop */
-import React, { useContext, useState, useEffect, useRef } from "react"
-// SERVICES
-// DATA STORAGE & TYPES
+import React, { useContext, useRef, useState, useEffect } from "react"
+import { StoreContext } from "contexts/Store"
+import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
+import ProductInterface from "interfaces/store/ProductInterface"
 import {
   editProductAction,
   getStorePurchasesByDatePMAndProductAction,
@@ -9,14 +10,10 @@ import {
   editStorePurchaseAction,
 } from "helpers/store"
 import { makeAppropiatePayment } from "helpers/payments"
-import { StoreContext } from "contexts/Store"
-import storeTexts from "strings/store.json"
-import generalTexts from "strings/general.json"
-import ProductInterface from "interfaces/store/ProductInterface"
 import { paymentUsers } from "const/finances"
 import { months, day, month, year } from "const/time"
-import TemporalPurchaseInterface from "interfaces/store/TemporalPurchase"
-// COMPONENTS & STYLING
+import storeTexts from "strings/store.json"
+import generalTexts from "strings/general.json"
 import TextButton from "components/UI/TextButton"
 import Autocomplete from "components/UI/Autocomplete"
 import ScrollView from "components/UI/ScrollView"
@@ -33,11 +30,11 @@ import {
   PaymentMethods,
 } from "./styles"
 
-interface ReceiptInterface {
-  purchasePermits: boolean
+interface Permits {
+  canPurchase: boolean
 }
 
-function Receipt({ purchasePermits }: ReceiptInterface) {
+function Receipt({ canPurchase }: Permits) {
   const {
     purchaseChange,
     purchase,
@@ -55,34 +52,20 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
     setTriggerListUpdate,
   } = useContext(StoreContext)
 
-  const [finalPrice, setFinalPrice] = useState<number>(0)
-  const [disabledButton, setDisabledButton] = useState<boolean>(false)
-
   const paymentUserRef = useRef(null)
 
-  const calculateFinalPurchasePrice = () => {
-    let finalPricePaid = 0
-    purchase.map((purchaseItem: TemporalPurchaseInterface) => {
-      finalPricePaid += purchaseItem.final_price
-      return finalPricePaid
-    })
-    setFinalPrice(finalPricePaid)
-  }
-
-  useEffect(() => {
-    calculateFinalPurchasePrice()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [purchaseChange, executeCleanPurchase])
-
-  const cleanPurchase = () => {
-    setPurchase([])
-    setExecuteCleanPurchase(executeCleanPurchase + 1)
-  }
+  const [finalPrice, setFinalPrice] = useState<number>(0)
+  const [disabledButton, setDisabledButton] = useState<boolean>(false)
 
   const cleanInitialStates = () => {
     setPaymentMethodSelected(1)
     setPaymentUserSelected(null)
     setTriggerListUpdate(triggerListUpdate + 1)
+  }
+
+  const cleanPurchase = () => {
+    setPurchase([])
+    setExecuteCleanPurchase(executeCleanPurchase + 1)
   }
 
   const executePurchase = async () => {
@@ -106,7 +89,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         sales_contact_name: filterProduct[0].sales_contact_name,
         sales_contact_information: filterProduct[0].sales_contact_information,
       })
-      success = editStockCall
+      success = editStockCall.status === 200
 
       const checkIfPurchasedToday = await getStorePurchasesByDatePMAndProductAction(
         `${day}-${month}-${year}`,
@@ -127,7 +110,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           date: checkIfPurchasedToday[0].date,
           created_by: parseInt(localStorage.getItem("id"), 10),
         })
-        success = edit
+        success = edit.status === 200
       } else {
         const createCall = await createStorePurchaseAction({
           id: 0,
@@ -139,7 +122,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           date: `${day}-${month}-${year}`,
           created_by: parseInt(localStorage.getItem("id"), 10),
         })
-        success = createCall
+        success = createCall.status === 200
       }
     }
 
@@ -159,7 +142,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           created_by: parseInt(localStorage.getItem("id"), 10),
         },
       )
-      success = executePayment.stauts === 200
+      success = executePayment.status === 200
     }
 
     if (success) {
@@ -194,6 +177,20 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [purchase])
+
+  const calculateFinalPurchasePrice = () => {
+    let finalPricePaid = 0
+    purchase.map((purchaseItem: TemporalPurchaseInterface) => {
+      finalPricePaid += purchaseItem.final_price
+      return finalPricePaid
+    })
+    setFinalPrice(finalPricePaid)
+  }
+
+  useEffect(() => {
+    calculateFinalPurchasePrice()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [purchaseChange, executeCleanPurchase])
 
   return (
     <ReceiptContainer>
@@ -269,7 +266,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
         />
         <TextButton
           onClick={() => {
-            if (!disabledButton && purchasePermits) {
+            if (!disabledButton && canPurchase) {
               executePurchase()
             }
           }}
@@ -277,7 +274,7 @@ function Receipt({ purchasePermits }: ReceiptInterface) {
           disabled={
             (paymentMethodSelected === 2 && paymentUserSelected === null) ||
             disabledButton ||
-            !purchasePermits
+            !canPurchase
           }
           content={storeTexts.purchase.execute}
         />

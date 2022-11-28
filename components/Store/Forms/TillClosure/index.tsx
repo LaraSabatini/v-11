@@ -1,18 +1,18 @@
 import React, { useEffect, useState, useContext } from "react"
+import { GeneralContext } from "contexts/GeneralContext"
+import getFinancesData from "services/BusinessLogic/getFinancesData.service"
+import { StoreContext } from "contexts/Store"
+import sendEmail from "services/SendEmail.service"
+import { getUsersAction } from "helpers/users"
 import {
   getTillByDate,
   createTillClosure,
   updateTillClosure,
-  getEarningsByDate,
 } from "services/Finances/ClosedTill.service"
-import { getUsersAction } from "helpers/users"
-import ModalForm from "components/UI/ModalForm"
-import { StoreContext } from "contexts/Store"
-import { GeneralContext } from "contexts/GeneralContext"
-import { calcTotalEarnings } from "utils"
+import FinancialDataInterface from "interfaces/finances/FinancialData"
 import { day, month, year } from "const/time"
-import sendEmail from "services/SendEmail.service"
 import TextField from "components/UI/TextField"
+import ModalForm from "components/UI/ModalForm"
 import {
   View,
   Title,
@@ -26,32 +26,64 @@ interface TillPreviewInterface {
   closeTillPreview: () => void
 }
 
-function TillPreview({ closeTillPreview }: TillPreviewInterface) {
+function TillClosure({ closeTillPreview }: TillPreviewInterface) {
   const { users, setUsers } = useContext(GeneralContext)
   const { setModalSuccess, setModalError } = useContext(StoreContext)
 
-  const [totalEarnings, setTotalEarnings] = useState<{
-    cash: number
-    mp: number
-  }>({ cash: 0, mp: 0 })
-
+  const [tillData, setTillData] = useState<FinancialDataInterface>()
   const [totalEarningsMofified, setTotalEarningsModified] = useState<{
     cash: number
     mp: number
   }>({ cash: 0, mp: 0 })
-
   const [difference, setDifference] = useState<{
     cash: number
     mp: number
   }>({ cash: 0, mp: 0 })
-
   const [tillDiff, setTillsDiff] = useState<boolean>(false)
-
-  const currentUser = localStorage.getItem("user")
 
   const today = `${day}-${month}-${year}`
 
+  const currentUser = localStorage.getItem("user")
   const now = new Date()
+
+  const getData = async () => {
+    const financialData = await getFinancesData(today)
+    setTillData(financialData.data)
+  }
+
+  const setUsersList = async () => {
+    const getUserData = await getUsersAction()
+
+    const cleanedUserArray = getUserData.filter(
+      user => user.admin === 1 && user.email !== "",
+    )
+    setUsers(cleanedUserArray)
+  }
+
+  const calcDifference = () => {
+    if (
+      totalEarningsMofified.cash !== tillData.tillEarnings.cash ||
+      totalEarningsMofified.mp !== tillData.tillEarnings.mp
+    ) {
+      setTillsDiff(true)
+      const diffCash =
+        totalEarningsMofified.cash > tillData.tillEarnings.cash
+          ? totalEarningsMofified.cash - tillData.tillEarnings.cash
+          : tillData.tillEarnings.cash - totalEarningsMofified.cash
+
+      const diffMP =
+        totalEarningsMofified.mp > tillData.tillEarnings.mp
+          ? totalEarningsMofified.mp - tillData.tillEarnings.mp
+          : tillData.tillEarnings.mp - totalEarningsMofified.mp
+
+      setDifference({
+        cash: diffCash,
+        mp: diffMP,
+      })
+    } else {
+      setTillsDiff(false)
+    }
+  }
 
   const closeTill = async e => {
     e.preventDefault()
@@ -64,8 +96,8 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
       const tillBody = {
         id: checkIfTillClosed.data[0].id,
         date: checkIfTillClosed.data[0].date,
-        software_cash: totalEarnings.cash,
-        software_mp: totalEarnings.mp,
+        software_cash: tillData.tillEarnings.cash,
+        software_mp: tillData.tillEarnings.mp,
         real_cash: totalEarningsMofified.cash,
         real_mp: totalEarningsMofified.mp,
         closed_by: currentUser,
@@ -76,8 +108,8 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
       const tillBody = {
         id: 0,
         date: today,
-        software_cash: totalEarnings.cash,
-        software_mp: totalEarnings.mp,
+        software_cash: tillData.tillEarnings.cash,
+        software_mp: tillData.tillEarnings.mp,
         real_cash: totalEarningsMofified.cash,
         real_mp: totalEarningsMofified.mp,
         closed_by: currentUser,
@@ -87,64 +119,43 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
     }
 
     if (success) {
-      const getDataForMail = await getEarningsByDate(today)
-
-      const fourFreePass = getDataForMail.data.boulderData.freePass.packFour * 4
-      const eightFreePass =
-        getDataForMail.data.boulderData.freePass.packEight * 8
-
-      const totalPassMinusPacks =
-        getDataForMail.data.boulderData.freePass.total -
-        fourFreePass -
-        eightFreePass
-
-      const fourLessons = getDataForMail.data.boulderData.lessons.packFour * 4
-      const eightLessons = getDataForMail.data.boulderData.lessons.packEight * 8
-
-      const totalLessonsMinusPacks =
-        getDataForMail.data.boulderData.lessons.total -
-        fourLessons -
-        eightLessons
-
-      const amountOfPeople =
-        totalPassMinusPacks +
-        getDataForMail.data.boulderData.freePass.packFour +
-        getDataForMail.data.boulderData.freePass.packEight +
-        totalLessonsMinusPacks +
-        getDataForMail.data.boulderData.lessons.packFour +
-        getDataForMail.data.boulderData.lessons.packEight +
-        getDataForMail.data.boulderData.month
-
       const htmlBody = {
         till: {
-          software: totalEarnings,
+          software: tillData.tillEarnings,
           real: totalEarningsMofified,
         },
         earningsStore: {
-          cash: getDataForMail.data.storeData.cash,
-          mp: getDataForMail.data.storeData.mp,
+          cash: tillData.store.earnings.cash,
+          mp: tillData.store.earnings.mp,
         },
         earningsBoulder: {
-          cash: getDataForMail.data.boulderData.cash,
-          mp: getDataForMail.data.boulderData.mp,
+          cash: tillData.boulder.earnings.cash,
+          mp: tillData.boulder.earnings.mp,
         },
         user: currentUser,
         freePass: {
-          fourPack: getDataForMail.data.boulderData.freePass.packFour,
-          eightPack: getDataForMail.data.boulderData.freePass.packEight,
-          individual: totalPassMinusPacks,
-          total: getDataForMail.data.boulderData.freePass.total,
+          fourPack: tillData.boulder.freePass.packFour,
+          eightPack: tillData.boulder.freePass.packEight,
+          individual: tillData.boulder.freePass.individual,
+          total: tillData.boulder.freePass.total,
         },
         lessons: {
-          fourPack: getDataForMail.data.boulderData.lessons.packFour,
-          eightPack: getDataForMail.data.boulderData.lessons.packEight,
-          individual: totalLessonsMinusPacks,
-          total: getDataForMail.data.boulderData.lessons.total,
+          fourPack: tillData.boulder.lessons.packFour,
+          eightPack: tillData.boulder.lessons.packEight,
+          individual: tillData.boulder.lessons.individual,
+          total: tillData.boulder.lessons.total,
         },
-        amountOfPeople,
+        amountOfPeople:
+          tillData.boulder.freePass.amountOfPeople +
+          tillData.boulder.lessons.individual +
+          tillData.boulder.lessons.packFour +
+          tillData.boulder.lessons.packEight +
+          tillData.boulder.month.total +
+          tillData.boulder.combo.total +
+          tillData.boulder.freePassWithDiscount.total,
         date: `${day}/${month}/${year}`,
         hour: `${now.getHours()}:${now.getMinutes()}`,
-        month: getDataForMail.data.boulderData.month,
+        month: tillData.boulder.month.total,
       }
 
       const getMails = users.map(user => user.email).filter(mail => mail !== "")
@@ -162,74 +173,25 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
       const send = await sendEmail(body)
 
       if (send.status === 200) {
-        setModalSuccess({
-          status: "success",
-          icon: "IconCheckModal",
-          title: "Excelente!",
-          content: "La caja se ha cerrado correctamente",
-        })
+        setModalSuccess(send.message)
       } else {
-        setModalError({
-          status: "alert",
-          icon: "IconExclamation",
-          title: "UPS!",
-          content:
-            "Ha ocurrido un error al cerrar la caja, por favor intentalo nuevamente o comunicate con el administrador.",
-        })
+        setModalError(send.message)
       }
     }
   }
 
-  const getFinalEarings = async () => {
-    const res = await calcTotalEarnings()
-    setTotalEarnings(res)
-    setTotalEarningsModified(res)
-  }
-
-  const setUsersList = async () => {
-    const getUserData = await getUsersAction()
-
-    const cleanedUserArray = getUserData.filter(
-      user => user.admin === 1 && user.email !== "",
-    )
-    setUsers(cleanedUserArray)
-  }
-
   useEffect(() => {
-    getFinalEarings()
+    getData()
     setUsersList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const calcDifference = () => {
-    if (
-      totalEarningsMofified.cash !== totalEarnings.cash ||
-      totalEarningsMofified.mp !== totalEarnings.mp
-    ) {
-      setTillsDiff(true)
-      const diffCash =
-        totalEarningsMofified.cash > totalEarnings.cash
-          ? totalEarningsMofified.cash - totalEarnings.cash
-          : totalEarnings.cash - totalEarningsMofified.cash
-
-      const diffMP =
-        totalEarningsMofified.mp > totalEarnings.mp
-          ? totalEarningsMofified.mp - totalEarnings.mp
-          : totalEarnings.mp - totalEarningsMofified.mp
-
-      setDifference({
-        cash: diffCash,
-        mp: diffMP,
-      })
-    } else {
-      setTillsDiff(false)
-    }
-  }
-
   useEffect(() => {
-    calcDifference()
+    if (tillData !== undefined) {
+      calcDifference()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalEarningsMofified, totalEarnings])
+  }, [totalEarningsMofified, tillData])
 
   return (
     <ModalForm
@@ -243,11 +205,11 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
         <HorizontalGroup>
           <Row>
             <Title>Caja Efectivo:</Title>
-            <Amount>$ {totalEarnings.cash}</Amount>
+            <Amount>$ {tillData?.tillEarnings.cash}</Amount>
           </Row>
           <Row>
             <Title>Caja Mercado Pago:</Title>
-            <Amount>$ {totalEarnings.mp}</Amount>
+            <Amount>$ {tillData?.tillEarnings.mp}</Amount>
           </Row>
         </HorizontalGroup>
         <HorizontalGroup>
@@ -299,4 +261,4 @@ function TillPreview({ closeTillPreview }: TillPreviewInterface) {
   )
 }
 
-export default TillPreview
+export default TillClosure
