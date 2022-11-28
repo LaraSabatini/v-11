@@ -1,15 +1,15 @@
 import React, { useContext } from "react"
 import { Lessons } from "contexts/Lessons"
-import PartnerInterface from "interfaces/partners/PartnerInterface"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
 import yesOrNoArr from "const/fixedVariables"
-import ScrollView from "components/UI/ScrollView"
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
 import SelectPartner from "./SelectPartner"
 import SelectLessons from "./SelectLessons"
-import { Form, HorizontalGroup, Results, ListItem } from "./styles"
+import SearchResults from "./SearchResults"
+import PaymentSection from "./PaymentSection"
+import { Form, HorizontalGroup } from "./styles"
 
 interface CreatePurchaseInterface {
   cancelCreatePurchase: () => void
@@ -21,15 +21,91 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     setClientSelected,
     setClientIsRegistered,
     clientIsRegistered,
-    searchResults,
-    searchValue,
     clientSelected,
-    setSearchResults,
-    setSearchValue,
+    amountOfLessons,
+    datesSelected,
+    identificationError,
+    disablePurchaseButton,
+    setDisablePurchaseButton,
+    amountOfLessonsRef,
+    lessonRef,
+    shiftRef,
+    buyedComboRef,
+    buyedCombo,
+    paysNowRef,
+    paid,
+    paymentMethodRef,
+    paymentUserRef,
+    paymentMethodSelected,
   } = useContext(Lessons)
 
-  const handleCreatePurchase = e => {
+  const validateInputs = async () => {
+    await clientRef.current?.focus()
+    await amountOfLessonsRef.current?.focus()
+    await lessonRef.current?.focus()
+    await shiftRef.current?.focus()
+    await buyedComboRef.current?.focus()
+
+    if (!buyedCombo) {
+      await paysNowRef.current?.focus()
+    }
+
+    if (!buyedCombo && paid) {
+      await paymentMethodRef.current?.focus()
+    }
+
+    if (!buyedCombo && paid && paymentMethodSelected.id === 2) {
+      await paymentUserRef.current?.focus()
+    }
+
+    const checkPaid = !buyedCombo
+      ? paysNowRef.current.attributes.getNamedItem("data-error").value ===
+        "false"
+      : true
+
+    await buyedComboRef.current?.focus()
+
+    const checkPaymentMethod =
+      !buyedCombo && paid
+        ? paymentMethodRef.current.attributes.getNamedItem("data-error")
+            .value === "false"
+        : true
+
+    const checkPaymentUser =
+      !buyedCombo && paid && paymentMethodSelected.id === 2
+        ? paymentUserRef.current.attributes.getNamedItem("data-error").value ===
+          "false"
+        : true
+
+    return (
+      clientRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      amountOfLessonsRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      lessonRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      shiftRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      buyedComboRef.current.attributes.getNamedItem("data-error").value ===
+        "false" &&
+      checkPaid &&
+      checkPaymentMethod &&
+      checkPaymentUser
+    )
+  }
+
+  const handleCreatePurchase = async (e: any) => {
     e.preventDefault()
+
+    if (clientIsRegistered) {
+      const validate = await validateInputs()
+
+      if (validate && clientSelected !== null) {
+        // eslint-disable-next-line no-console
+        console.log("crear")
+        setDisablePurchaseButton(true)
+      }
+    }
   }
 
   return (
@@ -39,9 +115,7 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
       submitButtonContent={generalTexts.actions.create}
       submit={handleCreatePurchase}
       cancelFunction={cancelCreatePurchase}
-      //   disabledButton={
-      //     (!canExecute || disablePurchaseButton) && !identificationError
-      //   }
+      disabledButton={disablePurchaseButton && !identificationError}
     >
       <Form>
         <HorizontalGroup>
@@ -63,36 +137,16 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
           />
           {clientIsRegistered && <SelectPartner />}
         </HorizontalGroup>
-        <Results>
-          {searchValue !== "" && (
-            <>
-              <p className="title">{trainerTexts.createPurchase.results}</p>
-              <ScrollView height={150}>
-                {searchResults.length > 0 &&
-                  searchResults.map((client: PartnerInterface) => (
-                    <ListItem
-                      selected={client.id === clientSelected?.id}
-                      key={client.id}
-                      onClick={() => {
-                        setClientSelected(client)
-                        setSearchResults([])
-                        setSearchValue("")
-                      }}
-                    >
-                      <span>
-                        • {client.name} {client.last_name}
-                      </span>
-                    </ListItem>
-                  ))}
-              </ScrollView>
-            </>
-          )}
-        </Results>
+        <SearchResults />
 
         {((clientIsRegistered && clientSelected !== null) ||
           (!clientIsRegistered &&
             clientIsRegistered !== null &&
             clientSelected === null)) && <SelectLessons />}
+
+        {amountOfLessons > 0 && datesSelected.length === amountOfLessons && (
+          <PaymentSection />
+        )}
       </Form>
     </ModalForm>
   )

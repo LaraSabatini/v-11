@@ -41,6 +41,7 @@ function LessonsProvider({ children }) {
   const paysNowRef = useRef(null)
   const paymentMethodRef = useRef(null)
   const paymentUserRef = useRef(null)
+  const buyedComboRef = useRef(null)
 
   const [amountOfLessons, setAmountOfLessons] = useState<number>(0)
 
@@ -129,6 +130,10 @@ function LessonsProvider({ children }) {
     setDisablePurchaseButton(false)
     setIdentificationError(false)
     setSearchValue("")
+    setProvisionalSelection({
+      date: "",
+      shift: "",
+    })
   }
 
   // CALENDAR VIEW ********************************
@@ -222,6 +227,7 @@ function LessonsProvider({ children }) {
       shiftRef,
       paysNowRef,
       paymentMethodRef,
+      buyedComboRef,
       paymentUserRef,
       trainerSelected,
       setTrainerSelected,
