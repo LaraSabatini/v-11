@@ -166,6 +166,13 @@ function LessonsProvider({ children }) {
     },
   })
 
+  // NUEVO
+  const [
+    createLessonPurchaseView,
+    setCreateLessonPurchaseView,
+  ] = useState<boolean>(false)
+  const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
+
   const value = useMemo(
     () => ({
       clasesPurchasedByWeek,
@@ -226,6 +233,10 @@ function LessonsProvider({ children }) {
       setDisablePurchaseButton,
       cleanedLessons,
       setCleanedLessons,
+      createLessonPurchaseView,
+      setCreateLessonPurchaseView,
+      editLessonDateView,
+      setEditLessonDateView,
     }),
     [
       clasesPurchasedByWeek,
@@ -253,6 +264,8 @@ function LessonsProvider({ children }) {
       buyedCombo,
       disablePurchaseButton,
       cleanedLessons,
+      createLessonPurchaseView,
+      editLessonDateView,
     ],
   )
 

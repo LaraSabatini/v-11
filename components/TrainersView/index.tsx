@@ -6,6 +6,7 @@ import HeadingContent from "./HeadingContent"
 import NoPermissionsView from "./GeneralContent/NoPermissionsView"
 import Calendar from "./Calendar"
 import Students from "./Students"
+import Buttons from "./GeneralContent/Buttons"
 import { Container } from "./styles"
 
 function TrainersView() {
@@ -15,10 +16,10 @@ function TrainersView() {
   const permissions = JSON.parse(getPermissions)[0].sections[1]
   const canViewCalendar = permissions.sub_sections[0].view
   const canViewStudents = permissions.sub_sections[1].view
-  //   const calendarActions = permissions.sub_sections[0].actions
 
   const routeIsCalendar = router.query.calendar === "true"
   const routeIsStudents = router.query.students === "true"
+  const calendarActions = permissions.sub_sections[0].actions
 
   return (
     <div>
@@ -33,6 +34,16 @@ function TrainersView() {
 
         {((routeIsStudents && !canViewStudents) ||
           (routeIsCalendar && !canViewCalendar)) && <NoPermissionsView />}
+
+        {canViewCalendar && (
+          <Buttons
+            routeIsCalendar={routeIsCalendar}
+            permits={{
+              create: calendarActions.create,
+              update: calendarActions.update,
+            }}
+          />
+        )}
       </Container>
     </div>
   )
