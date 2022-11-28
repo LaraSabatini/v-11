@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import { Lessons } from "contexts/Lessons"
 import { useRouter } from "next/router"
 import Header from "components/UI/Header"
 import PartnersProvider from "contexts/Partners"
@@ -8,9 +9,16 @@ import Calendar from "./Calendar"
 import Students from "./Students"
 import Buttons from "./GeneralContent/Buttons"
 import Modals from "./GeneralContent/Modals"
+import CreatePurchase from "./Forms/CreatePurchase"
 import { Container } from "./styles"
 
 function TrainersView() {
+  const {
+    setCreateLessonPurchaseView,
+    createLessonPurchaseView,
+    cleanStates,
+  } = useContext(Lessons)
+
   const router = useRouter()
 
   const getPermissions = localStorage.getItem("permissions")
@@ -43,6 +51,15 @@ function TrainersView() {
             permits={{
               create: calendarActions.create,
               update: calendarActions.update,
+            }}
+          />
+        )}
+
+        {createLessonPurchaseView && (
+          <CreatePurchase
+            cancelCreatePurchase={() => {
+              setCreateLessonPurchaseView(false)
+              cleanStates()
             }}
           />
         )}

@@ -95,6 +95,23 @@ function LessonsProvider({ children }) {
     false,
   )
 
+  // NUEVO
+  const [
+    createLessonPurchaseView,
+    setCreateLessonPurchaseView,
+  ] = useState<boolean>(false)
+  const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
+  const [searchResults, setSearchResults] = useState<PartnerInterface[]>([])
+  const [searchValue, setSearchValue] = useState<string>("")
+  const [provisionalSelection, setProvisionalSelection] = useState<{
+    date: string
+    shift: "AM" | "PM" | ""
+  }>({
+    date: "",
+    shift: "",
+  })
+  const [cannotAddDate, setCannotAddDate] = useState<boolean>(false)
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanStates = () => {
     setNewPurchases(null)
@@ -111,6 +128,7 @@ function LessonsProvider({ children }) {
     setBuyedCombo(true)
     setDisablePurchaseButton(false)
     setIdentificationError(false)
+    setSearchValue("")
   }
 
   // CALENDAR VIEW ********************************
@@ -165,13 +183,6 @@ function LessonsProvider({ children }) {
       pm: [],
     },
   })
-
-  // NUEVO
-  const [
-    createLessonPurchaseView,
-    setCreateLessonPurchaseView,
-  ] = useState<boolean>(false)
-  const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
 
   const value = useMemo(
     () => ({
@@ -237,6 +248,14 @@ function LessonsProvider({ children }) {
       setCreateLessonPurchaseView,
       editLessonDateView,
       setEditLessonDateView,
+      searchValue,
+      setSearchValue,
+      searchResults,
+      setSearchResults,
+      provisionalSelection,
+      setProvisionalSelection,
+      cannotAddDate,
+      setCannotAddDate,
     }),
     [
       clasesPurchasedByWeek,
@@ -266,6 +285,10 @@ function LessonsProvider({ children }) {
       cleanedLessons,
       createLessonPurchaseView,
       editLessonDateView,
+      searchValue,
+      searchResults,
+      provisionalSelection,
+      cannotAddDate,
     ],
   )
 
