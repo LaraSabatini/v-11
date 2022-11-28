@@ -7,6 +7,7 @@ import NoPermissionsView from "./GeneralContent/NoPermissionsView"
 import Calendar from "./Calendar"
 import Students from "./Students"
 import Buttons from "./GeneralContent/Buttons"
+import Modals from "./GeneralContent/Modals"
 import { Container } from "./styles"
 
 function TrainersView() {
@@ -28,6 +29,7 @@ function TrainersView() {
       </PartnersProvider>
       <Container>
         <HeadingContent />
+        <Modals />
 
         {routeIsCalendar && canViewCalendar && <Calendar />}
         {routeIsStudents && canViewStudents && <Students />}
