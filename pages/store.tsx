@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react"
-// import StoreView from "components/Store"
-import StoreView from "components/StoreView"
+import StoreView from "components/Store"
 import StoreProvider from "contexts/Store"
 import { useRouter } from "next/router"
 
@@ -23,7 +22,6 @@ function Store() {
     <div>
       {isLoggedIn !== null && (
         <StoreProvider>
-          {/* <StoreView /> */}
           <StoreView />
         </StoreProvider>
       )}
