@@ -5,7 +5,7 @@ import generalTexts from "strings/general.json"
 import OptionsInterface from "interfaces/store/OptionsInterface"
 import TextButton from "components/UI/TextButton"
 import Icon from "components/UI/Assets/Icon"
-// import TillPreview from "./TillPreview"
+import TillClosure from "../../Forms/TillClosure"
 import {
   FiltersContainer,
   Select,
@@ -28,8 +28,7 @@ function Filters() {
     <FiltersContainer>
       <TextButton onClick={() => setTillPreview(true)} content="Caja" cta />
       {tillPreview && (
-        // <TillPreview closeTillPreview={() => setTillPreview(false)} />
-        <p>till preview</p>
+        <TillClosure closeTillPreview={() => setTillPreview(false)} />
       )}
       <Select
         onClick={() => {

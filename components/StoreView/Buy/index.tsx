@@ -11,9 +11,6 @@ interface BuyPermits {
 }
 
 function Buy({ permits }: BuyPermits) {
-  // eslint-disable-next-line no-console
-  console.log("permits", permits)
-
   return (
     <Container>
       <Products />
