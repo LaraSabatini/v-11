@@ -24,7 +24,7 @@ function SelectPartner() {
   const [popOverView, setPopOverView] = useState<boolean>(false)
 
   const searchClients = async () => {
-    if (searchValue.length > 3) {
+    if (searchValue.length >= 3) {
       const searchCall = await searchPartnerAction(searchValue)
       setSearchResults(searchCall.data)
     } else {

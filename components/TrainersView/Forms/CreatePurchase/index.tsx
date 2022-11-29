@@ -10,7 +10,7 @@ import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPayments
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
-import { day, month, year } from "const/time"
+import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
 import ModalForm from "components/UI/ModalForm"
 import Autocomplete from "components/UI/Autocomplete"
@@ -190,12 +190,23 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     const makePurchase = await createBoulderPurchaseAction(boulderPurchaseBody)
     success = makePurchase.status === 200
 
-    if (paymentMethodSelected === 2) {
+    if (paymentMethodSelected.id === 2) {
       const makeDigitalPayment = await makeAppropiatePayment(
         paymentUserSelected.id,
         finalPrice,
-        paymentUserSelected,
+        {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
+          date: today,
+          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+            .display_name,
+          month_id: parseInt(`${month}`, 10),
+          total_profit: finalPrice,
+          created_by: currentUser,
+        },
       )
+
       success = makeDigitalPayment.status === 200
     }
     return success
@@ -223,7 +234,7 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         trainer_id: 0,
         trainer_name: "",
         week_id: getWeekNumber(lessonDate).week,
-        paid: paid ? "SI" : "NO",
+        paid: paid || buyedCombo ? "SI" : "NO",
         day_id: getWeekNumber(lessonDate).day.getDay(),
         final_price: paid ? finalPrice / amountOfLessons : 0,
         payment_method_id: paid ? paymentMethodSelected.id : 0,
