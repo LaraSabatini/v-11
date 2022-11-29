@@ -1,5 +1,6 @@
 import React, { useContext } from "react"
 import { Lessons } from "contexts/Lessons"
+import { searchPartnerAction } from "helpers/partners"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
 import yesOrNoArr from "const/fixedVariables"
@@ -42,8 +43,6 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     lastNameRef,
     identificationNumberRef,
   } = useContext(Lessons)
-
-  console.log(clientIsRegistered)
 
   const validateInputs = async () => {
     await clientRef.current?.focus()
@@ -115,6 +114,13 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     )
   }
 
+  // function comun
+  /*
+    createBoulderPurchase => si paga
+    digital payment => si paga MP
+    createLessonPurchase
+  */
+
   const handleCreatePurchase = async (e: any) => {
     e.preventDefault()
 
@@ -125,6 +131,7 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         // eslint-disable-next-line no-console
         console.log("crear")
         setDisablePurchaseButton(true)
+        // function comun
       }
     } else {
       const validatePartner = await validatePartnerInputs()
@@ -132,8 +139,17 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
 
       if (validatePartner && validate) {
         // validar dni
+
+        // si DNI ok
+        // crear socio
+
+        // function comun
+
+        // si DNI no => identificationError a true
+        // eslint-disable-next-line no-console
         console.log("se puede")
       } else {
+        // eslint-disable-next-line no-console
         console.log("no se puede")
       }
     }
