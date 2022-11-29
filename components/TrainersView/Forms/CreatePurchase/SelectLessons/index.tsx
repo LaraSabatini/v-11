@@ -143,7 +143,7 @@ function SelectLessons() {
                       )
                       setDatesSelected(newArrayOfDates)
                       if (newArrayOfDates.length !== amountOfLessons) {
-                        setBuyedCombo(true)
+                        setBuyedCombo(false)
                         setFinalPrice(0)
                         setPaid(null)
                         setPaymentMethodSelected(null)

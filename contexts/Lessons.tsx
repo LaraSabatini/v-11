@@ -129,7 +129,7 @@ function LessonsProvider({ children }) {
     setModalSuccess(null)
     setModalError(null)
     setTriggerListUpdate(triggerListUpdate + 1)
-    setBuyedCombo(true)
+    setBuyedCombo(false)
     setDisablePurchaseButton(false)
     setIdentificationError(false)
     setSearchValue("")
