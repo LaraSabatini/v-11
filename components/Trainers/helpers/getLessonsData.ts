@@ -6,17 +6,17 @@ const getLessonsData = async (weekNumberSelected: number) => {
   const getLessonsByWeekCall = await getLessonsByWeekAction(weekNumberSelected)
 
   const monday = getLessonsByWeekCall.filter(
-    (lesson: ClasesPurchasedInterface) => lesson.day_id === 0,
+    (lesson: ClasesPurchasedInterface) => lesson.day_id === 1,
   )
-  const tuesday = getLessonsByWeekCall.filter(lesson => lesson.day_id === 1)
+  const tuesday = getLessonsByWeekCall.filter(lesson => lesson.day_id === 2)
   const wednesday = getLessonsByWeekCall.filter(
-    (lesson: ClasesPurchasedInterface) => lesson.day_id === 2,
-  )
-  const thursday = getLessonsByWeekCall.filter(
     (lesson: ClasesPurchasedInterface) => lesson.day_id === 3,
   )
-  const friday = getLessonsByWeekCall.filter(
+  const thursday = getLessonsByWeekCall.filter(
     (lesson: ClasesPurchasedInterface) => lesson.day_id === 4,
+  )
+  const friday = getLessonsByWeekCall.filter(
+    (lesson: ClasesPurchasedInterface) => lesson.day_id === 5,
   )
   const newArrayForCalendar = {
     monday: {
