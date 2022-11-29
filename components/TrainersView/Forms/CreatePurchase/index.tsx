@@ -8,7 +8,6 @@ import {
 import { createLessonPurchaseAction } from "helpers/lessons"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
 import { day, month, year } from "const/time"
@@ -56,6 +55,9 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     setIdentificationError,
     finalPrice,
     paymentUserSelected,
+    setModalSuccess,
+    setModalError,
+    setCreateLessonPurchaseView,
   } = useContext(Lessons)
 
   const today = `${day}-${month}-${year}`
@@ -199,21 +201,25 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     return success
   }
 
-  const createLessonPurchases = async (id: number) => {
-    let success = false
+  const createLessonPurchases = async (
+    id: number,
+    name: string,
+    lastName: string,
+  ) => {
+    let message
 
-    datesSelected.forEach(async (lesson: LessonsSelectedInterface) => {
-      const lessonDate = `${lesson.date.slice(0, 2)}-${lesson.date.slice(
-        3,
-        5,
-      )}-${lesson.date.slice(6, 10)}`
+    // datesSelected.forEach(async (lesson: LessonsSelectedInterface) => {
+    for (let i = 0; i < amountOfLessons; i += 1) {
+      const lessonDate = `${datesSelected[i].date.slice(0, 2)}-${datesSelected[
+        i
+      ].date.slice(3, 5)}-${datesSelected[i].date.slice(6, 10)}`
       const lessonBody: ClasesPurchasedInterface = {
         id: 0,
         lesson_date: lessonDate,
-        shift: lesson.shift,
+        shift: datesSelected[i].shift,
         partner_id: id,
-        partner_name: clientSelected.name,
-        partner_last_name: clientSelected.last_name,
+        partner_name: name,
+        partner_last_name: lastName,
         trainer_id: 0,
         trainer_name: "",
         week_id: getWeekNumber(lessonDate).week,
@@ -224,23 +230,26 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         paid_day: paid ? today : "",
         created_by: currentUser,
       }
+      // eslint-disable-next-line no-await-in-loop
       const createLesson = await createLessonPurchaseAction(lessonBody)
-      success = createLesson
-    })
 
-    return success
+      message = createLesson
+    }
+    // })
+
+    return message
   }
 
   const handleCreatePurchase = async (e: any) => {
     e.preventDefault()
     let success = false
+    let canShowModalError = true
+    let modalMessage = {}
 
     if (clientIsRegistered) {
       const validate = await validateInputsIsRegistered()
 
       if (validate && clientSelected !== null) {
-        // eslint-disable-next-line no-console
-        console.log("crear")
         setDisablePurchaseButton(true)
 
         if (paid) {
@@ -248,45 +257,51 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
           success = executePurchase
         }
 
-        const createLessons = await createLessonPurchases(clientSelected.id)
-        success = createLessons
-        // function comun
+        const createLessons = await createLessonPurchases(
+          clientSelected.id,
+          clientSelected.name,
+          clientSelected.last_name,
+        )
+        success = createLessons.status === 200
+        modalMessage = createLessons.message
       }
     } else {
       const validate = await validateInputsIsNotRegistered()
 
       if (validate) {
-        // validar dni
         const validateDuplicated = await checkIfPartnerIsDuplicated()
         setIdentificationError(validateDuplicated)
+        canShowModalError = !validateDuplicated
 
         if (!validateDuplicated) {
-          // eslint-disable-next-line no-console
-          console.log("se puede")
-          // crear socio
           const createPartner = await createPartnerAction(newPartnerData)
           success = createPartner.status === 200
 
           const createLessons = await createLessonPurchases(
             createPartner.partnerId,
+            newPartnerData.name,
+            newPartnerData.last_name,
           )
-          success = createLessons
+          success = createLessons.status === 200
+          console.log("createLessons", createLessons)
+
+          modalMessage = createLessons.message
 
           if (paid) {
             const executePurchase = await createBoulderPurchase()
             success = executePurchase
           }
-        } else {
-          // eslint-disable-next-line no-console
-          console.log("no se puede por dni - BORRAR ESTE ELSE")
         }
-      } else {
-        // eslint-disable-next-line no-console
-        console.log("no se puede - BORRAR ESTE ELSE")
       }
     }
-    // eslint-disable-next-line no-console
-    console.log("success", success)
+    if (success) {
+      setModalSuccess(modalMessage)
+      setCreateLessonPurchaseView(false)
+    }
+    if (canShowModalError && !success) {
+      setModalError(modalMessage)
+      setCreateLessonPurchaseView(false)
+    }
   }
 
   return (

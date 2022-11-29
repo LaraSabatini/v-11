@@ -35,7 +35,7 @@ export const createLessonPurchaseAction = async (
   body: ClasesPurchasedInterface,
 ) => {
   const createLesson = await createLessonPurchase(body)
-  return createLesson.message === "Lesson purchase created successfully"
+  return createLesson.message
 }
 
 export const editLessonAction = async (body: ClasesPurchasedInterface) => {
