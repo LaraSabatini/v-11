@@ -105,7 +105,7 @@ function TrainersView() {
           paid || buyedCombo
             ? `${yesOrNoArr[0].display_name}`
             : `${yesOrNoArr[1].display_name}`,
-        day_id: finalLessonDate.day.getDay() - 1,
+        day_id: finalLessonDate.day.getDay(),
         final_price: finalPrice / amountOfLessons,
         payment_method_id:
           paymentMethodSelected !== null ? paymentMethodSelected.id : 0,
