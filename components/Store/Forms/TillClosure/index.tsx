@@ -103,7 +103,8 @@ function TillClosure({ closeTillPreview }: TillPreviewInterface) {
         closed_by: currentUser,
       }
       const updateTill = await updateTillClosure(tillBody)
-      success = updateTill.message === "Till updated successfully"
+
+      success = updateTill.message.status === 200
     } else {
       const tillBody = {
         id: 0,
@@ -115,7 +116,8 @@ function TillClosure({ closeTillPreview }: TillPreviewInterface) {
         closed_by: currentUser,
       }
       const createTill = await createTillClosure(tillBody)
-      success = createTill.message === "Till closed successfully"
+
+      success = createTill.message.status === 200
     }
 
     if (success) {
