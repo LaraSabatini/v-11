@@ -20,13 +20,14 @@ function DayView({
   return (
     <>
       {Object.values(cleanedLessons).map(
-        (lessonDay: ClasesPurchasedInterface[]) => (
-          <StudentsList>
+        (lessonDay: ClasesPurchasedInterface[], index) => (
+          <StudentsList key={lessonDay[index]?.partner_id}>
             <div>
               <ScrollView height={160}>
                 <Scroll>
                   {lessonDay.map((lesson: ClasesPurchasedInterface) => (
                     <LessonPurchased
+                      key={lesson.id}
                       paid={lesson.paid === "SI"}
                       type="button"
                       selected={purchaseSelected?.id === lesson.id}

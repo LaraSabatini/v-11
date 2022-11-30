@@ -49,5 +49,12 @@
         "expire_date": "Fecha de vencimiento:",
         "without_payment": "Impago",
         "has_shoes": "*Cuenta con zapatillas incluidas"
+    },
+    "deleteModalWarning": {
+        "title": "Estas seguro de que deseas eliminar las clases reservadas?"
+    },
+    "makePayment": {
+        "lessonsDebt": "Clases adeudadas",
+        "discount": "El cliente cuenta con el pase descontado"
     }
 }

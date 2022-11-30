@@ -7,6 +7,7 @@ import getWeekNumber from "../Helpers/getWeekNumber"
 import organizeDataForCalendar from "../Helpers/organizeDataForCalendar"
 import getDaysOfTheWeek from "../Helpers/getDaysOfTheWeek"
 import formatCalendarDate from "../Helpers/formatCalendarDate"
+import MakePayment from "../Forms/MakePayment"
 import DayView from "./DayView"
 import {
   MainContainer,
@@ -25,9 +26,6 @@ function Calendar() {
     setWeekNumberSelected,
     purchaseSelected,
     setPurchaseSelected,
-    // setPaymentMethodSelected,
-    // setPaymentUserSelected,
-    // setFinalPrice,
     triggerListUpdate,
     cleanedLessons,
     setCleanedLessons,
@@ -180,18 +178,9 @@ function Calendar() {
             selectPurchase={e => selectPurchase(e)}
           />
         </Column>
-        {/* {modalMakeAPayment && (
-          <MakePayment
-            data={purchaseSelected}
-            cancelPayment={() => {
-              setModalMakeAPayment(false)
-              setPaymentMethodSelected(null)
-              setPaymentUserSelected(null)
-              setPurchaseSelected(null)
-              setFinalPrice(0)
-            }}
-          />
-        )} */}
+        {modalMakeAPayment && (
+          <MakePayment cancelPayment={() => setModalMakeAPayment(false)} />
+        )}
       </MainContainer>
       <PaginatorContainer>
         <Pagination
