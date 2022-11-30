@@ -28,7 +28,6 @@ interface CreatePurchaseInterface {
 
 function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
   const {
-    clientRef,
     setClientSelected,
     setClientIsRegistered,
     clientIsRegistered,
@@ -38,6 +37,15 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     identificationError,
     disablePurchaseButton,
     setDisablePurchaseButton,
+    paymentMethodSelected,
+    newPartnerData,
+    setIdentificationError,
+    finalPrice,
+    paymentUserSelected,
+    setModalSuccess,
+    setModalError,
+    setCreateLessonPurchaseView,
+    clientRef,
     amountOfLessonsRef,
     lessonRef,
     shiftRef,
@@ -47,17 +55,9 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     paid,
     paymentMethodRef,
     paymentUserRef,
-    paymentMethodSelected,
     nameRef,
     lastNameRef,
     identificationNumberRef,
-    newPartnerData,
-    setIdentificationError,
-    finalPrice,
-    paymentUserSelected,
-    setModalSuccess,
-    setModalError,
-    setCreateLessonPurchaseView,
   } = useContext(Lessons)
 
   const today = `${day}-${month}-${year}`
