@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { Lessons } from "contexts/Lessons"
 import Icon from "components/UI/Assets/Icon"
-import Button from "./styles"
+import { Button } from "../styles"
 
 interface Permits {
   edit: boolean
@@ -12,7 +12,8 @@ function EditButton({ edit }: Permits) {
 
   return (
     <Button
-      disabled={purchaseSelected === null || !edit}
+      disabledButton={purchaseSelected === null || !edit}
+      color="secondary"
       onClick={() => {
         if (purchaseSelected !== null && edit) {
           setEditLessonDateView(true)

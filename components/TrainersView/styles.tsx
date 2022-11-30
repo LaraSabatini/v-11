@@ -7,4 +7,4 @@ const Container = styled.div`
   position: relative;
   height: 83vh;
 `
-export { Container }
+export default Container

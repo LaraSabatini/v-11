@@ -1,5 +1,5 @@
 import React from "react"
-import ButtonContainer from "./styles"
+import { ButtonContainer } from "./styles"
 import CreateButton from "./CreateButton"
 import EditButton from "./EditButton"
 

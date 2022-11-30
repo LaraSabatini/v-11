@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import { Lessons } from "contexts/Lessons"
 import Icon from "components/UI/Assets/Icon"
-import Button from "./styles"
+import { Button } from "../styles"
 
 interface Permits {
   create: boolean
@@ -13,6 +13,7 @@ function CreateButton({ create }: Permits) {
   return (
     <Button
       disabledButton={!create}
+      color="primary"
       onClick={() => {
         if (create) {
           setCreateLessonPurchaseView(true)

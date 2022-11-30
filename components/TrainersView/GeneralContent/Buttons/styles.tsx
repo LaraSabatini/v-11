@@ -1,4 +1,5 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
+import theme from "theme/index"
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -19,4 +20,28 @@ const ButtonContainer = styled.div`
     box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   }
 `
-export default ButtonContainer
+
+const Button = styled.button<{
+  disabledButton: boolean
+  color: "primary" | "secondary"
+}>`
+  cursor: pointer;
+
+  ${props =>
+    props.disabledButton &&
+    css`
+      opacity: 0.7;
+      cursor: not-allowed;
+    `};
+
+  ${props =>
+    props.color === "primary"
+      ? css`
+          background-color: ${theme.colors.secondary};
+        `
+      : css`
+          background-color: ${theme.colors.primary};
+        `};
+`
+
+export { ButtonContainer, Button }
