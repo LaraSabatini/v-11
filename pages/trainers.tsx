@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
-// import TrainersView from "components/Trainers"
-import TrainersView from "components/TrainersView"
+import TrainersView from "components/Trainers"
 import LessonsProvider from "@contexts/Lessons"
 import { GeneralContext } from "contexts/GeneralContext"
 import { getPricesAction } from "helpers/partners"
