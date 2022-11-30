@@ -10,6 +10,7 @@ import Students from "./Students"
 import Buttons from "./GeneralContent/Buttons"
 import Modals from "./GeneralContent/Modals"
 import CreatePurchase from "./Forms/CreatePurchase"
+import EditLessonDate from "./Forms/EditLessonDate"
 import { Container } from "./styles"
 
 function TrainersView() {
@@ -17,6 +18,8 @@ function TrainersView() {
     setCreateLessonPurchaseView,
     createLessonPurchaseView,
     cleanStates,
+    setEditLessonDateView,
+    editLessonDateView,
   } = useContext(Lessons)
 
   const router = useRouter()
@@ -61,6 +64,11 @@ function TrainersView() {
               setCreateLessonPurchaseView(false)
               cleanStates()
             }}
+          />
+        )}
+        {editLessonDateView && (
+          <EditLessonDate
+            cancelEditLessonPurchase={() => setEditLessonDateView(false)}
           />
         )}
       </Container>
