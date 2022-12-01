@@ -10,6 +10,7 @@ import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPayments
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
 import trainerTexts from "strings/trainers.json"
 import generalTexts from "strings/general.json"
+import { cleanPartnerData } from "utils"
 import { day, month, year, months } from "const/time"
 import yesOrNoArr from "const/fixedVariables"
 import ModalForm from "components/UI/ModalForm"
@@ -288,16 +289,23 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         canShowModalError = !validateDuplicated
 
         if (!validateDuplicated) {
-          const createPartner = await createPartnerAction(newPartnerData)
+          const finalName = cleanPartnerData(newPartnerData.name)
+          const finalLastName = cleanPartnerData(newPartnerData.last_name)
+          const partnerBody = {
+            ...newPartnerData,
+            name: finalName,
+            last_name: finalLastName,
+          }
+
+          const createPartner = await createPartnerAction(partnerBody)
           success = createPartner.status === 200
 
           const createLessons = await createLessonPurchases(
             createPartner.partnerId,
-            newPartnerData.name,
-            newPartnerData.last_name,
+            finalName,
+            finalLastName,
           )
           success = createLessons.status === 200
-          console.log("createLessons", createLessons)
 
           modalMessage = createLessons.message
 
