@@ -13,7 +13,7 @@ function CreateButton({ create }: Permits) {
   return (
     <Button
       disabledButton={!create}
-      color="primary"
+      color="secondary"
       onClick={() => {
         if (create) {
           setCreateLessonPurchaseView(true)

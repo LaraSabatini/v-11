@@ -13,7 +13,7 @@ function EditButton({ edit }: Permits) {
   return (
     <Button
       disabledButton={purchaseSelected === null || !edit}
-      color="secondary"
+      color="primary"
       onClick={() => {
         if (purchaseSelected !== null && edit) {
           setEditLessonDateView(true)

@@ -191,6 +191,7 @@ function LessonsProvider({ children }) {
   const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [totalPages, setTotalPages] = useState<number>(1)
+  const [lessonsByStudent, setLessonsByStudent] = useState([])
 
   const value = useMemo(
     () => ({
@@ -266,6 +267,8 @@ function LessonsProvider({ children }) {
       setCurrentPage,
       totalPages,
       setTotalPages,
+      lessonsByStudent,
+      setLessonsByStudent,
     }),
     [
       weekNumberSelected,
@@ -298,6 +301,7 @@ function LessonsProvider({ children }) {
       studentSelected,
       currentPage,
       totalPages,
+      lessonsByStudent,
     ],
   )
 
