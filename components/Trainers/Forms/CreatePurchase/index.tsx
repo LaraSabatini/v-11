@@ -224,6 +224,9 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
       const lessonDate = `${datesSelected[i].date.slice(0, 2)}-${datesSelected[
         i
       ].date.slice(3, 5)}-${datesSelected[i].date.slice(6, 10)}`
+
+      const weekId = getWeekNumber(lessonDate)
+
       const lessonBody: ClasesPurchasedInterface = {
         id: 0,
         lesson_date: lessonDate,
@@ -235,7 +238,7 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         trainer_name: "",
         week_id: getWeekNumber(lessonDate).week,
         paid: paid || buyedCombo ? "SI" : "NO",
-        day_id: getWeekNumber(lessonDate).day.getDay(),
+        day_id: weekId.day.getDay(),
         final_price: paid ? finalPrice / amountOfLessons : 0,
         payment_method_id: paid ? paymentMethodSelected.id : 0,
         paid_day: paid ? today : "",
