@@ -214,11 +214,16 @@ function UpdatePaymentForm({
         checkValidityOfPayment.days &&
         checkValidityOfPayment.months
       ) {
-        const expirationDate = getExpirationDate(
-          dateSelectedToStart,
-          paidTime,
-          comboSelected,
-        )
+        const expirationDate = getExpirationDate({
+          date: dateSelectedToStart,
+          paidTime: paidTimeUnit !== undefined ? paidTime : 0,
+          paidTimeUnit: paidTimeUnit?.id !== undefined ? paidTimeUnit?.id : 0,
+          comboSelected:
+            comboSelected !== null && comboSelected !== undefined
+              ? comboSelected
+              : 0,
+        })
+
         const createPartnerPayment = await createPartnerPaymentAction({
           ...newValues,
           time_paid:
@@ -226,11 +231,7 @@ function UpdatePaymentForm({
               ? evaluateFinalTime(newValues.time_paid, usesDay)
               : newValues.time_paid,
           price_paid: finalPrice,
-          payment_expire_date:
-            (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-            (comboSelected !== null && comboSelected !== undefined)
-              ? expirationDate
-              : "",
+          payment_expire_date: expirationDate,
           date: dateSelectedToStart,
           created_by: parseInt(localStorage.getItem("id"), 10),
         })

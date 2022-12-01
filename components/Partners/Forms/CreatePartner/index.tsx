@@ -149,11 +149,15 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
           : `${generalTexts.no}`,
       }
 
-      const expirationDate = getExpirationDate(
-        dateSelectedToStart,
-        paidTime,
-        comboSelected,
-      )
+      const expirationDate = getExpirationDate({
+        date: dateSelectedToStart,
+        paidTime: paidTimeUnit !== undefined ? paidTime : 0,
+        paidTimeUnit: paidTimeUnit?.id !== undefined ? paidTimeUnit?.id : 0,
+        comboSelected:
+          comboSelected !== null && comboSelected !== undefined
+            ? comboSelected
+            : 0,
+      })
 
       const partnerPaymentBody: {
         combo: number
@@ -180,13 +184,8 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
         payment_method_name: paymentMethods.filter(
           pm => pm.id === paymentMethodSelected,
         )[0].display_name,
-
         price_paid: finalPrice,
-        payment_expire_date:
-          (paidTimeUnit !== undefined && paidTimeUnit.id === 2) ||
-          (comboSelected !== null && comboSelected !== undefined)
-            ? expirationDate
-            : "",
+        payment_expire_date: expirationDate,
       }
 
       let itemId = 0
