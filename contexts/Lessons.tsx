@@ -17,8 +17,6 @@ function LessonsProvider({ children }) {
 
   const [modalError, setModalError] = useState<ModalInterface | null>(null)
 
-  // BUY LESSONS ********************************
-
   const clientRef = useRef(null)
   const birthDateRef = useRef(null)
   const amountOfLessonsRef = useRef(null)
@@ -82,7 +80,6 @@ function LessonsProvider({ children }) {
     false,
   )
 
-  // NUEVO
   const [
     createLessonPurchaseView,
     setCreateLessonPurchaseView,
@@ -144,11 +141,6 @@ function LessonsProvider({ children }) {
     setPurchaseSelected(null)
   }
 
-  // CALENDAR VIEW ********************************
-
-  // STUDENTS VIEW
-  const [students, setStudents] = useState<PartnerInterface[]>([])
-
   const [cleanedLessons, setCleanedLessons] = useState<{
     monday: {
       am: ClasesPurchasedInterface[]
@@ -192,6 +184,13 @@ function LessonsProvider({ children }) {
       pm: [],
     },
   })
+
+  // STUDENTS VIEW
+  const [students, setStudents] = useState<PartnerInterface[]>([])
+  const [studentsSearchValue, setStudentsSearchValue] = useState<string>("")
+  const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
 
   const value = useMemo(
     () => ({
@@ -259,6 +258,14 @@ function LessonsProvider({ children }) {
       setProvisionalSelection,
       cannotAddDate,
       setCannotAddDate,
+      studentsSearchValue,
+      setStudentsSearchValue,
+      studentSelected,
+      setStudentSelected,
+      currentPage,
+      setCurrentPage,
+      totalPages,
+      setTotalPages,
     }),
     [
       weekNumberSelected,
@@ -287,6 +294,10 @@ function LessonsProvider({ children }) {
       searchResults,
       provisionalSelection,
       cannotAddDate,
+      studentsSearchValue,
+      studentSelected,
+      currentPage,
+      totalPages,
     ],
   )
 

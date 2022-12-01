@@ -17,4 +17,11 @@ const Title = styled.h4`
     font-size: 20px;
   }
 `
-export default Title
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 35px;
+`
+
+export { Title, Container }
