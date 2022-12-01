@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useState } from "react"
-// SERVICES
 import {
   getAllTodos,
   getNotes,
@@ -9,12 +8,10 @@ import {
   editAnnotation,
   deleteAnnotation,
 } from "services/Annotations/Annotations.service"
-// DATA STORAGE & TYPES
 import PartnersProvider from "contexts/Partners"
 import generalTexts from "strings/general.json"
 import annotationTexts from "strings/annotations.json"
 import { AnnotationsContext } from "contexts/Annotations"
-// COMPONENTS & STYLING
 import ModalAlert from "components/UI/ModalAlert"
 import Header from "components/UI/Header"
 import {
@@ -23,7 +20,6 @@ import {
   HeadContent,
   Title,
 } from "theme/globalComponentStyles"
-
 import { day, month, year } from "const/time"
 import Icon from "components/UI/Assets/Icon"
 import CreateAnnotation from "./CreateAnnotation"
@@ -102,7 +98,7 @@ function AnnotationsView() {
     })
   }
 
-  const editAnnotationFunction = async e => {
+  const editAnnotationFunction = async (e: any) => {
     e.preventDefault()
     setDisableEditButton(true)
 
@@ -135,7 +131,7 @@ function AnnotationsView() {
     setAnnotationSelected(null)
   }
 
-  const createAnnotationFunction = async e => {
+  const createAnnotationFunction = async (e: any) => {
     e.preventDefault()
     setDisableCreateButton(true)
 

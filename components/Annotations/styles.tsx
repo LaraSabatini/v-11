@@ -61,9 +61,9 @@ const Description = styled.p<{ done?: boolean }>`
   padding: 15px 0 10px 0;
   ${({ done }) =>
     done &&
-    `
-    text-decoration: line-through;
-  `}
+    css`
+      text-decoration: line-through;
+    `}
 `
 
 const Menu = styled.div`

@@ -1,6 +1,7 @@
 import React, { useContext } from "react"
 import { todosFilters } from "const/annotations"
 import { AnnotationsContext } from "contexts/Annotations"
+import annotationTexts from "strings/annotations.json"
 import Icon from "components/UI/Assets/Icon"
 import ScrollView from "components/UI/ScrollView"
 import Pagination from "components/UI/Pagination"
@@ -63,7 +64,7 @@ function Card({
               }
             }}
           >
-            Ordenar Fechas
+            {annotationTexts.orderDates}
             <IconContainer rotate={order}>
               <Icon icon="IconArrowOptions" />
             </IconContainer>

@@ -43,8 +43,8 @@ function NotesCard() {
         ))
       ) : (
         <NoInfoToShow>
-          No hay notas para mostrar
-          <span>Crea una nota para empezar a visualizarlas</span>
+          {annotationTexts.noNotesToShow}
+          <span>{annotationTexts.noNotesInstruction}</span>
         </NoInfoToShow>
       )}
     </Card>
