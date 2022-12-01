@@ -5,9 +5,15 @@ const calculateExpireDate = (initialDate: string) => {
 
   newDate.setMonth(newDate.getMonth() + 1)
 
-  const newDateCleaned = `${newDate.getDate()}-${
-    newDate.getMonth() + 1
-  }-${newDate.getFullYear()}`
+  const day =
+    newDate.getDate() > 9 ? newDate.getDate() : `0${newDate.getDate()}`
+
+  const month =
+    newDate.getMonth() + 1 > 9
+      ? newDate.getMonth() + 1
+      : `0${newDate.getMonth() + 1}`
+
+  const newDateCleaned = `${day}-${month}-${newDate.getFullYear()}`
 
   const dateFormats = {
     string: newDateCleaned,
