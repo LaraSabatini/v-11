@@ -159,7 +159,7 @@ function DetailsData({
           initialPayment.payment_expire_date !== "" && (
             <PartnerData>
               <p>{partnerTexts.paymentExpires}</p>
-              {initialPayment.payment_expire_date}
+              <b>{initialPayment.payment_expire_date}</b>
             </PartnerData>
           )}
 
