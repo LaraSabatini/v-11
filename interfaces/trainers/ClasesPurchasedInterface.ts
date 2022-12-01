@@ -8,7 +8,7 @@ export default interface ClasesPurchasedInterface {
   trainer_id: number
   trainer_name: string
   week_id: number
-  paid: "SI" | "NO" | string
+  paid: "SI" | "NO" | ""
   day_id: number
   final_price: number
   payment_method_id: number

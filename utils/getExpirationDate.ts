@@ -1,12 +1,12 @@
 /* eslint-disable import/prefer-default-export */
-import formatDescDate from "components/Trainers/helpers/formatDescDate"
+import formatDescendingDate from "components/Trainers/Helpers/formatDescendingDate"
 
 export const getExpirationDate = (
   date: string,
   paidTime: number,
   comboSelected: number,
 ) => {
-  const dateToStart = new Date(formatDescDate(date))
+  const dateToStart = new Date(formatDescendingDate(date))
 
   const newDate = new Date(
     dateToStart.setMonth(dateToStart.getMonth() + paidTime),

@@ -35,15 +35,15 @@ export const createLessonPurchaseAction = async (
   body: ClasesPurchasedInterface,
 ) => {
   const createLesson = await createLessonPurchase(body)
-  return createLesson.message === "Lesson purchase created successfully"
+  return createLesson.message
 }
 
 export const editLessonAction = async (body: ClasesPurchasedInterface) => {
   const handleEditLesson = await editLesson(body)
-  return handleEditLesson.message === "Lesson purchase updated successfully"
+  return handleEditLesson.message
 }
 
 export const deleteLessonAction = async (id: number) => {
   const handleDeleteLesson = await deleteLessonPurchase(id)
-  return handleDeleteLesson.message === "purchase deleted successfully"
+  return handleDeleteLesson.message
 }

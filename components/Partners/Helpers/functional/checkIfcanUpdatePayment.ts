@@ -1,5 +1,5 @@
 import PaymentInterface from "interfaces/partners/PaymentInterface"
-import formatDescDate from "components/Trainers/helpers/formatDescDate"
+import formatDescendingDate from "components/Trainers/Helpers/formatDescendingDate"
 import { day, month, year } from "const/time"
 
 const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
@@ -38,7 +38,7 @@ const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
   ) {
     if (initialPayment.payment_expire_date !== "") {
       const expirationDateCleaned = new Date(
-        formatDescDate(initialPayment.payment_expire_date),
+        formatDescendingDate(initialPayment.payment_expire_date),
       )
 
       if (expirationDateCleaned > todayDate) {
@@ -54,7 +54,7 @@ const checkIfCanUpdatePayment = (initialPayment: PaymentInterface) => {
   if (initialPayment.combo > 0) {
     if (initialPayment.payment_expire_date !== "") {
       const expirationDateCleaned = new Date(
-        formatDescDate(initialPayment.payment_expire_date),
+        formatDescendingDate(initialPayment.payment_expire_date),
       )
 
       if (expirationDateCleaned > todayDate) {

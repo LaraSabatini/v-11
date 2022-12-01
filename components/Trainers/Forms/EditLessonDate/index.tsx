@@ -1,44 +1,50 @@
-import React, { useContext, useRef, useState, useEffect } from "react"
-// DATA STORAGE & TYPES
+import React, { useContext, useState, useEffect, useRef } from "react"
+import { Lessons } from "contexts/Lessons"
 import {
   getLessonsByPartnerAndPaidAction,
   editLessonAction,
 } from "helpers/lessons"
-import { Lessons } from "contexts/Lessons"
+import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
+import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
+import yesOrNoArr from "const/fixedVariables"
+import { shifts, day, month, year } from "const/time"
 import generalTexts from "strings/general.json"
 import trainerTexts from "strings/trainers.json"
-import { shifts, day, month, year } from "const/time"
-import yesOrNoArr from "const/fixedVariables"
-import LessonsSelectedInterface from "interfaces/trainers/LessonsSelected"
-import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-// COMPONENTS & STYLING
-import Icon from "components/UI/Assets/Icon"
 import ModalForm from "components/UI/ModalForm"
 import InputCalendar from "components/UI/InputCalendar"
 import Autocomplete from "components/UI/Autocomplete"
-import checkIfDateHasSpace from "../../helpers/checkIfDateHasSpace"
-import calculateLessonWeek from "../../helpers/calculateLessonWeek"
-import { AcceptButton, Warning } from "../CreatePurchase/styles"
+import Icon from "components/UI/Assets/Icon"
+import checkQuota from "../../Helpers/checkQuota"
+import getWeekNumber from "../../Helpers/getWeekNumber"
+import { HorizontalGroup } from "../CreatePurchase/styles"
 import {
   Form,
   CurrentDate,
-  HorizontalGroup,
+  FutureLessonsList,
+  Warning,
   DateSelectedContainer,
   UnselectButton,
-  FutureLessonsList,
+  AcceptButton,
 } from "./styles"
 
-interface EditInterface {
-  cancelEdit: () => void
+interface EditLessonDateInterface {
+  cancelEditLessonPurchase: () => void
 }
 
-function EditLessonDate({ cancelEdit }: EditInterface) {
+function EditLessonDate({ cancelEditLessonPurchase }: EditLessonDateInterface) {
   const { purchaseSelected, setModalSuccess, setModalError } = useContext(
     Lessons,
   )
 
+  const newDateRef = useRef(null)
+  const shiftRef = useRef(null)
+
   const [disabledButton, setDisabledButton] = useState<boolean>(false)
+  const [dateSelected, setDateSelected] = useState<LessonsSelectedInterface>()
   const [cannotAddDate, setCannotAddDate] = useState<boolean>(false)
+  const [futureLessons, setFutureLessons] = useState<
+    ClasesPurchasedInterface[]
+  >([])
   const [provisionalSelection, setProvisionalSelection] = useState<{
     date: string
     shift: "AM" | "PM" | ""
@@ -47,22 +53,12 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
     shift: "",
   })
 
-  const [dateSelected, setDateSelected] = useState<LessonsSelectedInterface>()
-  const [futureLessons, setFutureLessons] = useState<
-    ClasesPurchasedInterface[]
-  >([])
-
-  const newDateRef = useRef(null)
-  const shiftRef = useRef(null)
-
-  const handleEdit = async e => {
-    e.preventDefault()
-
+  const validateInputs = async () => {
     await newDateRef.current?.focus()
     await shiftRef.current?.focus()
     await newDateRef.current?.focus()
 
-    if (
+    return (
       newDateRef.current.attributes.getNamedItem("data-error").value ===
         "false" &&
       shiftRef.current.attributes.getNamedItem("data-error").value ===
@@ -70,37 +66,32 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
       cannotAddDate === false &&
       dateSelected !== undefined &&
       dateSelected !== null
-    ) {
+    )
+  }
+
+  const handleEdit = async (e: any) => {
+    e.preventDefault()
+
+    const validate = await validateInputs()
+    if (validate) {
       setDisabledButton(true)
-      const lessonDate = calculateLessonWeek(dateSelected.date)
+      const weekId = getWeekNumber(dateSelected.date)
 
       const editLessonCall = await editLessonAction({
         ...purchaseSelected,
         lesson_date: dateSelected.date,
         shift: dateSelected.shift,
-        day_id: lessonDate.day.getDay() - 1,
-        week_id: lessonDate.week,
+        day_id: weekId.day.getDay(),
+        week_id: weekId.week,
         created_by: parseInt(localStorage.getItem("id"), 10),
       })
 
-      const success = editLessonCall
-
-      if (success) {
-        setModalSuccess({
-          status: "success",
-          icon: "IconCheckModal",
-          title: `${generalTexts.modalTitles.success}`,
-          content: `${trainerTexts.edit.successModal.content}`,
-        })
-        cancelEdit()
+      if (editLessonCall.status === 200) {
+        setModalSuccess(editLessonCall.message)
+        cancelEditLessonPurchase()
       } else {
-        setModalError({
-          status: "alert",
-          icon: "IconExclamation",
-          title: `${generalTexts.modalTitles.error}`,
-          content: `${trainerTexts.edit.errorModal.content}`,
-        })
-        cancelEdit()
+        setModalError(editLessonCall.message)
+        cancelEditLessonPurchase()
       }
     }
   }
@@ -124,7 +115,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
       ? filterActualLesson
       : checkLessonsCallNotPaid
 
-    setFutureLessons(newArrayOfLessons[0])
+    setFutureLessons(newArrayOfLessons)
   }
 
   useEffect(() => {
@@ -140,7 +131,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
       cancelButtonContent={generalTexts.actions.cancel}
       submitButtonContent={generalTexts.actions.save}
       submit={handleEdit}
-      cancelFunction={cancelEdit}
+      cancelFunction={cancelEditLessonPurchase}
       disabledButton={disabledButton}
     >
       <Form>
@@ -206,10 +197,9 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
                 provisionalSelection.date !== "" &&
                 provisionalSelection.shift !== ""
               ) {
-                const checkDate = await checkIfDateHasSpace(
-                  provisionalSelection,
-                  [dateSelected],
-                )
+                const checkDate = await checkQuota(provisionalSelection, [
+                  dateSelected,
+                ])
 
                 if (checkDate.can) {
                   setDateSelected({
@@ -218,7 +208,7 @@ function EditLessonDate({ cancelEdit }: EditInterface) {
                         ? futureLessons.length + 1
                         : 1,
                     date: checkDate.newDates[1].date,
-                    shift: checkDate.newDates[1].shift as "AM" | "PM" | "",
+                    shift: checkDate.newDates[1].shift as "AM" | "PM",
                   })
                   setProvisionalSelection({
                     date: "",

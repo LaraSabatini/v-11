@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Form = styled.div`
@@ -45,9 +45,12 @@ const FutureLessonsList = styled.div`
   }
 `
 
-const HorizontalGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
+const Warning = styled.p`
+  margin: 0;
+  font-weight: ${theme.fontWeights.bold};
+  color: ${theme.colors.danger};
+  font-size: 14px;
+  margin-top: -10px;
 `
 
 const DateSelectedContainer = styled.div`
@@ -67,11 +70,33 @@ const UnselectButton = styled.button`
   cursor: pointer;
 `
 
+const AcceptButton = styled.button<{ disabled: boolean }>`
+  border: none;
+  background-color: ${theme.colors.success};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin-top: -7px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 1;
+
+  ${props =>
+    props.disabled &&
+    css`
+      cursor: not-allowed;
+      opacity: 0.3;
+    `}
+`
+
 export {
   Form,
   CurrentDate,
-  HorizontalGroup,
+  FutureLessonsList,
+  Warning,
   DateSelectedContainer,
   UnselectButton,
-  FutureLessonsList,
+  AcceptButton,
 }

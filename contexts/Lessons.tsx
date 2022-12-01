@@ -1,6 +1,5 @@
 import { createContext, useState, useRef, useMemo } from "react"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-import TrainerInterface from "interfaces/trainers/TrainerInterface"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import { day, month, year } from "const/time"
 import ModalInterface from "interfaces/components/ModalInterface"
@@ -10,13 +9,6 @@ import DefaultInterface from "interfaces/components/DefaultInterface"
 export const Lessons = createContext(null)
 
 function LessonsProvider({ children }) {
-  const [clasesPurchasedByWeek, setClasesPurchasedByWeek] = useState<
-    ClasesPurchasedInterface[]
-  >([])
-
-  const [currentWeekNumber, setCurrentWeekNumber] = useState<number | null>(
-    null,
-  )
   const [weekNumberSelected, setWeekNumberSelected] = useState<number | null>(
     null,
   )
@@ -24,13 +16,6 @@ function LessonsProvider({ children }) {
   const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
 
   const [modalError, setModalError] = useState<ModalInterface | null>(null)
-
-  // BUY LESSONS ********************************
-  const [newPurchases, setNewPurchases] = useState<ClasesPurchasedInterface[]>(
-    null,
-  )
-
-  const [trainersList, setTrainersList] = useState<TrainerInterface[]>([])
 
   const clientRef = useRef(null)
   const birthDateRef = useRef(null)
@@ -41,6 +26,10 @@ function LessonsProvider({ children }) {
   const paysNowRef = useRef(null)
   const paymentMethodRef = useRef(null)
   const paymentUserRef = useRef(null)
+  const buyedComboRef = useRef(null)
+  const nameRef = useRef(null)
+  const lastNameRef = useRef(null)
+  const identificationNumberRef = useRef(null)
 
   const [amountOfLessons, setAmountOfLessons] = useState<number>(0)
 
@@ -59,9 +48,7 @@ function LessonsProvider({ children }) {
   ] = useState<DefaultInterface>(null)
 
   const [paid, setPaid] = useState<boolean>(null)
-
   const [buyedCombo, setBuyedCombo] = useState<boolean>(false)
-
   const [clientSelected, setClientSelected] = useState<PartnerInterface | null>(
     null,
   )
@@ -85,8 +72,6 @@ function LessonsProvider({ children }) {
 
   const [clientIsRegistered, setClientIsRegistered] = useState<boolean>(null)
 
-  const [trainerSelected, setTrainerSelected] = useState<DefaultInterface>(null)
-
   const [identificationError, setIdentificationError] = useState<boolean>(false)
 
   const [triggerListUpdate, setTriggerListUpdate] = useState<number>(1)
@@ -95,9 +80,29 @@ function LessonsProvider({ children }) {
     false,
   )
 
+  const [
+    createLessonPurchaseView,
+    setCreateLessonPurchaseView,
+  ] = useState<boolean>(false)
+  const [editLessonDateView, setEditLessonDateView] = useState<boolean>(false)
+  const [searchResults, setSearchResults] = useState<PartnerInterface[]>([])
+  const [searchValue, setSearchValue] = useState<string>("")
+  const [provisionalSelection, setProvisionalSelection] = useState<{
+    date: string
+    shift: "AM" | "PM" | ""
+  }>({
+    date: "",
+    shift: "",
+  })
+  const [cannotAddDate, setCannotAddDate] = useState<boolean>(false)
+
+  const [
+    purchaseSelected,
+    setPurchaseSelected,
+  ] = useState<ClasesPurchasedInterface>(null)
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const cleanStates = () => {
-    setNewPurchases(null)
     setAmountOfLessons(0)
     setDatesSelected([])
     setPaymentMethodSelected(null)
@@ -108,19 +113,33 @@ function LessonsProvider({ children }) {
     setModalSuccess(null)
     setModalError(null)
     setTriggerListUpdate(triggerListUpdate + 1)
-    setBuyedCombo(true)
+    setBuyedCombo(false)
     setDisablePurchaseButton(false)
     setIdentificationError(false)
+    setSearchValue("")
+    setProvisionalSelection({
+      date: "",
+      shift: "",
+    })
+    setSearchResults([])
+    setCannotAddDate(false)
+    setPaymentUserSelected(null)
+    setNewPartnerData({
+      id: 0,
+      name: "",
+      last_name: "",
+      identification_number: "",
+      birth_date: "",
+      email: "",
+      subs: 0,
+      phone: "",
+      membership_start_date: `${day}/${month}/${year}`,
+      created_by: parseInt(localStorage.getItem("id"), 10),
+      free_pass: 0,
+      is_student: "SI",
+    })
+    setPurchaseSelected(null)
   }
-
-  // CALENDAR VIEW ********************************
-  const [
-    purchaseSelected,
-    setPurchaseSelected,
-  ] = useState<ClasesPurchasedInterface>(null)
-
-  // STUDENTS VIEW
-  const [students, setStudents] = useState<PartnerInterface[]>([])
 
   const [cleanedLessons, setCleanedLessons] = useState<{
     monday: {
@@ -166,20 +185,20 @@ function LessonsProvider({ children }) {
     },
   })
 
+  // STUDENTS VIEW
+  const [students, setStudents] = useState<PartnerInterface[]>([])
+  const [studentsSearchValue, setStudentsSearchValue] = useState<string>("")
+  const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [lessonsByStudent, setLessonsByStudent] = useState([])
+
   const value = useMemo(
     () => ({
-      clasesPurchasedByWeek,
-      setClasesPurchasedByWeek,
-      currentWeekNumber,
-      setCurrentWeekNumber,
       weekNumberSelected,
       setWeekNumberSelected,
-      newPurchases,
-      setNewPurchases,
       clientRef,
       birthDateRef,
-      trainersList,
-      setTrainersList,
       amountOfLessonsRef,
       trainerSelectedRef,
       amountOfLessons,
@@ -204,9 +223,11 @@ function LessonsProvider({ children }) {
       shiftRef,
       paysNowRef,
       paymentMethodRef,
+      buyedComboRef,
+      nameRef,
+      lastNameRef,
+      identificationNumberRef,
       paymentUserRef,
-      trainerSelected,
-      setTrainerSelected,
       identificationError,
       setIdentificationError,
       modalSuccess,
@@ -226,13 +247,31 @@ function LessonsProvider({ children }) {
       setDisablePurchaseButton,
       cleanedLessons,
       setCleanedLessons,
+      createLessonPurchaseView,
+      setCreateLessonPurchaseView,
+      editLessonDateView,
+      setEditLessonDateView,
+      searchValue,
+      setSearchValue,
+      searchResults,
+      setSearchResults,
+      provisionalSelection,
+      setProvisionalSelection,
+      cannotAddDate,
+      setCannotAddDate,
+      studentsSearchValue,
+      setStudentsSearchValue,
+      studentSelected,
+      setStudentSelected,
+      currentPage,
+      setCurrentPage,
+      totalPages,
+      setTotalPages,
+      lessonsByStudent,
+      setLessonsByStudent,
     }),
     [
-      clasesPurchasedByWeek,
-      currentWeekNumber,
       weekNumberSelected,
-      newPurchases,
-      trainersList,
       amountOfLessons,
       datesSelected,
       paymentMethodSelected,
@@ -242,7 +281,6 @@ function LessonsProvider({ children }) {
       paymentUserSelected,
       newPartnerData,
       clientIsRegistered,
-      trainerSelected,
       identificationError,
       modalSuccess,
       modalError,
@@ -253,6 +291,17 @@ function LessonsProvider({ children }) {
       buyedCombo,
       disablePurchaseButton,
       cleanedLessons,
+      createLessonPurchaseView,
+      editLessonDateView,
+      searchValue,
+      searchResults,
+      provisionalSelection,
+      cannotAddDate,
+      studentsSearchValue,
+      studentSelected,
+      currentPage,
+      totalPages,
+      lessonsByStudent,
     ],
   )
 
