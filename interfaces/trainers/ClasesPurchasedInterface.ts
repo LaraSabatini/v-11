@@ -13,5 +13,6 @@ export default interface ClasesPurchasedInterface {
   final_price: number
   payment_method_id: number
   paid_day: string
+  payment_expire_date: string
   created_by: number
 }

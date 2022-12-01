@@ -36,6 +36,14 @@ function EditLessonDate({ cancelEditLessonPurchase }: EditLessonDateInterface) {
     Lessons,
   )
 
+  const maxCalendarDate = `${purchaseSelected.payment_expire_date.slice(
+    0,
+    2,
+  )}/${purchaseSelected.payment_expire_date.slice(
+    3,
+    5,
+  )}/${purchaseSelected.payment_expire_date.slice(6, 10)}`
+
   const newDateRef = useRef(null)
   const shiftRef = useRef(null)
 
@@ -160,6 +168,7 @@ function EditLessonDate({ cancelEditLessonPurchase }: EditLessonDateInterface) {
             width={220}
             required={dateSelected === undefined}
             label={trainerTexts.edit.new_date}
+            maxCalendarDate={maxCalendarDate}
             reference={newDateRef}
             valueCalendar={provisionalSelection.date}
             minCalendarDate={`${day}/${month}/${year}`}
