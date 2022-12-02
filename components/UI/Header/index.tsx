@@ -4,6 +4,7 @@ import NotificationsProvider from "contexts/Notifications"
 import { useRouter } from "next/router"
 import routes from "routes"
 import Tooltip from "components/UI/Tooltip"
+import NotificationPop from "components/UI/NotificationPop"
 import LogOut from "./LogOut"
 import Notifications from "./Notifications"
 
@@ -29,6 +30,15 @@ function Header() {
   const [currentUser, setCurrentUser] = useState<string>("")
 
   const [openLogOut, setOpenLogOut] = useState<boolean>(false)
+
+  const [openPop, setOpenPop] = useState<boolean>(false)
+
+  window.setInterval(() => {
+    const date = new Date()
+    if (date.getHours() === 20 && date.getMinutes() === 0) {
+      setOpenPop(true)
+    }
+  }, 60000)
 
   const [menus, setMenus] = useState<
     {
@@ -59,6 +69,7 @@ function Header() {
 
   return (
     <HeaderContainer>
+      {openPop ? <NotificationPop closePop={() => setOpenPop(false)} /> : <></>}
       <HeaderContent>
         <Sections>
           {menus.length &&
