@@ -103,6 +103,12 @@ const SubButton = styled.button<{ selectedSection: boolean }>`
     `};
 `
 
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 35px;
+`
+
 export {
   HeaderContainer,
   ProfilePicture,
@@ -112,4 +118,5 @@ export {
   SubMenu,
   SubButton,
   List,
+  RightSection,
 }
