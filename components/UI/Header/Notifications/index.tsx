@@ -4,6 +4,7 @@ import { NotificationsContext } from "contexts/Notifications"
 import NotificationsInterface from "interfaces/notifications/notificationInterface"
 import { getTodosByDone } from "services/Annotations/Annotations.service"
 import { getProductsWithLowStock } from "services/Store/Products.service"
+import notificationTexts from "strings/notifications.json"
 import Icon from "components/UI/Assets/Icon"
 import ScrollView from "components/UI/ScrollView"
 import Notification from "./Notification"
@@ -27,8 +28,8 @@ function Notifications() {
         notificationsList.push({
           id: index * 2,
           type,
-          title: "Stock Bajo",
-          description: `El producto: ${item.name} tiene un stock de ${item.stock}.`,
+          title: `${notificationTexts.notificationStock.title}`,
+          description: `${notificationTexts.notificationStock.beforeProduct} ${item.name} ${notificationTexts.notificationStock.afterProduct} ${item.stock}.`,
           url: "/store?stock=true",
           read: false,
         }),
@@ -37,8 +38,8 @@ function Notifications() {
       notificationsList.push({
         id: 100,
         type,
-        title: "Pendientes",
-        description: `Hay ${content.length} tareas pendientes.`,
+        title: `${notificationTexts.notificationTasks.title}`,
+        description: `${notificationTexts.notificationTasks.beforeAmount} ${content.length} ${notificationTexts.notificationTasks.afterAmount}.`,
         url: "/annotations?notes=true",
         read: false,
       })

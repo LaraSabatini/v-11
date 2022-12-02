@@ -1,0 +1,16 @@
+{
+    "notificationPop": {
+        "title": "Recordatorio:",
+        "description": "Recuerda cerrar la caja al final del turno."
+    },
+    "notificationStock": {
+        "title": "Stock Bajo",
+        "beforeProduct": "El producto:",
+        "afterProduct": "tiene un stock de"
+    },
+    "notificationTasks": {
+        "title": "Pendientes",
+        "beforeAmount": "Hay:",
+        "afterAmount": "tareas pendientes."
+    }
+}
