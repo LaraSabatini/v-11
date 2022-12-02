@@ -49,6 +49,10 @@ function TillClosure({ closeTillPreview }: TillPreviewInterface) {
   const getData = async () => {
     const financialData = await getFinancesData(today)
     setTillData(financialData.data)
+    setTotalEarningsModified({
+      cash: financialData.data.tillEarnings.cash,
+      mp: financialData.data.tillEarnings.mp,
+    })
   }
 
   const setUsersList = async () => {
