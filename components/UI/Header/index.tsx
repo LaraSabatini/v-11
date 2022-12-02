@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
+import NotificationsProvider from "contexts/Notifications"
 import { useRouter } from "next/router"
 import routes from "routes"
 import Tooltip from "components/UI/Tooltip"
+import NotificationPop from "components/UI/NotificationPop"
 import LogOut from "./LogOut"
+import Notifications from "./Notifications"
 
 import {
   HeaderContainer,
@@ -14,6 +17,7 @@ import {
   SubMenu,
   SubButton,
   List,
+  RightSection,
 } from "./styles"
 
 function Header() {
@@ -26,6 +30,15 @@ function Header() {
   const [currentUser, setCurrentUser] = useState<string>("")
 
   const [openLogOut, setOpenLogOut] = useState<boolean>(false)
+
+  const [openPop, setOpenPop] = useState<boolean>(false)
+
+  window.setInterval(() => {
+    const date = new Date()
+    if (date.getHours() === 20 && date.getMinutes() === 0) {
+      setOpenPop(true)
+    }
+  }, 60000)
 
   const [menus, setMenus] = useState<
     {
@@ -56,6 +69,7 @@ function Header() {
 
   return (
     <HeaderContainer>
+      {openPop ? <NotificationPop closePop={() => setOpenPop(false)} /> : <></>}
       <HeaderContent>
         <Sections>
           {menus.length &&
@@ -108,12 +122,18 @@ function Header() {
               </SectionTitle>
             ))}
         </Sections>
-        <Tooltip title={currentUser} placement="bottom-end">
-          <ProfilePicture onClick={() => setOpenLogOut(!openLogOut)}>
-            {currentUser.length && currentUser.substring(0, 1).toUpperCase()}
-          </ProfilePicture>
-        </Tooltip>
+        <RightSection>
+          <NotificationsProvider>
+            <Notifications />
+          </NotificationsProvider>
+          <Tooltip title={currentUser} placement="bottom-end">
+            <ProfilePicture onClick={() => setOpenLogOut(!openLogOut)}>
+              {currentUser.length && currentUser.substring(0, 1).toUpperCase()}
+            </ProfilePicture>
+          </Tooltip>
+        </RightSection>
       </HeaderContent>
+
       {openLogOut && <LogOut currentUser={currentUser} />}
     </HeaderContainer>
   )

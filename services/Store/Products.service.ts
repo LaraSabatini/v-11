@@ -21,6 +21,14 @@ export const getProducts = async (page: number) => {
   return res.data
 }
 
+export const getProductsWithLowStock = async (stock: number, page: number) => {
+  const res = await axios.get(
+    `${apiURL}/stock=${stock}?page=${page}`,
+    axiosHeader,
+  )
+  return res.data
+}
+
 export const searchProducts = async (search: string, page: number) => {
   const res = await defaultGetSearch(apiURL, search, page)
   return res
