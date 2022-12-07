@@ -6,7 +6,7 @@ import generalTexts from "strings/general.json"
 import setPartnerList from "../Helpers/components/filter"
 import Filters from "./Filters"
 import Search from "./Search"
-import { HeadContent, Title } from "./styles"
+import { HeadContent, Title, Divider, FiltersContainer } from "./styles"
 
 function HeadingContent() {
   const {
@@ -49,24 +49,26 @@ function HeadingContent() {
     <>
       <HeadContent>
         <Title>
-          {generalTexts.sections.home}{" "}
+          {generalTexts.sections.home} /{" "}
           <span>
-            {" "}
-            /{" "}
             {routeIsClients
-              ? `${generalTexts.sections.home}`
-              : `${generalTexts.sections.prices}`}
+              ? `${generalTexts.sections.home.toLowerCase()}`
+              : `${generalTexts.sections.prices.toLowerCase()}`}
           </span>
         </Title>
-        {routeIsClients && <Filters />}
       </HeadContent>
+      <Divider />
+
       {routeIsClients && (
-        <Search
-          getVirginList={getPartnersList}
-          searchPartnerInDB={searchPartnerInDB}
-          title={generalTexts.search.title}
-          description={generalTexts.search.description}
-        />
+        <FiltersContainer>
+          <Search
+            getVirginList={getPartnersList}
+            searchPartnerInDB={searchPartnerInDB}
+            title={generalTexts.search.title}
+            description={generalTexts.search.description}
+          />
+          <Filters />
+        </FiltersContainer>
       )}
     </>
   )

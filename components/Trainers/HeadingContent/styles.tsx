@@ -3,25 +3,28 @@ import theme from "theme/index"
 
 const Title = styled.h4`
   font-family: ${theme.fonts.primary};
-  font-size: 25px;
+  font-size: 20px;
   margin: 0;
-  margin-top: 20px;
+  gap: 5px;
+  width: 98%;
   display: flex;
   align-items: center;
   gap: 5px;
-  justify-content: space-between;
-  width: 98%;
 
   span {
     font-weight: ${theme.fontWeights.regular};
-    font-size: 20px;
+    font-size: 15px;
+    background-color: #ededed;
+    padding: 3px 5px;
+    border-radius: 10px;
   }
 `
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 35px;
+const Divider = styled.div`
+  width: 100%;
+  height: 0.5px;
+  background-color: rgba(83, 45, 117, 0.4);
+  margin-top: 10px;
 `
 
-export { Title, Container }
+export { Title, Divider }

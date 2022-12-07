@@ -30,7 +30,7 @@ import CreateAnnotation from "./CreateAnnotation"
 import EditAnnotation from "./EditAnnotation"
 import ToDosCard from "./ToDosCard"
 import NotesCard from "./NotesCard"
-import { CardsContainer, Add } from "./styles"
+import { CardsContainer, Add, Divider } from "./styles"
 
 function AnnotationsView() {
   const {
@@ -264,12 +264,11 @@ function AnnotationsView() {
         <HeadContent>
           <Title>
             {generalTexts.sections.annotations}
-            <span>
-              {" / "}
-              {annotationTexts.notes}
-            </span>
+            {" / "}
+            <span>{annotationTexts.notes}</span>
           </Title>
         </HeadContent>
+        <Divider />
         <CardsContainer>
           <ToDosCard />
           <NotesCard />

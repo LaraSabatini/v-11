@@ -21,13 +21,19 @@ const HeadContent = styled.div`
 `
 
 const Title = styled.h4`
-  font-size: 25px;
+  font-family: ${theme.fonts.primary};
+  font-size: 20px;
   margin: 0;
-  padding-top: 31px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 
   span {
     font-weight: ${theme.fontWeights.regular};
-    font-size: 20px;
+    font-size: 15px;
+    background-color: #ededed;
+    padding: 3px 5px;
+    border-radius: 10px;
   }
 `
 

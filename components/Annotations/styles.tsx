@@ -138,6 +138,13 @@ const Add = styled.button<{ disabled: boolean }>`
     `};
 `
 
+const Divider = styled.div`
+  width: 100%;
+  height: 0.5px;
+  background-color: rgba(83, 45, 117, 0.4);
+  margin-top: 10px;
+`
+
 export {
   CardsContainer,
   Item,
@@ -150,4 +157,5 @@ export {
   SubContent,
   NoInfoToShow,
   Add,
+  Divider,
 }

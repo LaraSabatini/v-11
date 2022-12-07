@@ -5,6 +5,6 @@ const Content = styled.div`
   margin: 0 auto;
   height: 80vh;
   position: relative;
-  padding-top: 30px;
+  padding-top: 20px;
 `
 export default Content

@@ -3,6 +3,10 @@ import theme from "theme/index"
 
 const FiltersContainer = styled.div`
   position: relative;
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  justify-content: flex-end;
 `
 
 const Filter = styled.div`
@@ -13,11 +17,11 @@ const Filter = styled.div`
   font-size: 16px;
   padding: 10px 15px;
   border-radius: 5px;
+  height: 20px;
   box-shadow: 0px 10px 16px 0px rgba(45, 54, 61, 0.14);
   -webkit-box-shadow: 0px 10px 16px 0px rgba(45, 54, 61, 0.14);
   -moz-box-shadow: 0px 10px 16px 0px rgba(45, 54, 61, 0.14);
   cursor: pointer;
-
   position: relative;
 
   p {
@@ -30,16 +34,17 @@ const Filter = styled.div`
 `
 
 const Options = styled.div`
-  position: absolute;
   background: white;
-  top: 115%;
-  right: 0;
   width: 150px;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  top: 110%;
+  right: 0;
   gap: 10px;
   padding: 10px;
   border-radius: 0 0 10px 10px;
+  z-index: 100;
 
   box-shadow: 0px 10px 16px 0px rgba(45, 54, 61, 0.14);
   -webkit-box-shadow: 0px 10px 16px 0px rgba(45, 54, 61, 0.14);
@@ -60,11 +65,7 @@ const Option = styled.p<{ selected: boolean }>`
     `};
 `
 
-const CalendarContainer = styled.div`
-  position: absolute;
-  right: -220px;
-  top: -4px;
-`
+const CalendarContainer = styled.div``
 
 const Select = styled.div`
   display: flex;

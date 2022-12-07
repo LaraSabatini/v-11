@@ -10,7 +10,7 @@ const MainContainer = styled.div`
 const Content = styled.div`
   width: 90vw;
   margin: 0 auto;
-  padding-top: 30px;
+  margin-top: 27px;
 `
 
 export { MainContainer, Content }

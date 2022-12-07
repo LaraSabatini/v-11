@@ -4,6 +4,13 @@ import theme from "theme/index"
 const Container = styled.div`
   position: relative;
   font-family: ${theme.fonts.primary};
+  background-color: ${theme.colors.primary};
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 const NotificationList = styled.div`
@@ -14,7 +21,7 @@ const NotificationList = styled.div`
   border-radius: 5px;
   z-index: 500;
   box-shadow: 0px 0px 20px 5px rgba(59, 0, 135, 0.1);
-  top: 35px;
+  top: 45px;
   padding: 15px;
   right: 0px;
 `
@@ -31,14 +38,15 @@ const Dot = styled.div`
   height: 9px;
   border-radius: 50%;
   position: absolute;
-  right: 3px;
+  right: 8px;
+  top: 7px;
 `
 
 const NotificationsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 10px;
+  padding: 5px;
 `
 
 export {

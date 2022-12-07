@@ -6,7 +6,7 @@ const Content = styled.div`
   margin: 0 auto;
   height: 80vh;
   position: relative;
-  padding-top: 30px;
+  margin-top: 20px;
   font-family: ${theme.fonts.primary};
 `
 export default Content

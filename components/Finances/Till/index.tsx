@@ -8,7 +8,7 @@ import generalTexts from "strings/general.json"
 import ProductsView from "./ProductsView"
 import BoulderView from "./BoulderView"
 import TillByUser from "./TillByUser"
-import TotalEarnings from "./styles"
+import { TotalEarnings, Content } from "./styles"
 
 function Till() {
   const {
@@ -122,7 +122,7 @@ function Till() {
   }, [tillDateSelected])
 
   return (
-    <div>
+    <Content>
       {
         {
           1: <ProductsView profits={financialData.store.earnings} />,
@@ -142,7 +142,7 @@ function Till() {
           ),
         }[tillFilterSelected.id]
       }
-    </div>
+    </Content>
   )
 }
 

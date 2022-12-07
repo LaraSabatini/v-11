@@ -2,7 +2,6 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  margin-top: -20px;
   position: relative;
 `
 

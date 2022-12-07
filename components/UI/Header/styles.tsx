@@ -5,7 +5,6 @@ const HeaderContainer = styled.div`
   width: 100vw;
   height: 30px;
   padding: 20px 0;
-  background-color: ${theme.colors.primary};
   position: relative;
 `
 
@@ -15,6 +14,10 @@ const HeaderContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  img {
+    width: 60px;
+  }
 `
 
 const Sections = styled.div`
@@ -33,7 +36,7 @@ const SectionTitle = styled.div<{ bold: boolean }>`
   cursor: pointer;
   font-weight: ${theme.fontWeights.light};
   font-size: 16px;
-  color: ${theme.colors.white};
+  color: ${theme.colors.primary};
   text-decoration: none;
 
   ${props =>

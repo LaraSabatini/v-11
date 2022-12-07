@@ -72,6 +72,7 @@ function Header() {
       {openPop ? <NotificationPop closePop={() => setOpenPop(false)} /> : <></>}
       <HeaderContent>
         <Sections>
+          <img alt="logo" src="logo.png" />
           {menus.length &&
             routes.map((route, mayorIndex) => (
               <SectionTitle

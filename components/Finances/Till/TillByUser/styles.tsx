@@ -3,7 +3,6 @@ import theme from "theme/index"
 
 const MainContainer = styled.div`
   font-family: ${theme.fonts.primary};
-  padding-top: 50px;
 `
 
 const CardContainer = styled.div`

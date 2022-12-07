@@ -3,11 +3,13 @@ import theme from "theme/index"
 
 const Container = styled.div`
   font-family: ${theme.fonts.primary};
-  margin-top: 20px;
   height: 90vh;
+  position: relative;
 `
 
 const FinalProfit = styled.div`
+  position: absolute;
+  top: -78px;
   font-family: ${theme.fonts.primary};
   width: 450px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);

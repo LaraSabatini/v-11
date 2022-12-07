@@ -4,7 +4,7 @@ import theme from "theme/index"
 const Container = styled.div`
   width: 90%;
   margin: 0 auto;
-  padding-top: 30px;
+  padding-top: 20px;
   position: relative;
   height: 83vh;
   font-family: ${theme.fonts.primary};
