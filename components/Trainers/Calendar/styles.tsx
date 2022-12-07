@@ -9,7 +9,7 @@ const MainContainer = styled.div`
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   width: 1085px;
   height: 400px;
-  margin: 50px auto;
+  margin: 70px auto;
   border-radius: 10px;
   position: relative;
 
@@ -99,7 +99,9 @@ const DividerRowShifts = styled.div`
   top: 226px;
 `
 
-const PaginatorContainer = styled.div``
+const PaginatorContainer = styled.div`
+  margin-top: -30px;
+`
 
 const SectionContainer = styled.div`
   position: relative;
