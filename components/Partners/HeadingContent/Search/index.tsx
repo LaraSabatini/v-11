@@ -48,7 +48,7 @@ function Search({
             setSearchValue(e.target.value)
           }
         }}
-        width={250}
+        width={240}
         enterSearch={searchPartnerInDB}
       />
       <HelpContainer onClick={() => setPopOverView(!popOverView)}>
