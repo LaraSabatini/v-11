@@ -4,7 +4,7 @@ import generalTexts from "strings/general.json"
 import CreateProductButton from "../GeneralContent/CreateProductButton"
 import Filters from "./Filters"
 import Search from "./Search"
-import { HeadContent, Title } from "./styles"
+import { HeadContent, Title, Divider, FiltersContainer } from "./styles"
 
 interface HeadingContentInterface {
   section: "store" | "stock"
@@ -16,19 +16,20 @@ function HeadingContent({ section, canView }: HeadingContentInterface) {
     <>
       <HeadContent>
         <Title>
-          {generalTexts.sections.store}{" "}
+          {generalTexts.sections.store} /{" "}
           <span>
-            {" "}
-            /{" "}
             {section === "store"
-              ? `${generalTexts.sections.store}`
-              : `${storeTexts.stock}`}
+              ? `${generalTexts.sections.store.toLowerCase()}`
+              : `${storeTexts.stock.toLowerCase()}`}
           </span>
         </Title>
-        {(section === "stock" && canView) ||
-          (section === "store" && canView && <Filters />)}
+        <Divider />
+        <FiltersContainer>
+          {(section === "stock" && canView) ||
+            (section === "store" && canView && <Filters />)}
 
-        {section === "stock" && canView && <Search />}
+          {section === "stock" && canView && <Search />}
+        </FiltersContainer>
         <CreateProductButton />
       </HeadContent>
     </>

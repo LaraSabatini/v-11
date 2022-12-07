@@ -2,13 +2,6 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const HeadContent = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 50px;
-  margin-top: 25px;
-  height: 38px;
-
   .btn-search {
     border: none;
     padding: 0;
@@ -17,11 +10,19 @@ const HeadContent = styled.div`
 `
 
 const Title = styled.h4`
-  font-size: 25px;
+  font-family: ${theme.fonts.primary};
+  font-size: 20px;
   margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
   span {
     font-weight: ${theme.fontWeights.regular};
-    font-size: 20px;
+    font-size: 15px;
+    background-color: #ededed;
+    padding: 3px 5px;
+    border-radius: 10px;
   }
 `
 
@@ -39,4 +40,25 @@ const HelpContainer = styled.div`
   cursor: pointer;
 `
 
-export { HeadContent, Title, SearchBarContainer, HelpContainer }
+const Divider = styled.div`
+  width: 100%;
+  height: 0.5px;
+  background-color: rgba(83, 45, 117, 0.4);
+  margin-top: 10px;
+`
+
+const FiltersContainer = styled.div`
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`
+
+export {
+  HeadContent,
+  Title,
+  SearchBarContainer,
+  HelpContainer,
+  Divider,
+  FiltersContainer,
+}
