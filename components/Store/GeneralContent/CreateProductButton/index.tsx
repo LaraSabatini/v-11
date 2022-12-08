@@ -1,10 +1,14 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { StoreContext } from "contexts/Store"
 import theme from "theme/index"
-import storeTexts from "strings/store.json"
-import Tooptip from "components/UI/Tooltip"
 import Icon from "components/UI/Assets/Icon"
-import { MainButton, CreateProduct } from "./styles"
+import {
+  MainButton,
+  CreateProduct,
+  CreateBrandButton,
+  ProductButton,
+  CreateCategoryButton,
+} from "./styles"
 
 function CreateProductButton() {
   const {
@@ -13,21 +17,38 @@ function CreateProductButton() {
     setCreateProductModal,
   } = useContext(StoreContext)
 
+  const [viewSubButtons, setViewSubButtons] = useState<boolean>(false)
+
   return (
     <MainButton>
-      <Tooptip title={storeTexts.mainButton}>
-        <CreateProduct
-          onClick={() => {
-            if (stockChanges) {
-              setModalStockHasChanges(true)
-            } else {
+      {viewSubButtons && (
+        <>
+          <ProductButton
+            onClick={() => {
               setCreateProductModal(true)
-            }
-          }}
-        >
-          <Icon color={theme.colors.white} icon="IconAdd" />
-        </CreateProduct>
-      </Tooptip>
+              setViewSubButtons(false)
+            }}
+            className="subbutton"
+          >
+            Producto
+          </ProductButton>
+          <CreateBrandButton className="subbutton">Marca</CreateBrandButton>
+          <CreateCategoryButton className="subbutton">
+            Categoria
+          </CreateCategoryButton>
+        </>
+      )}
+      <CreateProduct
+        onClick={() => {
+          if (stockChanges) {
+            setModalStockHasChanges(true)
+          } else {
+            setViewSubButtons(!viewSubButtons)
+          }
+        }}
+      >
+        <Icon color={theme.colors.white} icon="IconAdd" />
+      </CreateProduct>
     </MainButton>
   )
 }

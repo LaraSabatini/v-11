@@ -25,12 +25,13 @@ function HeadingContent({ section, canView }: HeadingContentInterface) {
         </Title>
         <Divider />
         <FiltersContainer>
+          <CreateProductButton />
+
           {(section === "stock" && canView) ||
             (section === "store" && canView && <Filters />)}
 
           {section === "stock" && canView && <Search />}
         </FiltersContainer>
-        <CreateProductButton />
       </HeadContent>
     </>
   )
