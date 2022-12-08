@@ -19,7 +19,7 @@ const NotificationList = styled.div`
   height: 200px;
   background-color: white;
   border-radius: 5px;
-  z-index: 500;
+  z-index: 1000;
   box-shadow: 0px 0px 20px 5px rgba(59, 0, 135, 0.1);
   top: 45px;
   padding: 15px;
