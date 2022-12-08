@@ -15,6 +15,8 @@ function CreateProductButton() {
     stockChanges,
     setModalStockHasChanges,
     setCreateProductModal,
+    setCreateBrandModal,
+    setCreateCategoryModal,
   } = useContext(StoreContext)
 
   const [viewSubButtons, setViewSubButtons] = useState<boolean>(false)
@@ -32,8 +34,22 @@ function CreateProductButton() {
           >
             Producto
           </ProductButton>
-          <CreateBrandButton className="subbutton">Marca</CreateBrandButton>
-          <CreateCategoryButton className="subbutton">
+          <CreateBrandButton
+            onClick={() => {
+              setCreateBrandModal(true)
+              setViewSubButtons(false)
+            }}
+            className="subbutton"
+          >
+            Marca
+          </CreateBrandButton>
+          <CreateCategoryButton
+            onClick={() => {
+              setCreateCategoryModal(true)
+              setViewSubButtons(false)
+            }}
+            className="subbutton"
+          >
             Categoria
           </CreateCategoryButton>
         </>

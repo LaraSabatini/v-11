@@ -6,6 +6,7 @@
     "mainButton": "Crear",
     "daily_pass": "Pase diario",
     "do_not_delete": "No borrar",
+    "createBrand": "Crear marca",
     "create": {
         "title": "Crear producto",
         "cost": "Costo",

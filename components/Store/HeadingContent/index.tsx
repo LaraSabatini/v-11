@@ -1,7 +1,7 @@
 import React from "react"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
-import CreateProductButton from "../GeneralContent/CreateProductButton"
+import CreateProductButton from "../GeneralContent/CreateButton"
 import Filters from "./Filters"
 import Search from "./Search"
 import { HeadContent, Title, Divider, FiltersContainer } from "./styles"

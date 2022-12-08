@@ -17,6 +17,7 @@ import HeadingContent from "./HeadingContent"
 import Buy from "./Buy"
 import Stock from "./Stock"
 import Content from "./styles"
+import CreateBrandForm from "./Forms/CreateBrand"
 
 function StoreView() {
   const router = useRouter()
@@ -30,6 +31,8 @@ function StoreView() {
     setAutoCompleteCategoriesValues,
     setProductsList,
     currentPage,
+    createBrandModal,
+    setCreateBrandModal,
   } = useContext(StoreContext)
 
   const getPermissions = localStorage.getItem("permissions")
@@ -73,7 +76,7 @@ function StoreView() {
   useEffect(() => {
     setData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [Object.keys(router.query)[0]])
+  }, [])
 
   return (
     <div>
@@ -94,6 +97,11 @@ function StoreView() {
             {createProductModal && (
               <CreateProduct
                 cancelCreate={() => setCreateProductModal(false)}
+              />
+            )}
+            {createBrandModal && (
+              <CreateBrandForm
+                cancelCreate={() => setCreateBrandModal(false)}
               />
             )}
           </>
