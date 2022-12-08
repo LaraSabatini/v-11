@@ -1,17 +1,17 @@
 import React, { useState, useRef, useContext } from "react"
-import { createBrand } from "services/Store/brands.service"
+import { createCategory } from "services/Store/categories.service"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
-import generalTexts from "strings/general.json"
 import { cleanPartnerData } from "utils"
+import generalTexts from "strings/general.json"
 import ModalForm from "components/UI/ModalForm"
 import TextField from "components/UI/TextField"
 
-interface CreateBrandFormInterface {
+interface CreateCategoryFormInterface {
   cancelCreate: (arg?: any) => void
 }
 
-function CreateBrandForm({ cancelCreate }: CreateBrandFormInterface) {
+function CreateCategoryForm({ cancelCreate }: CreateCategoryFormInterface) {
   const {
     setModalSuccess,
     setModalError,
@@ -20,18 +20,18 @@ function CreateBrandForm({ cancelCreate }: CreateBrandFormInterface) {
   } = useContext(StoreContext)
 
   const [disabledButton, setDisabledButton] = useState<boolean>(false)
-  const [brandName, setBrandName] = useState<string>("")
+  const [categoryName, setBrandName] = useState<string>("")
 
-  const brandRef = useRef(null)
+  const categoryRef = useRef(null)
 
   const handleCreate = async (e: any) => {
     e.preventDefault()
 
-    if (brandName !== "") {
+    if (categoryName !== "") {
       setDisabledButton(true)
 
-      const cleanedName = cleanPartnerData(brandName)
-      const create = await createBrand({ id: 0, name: cleanedName })
+      const cleanedName = cleanPartnerData(categoryName)
+      const create = await createCategory({ id: 0, name: cleanedName })
 
       if (create.status === 200) {
         setUpdateData(updateData + 1)
@@ -42,13 +42,13 @@ function CreateBrandForm({ cancelCreate }: CreateBrandFormInterface) {
         setDisabledButton(false)
       }
     } else {
-      await brandRef.current?.focus()
+      await categoryRef.current?.focus()
     }
   }
 
   return (
     <ModalForm
-      title={storeTexts.createBrand}
+      title={storeTexts.createCategory}
       cancelButtonContent={generalTexts.actions.cancel}
       submitButtonContent={generalTexts.actions.create}
       submit={handleCreate}
@@ -57,17 +57,17 @@ function CreateBrandForm({ cancelCreate }: CreateBrandFormInterface) {
     >
       <div>
         <TextField
-          value={brandName}
+          value={categoryName}
           required
           width={250}
-          label="Marca"
+          label="Categoria"
           type="text"
           onChange={e => setBrandName(e.target.value)}
-          reference={brandRef}
+          reference={categoryRef}
         />
       </div>
     </ModalForm>
   )
 }
 
-export default CreateBrandForm
+export default CreateCategoryForm

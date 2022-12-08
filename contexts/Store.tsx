@@ -94,6 +94,8 @@ function StoreProvider({ children }) {
   const [createBrandModal, setCreateBrandModal] = useState<boolean>(false)
   const [createCategoryModal, setCreateCategoryModal] = useState<boolean>(false)
 
+  const [updateData, setUpdateData] = useState<number>(0)
+
   const value = useMemo(
     () => ({
       productsList,
@@ -160,6 +162,8 @@ function StoreProvider({ children }) {
       setCreateBrandModal,
       createCategoryModal,
       setCreateCategoryModal,
+      updateData,
+      setUpdateData,
     }),
     [
       productsList,
@@ -191,6 +195,7 @@ function StoreProvider({ children }) {
       createProductModal,
       createBrandModal,
       createCategoryModal,
+      updateData,
     ],
   )
 

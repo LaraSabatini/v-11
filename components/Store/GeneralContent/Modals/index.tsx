@@ -15,6 +15,7 @@ function Modals() {
     triggerListUpdate,
     setTillPreview,
     setCreateBrandModal,
+    setCreateCategoryModal,
   } = useContext(StoreContext)
 
   return (
@@ -30,6 +31,7 @@ function Modals() {
             setModalSuccess(null)
             setTillPreview(false)
             setCreateBrandModal(false)
+            setCreateCategoryModal(false)
           }}
         />
       )}
@@ -43,6 +45,7 @@ function Modals() {
             setModalError(null)
             setTillPreview(false)
             setCreateBrandModal(false)
+            setCreateCategoryModal(false)
           }}
         />
       )}
