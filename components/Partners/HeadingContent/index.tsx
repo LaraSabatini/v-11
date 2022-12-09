@@ -4,7 +4,7 @@ import { PartnersContext } from "contexts/Partners"
 import { searchPartnerAction } from "helpers/partners"
 import generalTexts from "strings/general.json"
 import setPartnerList from "../Helpers/components/filter"
-import Filters from "./Filters"
+// import Filters from "./Filters"
 import Search from "./Search"
 import { HeadContent, Title, Divider, FiltersContainer } from "./styles"
 
@@ -67,7 +67,7 @@ function HeadingContent() {
             title={generalTexts.search.title}
             description={generalTexts.search.description}
           />
-          <Filters />
+          {/* <Filters /> */}
         </FiltersContainer>
       )}
     </>

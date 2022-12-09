@@ -94,6 +94,99 @@ const Day = styled.p`
   font-weight: ${theme.fontWeights.light};
 `
 
+//
+
+const ClientsContainer = styled.div`
+  background: #fffffe;
+  box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
+  border-radius: 10px;
+  width: 800px;
+  padding: 18px 0;
+  display: flex;
+  flex-direction: column;
+  font-family: ${theme.fonts.primary};
+`
+
+const FiltersRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
+  padding-bottom: 10px;
+  position: relative;
+`
+
+const Tab = styled.button<{ selected: boolean }>`
+  &:first-child {
+    margin-left: 24px;
+  }
+  font-family: ${theme.fonts.primary};
+  border: none;
+  background-color: transparent;
+  font-size: 16px;
+  font-weight: ${theme.fontWeights.light};
+  color: rgba(0, 0, 0, 0.65);
+
+  ${props =>
+    props.selected &&
+    css`
+      font-weight: ${theme.fontWeights.regular};
+      color: ${theme.colors.black};
+    `};
+`
+
+const Line = styled.div<{ filterSelected: string }>`
+  height: 1px;
+  background-color: ${theme.colors.primary};
+  position: absolute;
+  bottom: 0;
+
+  ${props =>
+    props.filterSelected === "all" &&
+    css`
+      left: 3%;
+      width: 55px;
+    `};
+
+  ${props =>
+    props.filterSelected === "students" &&
+    css`
+      left: 12%;
+      width: 75px;
+    `};
+
+  ${props =>
+    props.filterSelected === "free-pass" &&
+    css`
+      left: 23%;
+      width: 100px;
+    `};
+`
+
+const InfoRow = styled.div`
+  display: flex;
+  font-weight: ${theme.fontWeights.light};
+  color: #747474;
+  border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
+`
+
+const ExpDate = styled.p`
+  width: 144px;
+  margin-left: 88px;
+`
+const FullName = styled.p`
+  width: 200px;
+`
+const PartnerNumber = styled.p`
+  width: 60px;
+`
+const Type = styled.p`
+  width: 125px;
+`
+const Identification = styled.p`
+  width: 90px;
+`
+
 export {
   ListContainer,
   ListItem,
@@ -105,4 +198,14 @@ export {
   Paginator,
   NoPartnersView,
   Day,
+  ClientsContainer,
+  FiltersRow,
+  Tab,
+  Line,
+  InfoRow,
+  ExpDate,
+  FullName,
+  PartnerNumber,
+  Type,
+  Identification,
 }

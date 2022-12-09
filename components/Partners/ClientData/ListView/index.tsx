@@ -1,23 +1,35 @@
 import React, { useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
-import partnerTexts from "strings/partners.json"
-import yesOrNoArr from "const/fixedVariables"
-import PartnerInterface from "interfaces/partners/PartnerInterface"
-import theme from "theme/index"
-import ScrollView from "components/UI/ScrollView"
+// import partnerTexts from "strings/partners.json"
+// import yesOrNoArr from "const/fixedVariables"
+import clientFilters from "const/partners"
+// import PartnerInterface from "interfaces/partners/PartnerInterface"
+// import theme from "theme/index"
+// import ScrollView from "components/UI/ScrollView"
 import Pagination from "components/UI/Pagination"
-import Icon from "components/UI/Assets/Icon"
+// import Icon from "components/UI/Assets/Icon"
 import {
-  ListContainer,
-  ListItem,
+  // ListContainer,
+  // ListItem,
   Container,
-  Tags,
-  Student,
-  FreePass,
-  IconContainer,
+  // Tags,
+  // Student,
+  // FreePass,
+  // IconContainer,
   Paginator,
-  NoPartnersView,
-  Day,
+  // NoPartnersView,
+  // Day,
+  //
+  ClientsContainer,
+  FiltersRow,
+  Tab,
+  Line,
+  InfoRow,
+  ExpDate,
+  FullName,
+  PartnerNumber,
+  Type,
+  Identification,
 } from "./styles"
 
 interface PartnerListInterface {
@@ -35,6 +47,8 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
     setDetailState,
     totalPages,
     partners,
+    filterSelected,
+    setFilterSelected,
   } = useContext(PartnersContext)
 
   const selectPartner = (partner: number) => {
@@ -45,9 +59,50 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
     }
   }
 
+  const selectFilter = (type: string) => {
+    if (filterSelected === "all" || filterSelected !== type) {
+      setFilterSelected(type)
+      setPartnerSelected(null)
+    } else if (filterSelected === type) {
+      setFilterSelected("all")
+      setPartnerSelected(null)
+    }
+  }
+
   return (
     <Container>
-      <ScrollView height={450}>
+      <ClientsContainer>
+        <FiltersRow>
+          {clientFilters &&
+            clientFilters.map((filter: { value: string; text: string }) => {
+              return (
+                <Tab
+                  key={filter.value}
+                  selected={filterSelected === filter.value}
+                  onClick={() => {
+                    if (hasChanges) {
+                      setModalHasChanges(true)
+                    } else {
+                      setDetailState("view")
+                      selectFilter(filter.value)
+                    }
+                  }}
+                >
+                  {filter.text}
+                </Tab>
+              )
+            })}
+          <Line filterSelected={filterSelected} />
+        </FiltersRow>
+        <InfoRow>
+          <ExpDate>Fecha de venc.</ExpDate>
+          <FullName>Nombre completo</FullName>
+          <PartnerNumber>Nº</PartnerNumber>
+          <Type>Tipo</Type>
+          <Identification>DNI</Identification>
+        </InfoRow>
+      </ClientsContainer>
+      {/* <ScrollView height={450}>
         <ListContainer>
           {partners.length > 0 ? (
             partners.map((partner: PartnerInterface) => {
@@ -92,7 +147,7 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
             <NoPartnersView>{partnerTexts.no_more}</NoPartnersView>
           )}
         </ListContainer>
-      </ScrollView>
+      </ScrollView> */}
       <Paginator>
         <Pagination
           totalPages={totalPages}
