@@ -5,7 +5,8 @@ const ReceiptContainer = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
+  height: fit-content;
   width: 300px;
   padding: 25px;
   box-shadow: -1px 7px 10px -2px rgba(45, 54, 61, 0.22);
@@ -20,6 +21,7 @@ const Title = styled.h4`
 
 const Total = styled.p`
   margin: 0;
+  padding-top: 30px;
   font-weight: ${theme.fontWeights.semiBlack};
   display: flex;
   justify-content: space-between;
@@ -30,7 +32,7 @@ const Total = styled.p`
 `
 
 const Products = styled.div`
-  height: 190px;
+  height: 150px;
 `
 
 const Item = styled.div`
@@ -70,7 +72,7 @@ const PaymentMethods = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  height: 120px;
+  height: 90px;
 `
 
 export {

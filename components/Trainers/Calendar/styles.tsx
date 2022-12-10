@@ -9,7 +9,7 @@ const MainContainer = styled.div`
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   width: 1085px;
   height: 400px;
-  margin: 70px auto;
+  margin: 30px auto;
   border-radius: 10px;
   position: relative;
 
@@ -100,7 +100,7 @@ const DividerRowShifts = styled.div`
 `
 
 const PaginatorContainer = styled.div`
-  margin-top: -30px;
+  margin-top: 0px;
 `
 
 const SectionContainer = styled.div`
@@ -109,7 +109,7 @@ const SectionContainer = styled.div`
   flex-direction: column;
   width: fit-content;
   margin: 0 auto;
-  align-items: flex-end;
+  /* align-items: flex-end; */
 `
 
 export {

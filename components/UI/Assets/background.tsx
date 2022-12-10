@@ -3,9 +3,9 @@ import React from "react"
 function Background() {
   return (
     <svg
-      width="1440"
-      height="765"
-      viewBox="0 0 1440 765"
+      width="1366"
+      height="768"
+      viewBox="0 0 1366 768"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

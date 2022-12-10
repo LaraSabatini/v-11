@@ -63,7 +63,7 @@ function Prices({ canEdit }: ActionsInterface) {
           <Title>Precio MP</Title>
         </Head>
         <Items>
-          <ScrollView height={350}>
+          <ScrollView height={320}>
             {prices.length &&
               prices.map((price: PricesInterface) => (
                 <Item

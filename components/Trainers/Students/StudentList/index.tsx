@@ -50,7 +50,7 @@ function StudentList() {
 
   return (
     <Container>
-      <ScrollView height={450}>
+      <ScrollView height={350}>
         <ListContainer>
           {students.length > 0 ? (
             students.map((student: PartnerInterface) => (

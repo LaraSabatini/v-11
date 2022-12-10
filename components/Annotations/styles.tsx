@@ -4,7 +4,7 @@ import theme from "theme/index"
 const CardsContainer = styled.div`
   display: flex;
   padding-top: 30px;
-  width: 80%;
+  width: 85%;
   margin: 0 auto;
   justify-content: space-between;
   position: relative;

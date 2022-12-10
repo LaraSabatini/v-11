@@ -196,7 +196,7 @@ function Receipt({ canPurchase }: Permits) {
     <ReceiptContainer>
       <Title>{storeTexts.purchase.receipt}</Title>
       <Products>
-        <ScrollView height={190}>
+        <ScrollView height={150}>
           {purchase &&
             purchase.map((pur: TemporalPurchaseInterface) => (
               <Item key={pur.product_id}>
