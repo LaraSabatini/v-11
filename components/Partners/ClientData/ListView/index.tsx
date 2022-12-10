@@ -25,11 +25,12 @@ import {
   Tab,
   Line,
   InfoRow,
-  ExpDate,
+  // ExpDate,
   FullName,
   PartnerNumber,
   Type,
   Identification,
+  MemberSince,
 } from "./styles"
 
 interface PartnerListInterface {
@@ -95,11 +96,12 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
           <Line filterSelected={filterSelected} />
         </FiltersRow>
         <InfoRow>
-          <ExpDate>Fecha de venc.</ExpDate>
+          {/* <ExpDate>Fecha de venc.</ExpDate> */}
           <FullName>Nombre completo</FullName>
           <PartnerNumber>Nº</PartnerNumber>
           <Type>Tipo</Type>
           <Identification>DNI</Identification>
+          <MemberSince>Miembro desde</MemberSince>
         </InfoRow>
       </ClientsContainer>
       {/* <ScrollView height={450}>

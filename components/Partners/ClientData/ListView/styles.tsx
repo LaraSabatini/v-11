@@ -2,8 +2,9 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  height: 80%;
-  width: 600px;
+  /* border: 1px solid red; */
+  /* height: 80%; */
+  /* width: 600px; */
 `
 
 const ListContainer = styled.div`
@@ -176,6 +177,7 @@ const ExpDate = styled.p`
 `
 const FullName = styled.p`
   width: 200px;
+  margin-left: 88px;
 `
 const PartnerNumber = styled.p`
   width: 60px;
@@ -184,7 +186,11 @@ const Type = styled.p`
   width: 125px;
 `
 const Identification = styled.p`
-  width: 90px;
+  width: 120px;
+`
+
+const MemberSince = styled.p`
+  width: 150px;
 `
 
 export {
@@ -208,4 +214,5 @@ export {
   PartnerNumber,
   Type,
   Identification,
+  MemberSince,
 }

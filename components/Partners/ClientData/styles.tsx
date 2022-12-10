@@ -4,7 +4,7 @@ const ListAndDetailContainer = styled.div`
   display: flex;
   align-items: top;
   /* justify-content: center; */
-  margin-top: 50px;
+  margin-top: 30px;
   gap: 20px;
   /* border: 1px solid red; */
 `
