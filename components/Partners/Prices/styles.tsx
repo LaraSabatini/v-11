@@ -2,19 +2,19 @@ import styled from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  height: 500px;
+  height: 470px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-top: 50px;
+  padding-top: 10px;
 `
 
 const Form = styled.div`
   background: #ffffff;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
-  height: 600px;
+  height: 450px;
   width: 450px;
   font-family: ${theme.fonts.primary};
   display: flex;

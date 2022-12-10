@@ -2,7 +2,7 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  height: 400px;
+  height: 350px;
   width: 35%;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   padding: 15px;

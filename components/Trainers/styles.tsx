@@ -6,7 +6,7 @@ const Container = styled.div`
   margin: 0 auto;
   padding-top: 20px;
   position: relative;
-  height: 83vh;
+  /* height: 83vh; */
   font-family: ${theme.fonts.primary};
 `
 export default Container

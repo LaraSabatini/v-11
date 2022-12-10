@@ -13,7 +13,7 @@ const PartnerData = styled.div`
 
 const Details = styled.div`
   padding: 0 10px;
-  height: 370px;
+  height: 290px;
   justify-content: space-between;
   display: flex;
   flex-direction: column;

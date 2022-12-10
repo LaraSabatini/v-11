@@ -6,7 +6,7 @@ const MainContainer = styled.div`
   margin: 0 auto;
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   align-items: center;
   justify-content: center;
 `

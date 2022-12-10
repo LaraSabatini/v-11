@@ -49,7 +49,7 @@ const DisablingDiv = styled.div`
 `
 
 const LessonsPurchasedList = styled.div`
-  margin-left: 50px;
+  margin-left: 100px;
   background-color: #dbdbdb7d;
   width: 259px;
   height: 115px;

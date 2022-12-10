@@ -47,7 +47,7 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
 
   return (
     <Container>
-      <ScrollView height={450}>
+      <ScrollView height={350}>
         <ListContainer>
           {partners.length > 0 ? (
             partners.map((partner: PartnerInterface) => {

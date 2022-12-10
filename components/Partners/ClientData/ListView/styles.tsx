@@ -2,7 +2,7 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  height: 80%;
+  /* height: 80%; */
   width: 600px;
 `
 
