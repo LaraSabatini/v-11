@@ -1,36 +1,26 @@
 import React, { useContext } from "react"
 import { PartnersContext } from "contexts/Partners"
-// import partnerTexts from "strings/partners.json"
-// import yesOrNoArr from "const/fixedVariables"
+import partnerTexts from "strings/partners.json"
+import yesOrNoArr from "const/fixedVariables"
 import clientFilters from "const/partners"
-// import PartnerInterface from "interfaces/partners/PartnerInterface"
-// import theme from "theme/index"
-// import ScrollView from "components/UI/ScrollView"
+import PartnerInterface from "interfaces/partners/PartnerInterface"
 import Pagination from "components/UI/Pagination"
-// import Icon from "components/UI/Assets/Icon"
 import {
-  // ListContainer,
-  // ListItem,
   Container,
-  // Tags,
-  // Student,
-  // FreePass,
-  // IconContainer,
   Paginator,
-  // NoPartnersView,
-  // Day,
-  //
+  NoPartnersView,
   ClientsContainer,
   FiltersRow,
   Tab,
   Line,
   InfoRow,
-  // ExpDate,
   FullName,
   PartnerNumber,
   Type,
   Identification,
   MemberSince,
+  ClientList,
+  ClientRow,
 } from "./styles"
 
 interface PartnerListInterface {
@@ -99,18 +89,17 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
           {/* <ExpDate>Fecha de venc.</ExpDate> */}
           <FullName>Nombre completo</FullName>
           <PartnerNumber>Nº</PartnerNumber>
-          <Type>Tipo</Type>
+          <Type type="">Tipo</Type>
           <Identification>DNI</Identification>
           <MemberSince>Miembro desde</MemberSince>
         </InfoRow>
-      </ClientsContainer>
-      {/* <ScrollView height={450}>
-        <ListContainer>
+        <ClientRow>
           {partners.length > 0 ? (
             partners.map((partner: PartnerInterface) => {
               return (
-                <ListItem
+                <ClientList
                   key={partner.id}
+                  isSelected={partnerSelected === partner.id}
                   onClick={() => {
                     if (hasChanges) {
                       setModalHasChanges(true)
@@ -120,36 +109,42 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
                     }
                   }}
                 >
-                  <p className="name">
+                  <FullName>
                     {partner.name} {partner.last_name}
-                  </p>
-                  <p className="partnerNumber">N°: {partner.id}</p>
-                  <Tags>
-                    {partner.is_student ===
-                      `${yesOrNoArr[0].display_name.toUpperCase()}` && (
-                      <Student>{partnerTexts.student}</Student>
+                  </FullName>
+                  <PartnerNumber>{partner.id}</PartnerNumber>
+                  {partner.is_student ===
+                    `${yesOrNoArr[0].display_name.toUpperCase()}` &&
+                    partner.free_pass !== 0 && (
+                      <Type type="free-pass">A/P-L</Type>
                     )}
-                    {partner.free_pass !== 0 && (
-                      <FreePass>{partnerTexts.free_pass}</FreePass>
+                  {partner.is_student ===
+                    `${yesOrNoArr[1].display_name.toUpperCase()}` &&
+                    partner.free_pass !== 0 && (
+                      <Type type="free-pass">Pase Libre</Type>
                     )}
-                    {partner.free_pass === 0 &&
-                      partner.is_student ===
-                        `${yesOrNoArr[1].display_name.toUpperCase()}` && (
-                        <Day>{partnerTexts.day}</Day>
-                      )}
-                  </Tags>
-
-                  <IconContainer active={partnerSelected === partner.id}>
-                    <Icon icon="IconArrowRight" color={theme.colors.primary} />
-                  </IconContainer>
-                </ListItem>
+                  {partner.is_student ===
+                    `${yesOrNoArr[0].display_name.toUpperCase()}` &&
+                    partner.free_pass === 0 && (
+                      <Type type="student">Alumno</Type>
+                    )}
+                  {partner.free_pass === 0 &&
+                    partner.is_student ===
+                      `${yesOrNoArr[1].display_name.toUpperCase()}` && (
+                      <Type type="day">Dia</Type>
+                    )}
+                  <Identification>
+                    {partner.identification_number}
+                  </Identification>
+                  <MemberSince>{partner.membership_start_date}</MemberSince>
+                </ClientList>
               )
             })
           ) : (
             <NoPartnersView>{partnerTexts.no_more}</NoPartnersView>
           )}
-        </ListContainer>
-      </ScrollView> */}
+        </ClientRow>
+      </ClientsContainer>
       <Paginator>
         <Pagination
           totalPages={totalPages}

@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const SearchBarContainer = styled.div`
-  margin-top: 30px;
+  margin-top: 15px;
   display: flex;
   align-items: center;
   gap: 15px;

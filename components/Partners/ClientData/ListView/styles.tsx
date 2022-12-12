@@ -2,70 +2,7 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  /* border: 1px solid red; */
-  /* height: 80%; */
-  /* width: 600px; */
-`
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 10px;
-`
-
-const ListItem = styled.div`
-  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
-  border-radius: 10px;
-  background-color: ${theme.colors.white};
-  padding: 0 15px;
-  display: flex;
-  align-items: center;
-  font-family: ${theme.fonts.primary};
-
-  .name {
-    width: 200px;
-  }
-
-  .partnerNumber {
-    width: 100px;
-  }
-`
-
-const Tags = styled.div`
-  width: 240px;
-  display: flex;
-  gap: 5px;
-  p {
-    margin: 0;
-  }
-`
-
-const Student = styled.p`
-  background-color: #c66948;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: ${theme.colors.white};
-  font-weight: ${theme.fontWeights.light};
-`
-
-const FreePass = styled.p`
-  background-color: #48aba2;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: ${theme.colors.white};
-  font-weight: ${theme.fontWeights.light};
-`
-
-const IconContainer = styled.div<{ active: boolean }>`
-  margin-left: 50px;
-  transform: rotate(90deg);
-
-  ${props =>
-    props.active &&
-    css`
-      transform: rotate(360deg);
-    `};
+  margin-top: -10px;
 `
 
 const Paginator = styled.div`
@@ -87,14 +24,6 @@ const NoPartnersView = styled.h1`
   font-size: 25px;
 `
 
-const Day = styled.p`
-  background-color: #764e9a;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: ${theme.colors.white};
-  font-weight: ${theme.fontWeights.light};
-`
-
 //
 
 const ClientsContainer = styled.div`
@@ -106,6 +35,7 @@ const ClientsContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-family: ${theme.fonts.primary};
+  height: 350px;
 `
 
 const FiltersRow = styled.div`
@@ -124,7 +54,7 @@ const Tab = styled.button<{ selected: boolean }>`
   font-family: ${theme.fonts.primary};
   border: none;
   background-color: transparent;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: ${theme.fontWeights.light};
   color: rgba(0, 0, 0, 0.65);
 
@@ -152,15 +82,15 @@ const Line = styled.div<{ filterSelected: string }>`
   ${props =>
     props.filterSelected === "students" &&
     css`
-      left: 12%;
+      left: 11%;
       width: 75px;
     `};
 
   ${props =>
     props.filterSelected === "free-pass" &&
     css`
-      left: 23%;
-      width: 100px;
+      left: 22%;
+      width: 90px;
     `};
 `
 
@@ -169,12 +99,9 @@ const InfoRow = styled.div`
   font-weight: ${theme.fontWeights.light};
   color: #747474;
   border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
+  font-size: 14px;
 `
 
-const ExpDate = styled.p`
-  width: 144px;
-  margin-left: 88px;
-`
 const FullName = styled.p`
   width: 200px;
   margin-left: 88px;
@@ -182,8 +109,29 @@ const FullName = styled.p`
 const PartnerNumber = styled.p`
   width: 60px;
 `
-const Type = styled.p`
+const Type = styled.p<{ type: string }>`
   width: 125px;
+
+  ${props =>
+    props.type === "day" &&
+    css`
+      color: ${theme.colors.primary};
+      font-weight: ${theme.fontWeights.regular};
+    `};
+
+  ${props =>
+    props.type === "student" &&
+    css`
+      color: ${theme.colors.secondary};
+      font-weight: ${theme.fontWeights.regular};
+    `};
+
+  ${props =>
+    props.type === "free-pass" &&
+    css`
+      color: ${theme.colors.green};
+      font-weight: ${theme.fontWeights.regular};
+    `};
 `
 const Identification = styled.p`
   width: 120px;
@@ -193,26 +141,45 @@ const MemberSince = styled.p`
   width: 150px;
 `
 
+const ClientRow = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  overflow-x: hidden;
+  height: 350px;
+`
+
+const ClientList = styled.div<{ isSelected: string }>`
+  display: flex;
+  font-weight: ${theme.fontWeights.light};
+  border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  ${props =>
+    props.isSelected &&
+    css`
+      background-color: rgba(0, 0, 0, 0.05);
+    `};
+`
+
 export {
-  ListContainer,
-  ListItem,
   Container,
-  Tags,
-  Student,
-  FreePass,
-  IconContainer,
   Paginator,
   NoPartnersView,
-  Day,
   ClientsContainer,
   FiltersRow,
   Tab,
   Line,
   InfoRow,
-  ExpDate,
   FullName,
   PartnerNumber,
   Type,
   Identification,
   MemberSince,
+  ClientList,
+  ClientRow,
 }
