@@ -11,6 +11,10 @@ const PartnerData = styled.div`
   justify-content: space-between;
   font-weight: ${theme.fontWeights.light};
   font-size: 15px;
+
+  b {
+    font-weight: ${theme.fontWeights.regular};
+  }
 `
 
 const Details = styled.div`
@@ -18,7 +22,6 @@ const Details = styled.div`
   display: flex;
   flex-direction: column;
   gap: 50px;
-  /* border: 1px solid red; */
 `
 
 const RemoveButton = styled.button<{ disabledButton: boolean }>`
