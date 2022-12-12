@@ -3,18 +3,13 @@ import theme from "theme/index"
 
 const Container = styled.div`
   background-color: white;
-  /* height: 410px; */
   width: 400px;
-  /* border-radius: 10px; */
   padding: 20px;
-  /* box-shadow: 0px 0px 20px 5px rgba(59, 0, 135, 0.1); */
   font-family: ${theme.fonts.primary};
-  /* border: 1px solid red; */
 
   background: #fffffe;
   box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
-  /* border: 1px solid green; */
   height: fit-content;
 `
 

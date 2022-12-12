@@ -56,28 +56,48 @@ function SelectLessons() {
               }
             }}
           />
+          {clientIsRegistered && (
+            <InputCalendar
+              label={trainerTexts.createPurchase.lessonsDate}
+              minCalendarDate={`${day}/${month}/${year}`}
+              valueCalendar={provisionalSelection.date}
+              required={datesSelected.length < amountOfLessons}
+              reference={lessonRef}
+              width={150}
+              onChange={e =>
+                setProvisionalSelection({
+                  ...provisionalSelection,
+                  date: e.selectedChangeDate,
+                  shift: provisionalSelection.shift,
+                })
+              }
+            />
+          )}
         </LessonsSubGroup>
 
         {(amountOfLessons === 0 ||
           datesSelected.length === amountOfLessons) && <DisablingDiv />}
 
         <LessonsSubGroup>
-          <InputCalendar
-            position={clientIsRegistered ? "bottom-left" : "top-left"}
-            label={trainerTexts.createPurchase.lessonsDate}
-            minCalendarDate={`${day}/${month}/${year}`}
-            valueCalendar={provisionalSelection.date}
-            required={datesSelected.length < amountOfLessons}
-            reference={lessonRef}
-            width={150}
-            onChange={e =>
-              setProvisionalSelection({
-                ...provisionalSelection,
-                date: e.selectedChangeDate,
-                shift: provisionalSelection.shift,
-              })
-            }
-          />
+          {!clientIsRegistered && (
+            <InputCalendar
+              position="top-left"
+              label={trainerTexts.createPurchase.lessonsDate}
+              minCalendarDate={`${day}/${month}/${year}`}
+              valueCalendar={provisionalSelection.date}
+              required={datesSelected.length < amountOfLessons}
+              reference={lessonRef}
+              width={150}
+              onChange={e =>
+                setProvisionalSelection({
+                  ...provisionalSelection,
+                  date: e.selectedChangeDate,
+                  shift: provisionalSelection.shift,
+                })
+              }
+            />
+          )}
+
           <Autocomplete
             setValue={provisionalSelection.shift}
             width={110}

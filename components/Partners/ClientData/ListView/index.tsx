@@ -86,7 +86,6 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
           <Line filterSelected={filterSelected} />
         </FiltersRow>
         <InfoRow>
-          {/* <ExpDate>Fecha de venc.</ExpDate> */}
           <FullName>Nombre completo</FullName>
           <PartnerNumber>Nº</PartnerNumber>
           <Type type="">Tipo</Type>

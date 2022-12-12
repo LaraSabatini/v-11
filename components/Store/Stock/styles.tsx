@@ -7,12 +7,13 @@ const Container = styled.div`
 
 const Content = styled.div`
   width: 1290px;
-  padding-top: 40px;
+  padding-top: 10px;
 `
 
 const ButtonsContainer = styled.div`
   display: flex;
   gap: 20px;
+  margin-top: -30px;
 `
 
 const AutocompleteContainer = styled.div`
