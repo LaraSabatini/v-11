@@ -5,7 +5,6 @@ const ReceiptContainer = styled.div`
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
   height: fit-content;
   width: 300px;
   padding: 25px;
@@ -17,14 +16,16 @@ const ReceiptContainer = styled.div`
 const Title = styled.h4`
   margin: 0;
   padding-bottom: 10px;
+  font-weight: ${theme.fontWeights.regular};
 `
 
 const Total = styled.p`
   margin: 0;
   padding-top: 30px;
-  font-weight: ${theme.fontWeights.semiBlack};
+  font-weight: ${theme.fontWeights.regular};
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 30px;
 
   span {
     font-weight: ${theme.fontWeights.regular};
@@ -48,7 +49,8 @@ const Item = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 15px;
   margin-top: 10px;
 `
 
