@@ -41,7 +41,7 @@ function StudentDetails() {
           <TableTitle>{trainerTexts.students_info.purchase}</TableTitle>
           <TableTitle>{trainerTexts.students_info.expire_date}</TableTitle>
         </TableTitles>
-        <ScrollView height={270}>
+        <ScrollView height={240}>
           <LessonListContainer>
             {lessonsByStudent.length > 0 &&
               lessonsByStudent.map(lesson => (

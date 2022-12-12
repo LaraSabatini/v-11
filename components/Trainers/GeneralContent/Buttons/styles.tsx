@@ -6,8 +6,6 @@ const ButtonContainer = styled.div`
   gap: 20px;
   align-items: center;
   position: absolute;
-  /* bottom: 10px; */
-  /* top: 93%; */
   right: 0;
 
   button {

@@ -8,6 +8,7 @@ const MainContainer = styled.div`
   width: 940px;
   height: 427px;
   display: flex;
+
   div:last-child {
     border-right: none;
   }
@@ -19,7 +20,7 @@ const SectionContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: fit-content;
-  margin: 24px auto;
+  margin: 15px auto;
 `
 
 const ShiftColumn = styled.div`

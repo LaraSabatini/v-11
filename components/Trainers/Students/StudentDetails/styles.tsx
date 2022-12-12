@@ -2,17 +2,19 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  height: 350px;
-  width: 35%;
-  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   padding: 15px;
+
+  width: 374px;
+  height: 332px;
+  background: #fffffe;
+  box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
 `
 
 const CardTitle = styled.h3`
   margin: 0;
-  font-weight: ${theme.fontWeights.medium};
-  font-size: 17px;
+  font-weight: ${theme.fontWeights.regular};
+  font-size: 16px;
   padding-top: 10px;
 `
 
@@ -62,6 +64,7 @@ const LessonsPurchased = styled.div`
 const TableTitle = styled.p`
   margin: 0;
   text-decoration: underline;
+  font-weight: ${theme.fontWeights.light};
 `
 
 const TableTitles = styled.div`
@@ -74,7 +77,6 @@ const LessonListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 10px 0 10px 10px;
 `
 
 const LessonGroup = styled.div`
@@ -88,9 +90,10 @@ const Dropdown = styled.div<{ open: boolean }>`
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
   padding: 0 15px 0 10px;
-  border-radius: 10px;
+  border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
+  font-size: 15px;
+  font-weight: ${theme.fontWeights.light};
 
   .title {
     display: flex;
