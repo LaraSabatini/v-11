@@ -2,7 +2,10 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const Container = styled.div`
-  width: 50%;
+  width: 600px;
+
+  display: flex;
+  flex-direction: column;
 `
 
 const ListContainer = styled.div`
