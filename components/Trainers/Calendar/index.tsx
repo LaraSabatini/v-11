@@ -1,23 +1,29 @@
 import React, { useEffect, useContext, useState } from "react"
 import { Lessons } from "contexts/Lessons"
-import { daysOfTheWeek, shifts, day, month, year } from "const/time"
+import {
+  day,
+  month,
+  year,
+  daysOfWeekWithoutWeekendAv,
+  abbreviatedMonth,
+} from "const/time"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
-import Pagination from "components/UI/Pagination"
+import ScrollView from "components/UI/ScrollView"
 import getWeekNumber from "../Helpers/getWeekNumber"
 import organizeDataForCalendar from "../Helpers/organizeDataForCalendar"
 import getDaysOfTheWeek from "../Helpers/getDaysOfTheWeek"
-import formatCalendarDate from "../Helpers/formatCalendarDate"
 import MakePayment from "../Forms/MakePayment"
-import DayView from "./DayView"
 import {
   MainContainer,
-  Column,
-  StudentsList,
-  ColumnTitle,
-  DividerRowTitles,
-  DividerRowShifts,
-  PaginatorContainer,
   SectionContainer,
+  ShiftColumn,
+  Title,
+  DayColumn,
+  Row,
+  ArrowsContainer,
+  ButtonNavigate,
+  Student,
+  StudentsContainer,
 } from "./styles"
 
 function Calendar() {
@@ -84,112 +90,76 @@ function Calendar() {
   return (
     <SectionContainer>
       <MainContainer>
-        <DividerRowTitles />
-        <DividerRowShifts />
-        <div className="divider-1" />
-        <div className="divider-2" />
-        <div className="divider-3" />
-        <div className="divider-4" />
-        <div className="divider-5" />
-        <Column>
-          <ColumnTitle>
-            <p>TURNO</p>
-          </ColumnTitle>
-          <StudentsList>
-            <p>{shifts[0].display_name}</p>
-          </StudentsList>
-          <StudentsList>
-            <p>{shifts[1].display_name}</p>
-          </StudentsList>
-        </Column>
-
-        <Column>
-          <ColumnTitle>
-            <p>
-              {daysOfTheWeek[0].display_name}
-              {weekDays.length && (
-                <span>{formatCalendarDate(weekDays[0])}</span>
-              )}
-            </p>
-          </ColumnTitle>
-          <DayView
-            cleanedLessons={cleanedLessons.monday}
-            purchaseSelected={purchaseSelected}
-            selectPurchase={e => selectPurchase(e)}
-          />
-        </Column>
-        <Column>
-          <ColumnTitle>
-            <p>
-              {daysOfTheWeek[1].display_name}
-              {weekDays.length && (
-                <span>{formatCalendarDate(weekDays[1])}</span>
-              )}
-            </p>
-          </ColumnTitle>
-          <DayView
-            cleanedLessons={cleanedLessons.tuesday}
-            purchaseSelected={purchaseSelected}
-            selectPurchase={e => selectPurchase(e)}
-          />
-        </Column>
-        <Column>
-          <ColumnTitle>
-            <p>
-              {daysOfTheWeek[2].display_name}
-              {weekDays.length && (
-                <span>{formatCalendarDate(weekDays[2])}</span>
-              )}
-            </p>
-          </ColumnTitle>
-          <DayView
-            cleanedLessons={cleanedLessons.wednesday}
-            purchaseSelected={purchaseSelected}
-            selectPurchase={e => selectPurchase(e)}
-          />
-        </Column>
-        <Column>
-          <ColumnTitle>
-            <p>
-              {daysOfTheWeek[3].display_name}
-              {weekDays.length && (
-                <span>{formatCalendarDate(weekDays[3])}</span>
-              )}
-            </p>
-          </ColumnTitle>
-          <DayView
-            cleanedLessons={cleanedLessons.thursday}
-            purchaseSelected={purchaseSelected}
-            selectPurchase={e => selectPurchase(e)}
-          />
-        </Column>
-        <Column>
-          <ColumnTitle>
-            <p>
-              {daysOfTheWeek[4].display_name}
-              {weekDays.length && (
-                <span>{formatCalendarDate(weekDays[4])}</span>
-              )}
-            </p>
-          </ColumnTitle>
-          <DayView
-            cleanedLessons={cleanedLessons.friday}
-            purchaseSelected={purchaseSelected}
-            selectPurchase={e => selectPurchase(e)}
-          />
-        </Column>
+        <ArrowsContainer>
+          <ButtonNavigate
+            onClick={() => setWeekNumberSelected(weekNumberSelected - 1)}
+          >
+            &lt;
+          </ButtonNavigate>
+          <ButtonNavigate
+            onClick={() => setWeekNumberSelected(weekNumberSelected + 1)}
+          >
+            &gt;
+          </ButtonNavigate>
+        </ArrowsContainer>
+        <ShiftColumn>
+          <Title>TURNO</Title>
+          <Row>AM</Row>
+          <Row>PM</Row>
+        </ShiftColumn>
+        {daysOfWeekWithoutWeekendAv.map((item, index) => (
+          <DayColumn>
+            <Title>
+              <p className="day"> {item.display_name}</p>
+              <p className="number">{weekDays[index]?.getDate()}</p>
+              <p className="month">
+                {abbreviatedMonth[
+                  weekDays[index]?.getMonth()
+                ]?.display_name.toUpperCase()}
+              </p>
+            </Title>
+            <Row>
+              <ScrollView height={180}>
+                <StudentsContainer>
+                  {cleanedLessons[index]?.am !== undefined &&
+                    cleanedLessons[index].am.map(lesson => (
+                      <Student
+                        key={lesson.id}
+                        paid={lesson.paid === "SI"}
+                        type="button"
+                        selected={purchaseSelected?.id === lesson.id}
+                        onClick={() => selectPurchase(lesson)}
+                      >
+                        {lesson.partner_name} {lesson.partner_last_name}
+                      </Student>
+                    ))}
+                </StudentsContainer>
+              </ScrollView>
+            </Row>
+            <Row>
+              <ScrollView height={180}>
+                <StudentsContainer>
+                  {cleanedLessons[index]?.pm !== undefined &&
+                    cleanedLessons[index].pm.map(lesson => (
+                      <Student
+                        paid={lesson.paid === "SI"}
+                        type="button"
+                        selected={purchaseSelected?.id === lesson.id}
+                        onClick={() => selectPurchase(lesson)}
+                        key={lesson.id}
+                      >
+                        {lesson.partner_name} {lesson.partner_last_name}
+                      </Student>
+                    ))}
+                </StudentsContainer>
+              </ScrollView>
+            </Row>
+          </DayColumn>
+        ))}
         {modalMakeAPayment && (
           <MakePayment cancelPayment={() => setModalMakeAPayment(false)} />
         )}
       </MainContainer>
-      <PaginatorContainer>
-        <Pagination
-          totalPages={52}
-          setPage={weekNumberSelected}
-          onClickNext={() => setWeekNumberSelected(weekNumberSelected + 1)}
-          onClickBack={() => setWeekNumberSelected(weekNumberSelected - 1)}
-        />
-      </PaginatorContainer>
     </SectionContainer>
   )
 }

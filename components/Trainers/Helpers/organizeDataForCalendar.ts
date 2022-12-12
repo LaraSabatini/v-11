@@ -18,8 +18,9 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
   const friday = getLessonsByWeekCall.filter(
     (lesson: ClasesPurchasedInterface) => lesson.day_id === 5,
   )
-  const newArrayForCalendar = {
-    monday: {
+
+  const newArrayForCalendar = [
+    {
       am: monday.filter(
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[0].display_name}`,
@@ -29,7 +30,7 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
           lesson.shift === `${shifts[1].display_name}`,
       ),
     },
-    tuesday: {
+    {
       am: tuesday.filter(
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[0].display_name}`,
@@ -39,7 +40,7 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
           lesson.shift === `${shifts[1].display_name}`,
       ),
     },
-    wednesday: {
+    {
       am: wednesday.filter(
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[0].display_name}`,
@@ -49,7 +50,7 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
           lesson.shift === `${shifts[1].display_name}`,
       ),
     },
-    thursday: {
+    {
       am: thursday.filter(
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[0].display_name}`,
@@ -59,7 +60,7 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
           lesson.shift === `${shifts[1].display_name}`,
       ),
     },
-    friday: {
+    {
       am: friday.filter(
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[0].display_name}`,
@@ -69,7 +70,7 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
           lesson.shift === `${shifts[1].display_name}`,
       ),
     },
-  }
+  ]
 
   return newArrayForCalendar
 }

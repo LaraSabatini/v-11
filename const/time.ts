@@ -37,31 +37,54 @@ export const daysOfTheWeek: DefaultInterface[] = [
 export const daysOfWeekAv: DefaultInterface[] = [
   {
     id: 1,
-    display_name: "L",
+    display_name: "LUN",
   },
   {
     id: 2,
-    display_name: "M",
+    display_name: "MAR",
   },
   {
     id: 3,
-    display_name: "X",
+    display_name: "MIER",
   },
   {
     id: 4,
-    display_name: "J",
+    display_name: "JUE",
   },
   {
     id: 5,
-    display_name: "V",
+    display_name: "VIE",
   },
   {
     id: 6,
-    display_name: "S",
+    display_name: "SAB",
   },
   {
     id: 7,
-    display_name: "D",
+    display_name: "DOM",
+  },
+]
+
+export const daysOfWeekWithoutWeekendAv: DefaultInterface[] = [
+  {
+    id: 1,
+    display_name: "LUN",
+  },
+  {
+    id: 2,
+    display_name: "MAR",
+  },
+  {
+    id: 3,
+    display_name: "MIER",
+  },
+  {
+    id: 4,
+    display_name: "JUE",
+  },
+  {
+    id: 5,
+    display_name: "VIE",
   },
 ]
 
