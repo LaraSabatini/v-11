@@ -120,11 +120,10 @@ const Student = styled.button<{ paid: boolean; selected?: boolean }>`
   ${props =>
     props.paid
       ? css`
-          background-color: ${theme.colors.success_light};
+          background-color: rgba(72, 171, 162, 0.25); ;
         `
       : css`
-          background-color: ${theme.colors.danger};
-          color: white;
+          background-color: rgba(255, 99, 99, 0.25);
         `};
 `
 
