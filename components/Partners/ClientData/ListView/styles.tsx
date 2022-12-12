@@ -1,9 +1,7 @@
 import styled, { css } from "styled-components"
 import theme from "theme/index"
 
-const Container = styled.div`
-  margin-top: -10px;
-`
+const Container = styled.div``
 
 const Paginator = styled.div`
   font-family: ${theme.fonts.primary};
@@ -23,8 +21,6 @@ const NoPartnersView = styled.h1`
   margin-top: 100px;
   font-size: 25px;
 `
-
-//
 
 const ClientsContainer = styled.div`
   background: #fffffe;

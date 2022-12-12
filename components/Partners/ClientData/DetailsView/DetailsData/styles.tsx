@@ -2,21 +2,23 @@ import styled, { css } from "styled-components"
 import theme from "theme/index"
 
 const PartnerData = styled.div`
-  padding-top: 20px;
+  padding-top: 16px;
   p {
     text-decoration: underline;
     margin: 0;
   }
   display: flex;
   justify-content: space-between;
+  font-weight: ${theme.fontWeights.light};
+  font-size: 15px;
 `
 
 const Details = styled.div`
-  padding: 0 10px;
-  height: 370px;
   justify-content: space-between;
   display: flex;
   flex-direction: column;
+  gap: 50px;
+  /* border: 1px solid red; */
 `
 
 const RemoveButton = styled.button<{ disabledButton: boolean }>`
