@@ -149,7 +149,7 @@ const ClientRow = styled.div`
   height: 350px;
 `
 
-const ClientList = styled.div<{ isSelected: string }>`
+const ClientList = styled.div<{ isSelected: boolean }>`
   display: flex;
   font-weight: ${theme.fontWeights.light};
   border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
