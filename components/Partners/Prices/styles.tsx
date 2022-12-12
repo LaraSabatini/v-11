@@ -6,14 +6,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding-top: 50px;
+  padding-top: 20px;
 `
 
 const Form = styled.div`
-  background: #ffffff;
-  box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
-  border-radius: 10px;
   height: 600px;
   width: 450px;
   font-family: ${theme.fonts.primary};
@@ -21,43 +17,64 @@ const Form = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 10px;
+  background: #fffffe;
+  box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
+  border-radius: 10px;
 `
 
 const Title = styled.p`
-  width: 120px;
   padding-left: 5px;
+  font-size: 15px;
 `
 
 const Head = styled.div`
-  width: 90%;
+  width: 100%;
+
   display: flex;
   align-items: center;
   position: relative;
   border-bottom: 1px solid ${theme.colors.neutral_dark};
+
+  .item {
+    margin-left: 24px;
+    width: 120px;
+  }
+
+  .cash {
+    width: 125px;
+  }
 `
 
 const Items = styled.div`
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   padding-top: 10px;
+  overflow: scroll;
+  overflow-x: hidden;
+  height: 100%;
 `
 
 const Item = styled.div`
   display: flex;
   border-bottom: 1px solid ${theme.colors.neutral_dark};
   cursor: pointer;
+  font-weight: ${theme.fontWeights.light};
 
   p {
     width: 135px;
-    margin-left: 10px;
+  }
+
+  .name {
+    margin-left: 24px;
   }
 `
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 15px;
   width: 445px;
+  justify-content: flex-end;
   padding-top: 15px;
 
   .edit {
