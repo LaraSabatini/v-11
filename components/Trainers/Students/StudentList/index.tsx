@@ -2,18 +2,22 @@ import React, { useContext, useEffect } from "react"
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import trainerTexts from "strings/trainers.json"
-import theme from "theme/index"
-import ScrollView from "components/UI/ScrollView"
 import Pagination from "components/UI/Pagination"
-import Icon from "components/UI/Assets/Icon"
 import getPayments from "../../Helpers/getPayments"
 import {
   Container,
   ListContainer,
-  ListItem,
-  IconContainer,
   NoMore,
   PaginatorContainer,
+  FiltersRow,
+  Tab,
+  InfoRow,
+  FullName,
+  PartnerNumber,
+  Identification,
+  MemberSince,
+  ClientList,
+  ClientRow,
 } from "./styles"
 
 function StudentList() {
@@ -50,25 +54,42 @@ function StudentList() {
 
   return (
     <Container>
-      <ScrollView height={350}>
-        <ListContainer>
+      <ListContainer>
+        <FiltersRow>
+          <Tab>Todos</Tab>
+        </FiltersRow>
+        <InfoRow>
+          <FullName>Nombre completo</FullName>
+          <PartnerNumber>Nº</PartnerNumber>
+          <Identification>DNI</Identification>
+          <MemberSince>Miembro desde</MemberSince>
+        </InfoRow>
+        <ClientRow>
           {students.length > 0 ? (
-            students.map((student: PartnerInterface) => (
-              <ListItem
-                key={student.id}
-                onClick={() => checkSelection(student)}
-              >
-                {student.name} {student.last_name}
-                <IconContainer active={studentSelected?.id === student.id}>
-                  <Icon icon="IconArrowRight" color={theme.colors.primary} />
-                </IconContainer>
-              </ListItem>
-            ))
+            students.map((student: PartnerInterface) => {
+              return (
+                <ClientList
+                  isSelected={studentSelected?.id === student.id}
+                  key={student.id}
+                  onClick={() => checkSelection(student)}
+                >
+                  <FullName>
+                    {student.name} {student.last_name}
+                  </FullName>
+                  <PartnerNumber>{student.id}</PartnerNumber>
+
+                  <Identification>
+                    {student.identification_number}
+                  </Identification>
+                  <MemberSince>{student.membership_start_date}</MemberSince>
+                </ClientList>
+              )
+            })
           ) : (
             <NoMore>{trainerTexts.students_info.no_results}</NoMore>
           )}
-        </ListContainer>
-      </ScrollView>
+        </ClientRow>
+      </ListContainer>
       <PaginatorContainer>
         <Pagination
           setPage={currentPage}
