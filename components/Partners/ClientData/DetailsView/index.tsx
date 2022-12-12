@@ -8,7 +8,7 @@ import Icon from "components/UI/Assets/Icon"
 import Tooltip from "components/UI/Tooltip"
 import DetailsEdition from "./DetailsEdition"
 import DetailsData from "./DetailsData"
-import { Container, Title, IconContainer, Divider } from "./styles"
+import { Container, Title, IconContainer } from "./styles"
 
 interface PartnerDetailPermits {
   update: boolean
@@ -58,7 +58,7 @@ function DetailsView({
           </Tooltip>
         )}
       </Title>
-      <Divider />
+      {/* <Divider /> */}
 
       {detailState === "view" ? (
         <DetailsData

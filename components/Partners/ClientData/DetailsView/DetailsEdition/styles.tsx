@@ -1,15 +1,12 @@
 import styled from "styled-components"
 import theme from "theme/index"
 
-const Details = styled.div`
-  padding: 25px 0 0 0;
-`
+const Details = styled.div``
 
 const PartnerData = styled.div`
   padding-top: 0px;
   display: flex;
-  gap: 10px;
-  justify-content: space-between;
+  gap: 15px;
 `
 
 const CheckboxContainer = styled.div`
@@ -29,7 +26,7 @@ const CheckboxContainer = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 65px;
+  margin-top: 10px;
 `
 
 export { Details, PartnerData, CheckboxContainer, ButtonContainer }

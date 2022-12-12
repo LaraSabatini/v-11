@@ -9,7 +9,7 @@ const HeadContent = styled.div`
 
 const Title = styled.h4`
   font-family: ${theme.fonts.primary};
-  font-size: 20px;
+  font-size: 16px;
   margin: 0;
   display: flex;
   align-items: center;
@@ -17,7 +17,7 @@ const Title = styled.h4`
 
   span {
     font-weight: ${theme.fontWeights.regular};
-    font-size: 15px;
+    font-size: 14px;
     background-color: #ededed;
     padding: 3px 5px;
     border-radius: 10px;
