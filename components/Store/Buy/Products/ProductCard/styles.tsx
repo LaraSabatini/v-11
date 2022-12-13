@@ -9,14 +9,14 @@ const Card = styled.div<{ stock: boolean }>`
     `}
 
   font-family: ${theme.fonts.primary};
-  width: 260px;
+  width: 237px;
   padding: 15px;
   border-radius: 10px;
   display: flex;
   justify-content: space-around;
-  box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
-  -webkit-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
-  -moz-box-shadow: 0px 3px 9px 0px rgba(45, 54, 61, 0.13);
+  background: #fffffe;
+  box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
+  border-radius: 10px;
 
   .zapas {
     width: 90px;
@@ -27,8 +27,8 @@ const Card = styled.div<{ stock: boolean }>`
   }
 
   .calendar {
-    width: 103px;
-    height: 95px;
+    width: 90px;
+    height: 82px;
     margin-top: 25px;
   }
 
@@ -55,9 +55,17 @@ const ComponentContainer = styled.div`
 
 const ComponentContainerZapas = styled.div`
   margin-top: 30px;
+
+  svg {
+    width: 104px;
+    height: 83px;
+  }
 `
 
-const ProductName = styled.p``
+const ProductName = styled.p`
+  font-weight: ${theme.fontWeights.light};
+  width: 130px;
+`
 
 const Description = styled.div`
   display: flex;

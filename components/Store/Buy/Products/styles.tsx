@@ -20,8 +20,8 @@ const Navigate = styled.button`
 const ProductsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 900px;
+  width: 840px;
   gap: 15px;
-  padding: 10px 0 20px 5px;
+  padding: 10px 0 10px 10px;
 `
 export { ProductsContainer, Paginator, Navigate }

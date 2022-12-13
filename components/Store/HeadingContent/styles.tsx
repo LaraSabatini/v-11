@@ -27,7 +27,7 @@ const Title = styled.h4`
 `
 
 const SearchBarContainer = styled.div`
-  margin-top: 30px;
+  margin-top: 13px;
   display: flex;
   align-items: center;
   gap: 15px;
@@ -48,7 +48,7 @@ const Divider = styled.div`
 `
 
 const FiltersContainer = styled.div`
-  margin-top: 28px;
+  margin-top: 13px;
   display: flex;
   align-items: center;
   justify-content: flex-end;

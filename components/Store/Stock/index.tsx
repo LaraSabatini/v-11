@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useRef } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import { editProductAction, getProductsAction } from "helpers/store"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
@@ -6,14 +6,11 @@ import generalTexts from "strings/general.json"
 import OptionsInterface from "interfaces/store/OptionsInterface"
 import DefaultInterface from "interfaces/components/DefaultInterface"
 import ModalAlert from "components/UI/ModalAlert"
-import RowsInterface from "interfaces/store/RowsInterface"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextButton from "components/UI/TextButton"
 import TextField from "components/UI/TextField"
-import DataTable from "components/UI/DataTable"
 import Autocomplete from "components/UI/Autocomplete"
 import cleanMargin from "utils/cleanMargin"
-import columns from "const/stockTable"
 import {
   Container,
   ButtonsContainer,
@@ -21,6 +18,14 @@ import {
   AutocompleteContainer,
   ErrorMessage,
   TextFieldContainer,
+  Table,
+  FilterRow,
+  Line,
+  Tab,
+  InfoRow,
+  ProductsRow,
+  Status,
+  Products,
 } from "./styles"
 
 interface StockInterface {
@@ -42,54 +47,58 @@ function Stock({ editPermits }: StockInterface) {
     setStockChanges,
     modalStockHasChanges,
     setModalStockHasChanges,
-    rows,
-    setRows,
   } = useContext(StoreContext)
 
-  const [activeEdition, setActiveEdition] = useState<boolean>(false)
-  const [productSelected, setProductSelected] = useState<number>()
-  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [productSelected, setProductSelected] = useState<number>(0)
   const [newValues, setNewValues] = useState<ProductInterface>(null)
   const [validationError, setValidationError] = useState<boolean>(false)
 
-  const rowRef = useRef(null)
+  const [filterSelected, setFilterSelected] = useState<{
+    value: string
+    text: string
+    category: number
+  }>({ value: "all", text: "Todos", category: 0 })
+  const [productsListFiltered, setProductsListFiltered] = useState<
+    ProductInterface[]
+  >([])
+
+  const filters = [
+    {
+      value: "all",
+      text: "Todos",
+      category: 0,
+    },
+    {
+      value: "drinks",
+      text: "Bebidas",
+      category: 1,
+    },
+    {
+      value: "magnesium",
+      text: "Magnesio",
+      category: 2,
+    },
+    {
+      value: "shoes",
+      text: "Zapatillas",
+      category: 3,
+    },
+    {
+      value: "energy-drinks",
+      text: "Energizante",
+      category: 4,
+    },
+    {
+      value: "climbing-day",
+      text: "Dia escalada",
+      category: 5,
+    },
+  ]
 
   const fillRows = async () => {
-    const data = await getProductsAction(currentPage)
+    const data = await getProductsAction(1)
     setProductsList(data)
-
-    const rowsCleaned: RowsInterface[] = []
-
-    data.map((product: ProductInterface) => {
-      const marginString = `${product.margin}`
-      const cleanIt = cleanMargin(marginString.split("."))
-      const finalMargin = cleanIt.includes(".")
-        ? parseFloat(cleanIt)
-        : parseInt(cleanIt, 10)
-
-      rowsCleaned.push({
-        id: product.id,
-        item: product.name,
-        brand: brands.filter(
-          (brand: OptionsInterface) => brand.id === product.brand_id,
-        )[0]?.name,
-        category: categories.filter(
-          (category: OptionsInterface) => category.id === product.category_id,
-        )[0]?.name,
-        stock: product.stock,
-        price: product.price,
-        margin: finalMargin,
-        cost: product.cost,
-        sales_contact_name: product.sales_contact_name,
-        sales_contact_information: product.sales_contact_information,
-      })
-      return 0
-    })
-
-    setRows({
-      success: true,
-      rows: rowsCleaned,
-    })
+    setProductsListFiltered(data)
   }
 
   const fillAutocompletes = () => {
@@ -115,218 +124,17 @@ function Stock({ editPermits }: StockInterface) {
         fillAutocompletes()
       }
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, searchValueForStock, brands, categories])
-
-  const goPrev = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1)
-    }
-  }
-
-  const goNext = () => {
-    if (productsList.length > 0) {
-      setCurrentPage(currentPage + 1)
-    }
-  }
-
-  const setContentOfEditableRow = () => {
-    const getRow = rows.rows.filter(row => row.id === newValues.id)
-    const getIndexOfRow = rows.rows.indexOf(getRow[0])
-
-    const newSetOfRows = rows.rows
-    newSetOfRows[getIndexOfRow] = {
-      id: rows.rows[getIndexOfRow].id,
-      item: (
-        <TextFieldContainer>
-          <TextField
-            label=""
-            type="text"
-            width={150}
-            value={newValues.name || ""}
-            onChange={e => setNewValues({ ...newValues, name: e.target.value })}
-          />
-        </TextFieldContainer>
-      ),
-      brand: (
-        <AutocompleteContainer>
-          <Autocomplete
-            width={120}
-            options={autoCompleteBrandsValues}
-            setValue={
-              brands.filter(
-                (brand: DefaultInterface) => brand.id === newValues.brand_id,
-              )[0]?.name || ""
-            }
-            onChangeProps={(e: DefaultInterface) =>
-              setNewValues({ ...newValues, brand_id: e.id })
-            }
-          />
-        </AutocompleteContainer>
-      ),
-      category: (
-        <AutocompleteContainer>
-          <Autocomplete
-            width={120}
-            options={autoCompleteCategoriesValues}
-            setValue={
-              categories.filter(
-                (category: DefaultInterface) =>
-                  category.id === newValues.category_id,
-              )[0]?.name || ""
-            }
-            onChangeProps={(e: DefaultInterface) =>
-              setNewValues({ ...newValues, category_id: e.id })
-            }
-          />
-        </AutocompleteContainer>
-      ),
-      stock: (
-        <TextFieldContainer>
-          <TextField
-            label=""
-            type="text"
-            width={60}
-            value={`${newValues.stock}` || ""}
-            onChange={e => {
-              if (e.target.value === "-" || e.target.value === "") {
-                setNewValues({
-                  ...newValues,
-                  stock: 0,
-                })
-              } else {
-                setNewValues({
-                  ...newValues,
-                  stock: parseInt(e.target.value, 10),
-                })
-              }
-            }}
-          />
-        </TextFieldContainer>
-      ),
-      margin: newValues.price - newValues.cost,
-      price: (
-        <TextFieldContainer>
-          <TextField
-            label=""
-            type="text"
-            width={70}
-            value={`${newValues.price}` || ""}
-            onChange={e => {
-              if (e.target.value === "-" || e.target.value === "") {
-                setNewValues({
-                  ...newValues,
-                  price: 0,
-                })
-              } else {
-                setNewValues({
-                  ...newValues,
-                  price: parseFloat(e.target.value),
-                })
-              }
-            }}
-          />
-        </TextFieldContainer>
-      ),
-      cost: (
-        <TextFieldContainer>
-          <TextField
-            label=""
-            type="text"
-            width={70}
-            value={`${newValues.cost}` || ""}
-            onChange={e => {
-              if (e.target.value === "-" || e.target.value === "") {
-                setNewValues({
-                  ...newValues,
-                  cost: 0,
-                })
-              } else {
-                setNewValues({ ...newValues, cost: parseFloat(e.target.value) })
-              }
-            }}
-          />
-        </TextFieldContainer>
-      ),
-      sales_contact_name: (
-        <TextFieldContainer>
-          <TextField
-            label=""
-            type="text"
-            width={150}
-            value={newValues.sales_contact_name || ""}
-            onChange={e =>
-              setNewValues({ ...newValues, sales_contact_name: e.target.value })
-            }
-          />
-        </TextFieldContainer>
-      ),
-      sales_contact_information: (
-        <TextFieldContainer>
-          <TextField
-            label=""
-            type="text"
-            width={120}
-            value={newValues.sales_contact_information || ""}
-            onChange={e =>
-              setNewValues({
-                ...newValues,
-                sales_contact_information: e.target.value,
-              })
-            }
-          />
-        </TextFieldContainer>
-      ),
-    }
-    setRows({
-      success: true,
-      rows: newSetOfRows,
-    })
-  }
-
-  const activateRow = (item: {
-    id: number
-    item: string
-    brand: string | number
-    category: string | number
-    stock: number
-    price: number
-    margin: number
-    cost: number
-    sales_contact_name: string
-    sales_contact_information: string
-  }) => {
-    const getDataOfItem = productsList.filter(
-      (product: ProductInterface) => product.id === item.id,
-    )
-
-    setNewValues({
-      id: item.id,
-      name: item.item,
-      brand_id: getDataOfItem[0].brand_id,
-      stock: item.stock,
-      price: item.price,
-      margin: item.margin,
-      cost: item.cost,
-      sales_contact_name: item.sales_contact_name,
-      sales_contact_information: item.sales_contact_information,
-      category_id: getDataOfItem[0].category_id,
-    })
-
-    const index = productsList.indexOf(getDataOfItem[0])
-
-    setProductSelected(index)
-    setActiveEdition(true)
-  }
+  }, [searchValueForStock, brands, categories])
 
   const discardChanges = () => {
     setModalStockHasChanges(false)
     setStockChanges(false)
     setNewValues(null)
-    setActiveEdition(false)
     fillRows()
+    setProductSelected(0)
   }
+
   const saveChanges = async () => {
     const body = {
       id: newValues.id,
@@ -353,6 +161,7 @@ function Stock({ editPermits }: StockInterface) {
       const executeEdition = await editProductAction(body)
       if (executeEdition.status === 200) {
         discardChanges()
+        setStockChanges(false)
       }
     } else {
       setValidationError(true)
@@ -360,32 +169,31 @@ function Stock({ editPermits }: StockInterface) {
   }
 
   useEffect(() => {
-    if (
-      newValues !== null &&
-      productSelected !== undefined &&
-      JSON.stringify(newValues) ===
-        JSON.stringify(productsList[productSelected])
-    ) {
-      setContentOfEditableRow()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newValues, activeEdition, productSelected])
-
-  useEffect(() => {
-    if (
-      newValues !== null &&
-      JSON.stringify(newValues) !==
-        JSON.stringify(productsList[productSelected]) &&
-      activeEdition
-    ) {
+    if (productSelected !== 0) {
       setStockChanges(true)
-      setContentOfEditableRow()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newValues])
 
   const cancelDiscard = () => {
     setModalStockHasChanges(false)
+  }
+
+  const selectFilter = (type: {
+    value: string
+    text: string
+    category: number
+  }) => {
+    if (filterSelected.value === "all" || filterSelected.value !== type.value) {
+      setFilterSelected(type)
+      const listFiltered = productsList.filter(
+        product => product.category_id === type.category,
+      )
+      setProductsListFiltered(listFiltered)
+    } else if (filterSelected === type) {
+      setFilterSelected({ value: "all", text: "Todos", category: 0 })
+      setProductsListFiltered(productsList)
+    }
   }
 
   return (
@@ -411,28 +219,248 @@ function Stock({ editPermits }: StockInterface) {
         />
       )}
       <Content>
-        <DataTable
-          rows={rows}
-          columns={columns}
-          height={350}
-          onRowClick={e => {
-            if (!activeEdition && editPermits) {
-              activateRow(e.item)
-            } else if (
-              activeEdition &&
-              e.item.id !== newValues.id &&
-              stockChanges &&
-              editPermits
-            ) {
-              setModalStockHasChanges(true)
-            }
-          }}
-          totalPages={1}
-          reference={rowRef}
-          onClickNext={goNext}
-          onClickBack={goPrev}
-          setPage={currentPage}
-        />
+        <Table>
+          <FilterRow>
+            {filters.map(
+              (filter: { value: string; text: string; category: number }) => {
+                return (
+                  <Tab
+                    key={filter.value}
+                    selected={filterSelected.value === filter.value}
+                    onClick={() => {
+                      selectFilter(filter)
+                    }}
+                  >
+                    {filter.text}
+                  </Tab>
+                )
+              },
+            )}
+            <Line filterSelected={filterSelected.value} />
+          </FilterRow>
+          <InfoRow>
+            <p className="item">Item</p>
+            <p className="brand">Marca</p>
+            <p className="brand">Categoria</p>
+            <p className="stock">Stock</p>
+            <p className="stock">Precio</p>
+            <p className="earning">Ganancia ($)</p>
+            <p className="stock">Costo</p>
+            <p className="brand">Proveedor</p>
+            <p className="brand">N° de telefono</p>
+            <p className="stock">Activo</p>
+          </InfoRow>
+          <Products>
+            {productsListFiltered.map((product: ProductInterface) => (
+              <ProductsRow
+                onClick={() => {
+                  if (productSelected === 0 && editPermits) {
+                    setProductSelected(product.id)
+                    setNewValues(product)
+                  }
+                }}
+              >
+                <Status status={product.stock >= 10 ? "green" : "red"} />
+                {productSelected === product.id ? (
+                  <TextFieldContainer className="input-name">
+                    <TextField
+                      label=""
+                      type="text"
+                      width={140}
+                      value={`${newValues?.name}` || ""}
+                      onChange={e =>
+                        setNewValues({ ...newValues, name: e.target.value })
+                      }
+                      keyDown={() => {}}
+                    />
+                  </TextFieldContainer>
+                ) : (
+                  <p className="item">{product.name}</p>
+                )}
+
+                {productSelected === product.id ? (
+                  <AutocompleteContainer className="input-brand">
+                    <Autocomplete
+                      width={120}
+                      options={autoCompleteBrandsValues}
+                      setValue={
+                        brands.filter(
+                          (brand: DefaultInterface) =>
+                            brand.id === newValues?.brand_id,
+                        )[0]?.name || ""
+                      }
+                      onChangeProps={(e: DefaultInterface) =>
+                        setNewValues({ ...newValues, brand_id: e.id })
+                      }
+                    />
+                  </AutocompleteContainer>
+                ) : (
+                  <p className="brand">
+                    {
+                      brands.filter(
+                        (brand: OptionsInterface) =>
+                          brand.id === product.brand_id,
+                      )[0]?.name
+                    }
+                  </p>
+                )}
+
+                {productSelected === product.id ? (
+                  <AutocompleteContainer className="input-brand">
+                    <Autocomplete
+                      width={120}
+                      options={autoCompleteCategoriesValues}
+                      setValue={
+                        categories.filter(
+                          (category: DefaultInterface) =>
+                            category.id === newValues?.category_id,
+                        )[0]?.name || ""
+                      }
+                      onChangeProps={(e: DefaultInterface) =>
+                        setNewValues({ ...newValues, category_id: e.id })
+                      }
+                    />
+                  </AutocompleteContainer>
+                ) : (
+                  <p className="brand">
+                    {
+                      categories.filter(
+                        (category: OptionsInterface) =>
+                          category.id === product.category_id,
+                      )[0]?.name
+                    }
+                  </p>
+                )}
+
+                {productSelected === product.id ? (
+                  <TextFieldContainer className="input-stock">
+                    <TextField
+                      label=""
+                      type="number"
+                      width={70}
+                      value={`${newValues?.stock}` || ""}
+                      onChange={e => {
+                        if (e.target.value === "-" || e.target.value === "") {
+                          setNewValues({
+                            ...newValues,
+                            stock: 0,
+                          })
+                        } else {
+                          setNewValues({
+                            ...newValues,
+                            stock: parseInt(e.target.value, 10),
+                          })
+                        }
+                      }}
+                      keyDown={() => {}}
+                    />
+                  </TextFieldContainer>
+                ) : (
+                  <p className="stock">{product.stock}</p>
+                )}
+
+                {productSelected === product.id ? (
+                  <TextFieldContainer className="input-stock">
+                    <TextField
+                      label=""
+                      type="number"
+                      width={70}
+                      value={`${newValues?.price}` || ""}
+                      onChange={e =>
+                        setNewValues({ ...newValues, price: e.target.value })
+                      }
+                      keyDown={() => {}}
+                    />
+                  </TextFieldContainer>
+                ) : (
+                  <p className="stock">{product.price}</p>
+                )}
+
+                {productSelected === product.id ? (
+                  <TextFieldContainer className="input-margin">
+                    <TextField
+                      label=""
+                      type="number"
+                      width={80}
+                      disabled
+                      disabledAutocompleted
+                      value={`${newValues?.price - newValues?.cost}` || ""}
+                    />
+                  </TextFieldContainer>
+                ) : (
+                  <p className="earning">
+                    {cleanMargin(`${product.margin}`.split("."))}
+                  </p>
+                )}
+
+                {productSelected === product.id ? (
+                  <TextFieldContainer className="input-cost">
+                    <TextField
+                      label=""
+                      type="number"
+                      width={70}
+                      value={`${newValues?.cost}` || ""}
+                      onChange={e =>
+                        setNewValues({ ...newValues, cost: e.target.value })
+                      }
+                      keyDown={() => {}}
+                    />
+                  </TextFieldContainer>
+                ) : (
+                  <p className="stock">{product.cost}</p>
+                )}
+
+                {productSelected === product.id ? (
+                  <TextFieldContainer className="input-provider">
+                    <TextField
+                      label=""
+                      type="text"
+                      width={120}
+                      value={`${newValues?.sales_contact_name}` || ""}
+                      onChange={e =>
+                        setNewValues({
+                          ...newValues,
+                          sales_contact_name: e.target.value,
+                        })
+                      }
+                      keyDown={() => {}}
+                    />
+                  </TextFieldContainer>
+                ) : (
+                  <p className="brand">
+                    {product.sales_contact_name === ""
+                      ? "-"
+                      : product.sales_contact_name}
+                  </p>
+                )}
+
+                {productSelected === product.id ? (
+                  <TextFieldContainer className="input-provider">
+                    <TextField
+                      label=""
+                      type="text"
+                      width={120}
+                      value={`${newValues?.sales_contact_information}` || ""}
+                      onChange={e =>
+                        setNewValues({
+                          ...newValues,
+                          sales_contact_information: e.target.value,
+                        })
+                      }
+                      keyDown={() => {}}
+                    />
+                  </TextFieldContainer>
+                ) : (
+                  <p className="brand">
+                    {product.sales_contact_information === ""
+                      ? "-"
+                      : product.sales_contact_information}
+                  </p>
+                )}
+              </ProductsRow>
+            ))}
+          </Products>
+        </Table>
       </Content>
 
       <ButtonsContainer>
