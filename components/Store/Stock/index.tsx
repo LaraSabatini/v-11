@@ -410,9 +410,6 @@ function Stock({ editPermits }: StockInterface) {
                       type="number"
                       width={70}
                       value={`${newValues?.cost}` || ""}
-                      // onChange={e =>
-                      //   setNewValues({ ...newValues, cost: e.target.value })
-                      // }
                       onChange={e => {
                         if (e.target.value === "-" || e.target.value === "") {
                           setNewValues({
