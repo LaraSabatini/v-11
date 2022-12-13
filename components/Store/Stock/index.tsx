@@ -366,9 +366,19 @@ function Stock({ editPermits }: StockInterface) {
                       type="number"
                       width={70}
                       value={`${newValues?.price}` || ""}
-                      onChange={e =>
-                        setNewValues({ ...newValues, price: e.target.value })
-                      }
+                      onChange={e => {
+                        if (e.target.value === "-" || e.target.value === "") {
+                          setNewValues({
+                            ...newValues,
+                            price: 0,
+                          })
+                        } else {
+                          setNewValues({
+                            ...newValues,
+                            price: parseInt(e.target.value, 10),
+                          })
+                        }
+                      }}
                       keyDown={() => {}}
                     />
                   </TextFieldContainer>
@@ -400,9 +410,22 @@ function Stock({ editPermits }: StockInterface) {
                       type="number"
                       width={70}
                       value={`${newValues?.cost}` || ""}
-                      onChange={e =>
-                        setNewValues({ ...newValues, cost: e.target.value })
-                      }
+                      // onChange={e =>
+                      //   setNewValues({ ...newValues, cost: e.target.value })
+                      // }
+                      onChange={e => {
+                        if (e.target.value === "-" || e.target.value === "") {
+                          setNewValues({
+                            ...newValues,
+                            cost: 0,
+                          })
+                        } else {
+                          setNewValues({
+                            ...newValues,
+                            cost: parseFloat(e.target.value),
+                          })
+                        }
+                      }}
                       keyDown={() => {}}
                     />
                   </TextFieldContainer>
