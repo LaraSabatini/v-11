@@ -124,7 +124,7 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
                   {partner.is_student ===
                     `${yesOrNoArr[1].display_name.toUpperCase()}` &&
                     partner.free_pass !== 0 && (
-                      <Type type="free-pass">{partner.free_pass}</Type>
+                      <Type type="free-pass">{partnerTexts.free_pass}</Type>
                     )}
                   {partner.is_student ===
                     `${yesOrNoArr[0].display_name.toUpperCase()}` &&
