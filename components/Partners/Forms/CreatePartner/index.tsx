@@ -5,6 +5,7 @@ import { paymentMethods } from "const/finances"
 import { getExpirationDate, evaluateFinalTime } from "utils"
 import { searchPartnerAction } from "helpers/partners"
 import { makeAppropiatePayment } from "helpers/payments"
+import { expireDateReminderEmail } from "services/SendEmail.service"
 import createPartnerLogic from "services/BusinessLogic/createPartner.service"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
 import partnerTexts from "strings/partners.json"
@@ -237,6 +238,29 @@ function CreatePartnerForm({ cancelCreate }: CreateInterface) {
           },
         )
         success = executeDigitalPayment.status === 200
+      }
+
+      if (newPartnerData.email !== "") {
+        const emailBody = {
+          recipients: newPartnerData.email,
+          subject: "Información de compra",
+          item: `${comboCondition ? 1 : paidTime} x ${itemName}`,
+          url: `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${expirationDate.slice(
+            6,
+            10,
+          )}${expirationDate.slice(3, 5)}${expirationDate.slice(
+            0,
+            2,
+          )}%2F${expirationDate.slice(6, 10)}${expirationDate.slice(
+            3,
+            5,
+          )}${expirationDate.slice(0, 2)}&details=Tu%20compra%20de%20%20${
+            comboCondition ? 1 : paidTime
+          }%20x%20${itemName}%20vence%20hoy%21&location=https%3A%2F%2Fwww.google.com%2Fmaps%2Fplace%2FV_Once_Escalada%2F%40-34.6118186%2C-58.4122726%2C17z%2Fdata%3D%213m1%214b1%214m5%213m4%211s0x95bccb0a038ffc5d%3A0xa8cd4418a36f0576%218m2%213d-34.6118186%214d-58.4100786&text=Vencimiento%20de%20pago`,
+          expDate: expirationDate,
+        }
+        const sendMail = await expireDateReminderEmail(emailBody)
+        success = sendMail.status === 200
       }
       if (success && callCreatePartner.message.status === 200) {
         setModalSuccess(callCreatePartner.message.message)

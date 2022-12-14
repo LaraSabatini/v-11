@@ -49,7 +49,7 @@ export const expireDateReminderEmail = async (body: {
   recipients: string
   subject: string
   item: string
-  event: string
+  url: string
   expDate: string
 }) => {
   const data = await axios
