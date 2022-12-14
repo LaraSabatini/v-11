@@ -235,6 +235,11 @@ const Products = styled.div`
   height: 290px;
 `
 
+const EnableButton = styled.button`
+  border: none;
+  background-color: transparent;
+`
+
 export {
   Container,
   Content,
@@ -250,4 +255,5 @@ export {
   ProductsRow,
   Status,
   Products,
+  EnableButton,
 }

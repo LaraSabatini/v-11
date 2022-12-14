@@ -88,6 +88,7 @@ function Receipt({ canPurchase }: Permits) {
         cost: filterProduct[0].cost,
         sales_contact_name: filterProduct[0].sales_contact_name,
         sales_contact_information: filterProduct[0].sales_contact_information,
+        active: filterProduct[0].active,
       })
       success = editStockCall.status === 200
 

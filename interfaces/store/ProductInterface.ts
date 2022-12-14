@@ -9,4 +9,5 @@ export default interface ProductInterface {
   cost: number
   sales_contact_name: string
   sales_contact_information: string
+  active: 0 | 1
 }

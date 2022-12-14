@@ -41,6 +41,7 @@ function CreateProduct({ cancelCreate }: CreateInterface) {
     cost: 0,
     sales_contact_name: "",
     sales_contact_information: "",
+    active: 1,
   })
 
   const validateInputs = async () => {
