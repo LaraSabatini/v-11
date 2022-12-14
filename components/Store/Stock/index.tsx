@@ -12,6 +12,7 @@ import Icon from "components/UI/Assets/Icon"
 import TextField from "components/UI/TextField"
 import Autocomplete from "components/UI/Autocomplete"
 import cleanMargin from "utils/cleanMargin"
+import filters from "../const/stockFilters"
 import {
   Container,
   ButtonsContainer,
@@ -63,39 +64,6 @@ function Stock({ editPermits }: StockInterface) {
   const [productsListFiltered, setProductsListFiltered] = useState<
     ProductInterface[]
   >([])
-
-  const filters = [
-    {
-      value: "all",
-      text: "Todos",
-      category: 0,
-    },
-    {
-      value: "drinks",
-      text: "Bebidas",
-      category: 1,
-    },
-    {
-      value: "magnesium",
-      text: "Magnesio",
-      category: 2,
-    },
-    {
-      value: "shoes",
-      text: "Zapatillas",
-      category: 3,
-    },
-    {
-      value: "energy-drinks",
-      text: "Energizante",
-      category: 4,
-    },
-    {
-      value: "climbing-day",
-      text: "Dia escalada",
-      category: 5,
-    },
-  ]
 
   const fillRows = async () => {
     const data = await getProductsAction(1)

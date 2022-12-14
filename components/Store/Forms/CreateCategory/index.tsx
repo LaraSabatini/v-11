@@ -60,7 +60,7 @@ function CreateCategoryForm({ cancelCreate }: CreateCategoryFormInterface) {
           value={categoryName}
           required
           width={250}
-          label="Categoria"
+          label={storeTexts.create.category}
           type="text"
           onChange={e => setBrandName(e.target.value)}
           reference={categoryRef}

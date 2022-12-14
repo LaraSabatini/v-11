@@ -43,8 +43,8 @@ function ToDosCard() {
         ))
       ) : (
         <NoInfoToShow>
-          No hay tareas para mostrar
-          <span>Crea una tarea para empezar a visualizarlas</span>
+          {annotationTexts.noTasksToShow}
+          <span>{annotationTexts.noTasksToShowAction}</span>
         </NoInfoToShow>
       )}
     </Card>

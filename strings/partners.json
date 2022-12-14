@@ -24,6 +24,14 @@
     "final_price": "Precio final",
     "wants_sub": "Desea recibir noticias",
     "start_date": "Fecha de inicio",
+    "infoTable": {
+        "full_name": "Nombre completo",
+        "number": "Nº",
+        "type": "Tipo",
+        "identificationNumber": "DNI",
+        "member_since": "Miembro desde",
+        "studentAndFreePass": "A/P-L"
+    },
     "create": {
         "title": "Crear socio",
         "payment": "Pago",

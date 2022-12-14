@@ -60,7 +60,7 @@ function CreateBrandForm({ cancelCreate }: CreateBrandFormInterface) {
           value={brandName}
           required
           width={250}
-          label="Marca"
+          label={storeTexts.brand}
           type="text"
           onChange={e => setBrandName(e.target.value)}
           reference={brandRef}
