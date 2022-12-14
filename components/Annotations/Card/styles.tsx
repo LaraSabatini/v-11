@@ -5,7 +5,7 @@ const CardLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 450px;
-  height: 520px;
+  height: 400px;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 0px 4px 20px 4px rgba(83, 45, 117, 0.1);
@@ -24,6 +24,7 @@ const CardHeader = styled.div`
 const CardTitle = styled.h5`
   margin: 0;
   font-size: 18px;
+  font-weight: ${theme.fontWeights.regular};
 `
 
 const Filter = styled.button<{ selected?: boolean }>`
