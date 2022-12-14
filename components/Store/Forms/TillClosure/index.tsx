@@ -11,6 +11,7 @@ import {
 } from "services/Finances/ClosedTill.service"
 import FinancialDataInterface from "interfaces/finances/FinancialData"
 import { day, month, year } from "const/time"
+import storeTexts from "strings/store.json"
 import TextField from "components/UI/TextField"
 import ModalForm from "components/UI/ModalForm"
 import {
@@ -201,26 +202,26 @@ function TillClosure({ closeTillPreview }: TillPreviewInterface) {
 
   return (
     <ModalForm
-      title="CAJA"
-      cancelButtonContent="Salir"
-      submitButtonContent="Cerrar caja"
+      title={storeTexts.tillTexts.title}
+      cancelButtonContent={storeTexts.tillTexts.exit}
+      submitButtonContent={storeTexts.tillTexts.action}
       submit={closeTill}
       cancelFunction={closeTillPreview}
     >
       <View>
         <HorizontalGroup>
           <Row>
-            <Title>Caja Efectivo:</Title>
+            <Title>{storeTexts.tillTexts.cashTill}</Title>
             <Amount>$ {tillData?.tillEarnings.cash}</Amount>
           </Row>
           <Row>
-            <Title>Caja Mercado Pago:</Title>
+            <Title>{storeTexts.tillTexts.digitalTill}</Title>
             <Amount>$ {tillData?.tillEarnings.mp}</Amount>
           </Row>
         </HorizontalGroup>
         <HorizontalGroup>
           <TextField
-            label="Caja Efectivo Fisico"
+            label={storeTexts.tillTexts.realCash}
             type="number"
             value={`${totalEarningsMofified.cash}`}
             width={190}
@@ -239,7 +240,7 @@ function TillClosure({ closeTillPreview }: TillPreviewInterface) {
             }}
           />
           <TextField
-            label="Caja MP Fisico"
+            label={storeTexts.tillTexts.realDigital}
             type="number"
             value={`${totalEarningsMofified.mp}`}
             width={190}
@@ -259,8 +260,16 @@ function TillClosure({ closeTillPreview }: TillPreviewInterface) {
           />
         </HorizontalGroup>
         <DifferenceContainer>
-          {tillDiff && <p>Diferencia efectivo: {difference.cash}</p>}
-          {tillDiff && <p>Diferencia mercado pago: {difference.mp}</p>}
+          {tillDiff && (
+            <p>
+              {storeTexts.tillTexts.diffCash} {difference.cash}
+            </p>
+          )}
+          {tillDiff && (
+            <p>
+              {storeTexts.tillTexts.diffDigital} {difference.mp}
+            </p>
+          )}
         </DifferenceContainer>
       </View>
     </ModalForm>

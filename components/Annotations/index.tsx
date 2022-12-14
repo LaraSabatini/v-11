@@ -23,7 +23,6 @@ import {
   HeadContent,
   Title,
 } from "theme/globalComponentStyles"
-
 import { day, month, year } from "const/time"
 import Icon from "components/UI/Assets/Icon"
 import CreateAnnotation from "./CreateAnnotation"

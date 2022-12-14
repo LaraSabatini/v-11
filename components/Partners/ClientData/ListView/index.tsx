@@ -86,11 +86,13 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
           <Line filterSelected={filterSelected} />
         </FiltersRow>
         <InfoRow>
-          <FullName>Nombre completo</FullName>
-          <PartnerNumber>Nº</PartnerNumber>
-          <Type type="">Tipo</Type>
-          <Identification>DNI</Identification>
-          <MemberSince>Miembro desde</MemberSince>
+          <FullName>{partnerTexts.infoTable.full_name}</FullName>
+          <PartnerNumber>{partnerTexts.infoTable.number}</PartnerNumber>
+          <Type type="">{partnerTexts.infoTable.type}</Type>
+          <Identification>
+            {partnerTexts.infoTable.identificationNumber}
+          </Identification>
+          <MemberSince>{partnerTexts.infoTable.member_since}</MemberSince>
         </InfoRow>
         <ClientRow>
           {partners.length > 0 ? (
@@ -115,22 +117,24 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
                   {partner.is_student ===
                     `${yesOrNoArr[0].display_name.toUpperCase()}` &&
                     partner.free_pass !== 0 && (
-                      <Type type="free-pass">A/P-L</Type>
+                      <Type type="free-pass">
+                        {partnerTexts.infoTable.studentAndFreePass}
+                      </Type>
                     )}
                   {partner.is_student ===
                     `${yesOrNoArr[1].display_name.toUpperCase()}` &&
                     partner.free_pass !== 0 && (
-                      <Type type="free-pass">Pase Libre</Type>
+                      <Type type="free-pass">{partner.free_pass}</Type>
                     )}
                   {partner.is_student ===
                     `${yesOrNoArr[0].display_name.toUpperCase()}` &&
                     partner.free_pass === 0 && (
-                      <Type type="student">Alumno</Type>
+                      <Type type="student">{partnerTexts.student}</Type>
                     )}
                   {partner.free_pass === 0 &&
                     partner.is_student ===
                       `${yesOrNoArr[1].display_name.toUpperCase()}` && (
-                      <Type type="day">Dia</Type>
+                      <Type type="day">{partnerTexts.day}</Type>
                     )}
                   <Identification>
                     {partner.identification_number}

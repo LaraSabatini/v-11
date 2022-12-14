@@ -4,6 +4,12 @@
     "lessons": "Clases",
     "days": "Dias:",
     "lessonsLeft": "Clases restantes:",
+    "table": {
+        "fullName": "Nombre completo",
+        "number": "Nº",
+        "identificationNumber": "DNI",
+        "member_since": "Miembro desde"
+    },
     "createPurchase": {
         "title": "Comprar Clase",
         "registeredLabel": "La persona esta ingresada al sistema?",

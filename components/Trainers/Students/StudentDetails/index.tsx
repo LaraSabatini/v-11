@@ -34,7 +34,8 @@ function StudentDetails() {
   return (
     <Container>
       <CardTitle>
-        Historial de pagos - {studentSelected.name} {studentSelected.last_name}
+        {trainerTexts.students_info.payments_history} - {studentSelected.name}{" "}
+        {studentSelected.last_name}
       </CardTitle>
       <LessonsPurchased>
         <TableTitles>

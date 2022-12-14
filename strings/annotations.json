@@ -7,6 +7,10 @@
     "typeLabel": "Tipo",
     "descriptionLabel": "Descripcion",
     "createAnnotation": "Crear Anotacion",
+    "noTasksToShow": "No hay tareas para mostrar",
+    "noTasksToShowAction": "Crea una tarea para empezar a visualizarlas",
+    "noNotesToShow": "No hay notas para mostrar",
+    "noNotesToShowAction": "Crea una nota para empezar a visualizarlas",
     "modals": {
         "successDelete": {
             "title": "Excelente!",

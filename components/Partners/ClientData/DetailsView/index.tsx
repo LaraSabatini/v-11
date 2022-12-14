@@ -58,7 +58,6 @@ function DetailsView({
           </Tooltip>
         )}
       </Title>
-      {/* <Divider /> */}
 
       {detailState === "view" ? (
         <DetailsData

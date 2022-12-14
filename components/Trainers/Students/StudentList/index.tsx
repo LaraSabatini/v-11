@@ -59,10 +59,12 @@ function StudentList() {
           <Tab>Todos</Tab>
         </FiltersRow>
         <InfoRow>
-          <FullName>Nombre completo</FullName>
-          <PartnerNumber>Nº</PartnerNumber>
-          <Identification>DNI</Identification>
-          <MemberSince>Miembro desde</MemberSince>
+          <FullName>{trainerTexts.table.fullName}</FullName>
+          <PartnerNumber>{trainerTexts.table.number}</PartnerNumber>
+          <Identification>
+            {trainerTexts.table.identificationNumber}
+          </Identification>
+          <MemberSince>{trainerTexts.table.member_since}</MemberSince>
         </InfoRow>
         <ClientRow>
           {students.length > 0 ? (

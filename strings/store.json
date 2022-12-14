@@ -8,6 +8,17 @@
     "do_not_delete": "No borrar",
     "createBrand": "Crear marca",
     "createCategory": "Crear categoria",
+    "tillTexts": {
+        "title": "CAJA",
+        "exit": "Salir",
+        "action": "Cerrar caja",
+        "cashTill": "Caja Efectivo:",
+        "digitalTill": "Caja Mercado Pago:",
+        "realCash": "Caja Efectivo Fisico",
+        "realDigital": "Caja Efectivo MP",
+        "diffCash": "Diferencia efectivo:",
+        "diffDigital": "Diferencia mercado pago:"
+    },
     "create": {
         "title": "Crear producto",
         "cost": "Costo",
