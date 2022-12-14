@@ -3,7 +3,7 @@ import theme from "theme/index"
 
 const CardsContainer = styled.div`
   display: flex;
-  padding-top: 30px;
+  padding-top: 13px;
   width: 85%;
   margin: 0 auto;
   justify-content: space-between;
@@ -99,7 +99,7 @@ const NoInfoToShow = styled.p`
   text-transform: uppercase;
   font-weight: ${theme.fontWeights.bold};
   color: ${theme.colors.focus};
-  margin-top: 40%;
+  margin-top: 30%;
   font-size: 30px;
   text-align: center;
   display: flex;
@@ -127,7 +127,7 @@ const Add = styled.button<{ disabled: boolean }>`
   box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
   -webkit-box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
   -moz-box-shadow: 0px 10px 16px 0px rgba(83, 45, 117, 0.14);
-  bottom: 10px;
+  bottom: 0px;
   right: -100px;
   position: absolute;
   ${props =>
