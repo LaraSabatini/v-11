@@ -8,6 +8,7 @@ import DefaultInterface from "interfaces/components/DefaultInterface"
 import ModalAlert from "components/UI/ModalAlert"
 import ProductInterface from "interfaces/store/ProductInterface"
 import TextButton from "components/UI/TextButton"
+import Icon from "components/UI/Assets/Icon"
 import TextField from "components/UI/TextField"
 import Autocomplete from "components/UI/Autocomplete"
 import cleanMargin from "utils/cleanMargin"
@@ -26,6 +27,7 @@ import {
   ProductsRow,
   Status,
   Products,
+  EnableButton,
 } from "./styles"
 
 interface StockInterface {
@@ -147,6 +149,7 @@ function Stock({ editPermits }: StockInterface) {
       cost: newValues.cost,
       sales_contact_name: newValues.sales_contact_name,
       sales_contact_information: newValues.sales_contact_information,
+      active: newValues.active,
     }
 
     if (
@@ -476,6 +479,33 @@ function Stock({ editPermits }: StockInterface) {
                       ? "-"
                       : product.sales_contact_information}
                   </p>
+                )}
+
+                {productSelected === product.id ? (
+                  <EnableButton
+                    onClick={() =>
+                      setNewValues({
+                        ...newValues,
+                        active: newValues?.active === 0 ? 1 : 0,
+                      })
+                    }
+                  >
+                    <Icon
+                      icon={
+                        newValues?.active === 0
+                          ? "IconPasswordHidden"
+                          : "IconPasswordVisible"
+                      }
+                    />
+                  </EnableButton>
+                ) : (
+                  <Icon
+                    icon={
+                      product.active === 0
+                        ? "IconPasswordHidden"
+                        : "IconPasswordVisible"
+                    }
+                  />
                 )}
               </ProductsRow>
             ))}
