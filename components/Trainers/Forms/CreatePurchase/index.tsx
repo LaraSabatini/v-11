@@ -5,6 +5,7 @@ import {
   createBoulderPurchaseAction,
   makeAppropiatePayment,
 } from "helpers/payments"
+import { expireDateReminderEmail } from "services/SendEmail.service"
 import { createLessonPurchaseAction } from "helpers/lessons"
 import PartnerPaymentsHistoryInterface from "interfaces/finances/PartnerPaymentsHistory"
 import ClasesPurchasedInterface from "interfaces/trainers/ClasesPurchasedInterface"
@@ -257,6 +258,32 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     return message
   }
 
+  const sendMailFunction = async (email: string) => {
+    const expireDate = calculateExpireDate(today)
+
+    const emailBody = {
+      recipients: email,
+      subject: "Información de compra",
+      item: `${amountOfLessons} x Clases`,
+      url: `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${expireDate.string.slice(
+        6,
+        10,
+      )}${expireDate.string.slice(3, 5)}${expireDate.string.slice(
+        0,
+        2,
+      )}%2F${expireDate.string.slice(6, 10)}${expireDate.string.slice(
+        3,
+        5,
+      )}${expireDate.string.slice(
+        0,
+        2,
+      )}&details=Tu%20compra%20de%20%20${amountOfLessons}%20x%20Clases%20vence%20hoy%21&location=https%3A%2F%2Fwww.google.com%2Fmaps%2Fplace%2FV_Once_Escalada%2F%40-34.6118186%2C-58.4122726%2C17z%2Fdata%3D%213m1%214b1%214m5%213m4%211s0x95bccb0a038ffc5d%3A0xa8cd4418a36f0576%218m2%213d-34.6118186%214d-58.4100786&text=Vencimiento%20de%20pago`,
+      expDate: expireDate.string,
+    }
+    const sendMail = await expireDateReminderEmail(emailBody)
+    return sendMail.status === 200
+  }
+
   const handleCreatePurchase = async (e: any) => {
     e.preventDefault()
     let success = false
@@ -282,6 +309,9 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         success = createLessons.status === 200
         modalMessage = createLessons.message
       }
+
+      const sendReminder = await sendMailFunction(clientSelected.email)
+      success = sendReminder
     } else {
       const validate = await validateInputsIsNotRegistered()
 
@@ -316,6 +346,9 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
             success = executePurchase
           }
         }
+
+        const sendReminder = await sendMailFunction(newPartnerData.email)
+        success = sendReminder
       }
     }
     if (success) {
