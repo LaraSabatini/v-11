@@ -187,13 +187,13 @@ function Stock({ editPermits }: StockInterface) {
     text: string
     category: number
   }) => {
-    if (filterSelected.value === "all" || filterSelected.value !== type.value) {
+    if (filterSelected.value !== type.value && type.value !== "all") {
       setFilterSelected(type)
       const listFiltered = productsList.filter(
         product => product.category_id === type.category,
       )
       setProductsListFiltered(listFiltered)
-    } else if (filterSelected === type) {
+    } else {
       setFilterSelected({ value: "all", text: "Todos", category: 0 })
       setProductsListFiltered(productsList)
     }
