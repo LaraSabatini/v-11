@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react"
 import { GeneralContext } from "contexts/GeneralContext"
 import getFinancesData from "services/BusinessLogic/getFinancesData.service"
 import { StoreContext } from "contexts/Store"
-import sendEmail from "services/SendEmail.service"
+import { closeTillEmail } from "services/SendEmail.service"
 import { getUsersAction } from "helpers/users"
 import {
   getTillByDate,
@@ -177,7 +177,7 @@ function TillClosure({ closeTillPreview }: TillPreviewInterface) {
         data: htmlBody,
       }
 
-      const send = await sendEmail(body)
+      const send = await closeTillEmail(body)
 
       if (send.status === 200) {
         setModalSuccess(send.message)

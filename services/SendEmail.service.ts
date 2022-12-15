@@ -1,9 +1,9 @@
 import axios from "axios"
 import axiosHeader from "services/axiosHeader"
 
-const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/sendEmail/close-till`
+const apiURL = `${process.env.NEXT_PUBLIC_API_HOST}/sendEmail`
 
-const sendEmail = async (body: {
+export const closeTillEmail = async (body: {
   recipients: string
   subject: string
   data: {
@@ -33,7 +33,7 @@ const sendEmail = async (body: {
   }
 }) => {
   const data = await axios
-    .post(`${apiURL}`, body, axiosHeader)
+    .post(`${apiURL}/close-till`, body, axiosHeader)
     .then(response => {
       const res = response.data
       return res
@@ -45,4 +45,22 @@ const sendEmail = async (body: {
   return data
 }
 
-export default sendEmail
+export const expireDateReminderEmail = async (body: {
+  recipients: string
+  subject: string
+  item: string
+  url: string
+  expDate: string
+}) => {
+  const data = await axios
+    .post(`${apiURL}/expire-date-reminder`, body, axiosHeader)
+    .then(response => {
+      const res = response.data
+      return res
+    })
+    .catch(err => {
+      const res = err.response
+      return res
+    })
+  return data
+}

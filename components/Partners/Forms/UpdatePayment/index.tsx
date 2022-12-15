@@ -13,6 +13,7 @@ import {
   editPartnerPaymentAction,
   editPartnerAction,
 } from "helpers/partners"
+import { expireDateReminderEmail } from "services/SendEmail.service"
 import { timeUnits, months, day, month, year } from "const/time"
 import { paymentMethods, paymentUsers } from "const/finances"
 import { getExpirationDate, evaluateFinalTime } from "utils"
@@ -187,6 +188,16 @@ function UpdatePaymentForm({
     } else {
       setDisabledButton(true)
 
+      const expirationDate = getExpirationDate({
+        date: dateSelectedToStart,
+        paidTime: paidTimeUnit !== undefined ? paidTime : 0,
+        paidTimeUnit: paidTimeUnit?.id !== undefined ? paidTimeUnit?.id : 0,
+        comboSelected:
+          comboSelected !== null && comboSelected !== undefined
+            ? comboSelected
+            : 0,
+      })
+
       const makeBoulderPurchase = await addPayment()
       success = makeBoulderPurchase
 
@@ -214,16 +225,6 @@ function UpdatePaymentForm({
         checkValidityOfPayment.days &&
         checkValidityOfPayment.months
       ) {
-        const expirationDate = getExpirationDate({
-          date: dateSelectedToStart,
-          paidTime: paidTimeUnit !== undefined ? paidTime : 0,
-          paidTimeUnit: paidTimeUnit?.id !== undefined ? paidTimeUnit?.id : 0,
-          comboSelected:
-            comboSelected !== null && comboSelected !== undefined
-              ? comboSelected
-              : 0,
-        })
-
         const createPartnerPayment = await createPartnerPaymentAction({
           ...newValues,
           time_paid:
@@ -259,6 +260,34 @@ function UpdatePaymentForm({
 
       const editPartnerData = await editPartnerAction(newPartnerInfo)
       success = editPartnerData.status === 200
+
+      if (partnerInfo.email !== "") {
+        const itemName =
+          paidTimeUnit.id === 1
+            ? `${financesTexts.day}`
+            : `${financesTexts.month}`
+
+        const emailBody = {
+          recipients: partnerInfo.email,
+          subject: "Información de compra",
+          item: `${comboCondition ? 1 : paidTime} x ${itemName}`,
+          url: `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${expirationDate.slice(
+            6,
+            10,
+          )}${expirationDate.slice(3, 5)}${expirationDate.slice(
+            0,
+            2,
+          )}%2F${expirationDate.slice(6, 10)}${expirationDate.slice(
+            3,
+            5,
+          )}${expirationDate.slice(0, 2)}&details=Tu%20compra%20de%20%20${
+            comboCondition ? 1 : paidTime
+          }%20x%20${itemName}%20vence%20hoy%21&location=https%3A%2F%2Fwww.google.com%2Fmaps%2Fplace%2FV_Once_Escalada%2F%40-34.6118186%2C-58.4122726%2C17z%2Fdata%3D%213m1%214b1%214m5%213m4%211s0x95bccb0a038ffc5d%3A0xa8cd4418a36f0576%218m2%213d-34.6118186%214d-58.4100786&text=Vencimiento%20de%20pago`,
+          expDate: expirationDate,
+        }
+        const sendMail = await expireDateReminderEmail(emailBody)
+        success = sendMail.status === 200
+      }
     }
 
     if (success) {
