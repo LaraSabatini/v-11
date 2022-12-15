@@ -26,7 +26,7 @@ const ClientsContainer = styled.div`
   background: #fffffe;
   box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
-  width: 800px;
+  width: 100%;
   padding: 18px 0;
   display: flex;
   flex-direction: column;
@@ -73,6 +73,14 @@ const Line = styled.div<{ filterSelected: string }>`
     css`
       left: 3%;
       width: 55px;
+
+      @media (max-width: 440px) {
+        left: 6%;
+      }
+
+      @media (max-width: 360px) {
+        left: 7%;
+      }
     `};
 
   ${props =>
@@ -80,6 +88,14 @@ const Line = styled.div<{ filterSelected: string }>`
     css`
       left: 11%;
       width: 75px;
+
+      @media (max-width: 440px) {
+        left: 24%;
+      }
+
+      @media (max-width: 360px) {
+        left: 28%;
+      }
     `};
 
   ${props =>
@@ -87,6 +103,14 @@ const Line = styled.div<{ filterSelected: string }>`
     css`
       left: 22%;
       width: 90px;
+
+      @media (max-width: 440px) {
+        left: 47%;
+      }
+
+      @media (max-width: 360px) {
+        left: 54%;
+      }
     `};
 `
 
@@ -96,17 +120,40 @@ const InfoRow = styled.div`
   color: #747474;
   border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
   font-size: 14px;
+
+  @media (max-width: 440px) {
+    .tag {
+      margin-left: 70px;
+    }
+  }
 `
 
 const FullName = styled.p`
   width: 200px;
   margin-left: 88px;
+
+  @media (max-width: 440px) {
+    margin-left: 15px;
+    width: 140px;
+  }
 `
 const PartnerNumber = styled.p`
   width: 60px;
+
+  @media (max-width: 440px) {
+    width: 30px;
+  }
 `
 const Type = styled.p<{ type: string }>`
   width: 125px;
+
+  ${props =>
+    props.type === "" &&
+    css`
+      @media (max-width: 440px) {
+        margin-left: 20px;
+      }
+    `};
 
   ${props =>
     props.type === "day" &&
@@ -143,6 +190,12 @@ const ClientRow = styled.div`
   overflow: scroll;
   overflow-x: hidden;
   height: 350px;
+
+  @media (max-width: 440px) {
+    overflow-x: scroll;
+    overflow-y: scroll;
+    overflow: scroll;
+  }
 `
 
 const ClientList = styled.div<{ isSelected: boolean }>`
@@ -150,6 +203,11 @@ const ClientList = styled.div<{ isSelected: boolean }>`
   font-weight: ${theme.fontWeights.light};
   border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
   cursor: pointer;
+  font-size: 15px;
+
+  @media (max-width: 440px) {
+    width: 600px;
+  }
 
   &:hover {
     background-color: rgba(0, 0, 0, 0.05);

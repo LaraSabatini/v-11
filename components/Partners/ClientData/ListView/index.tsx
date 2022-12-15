@@ -87,7 +87,9 @@ function ListView({ goPrev, goNext }: PartnerListInterface) {
         </FiltersRow>
         <InfoRow>
           <FullName>{partnerTexts.infoTable.full_name}</FullName>
-          <PartnerNumber>{partnerTexts.infoTable.number}</PartnerNumber>
+          <PartnerNumber className="tag">
+            {partnerTexts.infoTable.number}
+          </PartnerNumber>
           <Type type="">{partnerTexts.infoTable.type}</Type>
           <Identification>
             {partnerTexts.infoTable.identificationNumber}

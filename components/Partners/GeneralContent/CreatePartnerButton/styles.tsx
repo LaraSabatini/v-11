@@ -3,7 +3,7 @@ import theme from "theme/index"
 
 const MainButton = styled.div`
   position: absolute;
-  right: -20px;
+  right: 0px;
   bottom: 0;
 `
 
