@@ -20,11 +20,19 @@ const Form = styled.div`
   background: #fffffe;
   box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
+
+  @media (max-width: 440px) {
+    width: 300px;
+  }
 `
 
 const Title = styled.p`
   padding-left: 5px;
   font-size: 15px;
+
+  @media (max-width: 440px) {
+    padding-left: 0;
+  }
 `
 
 const Head = styled.div`
@@ -42,6 +50,17 @@ const Head = styled.div`
 
   .cash {
     width: 125px;
+  }
+
+  @media (max-width: 440px) {
+    .item {
+      margin-left: 14px;
+      width: 90px;
+    }
+
+    .cash {
+      width: 90px;
+    }
   }
 `
 
@@ -68,6 +87,12 @@ const Item = styled.div`
   .name {
     margin-left: 24px;
   }
+
+  @media (max-width: 440px) {
+    .name {
+      margin-left: 14px;
+    }
+  }
 `
 
 const ButtonContainer = styled.div`
@@ -76,6 +101,10 @@ const ButtonContainer = styled.div`
   width: 445px;
   justify-content: flex-end;
   padding-top: 15px;
+
+  @media (max-width: 440px) {
+    width: 300px;
+  }
 
   .edit {
     border: none;
