@@ -52,6 +52,7 @@ const Sections = styled.div<{ visible: boolean }>`
   gap: 20px;
 
   @media (max-width: 440px) {
+    z-index: 500;
     display: none;
 
     ${props =>
