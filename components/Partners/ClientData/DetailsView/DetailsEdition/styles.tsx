@@ -6,7 +6,11 @@ const Details = styled.div``
 const PartnerData = styled.div`
   padding-top: 0px;
   display: flex;
-  gap: 15px;
+  gap: 80px;
+
+  @media (max-width: 440px) {
+    gap: 10px;
+  }
 `
 
 const CheckboxContainer = styled.div`

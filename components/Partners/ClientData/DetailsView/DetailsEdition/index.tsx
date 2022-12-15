@@ -91,7 +91,7 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
     <Details>
       <PartnerData>
         <TextField
-          width={175}
+          width={160}
           label={generalTexts.labels.name}
           required
           value={newData.name}
@@ -103,7 +103,7 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           }}
         />
         <TextField
-          width={175}
+          width={160}
           label={generalTexts.labels.lastName}
           required
           value={newData.last_name}
@@ -117,7 +117,7 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
       </PartnerData>
       <PartnerData>
         <TextField
-          width={175}
+          width={160}
           label={generalTexts.labels.email}
           value={newData.email}
           type="email"
@@ -128,7 +128,7 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           }}
         />
         <TextField
-          width={175}
+          width={160}
           label={generalTexts.labels.identificationNumber}
           value={newData.identification_number}
           type="text"
@@ -142,7 +142,7 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
       <PartnerData />
       <PartnerData>
         <TextField
-          width={175}
+          width={160}
           required={wantsSubscription}
           label={generalTexts.labels.phoneNumber}
           type="text"
@@ -157,7 +157,7 @@ function DetailsEdition({ partnerInfo }: DetailEditInterface) {
           }}
         />
         <TextField
-          width={175}
+          width={160}
           label={partnerTexts.member_since}
           value={partnerInfo?.membership_start_date}
           type="text"

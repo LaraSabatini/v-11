@@ -11,6 +11,10 @@ const Container = styled.div`
   box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
   height: fit-content;
+
+  @media (max-width: 440px) {
+    width: 330px;
+  }
 `
 
 const Title = styled.h4`

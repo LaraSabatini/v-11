@@ -5,12 +5,22 @@ const MainButton = styled.div`
   position: absolute;
   right: 0px;
   bottom: 0;
+
+  @media (max-width: 440px) {
+    top: 65px;
+  }
 `
 
 const AddPartner = styled.button<{ disabled: boolean }>`
   border-radius: 50%;
   width: 50px;
   height: 50px;
+
+  @media (max-width: 440px) {
+    width: 35px;
+    height: 35px;
+  }
+
   border: none;
   display: flex;
   align-items: center;
