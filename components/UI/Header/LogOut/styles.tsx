@@ -15,6 +15,10 @@ const Container = styled.div`
   align-items: center;
   gap: 20px;
   z-index: 200;
+
+  @media (max-width: 440px) {
+    right: 0px;
+  }
 `
 
 const Title = styled.h5`

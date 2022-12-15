@@ -6,6 +6,32 @@ const HeaderContainer = styled.div`
   height: 30px;
   padding: 20px 0;
   position: relative;
+
+  @media (max-width: 440px) {
+    img {
+      display: none;
+    }
+  }
+`
+
+const MobileMenu = styled.button`
+  display: none;
+  @media (max-width: 440px) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: none;
+    cursor: pointer;
+    border: none;
+    gap: 3px;
+    div {
+      width: 20px;
+      height: 3px;
+      background: ${theme.colors.primary};
+      border-radius: 3px;
+    }
+  }
 `
 
 const HeaderContent = styled.div`
@@ -20,10 +46,28 @@ const HeaderContent = styled.div`
   }
 `
 
-const Sections = styled.div`
+const Sections = styled.div<{ visible: boolean }>`
   display: flex;
   align-items: center;
   gap: 20px;
+
+  @media (max-width: 440px) {
+    display: none;
+
+    ${props =>
+      props.visible &&
+      css`
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: absolute;
+        top: 100%;
+        background-color: ${theme.colors.white};
+        box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
+        border-radius: 0 0 10px 10px;
+        padding: 10px 20px;
+      `};
+  }
 `
 
 const SectionTitle = styled.div<{ bold: boolean }>`
@@ -110,6 +154,10 @@ const RightSection = styled.div`
   display: flex;
   align-items: center;
   gap: 35px;
+
+  @media (max-width: 440px) {
+    gap: 20px;
+  }
 `
 
 export {
@@ -122,4 +170,5 @@ export {
   SubButton,
   List,
   RightSection,
+  MobileMenu,
 }

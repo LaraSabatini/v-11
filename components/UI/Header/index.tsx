@@ -18,10 +18,12 @@ import {
   SubButton,
   List,
   RightSection,
+  MobileMenu,
 } from "./styles"
 
 function Header() {
   const { hasChanges, setModalHasChanges } = useContext(PartnersContext)
+  const [visible, setVisible] = useState<boolean>(false)
 
   const router = useRouter()
   const getPermissions = localStorage.getItem("permissions")
@@ -71,7 +73,12 @@ function Header() {
     <HeaderContainer>
       {openPop ? <NotificationPop closePop={() => setOpenPop(false)} /> : <></>}
       <HeaderContent>
-        <Sections>
+        <MobileMenu onClick={() => setVisible(!visible)}>
+          <div />
+          <div />
+          <div />
+        </MobileMenu>
+        <Sections visible={visible}>
           <img alt="logo" src="logo.png" />
           {menus.length &&
             routes.map((route, mayorIndex) => (
