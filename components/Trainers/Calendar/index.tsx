@@ -92,12 +92,24 @@ function Calendar() {
       <MainContainer>
         <ArrowsContainer>
           <ButtonNavigate
-            onClick={() => setWeekNumberSelected(weekNumberSelected - 1)}
+            onClick={() => {
+              if (weekNumberSelected === 1) {
+                setWeekNumberSelected(52)
+              } else {
+                setWeekNumberSelected(weekNumberSelected - 1)
+              }
+            }}
           >
             &lt;
           </ButtonNavigate>
           <ButtonNavigate
-            onClick={() => setWeekNumberSelected(weekNumberSelected + 1)}
+            onClick={() => {
+              if (weekNumberSelected === 52) {
+                setWeekNumberSelected(1)
+              } else {
+                setWeekNumberSelected(weekNumberSelected + 1)
+              }
+            }}
           >
             &gt;
           </ButtonNavigate>
