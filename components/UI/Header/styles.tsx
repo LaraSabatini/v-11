@@ -50,8 +50,8 @@ const SectionTitle = styled.div<{ bold: boolean }>`
 const ProfilePicture = styled.button`
   border: none;
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
