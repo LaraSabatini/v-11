@@ -310,8 +310,10 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         modalMessage = createLessons.message
       }
 
-      const sendReminder = await sendMailFunction(clientSelected.email)
-      success = sendReminder
+      if (clientSelected.email !== "") {
+        const sendReminder = await sendMailFunction(clientSelected.email)
+        success = sendReminder
+      }
     } else {
       const validate = await validateInputsIsNotRegistered()
 
@@ -347,8 +349,10 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
           }
         }
 
-        const sendReminder = await sendMailFunction(newPartnerData.email)
-        success = sendReminder
+        if (newPartnerData.email !== "") {
+          const sendReminder = await sendMailFunction(newPartnerData.email)
+          success = sendReminder
+        }
       }
     }
     if (success) {
