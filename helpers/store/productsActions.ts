@@ -31,7 +31,7 @@ export const searchProductsAction = async (
 }
 
 export const getproductByCategoryAction = async (
-  category: string,
+  category: number,
   page: number,
 ) => {
   const getProductsData = await productByCategory(category, page)

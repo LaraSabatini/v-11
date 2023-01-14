@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react"
 import { editProductAction, getProductsAction } from "helpers/store"
+import { productByCategory } from "services/Store/Products.service"
 import { StoreContext } from "contexts/Store"
 import storeTexts from "strings/store.json"
 import generalTexts from "strings/general.json"
@@ -150,17 +151,16 @@ function Stock({ editPermits }: StockInterface) {
     setModalStockHasChanges(false)
   }
 
-  const selectFilter = (type: {
+  const selectFilter = async (type: {
     value: string
     text: string
     category: number
   }) => {
     if (filterSelected.value !== type.value && type.value !== "all") {
       setFilterSelected(type)
-      const listFiltered = productsList.filter(
-        product => product.category_id === type.category,
-      )
-      setProductsListFiltered(listFiltered)
+      const productsFilteredReq = await productByCategory(type.category, 1)
+
+      setProductsListFiltered(productsFilteredReq.data)
     } else {
       setFilterSelected({ value: "all", text: "Todos", category: 0 })
       setProductsListFiltered(productsList)
@@ -224,6 +224,7 @@ function Stock({ editPermits }: StockInterface) {
           <Products>
             {productsListFiltered.map((product: ProductInterface) => (
               <ProductsRow
+                key={product.id}
                 onClick={() => {
                   if (productSelected === 0 && editPermits) {
                     setProductSelected(product.id)
