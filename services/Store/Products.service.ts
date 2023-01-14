@@ -34,7 +34,7 @@ export const searchProducts = async (search: string, page: number) => {
   return res
 }
 
-export const productByCategory = async (category_id: string, page: number) => {
+export const productByCategory = async (category_id: number, page: number) => {
   const res = await axios.get(
     `${apiURL}/category/${category_id}?page=${page}`,
     axiosHeader,
