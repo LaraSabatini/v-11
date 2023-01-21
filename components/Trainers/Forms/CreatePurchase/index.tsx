@@ -323,6 +323,7 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
         canShowModalError = !validateDuplicated
 
         if (!validateDuplicated) {
+          setDisablePurchaseButton(true)
           const finalName = cleanPartnerData(newPartnerData.name)
           const finalLastName = cleanPartnerData(newPartnerData.last_name)
           const partnerBody = {
