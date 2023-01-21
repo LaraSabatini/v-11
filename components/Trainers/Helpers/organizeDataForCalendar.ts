@@ -29,6 +29,10 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[1].display_name}`,
       ),
+      pm2: monday.filter(
+        (lesson: ClasesPurchasedInterface) =>
+          lesson.shift === `${shifts[2].display_name}`,
+      ),
     },
     {
       am: tuesday.filter(
@@ -38,6 +42,10 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
       pm: tuesday.filter(
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[1].display_name}`,
+      ),
+      pm2: tuesday.filter(
+        (lesson: ClasesPurchasedInterface) =>
+          lesson.shift === `${shifts[2].display_name}`,
       ),
     },
     {
@@ -49,6 +57,10 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[1].display_name}`,
       ),
+      pm2: wednesday.filter(
+        (lesson: ClasesPurchasedInterface) =>
+          lesson.shift === `${shifts[2].display_name}`,
+      ),
     },
     {
       am: thursday.filter(
@@ -59,6 +71,10 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[1].display_name}`,
       ),
+      pm2: thursday.filter(
+        (lesson: ClasesPurchasedInterface) =>
+          lesson.shift === `${shifts[2].display_name}`,
+      ),
     },
     {
       am: friday.filter(
@@ -68,6 +84,10 @@ const organizeDataForCalendar = async (weekNumberSelected: number) => {
       pm: friday.filter(
         (lesson: ClasesPurchasedInterface) =>
           lesson.shift === `${shifts[1].display_name}`,
+      ),
+      pm2: friday.filter(
+        (lesson: ClasesPurchasedInterface) =>
+          lesson.shift === `${shifts[2].display_name}`,
       ),
     },
   ]

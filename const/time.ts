@@ -11,6 +11,7 @@ export const month = getMonth + 1 > 9 ? getMonth + 1 : `0${getMonth + 1}`
 export const shifts: DefaultInterface[] = [
   { id: 1, display_name: "AM" },
   { id: 2, display_name: "PM" },
+  { id: 3, display_name: "PM2" },
 ]
 
 export const timeUnits: DefaultInterface[] = [

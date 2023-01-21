@@ -318,6 +318,8 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
       const validate = await validateInputsIsNotRegistered()
 
       if (validate) {
+        setDisablePurchaseButton(true)
+
         const validateDuplicated = await checkIfPartnerIsDuplicated()
         setIdentificationError(validateDuplicated)
         canShowModalError = !validateDuplicated
@@ -364,6 +366,9 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
       setCreateLessonPurchaseView(false)
     }
   }
+
+  console.log("disablePurchaseButton", disablePurchaseButton)
+  console.log("!identificationError", !identificationError)
 
   return (
     <ModalForm
