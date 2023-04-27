@@ -190,3 +190,37 @@ export const abbreviatedMonth: DefaultInterface[] = [
     display_name: "Dic",
   },
 ]
+
+export const hours = [
+  { id: 1, value: "09.00" },
+  { id: 2, value: "10.00" },
+  { id: 3, value: "11.00" },
+  { id: 4, value: "12.00" },
+  { id: 5, value: "13.00" },
+  { id: 6, value: "14.00" },
+  { id: 7, value: "15.00" },
+  { id: 8, value: "16.00" },
+  { id: 9, value: "17.00" },
+  { id: 10, value: "18.00" },
+  { id: 11, value: "19.00" },
+  { id: 12, value: "20.00" },
+  { id: 13, value: "21.00" },
+  { id: 14, value: "22.00" },
+]
+
+export const hoursForComboBox = [
+  { id: 1, display_name: "09.00" },
+  { id: 2, display_name: "10.00" },
+  { id: 3, display_name: "11.00" },
+  { id: 4, display_name: "12.00" },
+  { id: 5, display_name: "13.00" },
+  { id: 6, display_name: "14.00" },
+  { id: 7, display_name: "15.00" },
+  { id: 8, display_name: "16.00" },
+  { id: 9, display_name: "17.00" },
+  { id: 10, display_name: "18.00" },
+  { id: 11, display_name: "19.00" },
+  { id: 12, display_name: "20.00" },
+  { id: 13, display_name: "21.00" },
+  { id: 14, display_name: "22.00" },
+]

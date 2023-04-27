@@ -105,6 +105,8 @@ export const ChipsContainer = styled.label<{
   margin-right: 6px;
   min-height: 32px;
   width: 100%;
+  height: 30px;
+  overflow: auto;
   max-width: ${({ width }) => (width ? width - 37 : 273)}px;
   position: relative;
   .chips-wrapper {
