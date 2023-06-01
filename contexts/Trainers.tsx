@@ -60,6 +60,7 @@ function TrainersProvider({ children }) {
   const [paymentMethodSelected, setPaymentMethodSelected] = useState<number>(1)
 
   const [finalPrice, setFinalPrice] = useState<number>(0)
+  const [refreshAgenda, setRefreshAgenda] = useState<number>(1)
 
   const value = useMemo(
     () => ({
@@ -81,6 +82,8 @@ function TrainersProvider({ children }) {
       setMpUserSelected,
       paymentMethodSelected,
       setPaymentMethodSelected,
+      refreshAgenda,
+      setRefreshAgenda,
     }),
 
     [
@@ -93,6 +96,7 @@ function TrainersProvider({ children }) {
       finalPrice,
       mpUserSelected,
       paymentMethodSelected,
+      refreshAgenda,
     ],
   )
 

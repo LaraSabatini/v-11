@@ -77,6 +77,7 @@ const Lesson = styled.button<{
   font-family: ${theme.fonts.primary};
   font-weight: ${theme.fontWeights.light};
   width: 100%;
+  cursor: pointer;
 
   b {
     font-weight: ${theme.fontWeights.medium};

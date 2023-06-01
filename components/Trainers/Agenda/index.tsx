@@ -12,7 +12,9 @@ import {
 import { daysOfTheWeek, hours } from "const/time"
 import Switch from "components/UI/Switch"
 import Icon from "components/UI/Assets/Icon"
+import { Modal } from "antd"
 import PurchaseLesson from "./PurchaseLesson"
+import LessonModal from "./LessonModal"
 import {
   Container,
   Column,
@@ -35,7 +37,12 @@ function Agenda({
   goPrev,
   weekId,
 }: TableInterface) {
-  const { lessonTypes, setLessonTypes } = useContext(TrainersContext)
+  const {
+    lessonTypes,
+    setLessonTypes,
+    refreshAgenda,
+    setRefreshAgenda,
+  } = useContext(TrainersContext)
 
   const [type, setType] = useState<LessonType | "all">("all")
   const [weekLessonList, setWeekLessonList] = useState<CalendarInterface[]>([])
@@ -43,6 +50,11 @@ function Agenda({
   const [openTypesList, setOpenTypesList] = useState<boolean>(false)
 
   const [lessonList, setLessonList] = useState<CalendarInterface[]>([])
+
+  const [
+    openLessonModal,
+    setOpenLessonModal,
+  ] = useState<CalendarInterface | null>(null)
 
   const filterLessons = () => {
     if (type === "all") {
@@ -66,9 +78,11 @@ function Agenda({
       lessonListCleaned.push({
         id: lesson.id,
         date: lesson.date,
+        weekId: lesson.weekId,
         hourRange: lesson.hourRange,
         type: lesson.type,
         purchaseIds: JSON.parse(lesson.purchaseIds),
+        assists: lesson.assists === "" ? [] : JSON.parse(lesson.assists),
       }),
     )
 
@@ -79,7 +93,7 @@ function Agenda({
   useEffect(() => {
     getLessonScheduleByDayCall()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [startingDate])
+  }, [startingDate, refreshAgenda])
 
   const defineTypes = async () => {
     const getLessonTypesCall = await getLessonTypes()
@@ -156,7 +170,11 @@ function Agenda({
                         parseInt(lesson.hourRange as string, 10) === hour.id,
                     )
                     .map(item => (
-                      <Lesson key={item.id} lessonType={item.type}>
+                      <Lesson
+                        key={item.id}
+                        lessonType={item.type}
+                        onClick={() => setOpenLessonModal(item)}
+                      >
                         {item.purchaseIds.length
                           ? `${item.purchaseIds.length} alumno/s`
                           : ""}
@@ -169,6 +187,19 @@ function Agenda({
             ))}
           </Column>
         ))}
+        {openLessonModal !== null && (
+          <Modal
+            title={`Clase - ${openLessonModal.date.replaceAll("-", "/")}`}
+            open={openLessonModal !== null}
+            onCancel={() => {
+              setOpenLessonModal(null)
+              setRefreshAgenda(refreshAgenda + 1)
+            }}
+            footer={[]}
+          >
+            <LessonModal lesson={openLessonModal} lessonTypes={lessonTypes} />
+          </Modal>
+        )}
       </ColumnContainer>
       <ButtonContainer>
         <PurchaseLesson lessonTypes={lessonTypes} />

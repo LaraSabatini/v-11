@@ -25,3 +25,8 @@ export const searchKid = async (search: string, page: number) => {
   const res = await defaultGetSearch(apiURL, search, page)
   return res
 }
+
+export const searchKidById = async (id: number) => {
+  const res = await axios.get(`${apiURL}/by-id/${id}`, axiosHeader)
+  return res.data
+}
