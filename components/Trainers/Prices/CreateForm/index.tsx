@@ -70,7 +70,7 @@ function CreateForm({ close }: { close: (arg?: any) => void }) {
             success
             message={{
               status: "success",
-              icon: "IconCheck",
+              icon: "IconCheckModal",
               title: "Excelente",
               content: "La clase se ha creado exitosamente",
             }}

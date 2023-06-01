@@ -33,7 +33,7 @@ const createLessonSchedule = async (body: CalendarInterface) => {
 }
 
 const updateSchedule = async (body: CalendarInterface) => {
-  const res = await axios.put(`${apiURL}/id=${body.id}`, body, axiosHeader)
+  const res = await axios.put(`${apiURL}/schedule`, body, axiosHeader)
   return res.data
 }
 

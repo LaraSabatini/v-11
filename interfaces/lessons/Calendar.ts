@@ -19,9 +19,10 @@ export interface LessonTypesInterface {
 export interface CalendarInterface {
   id: number
   date: string
-  hourRange: number[]
+  weekId: number
+  hourRange: number | string
   type: LessonType
-  purchaseIds: number[]
+  purchaseIds: number[] | string
 }
 
 export interface LessonPurchaseInterface {

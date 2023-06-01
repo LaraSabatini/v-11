@@ -140,8 +140,8 @@ const Select = styled.div`
 
 const ButtonContainer = styled.div`
   position: absolute;
-  bottom: 0;
-  right: -50px;
+  top: 0%;
+  left: -130px;
 `
 
 const ChangeWeekContainer = styled.div`
@@ -149,7 +149,7 @@ const ChangeWeekContainer = styled.div`
   width: 110%;
   display: flex;
   right: -50px;
-  top: 50%;
+  top: 25%;
   justify-content: space-between;
 
   button {

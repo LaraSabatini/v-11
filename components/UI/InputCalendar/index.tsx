@@ -329,7 +329,7 @@ function InputCalendar({
         clickRefCalendarIconDropDown.current &&
         !clickRefCalendarDropDown.current.contains(e.target) &&
         !clickRefCalendarIconDropDown.current.contains(e.target) &&
-        !reference.current.contains(e.target)
+        !reference?.current.contains(e.target)
       ) {
         setOpenCalendar(false)
       } else if (

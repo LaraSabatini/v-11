@@ -1,17 +1,17 @@
-/* eslint-disable no-console */
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
+import { TrainersContext } from "contexts/Trainers"
 import {
   getLessonScheduleByWeek,
   getLessonTypes,
 } from "services/Trainers/agenda.service"
-import { daysOfTheWeek, hours } from "const/time"
-import Switch from "components/UI/Switch"
-import Icon from "components/UI/Assets/Icon"
 import {
   TableInterface,
   CalendarInterface,
   LessonType,
 } from "interfaces/lessons/Calendar"
+import { daysOfTheWeek, hours } from "const/time"
+import Switch from "components/UI/Switch"
+import Icon from "components/UI/Assets/Icon"
 import PurchaseLesson from "./PurchaseLesson"
 import {
   Container,
@@ -35,23 +35,12 @@ function Agenda({
   goPrev,
   weekId,
 }: TableInterface) {
+  const { lessonTypes, setLessonTypes } = useContext(TrainersContext)
+
   const [type, setType] = useState<LessonType | "all">("all")
   const [weekLessonList, setWeekLessonList] = useState<CalendarInterface[]>([])
 
   const [openTypesList, setOpenTypesList] = useState<boolean>(false)
-
-  const [lessonTypes, setLessonTypes] = useState<
-    {
-      id: number
-      value: string
-      name: string
-      color: string
-      colorSecondary: string
-      price_mp: number
-      price_cash: number
-      quota: number
-    }[]
-  >([])
 
   const [lessonList, setLessonList] = useState<CalendarInterface[]>([])
 
@@ -77,7 +66,7 @@ function Agenda({
       lessonListCleaned.push({
         id: lesson.id,
         date: lesson.date,
-        hourRange: JSON.parse(lesson.hourRange),
+        hourRange: lesson.hourRange,
         type: lesson.type,
         purchaseIds: JSON.parse(lesson.purchaseIds),
       }),
@@ -99,9 +88,8 @@ function Agenda({
 
   useEffect(() => {
     defineTypes()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  console.log(lessonList)
 
   return (
     <Container>
@@ -165,7 +153,7 @@ function Agenda({
                     .filter(
                       lesson =>
                         lesson.date === dateList[index] &&
-                        lesson.hourRange[0] === hour.id,
+                        parseInt(lesson.hourRange as string, 10) === hour.id,
                     )
                     .map(item => (
                       <Lesson key={item.id} lessonType={item.type}>
@@ -183,7 +171,7 @@ function Agenda({
         ))}
       </ColumnContainer>
       <ButtonContainer>
-        <PurchaseLesson />
+        <PurchaseLesson lessonTypes={lessonTypes} />
       </ButtonContainer>
     </Container>
   )

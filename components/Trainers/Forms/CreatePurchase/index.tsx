@@ -367,9 +367,6 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
     }
   }
 
-  console.log("disablePurchaseButton", disablePurchaseButton)
-  console.log("!identificationError", !identificationError)
-
   return (
     <ModalForm
       title={trainerTexts.createPurchase.title}

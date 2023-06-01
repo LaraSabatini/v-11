@@ -77,7 +77,7 @@ function EditForm({
             success
             message={{
               status: "success",
-              icon: "IconCheck",
+              icon: "IconCheckModal",
               title: "Excelente",
               content: "La clase se ha creado exitosamente",
             }}
@@ -241,12 +241,19 @@ function EditForm({
           width={145}
           required
           value={`${newType.quota}`}
-          onChange={e =>
-            setNewType({
-              ...newType,
-              quota: parseInt(e.target.value, 10),
-            })
-          }
+          onChange={e => {
+            if (e.target.value === "") {
+              setNewType({
+                ...newType,
+                quota: 0,
+              })
+            } else {
+              setNewType({
+                ...newType,
+                quota: parseInt(e.target.value, 10),
+              })
+            }
+          }}
         />
 
         <ColorPicker value={color} onChange={handleChange} />

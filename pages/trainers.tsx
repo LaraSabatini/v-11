@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import TrainersView from "components/Trainers"
 import LessonsProvider from "@contexts/Lessons"
+import TrainersProvider from "contexts/Trainers"
 import { GeneralContext } from "contexts/GeneralContext"
 import { getPricesAction } from "helpers/partners"
 import { useRouter } from "next/router"
@@ -34,9 +35,11 @@ function Trainers() {
   return (
     <div>
       {isLoggedIn !== null && (
-        <LessonsProvider>
-          <TrainersView />
-        </LessonsProvider>
+        <TrainersProvider>
+          <LessonsProvider>
+            <TrainersView />
+          </LessonsProvider>
+        </TrainersProvider>
       )}
     </div>
   )
