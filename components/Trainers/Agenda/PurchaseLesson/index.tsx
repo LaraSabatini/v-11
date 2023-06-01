@@ -224,6 +224,7 @@ function PurchaseLesson({
             hourRange: `${date.hour.id}`,
             type: typeOfLessonSelected.value,
             purchaseIds: JSON.stringify([createLessonPurchaseReq.message.id]),
+            assists: JSON.stringify([]),
           }
           const createLessonScheduleReq = await createLessonSchedule(
             scheduleBody,

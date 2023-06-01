@@ -23,6 +23,7 @@ export interface CalendarInterface {
   hourRange: number | string
   type: LessonType
   purchaseIds: number[] | string
+  assists: number[] | string
 }
 
 export interface LessonPurchaseInterface {
