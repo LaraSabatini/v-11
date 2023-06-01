@@ -14,9 +14,12 @@ function HeadingContent() {
         <div>
           {generalTexts.sections.trainers} /{" "}
           <span>
-            {router.query.students === "true"
-              ? `${trainerTexts.students.toLowerCase()}`
-              : `${trainerTexts.calendar.toLowerCase()}`}
+            {router.query.agenda === "true" && "agenda"}
+            {router.query.students === "true" &&
+              `${trainerTexts.students.toLowerCase()}`}
+            {router.query.calendar === "true" &&
+              `${trainerTexts.calendar.toLowerCase()}`}
+            {router.query.prices === "true" && "precios"}
           </span>
         </div>
       </Title>

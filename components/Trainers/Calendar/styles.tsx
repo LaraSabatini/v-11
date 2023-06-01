@@ -6,7 +6,7 @@ const MainContainer = styled.div`
   box-shadow: 0px 8px 24px rgba(83, 45, 117, 0.1);
   border-radius: 10px;
   width: 940px;
-  height: 427px;
+  height: 500px;
   display: flex;
 
   div:last-child {
@@ -38,7 +38,7 @@ const ShiftColumn = styled.div`
 `
 
 const Row = styled.div`
-  height: 186px;
+  height: 145px;
   border-bottom: 0.5px solid rgba(83, 45, 117, 0.4);
   display: flex;
   flex-direction: column;

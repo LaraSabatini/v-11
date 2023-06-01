@@ -116,11 +116,12 @@ function Calendar() {
         </ArrowsContainer>
         <ShiftColumn>
           <Title>TURNO</Title>
-          <Row>AM</Row>
-          <Row>PM</Row>
+          <Row>Mañana</Row>
+          <Row>Tarde</Row>
+          <Row>Noche</Row>
         </ShiftColumn>
         {daysOfWeekWithoutWeekendAv.map((item, index) => (
-          <DayColumn>
+          <DayColumn key={item.id}>
             <Title>
               <p className="day"> {item.display_name}</p>
               <p className="number">{weekDays[index]?.getDate()}</p>
@@ -131,7 +132,7 @@ function Calendar() {
               </p>
             </Title>
             <Row>
-              <ScrollView height={180}>
+              <ScrollView height={120}>
                 <StudentsContainer>
                   {cleanedLessons[index]?.am !== undefined &&
                     cleanedLessons[index].am.map(lesson => (
@@ -149,10 +150,28 @@ function Calendar() {
               </ScrollView>
             </Row>
             <Row>
-              <ScrollView height={180}>
+              <ScrollView height={120}>
                 <StudentsContainer>
                   {cleanedLessons[index]?.pm !== undefined &&
                     cleanedLessons[index].pm.map(lesson => (
+                      <Student
+                        paid={lesson.paid === "SI"}
+                        type="button"
+                        selected={purchaseSelected?.id === lesson.id}
+                        onClick={() => selectPurchase(lesson)}
+                        key={lesson.id}
+                      >
+                        {lesson.partner_name} {lesson.partner_last_name}
+                      </Student>
+                    ))}
+                </StudentsContainer>
+              </ScrollView>
+            </Row>
+            <Row>
+              <ScrollView height={120}>
+                <StudentsContainer>
+                  {cleanedLessons[index]?.pm2 !== undefined &&
+                    cleanedLessons[index].pm2.map(lesson => (
                       <Student
                         paid={lesson.paid === "SI"}
                         type="button"
