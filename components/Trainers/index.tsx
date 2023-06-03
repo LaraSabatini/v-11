@@ -5,7 +5,7 @@ import Header from "components/UI/Header"
 import PartnersProvider from "contexts/Partners"
 import { calculateActualWeek } from "utils/calculateActualWeek"
 import HeadingContent from "./HeadingContent"
-import NoPermissionsView from "./GeneralContent/NoPermissionsView"
+// import NoPermissionsView from "./GeneralContent/NoPermissionsView"
 import Calendar from "./Calendar"
 import Students from "./Students"
 // import Buttons from "./GeneralContent/Buttons"
@@ -122,7 +122,7 @@ function TrainersView() {
         )}
         {routeIsPrices && <Prices />}
 
-        {(routeIsStudents || routeIsCalendar) && <NoPermissionsView />}
+        {/* {(routeIsStudents || routeIsCalendar) && <NoPermissionsView />} */}
 
         {editLessonDateView && (
           <EditLessonDate
