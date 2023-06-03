@@ -318,6 +318,8 @@ function CreatePurchase({ cancelCreatePurchase }: CreatePurchaseInterface) {
       const validate = await validateInputsIsNotRegistered()
 
       if (validate) {
+        setDisablePurchaseButton(true)
+
         const validateDuplicated = await checkIfPartnerIsDuplicated()
         setIdentificationError(validateDuplicated)
         canShowModalError = !validateDuplicated

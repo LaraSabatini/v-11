@@ -32,6 +32,14 @@ const routes: {
         name: "Alumnos",
         query: "?students=true",
       },
+      {
+        name: "Agenda",
+        query: "?agenda=true",
+      },
+      {
+        name: "Precios",
+        query: "?prices=true",
+      },
     ],
   },
   {
