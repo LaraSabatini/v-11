@@ -27,11 +27,6 @@ function TrainersView() {
 
   const router = useRouter()
 
-  const getPermissions = localStorage.getItem("permissions")
-  const permissions = JSON.parse(getPermissions)[0].sections[1]
-  const canViewCalendar = permissions.sub_sections[0].view
-  const canViewStudents = permissions.sub_sections[1].view
-
   const routeIsCalendar = router.query.calendar === "true"
   const routeIsStudents = router.query.students === "true"
   const routeIsAgenda = router.query.agenda === "true"
@@ -114,8 +109,8 @@ function TrainersView() {
         <HeadingContent />
         <Modals />
 
-        {routeIsCalendar && canViewCalendar && <Calendar />}
-        {routeIsStudents && canViewStudents && <Students />}
+        {routeIsCalendar && <Calendar />}
+        {routeIsStudents && <Students />}
         {routeIsAgenda && (
           <Agenda
             startingDate={startingDay}
@@ -127,27 +122,8 @@ function TrainersView() {
         )}
         {routeIsPrices && <Prices />}
 
-        {((routeIsStudents && !canViewStudents) ||
-          (routeIsCalendar && !canViewCalendar)) && <NoPermissionsView />}
+        {(routeIsStudents || routeIsCalendar) && <NoPermissionsView />}
 
-        {/* {canViewCalendar && (
-          <Buttons
-            routeIsCalendar={routeIsCalendar}
-            permits={{
-              create: calendarActions.create,
-              update: calendarActions.update,
-            }}
-          />
-        )} */}
-
-        {/* {createLessonPurchaseView && (
-          <CreatePurchase
-            cancelCreatePurchase={() => {
-              setCreateLessonPurchaseView(false)
-              cleanStates()
-            }}
-          />
-        )} */}
         {editLessonDateView && (
           <EditLessonDate
             cancelEditLessonPurchase={() => setEditLessonDateView(false)}
