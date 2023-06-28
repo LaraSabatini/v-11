@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react"
 import { Lessons } from "contexts/Lessons"
 import { searchPartnerAction, getStudentsAction } from "helpers/partners"
+import { getKids, searchKid } from "services/Partners/Kids.service"
 import generalTexts from "strings/general.json"
 import SearchBar from "components/UI/SearchBar"
 import PopOver from "components/UI/PopOver"
@@ -19,20 +20,27 @@ function Filters({ routeIsStudents }: FiltersInterface) {
     currentPage,
     setStudents,
     setTotalPages,
+    typeOfStudent,
   } = useContext(Lessons)
 
   const [popOverView, setPopOverView] = useState<boolean>(false)
 
   const getStudentsList = async () => {
     setStudentSelected(null)
-    const getStudentsCall = await getStudentsAction(currentPage)
+    const getStudentsCall =
+      typeOfStudent === "adults"
+        ? await getStudentsAction(currentPage)
+        : await getKids(currentPage)
     setStudents(getStudentsCall.data)
     setTotalPages(getStudentsCall.meta.totalPages)
   }
 
   const searchStudentInDB = async () => {
     setStudentSelected(null)
-    const searchPartnerCall = await searchPartnerAction(studentsSearchValue)
+    const searchPartnerCall =
+      typeOfStudent === "adults"
+        ? await searchPartnerAction(studentsSearchValue)
+        : await searchKid(studentsSearchValue, 1)
     setStudents(searchPartnerCall.data)
     setTotalPages(searchPartnerCall.meta.totalPages)
   }

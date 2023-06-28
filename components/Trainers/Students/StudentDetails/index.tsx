@@ -21,11 +21,13 @@ import {
 
 function StudentDetails() {
   const { studentSelected, lessonsByStudent } = useContext(Lessons)
-  const [groupSelected, setGroupSelected] = useState<number>(null)
+  const [groupSelected, setGroupSelected] = useState<any>(null)
+
+  const [purchases, setPurchases] = useState<any>(null)
 
   const todayDate = new Date(`${month}-${day}-${year}`)
 
-  const checkPastDate = date => {
+  const checkPastDate = (date: string) => {
     const lessonDate = new Date(formatDescendingDate(date))
     const isDisabled = lessonDate < todayDate
     return isDisabled
@@ -44,45 +46,55 @@ function StudentDetails() {
         </TableTitles>
         <ScrollView height={240}>
           <LessonListContainer>
-            {lessonsByStudent.length > 0 &&
-              lessonsByStudent.map(lesson => (
-                <LessonGroup>
+            {lessonsByStudent.separated?.length > 0 &&
+              lessonsByStudent.separated.map(purchaseDate => (
+                <LessonGroup key={purchaseDate.id}>
                   <Dropdown
                     onClick={() => {
-                      if (groupSelected === null || groupSelected !== lesson) {
-                        setGroupSelected(lesson)
+                      if (
+                        groupSelected === null ||
+                        groupSelected !== purchaseDate
+                      ) {
+                        setGroupSelected(purchaseDate)
+                        const filteredData = lessonsByStudent.purchases.filter(
+                          item => {
+                            const purchaseIds = JSON.parse(item.purchaseIds)
+                            return purchaseIds.some(id =>
+                              purchaseDate.ids.includes(id),
+                            )
+                          },
+                        )
+                        setPurchases(filteredData)
                       } else {
                         setGroupSelected(null)
                       }
                     }}
-                    open={groupSelected === lesson}
+                    open={groupSelected === purchaseDate}
                   >
                     <div className="title">
-                      <p>{lesson.length}</p> <span>{trainerTexts.lessons}</span>
+                      <p>{purchaseDate.ids.length}</p>{" "}
+                      <span>{trainerTexts.lessons}</span>
                     </div>
                     <div className="title">
                       <p>
-                        {lesson[0].paid_day !== ""
-                          ? calculateExpireDate(lesson[0].paid_day).string
+                        {purchaseDate.date !== ""
+                          ? calculateExpireDate(purchaseDate.date).string
                           : `${trainerTexts.students_info.without_payment}`}
                       </p>
                       <Icon icon="IconArrowRight" />
                     </div>
                   </Dropdown>
-
-                  {groupSelected !== null && groupSelected === lesson && (
+                  {groupSelected !== null && groupSelected === purchaseDate && (
                     <GroupInfo>
-                      {lesson.map(purchase => (
+                      {purchases.map(purchase => (
                         <DateShown
-                          disabled={checkPastDate(purchase.lesson_date)}
+                          key={purchase.id}
+                          disabled={checkPastDate(purchase.date)}
                         >
-                          {purchase.lesson_date}
+                          {purchase.date}
                         </DateShown>
                       ))}
                     </GroupInfo>
-                  )}
-                  {lesson.length === 8 && (
-                    <span>{trainerTexts.students_info.has_shoes}</span>
                   )}
                 </LessonGroup>
               ))}

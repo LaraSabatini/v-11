@@ -13,6 +13,10 @@ function LessonsProvider({ children }) {
     null,
   )
 
+  const [typeOfStudent, setTypeOfStudent] = useState<"adults" | "kids">(
+    "adults",
+  )
+
   const [modalSuccess, setModalSuccess] = useState<ModalInterface | null>(null)
 
   const [modalError, setModalError] = useState<ModalInterface | null>(null)
@@ -186,7 +190,7 @@ function LessonsProvider({ children }) {
   })
 
   // STUDENTS VIEW
-  const [students, setStudents] = useState<PartnerInterface[]>([])
+  const [students, setStudents] = useState<any[]>([])
   const [studentsSearchValue, setStudentsSearchValue] = useState<string>("")
   const [studentSelected, setStudentSelected] = useState<PartnerInterface>(null)
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -269,6 +273,8 @@ function LessonsProvider({ children }) {
       setTotalPages,
       lessonsByStudent,
       setLessonsByStudent,
+      typeOfStudent,
+      setTypeOfStudent,
     }),
     [
       weekNumberSelected,
@@ -302,6 +308,7 @@ function LessonsProvider({ children }) {
       currentPage,
       totalPages,
       lessonsByStudent,
+      typeOfStudent,
     ],
   )
 

@@ -9,7 +9,7 @@ const Container = styled.div`
 `
 
 const ListContainer = styled.div`
-  width: 600px;
+  width: 670px;
   height: 350px;
 
   background: #fffffe;
@@ -94,7 +94,7 @@ const Identification = styled.p`
 `
 
 const MemberSince = styled.p`
-  width: 150px;
+  width: 170px;
 `
 
 const ClientList = styled.div<{ isSelected: boolean }>`

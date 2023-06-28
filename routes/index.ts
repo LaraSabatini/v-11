@@ -25,10 +25,6 @@ const routes: {
     name: "Profesores",
     queries: [
       {
-        name: "Calendario de clases",
-        query: "?calendar=true",
-      },
-      {
         name: "Alumnos",
         query: "?students=true",
       },
