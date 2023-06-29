@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react"
 import { Lessons } from "contexts/Lessons"
 import PartnerInterface from "interfaces/partners/PartnerInterface"
+import getLessonsByStudent from "services/Trainers/studentLessons.service"
 import trainerTexts from "strings/trainers.json"
 import Pagination from "components/UI/Pagination"
-import getPayments from "../../Helpers/getPayments"
 import {
   Container,
   ListContainer,
@@ -29,6 +29,8 @@ function StudentList() {
     currentPage,
     setCurrentPage,
     totalPages,
+    setTypeOfStudent,
+    typeOfStudent,
   } = useContext(Lessons)
 
   const checkSelection = (student: PartnerInterface) => {
@@ -41,8 +43,8 @@ function StudentList() {
   }
 
   const getListPayments = async () => {
-    const list = await getPayments(studentSelected.id)
-    setLessonsByStudent(list)
+    const req = await getLessonsByStudent(studentSelected.id)
+    setLessonsByStudent(req.data)
   }
 
   useEffect(() => {
@@ -56,7 +58,8 @@ function StudentList() {
     <Container>
       <ListContainer>
         <FiltersRow>
-          <Tab>Todos</Tab>
+          <Tab onClick={() => setTypeOfStudent("adults")}>Adultos</Tab>
+          <Tab onClick={() => setTypeOfStudent("kids")}>Escuelita</Tab>
         </FiltersRow>
         <InfoRow>
           <FullName>{trainerTexts.table.fullName}</FullName>
@@ -64,7 +67,11 @@ function StudentList() {
           <Identification>
             {trainerTexts.table.identificationNumber}
           </Identification>
-          <MemberSince>{trainerTexts.table.member_since}</MemberSince>
+          <MemberSince>
+            {typeOfStudent === "adults"
+              ? `${trainerTexts.table.member_since}`
+              : "Contacto"}
+          </MemberSince>
         </InfoRow>
         <ClientRow>
           {students.length > 0 ? (
@@ -81,9 +88,12 @@ function StudentList() {
                   <PartnerNumber>{student.id}</PartnerNumber>
 
                   <Identification>
-                    {student.identification_number}
+                    {student.identification_number ?? student.identification}
                   </Identification>
-                  <MemberSince>{student.membership_start_date}</MemberSince>
+                  <MemberSince>
+                    {student.membership_start_date ??
+                      `${student.tutor_name} - ${student.phone}`}
+                  </MemberSince>
                 </ClientList>
               )
             })

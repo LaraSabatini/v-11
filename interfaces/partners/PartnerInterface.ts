@@ -1,4 +1,6 @@
 export default interface PartnerInterface {
+  tutor_name?: string
+  identification?: string
   id?: number
   name: string
   last_name: string

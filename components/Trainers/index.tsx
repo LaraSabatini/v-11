@@ -5,34 +5,21 @@ import Header from "components/UI/Header"
 import PartnersProvider from "contexts/Partners"
 import { calculateActualWeek } from "utils/calculateActualWeek"
 import HeadingContent from "./HeadingContent"
-// import NoPermissionsView from "./GeneralContent/NoPermissionsView"
-import Calendar from "./Calendar"
 import Students from "./Students"
-// import Buttons from "./GeneralContent/Buttons"
 import Modals from "./GeneralContent/Modals"
-// import CreatePurchase from "./Forms/CreatePurchase"
 import EditLessonDate from "./Forms/EditLessonDate"
 import Container from "./styles"
 import Prices from "./Prices"
 import Agenda from "./Agenda"
 
 function TrainersView() {
-  const {
-    // setCreateLessonPurchaseView,
-    // createLessonPurchaseView,
-    // cleanStates,
-    setEditLessonDateView,
-    editLessonDateView,
-  } = useContext(Lessons)
+  const { setEditLessonDateView, editLessonDateView } = useContext(Lessons)
 
   const router = useRouter()
 
-  const routeIsCalendar = router.query.calendar === "true"
   const routeIsStudents = router.query.students === "true"
   const routeIsAgenda = router.query.agenda === "true"
   const routeIsPrices = router.query.prices === "true"
-
-  // const calendarActions = permissions.sub_sections[0].actions
 
   const today = new Date()
 
@@ -109,7 +96,6 @@ function TrainersView() {
         <HeadingContent />
         <Modals />
 
-        {routeIsCalendar && <Calendar />}
         {routeIsStudents && <Students />}
         {routeIsAgenda && (
           <Agenda
@@ -121,8 +107,6 @@ function TrainersView() {
           />
         )}
         {routeIsPrices && <Prices />}
-
-        {/* {(routeIsStudents || routeIsCalendar) && <NoPermissionsView />} */}
 
         {editLessonDateView && (
           <EditLessonDate
