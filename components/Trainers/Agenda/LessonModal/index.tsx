@@ -82,6 +82,7 @@ function LessonModal({ lesson, lessonTypes }: ILessonModal) {
 
   const onChange = async (_e: CheckboxChangeEvent, id: number) => {
     const findIndex = assistances.indexOf(id)
+
     if (findIndex !== -1) {
       assistances.splice(findIndex, 1)
 
@@ -173,8 +174,10 @@ function LessonModal({ lesson, lessonTypes }: ILessonModal) {
       const filterId = ids.filter(id => id !== editPurchaseModal.purchase.id)
       const bodyLessonToRemoveFrom = {
         ...lesson,
+        assists: JSON.stringify(lesson.assists),
         purchaseIds: JSON.stringify(filterId),
       }
+
       const updateCurrentLesson = await updateSchedule(bodyLessonToRemoveFrom)
 
       if (
@@ -203,8 +206,10 @@ function LessonModal({ lesson, lessonTypes }: ILessonModal) {
       const filterId = ids.filter(id => id !== editPurchaseModal.purchase.id)
       const bodyLessonToRemoveFrom = {
         ...lesson,
+        assists: JSON.stringify(lesson.assists),
         purchaseIds: JSON.stringify(filterId),
       }
+
       const updateCurrentLesson = await updateSchedule(bodyLessonToRemoveFrom)
 
       if (
