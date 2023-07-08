@@ -57,6 +57,15 @@ const updateLessonType = async (body: LessonTypesInterface) => {
   return res.data
 }
 
+export const getClientsByPurchaseIds = async (body: {
+  purchaseIds: number[]
+  type: string
+}) => {
+  const res = await axios.put(`${apiURL}/students`, body, axiosHeader)
+
+  return res.data
+}
+
 export {
   getLessonScheduleByDay,
   getByPurchaseId,
