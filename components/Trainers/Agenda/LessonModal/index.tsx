@@ -5,13 +5,11 @@ import {
   CalendarInterface,
   LessonTypesInterface,
 } from "interfaces/lessons/Calendar"
-import { searchPartnerById } from "services/Partners/Partner.service"
-import { searchKidById } from "services/Partners/Kids.service"
 import {
-  getByPurchaseId,
   updateSchedule,
   getLessonScheduleByDay,
   createLessonSchedule,
+  getClientsByPurchaseIds,
 } from "services/Trainers/agenda.service"
 import Icon from "components/UI/Assets/Icon"
 import { Checkbox, Button } from "antd"
@@ -42,41 +40,19 @@ function LessonModal({ lesson, lessonTypes }: ILessonModal) {
     student: any
   } | null>(null)
 
-  const searchPartners = async purchaseList => {
-    const list = []
-    if (lesson.type === "kids") {
-      const promises = purchaseList.map(async purchase => {
-        const req = await searchKidById(purchase.clientId)
-        return req.data[0]
-      })
-      const results = await Promise.all(promises)
-      list.push(...results)
-    } else {
-      const promises = purchaseList.map(async purchase => {
-        const req = await searchPartnerById(purchase.clientId)
-        return req.data[0]
-      })
-      const results = await Promise.all(promises)
-      list.push(...results)
-    }
-    setPartners(list)
-  }
-
-  const getPurchases = async () => {
+  const getPurchasesAndPartners = async () => {
     const purchaseIds = lesson.purchaseIds as number[]
-    const promises = purchaseIds.map(async purchase => {
-      const req = await getByPurchaseId(purchase)
-      return req.data[0]
+
+    const req = await getClientsByPurchaseIds({
+      purchaseIds,
+      type: lesson.type === "kids" ? "kids" : "partners",
     })
-    const purchaseList = await Promise.all(promises)
-    setPurchases(purchaseList)
-    if (purchaseList.length > 0) {
-      searchPartners(purchaseList)
-    }
+    setPartners(req.clients)
+    setPurchases(req.purchases)
   }
 
   useEffect(() => {
-    getPurchases()
+    getPurchasesAndPartners()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
