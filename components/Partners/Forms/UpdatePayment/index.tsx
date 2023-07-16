@@ -66,7 +66,7 @@ function UpdatePaymentForm({
     paidTimeUnit,
     usesDay,
     setUsesDay,
-    setModalErrorAddDays,
+    // setModalErrorAddDays,
     paymentUserSelected,
     setModalSuccess,
     setModalError,
@@ -178,117 +178,117 @@ function UpdatePaymentForm({
       canPurchase = false
     }
 
-    if (!canPurchase) {
-      setModalErrorAddDays({
-        status: "alert",
-        icon: "IconExclamation",
-        title: `${partnerTexts.cannotAddDays.title}`,
-        content: `${partnerTexts.cannotAddDays.content}`,
-      })
-    } else {
-      setDisabledButton(true)
+    // if (!canPurchase) {
+    //   setModalErrorAddDays({
+    //     status: "alert",
+    //     icon: "IconExclamation",
+    //     title: `${partnerTexts.cannotAddDays.title}`,
+    //     content: `${partnerTexts.cannotAddDays.content}`,
+    //   })
+    // } else {
+    setDisabledButton(true)
 
-      const expirationDate = getExpirationDate({
-        date: dateSelectedToStart,
-        paidTime: paidTimeUnit !== undefined ? paidTime : 0,
-        paidTimeUnit: paidTimeUnit?.id !== undefined ? paidTimeUnit?.id : 0,
-        comboSelected:
-          comboSelected !== null && comboSelected !== undefined
-            ? comboSelected
-            : 0,
-      })
+    const expirationDate = getExpirationDate({
+      date: dateSelectedToStart,
+      paidTime: paidTimeUnit !== undefined ? paidTime : 0,
+      paidTimeUnit: paidTimeUnit?.id !== undefined ? paidTimeUnit?.id : 0,
+      comboSelected:
+        comboSelected !== null && comboSelected !== undefined
+          ? comboSelected
+          : 0,
+    })
 
-      const makeBoulderPurchase = await addPayment()
-      success = makeBoulderPurchase
+    const makeBoulderPurchase = await addPayment()
+    success = makeBoulderPurchase
 
-      if (paymentMethodSelected === 2) {
-        const executePurchase = await makeAppropiatePayment(
-          paymentUserSelected.id,
-          finalPrice,
-          {
-            id: 0,
-            user_id: paymentUserSelected.id,
-            user_name: paymentUserSelected.display_name,
-            date: today,
-            month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
-              .display_name,
-            month_id: parseInt(`${month}`, 10),
-            total_profit: finalPrice,
-            created_by: parseInt(localStorage.getItem("id"), 10),
-          },
-        )
-        success = executePurchase.status === 200
-      }
-
-      if (
-        checkValidityOfPayment.combos &&
-        checkValidityOfPayment.days &&
-        checkValidityOfPayment.months
-      ) {
-        const createPartnerPayment = await createPartnerPaymentAction({
-          ...newValues,
-          time_paid:
-            paidTimeUnit.id === 1
-              ? evaluateFinalTime(newValues.time_paid, usesDay)
-              : newValues.time_paid,
-          price_paid: finalPrice,
-          payment_expire_date: expirationDate,
-          date: dateSelectedToStart,
-          created_by: parseInt(localStorage.getItem("id"), 10),
-        })
-
-        success = createPartnerPayment.status === 200
-      } else {
-        const updatePartnerPayment = await editPartnerPaymentAction({
-          ...initialPayment,
-          time_paid: usesDay
-            ? initialPayment.time_paid + paidTime - 1
-            : initialPayment.time_paid + paidTime,
+    if (paymentMethodSelected === 2) {
+      const executePurchase = await makeAppropiatePayment(
+        paymentUserSelected.id,
+        finalPrice,
+        {
+          id: 0,
+          user_id: paymentUserSelected.id,
+          user_name: paymentUserSelected.display_name,
           date: today,
+          month: months.filter(m => m.id === parseInt(`${month}`, 10))[0]
+            .display_name,
+          month_id: parseInt(`${month}`, 10),
+          total_profit: finalPrice,
           created_by: parseInt(localStorage.getItem("id"), 10),
-        })
-        success = updatePartnerPayment.status === 200
-      }
-
-      const newPartnerInfo = { ...partnerInfo }
-      if (partnerInfo.free_pass === 0 && paidTimeUnit.id === 2) {
-        newPartnerInfo.free_pass = 1
-      }
-      if (partnerInfo.free_pass === 1 && paidTimeUnit.id === 1) {
-        newPartnerInfo.free_pass = 0
-      }
-
-      const editPartnerData = await editPartnerAction(newPartnerInfo)
-      success = editPartnerData.status === 200
-
-      if (partnerInfo.email !== "") {
-        const itemName =
-          paidTimeUnit.id === 1
-            ? `${financesTexts.day}`
-            : `${financesTexts.month}`
-
-        const emailBody = {
-          recipients: partnerInfo.email,
-          subject: "Información de compra",
-          item: `${comboCondition ? 1 : paidTime} x ${itemName}`,
-          url: `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${expirationDate.slice(
-            6,
-            10,
-          )}${expirationDate.slice(3, 5)}${expirationDate.slice(
-            0,
-            2,
-          )}%2F${expirationDate.slice(6, 10)}${expirationDate.slice(
-            3,
-            5,
-          )}${expirationDate.slice(0, 2)}&details=Tu%20compra%20de%20%20${
-            comboCondition ? 1 : paidTime
-          }%20x%20${itemName}%20vence%20hoy%21&location=https%3A%2F%2Fwww.google.com%2Fmaps%2Fplace%2FV_Once_Escalada%2F%40-34.6118186%2C-58.4122726%2C17z%2Fdata%3D%213m1%214b1%214m5%213m4%211s0x95bccb0a038ffc5d%3A0xa8cd4418a36f0576%218m2%213d-34.6118186%214d-58.4100786&text=Vencimiento%20de%20pago`,
-          expDate: expirationDate,
-        }
-        const sendMail = await expireDateReminderEmail(emailBody)
-        success = sendMail.status === 200
-      }
+        },
+      )
+      success = executePurchase.status === 200
     }
+
+    if (
+      checkValidityOfPayment.combos &&
+      checkValidityOfPayment.days &&
+      checkValidityOfPayment.months
+    ) {
+      const createPartnerPayment = await createPartnerPaymentAction({
+        ...newValues,
+        time_paid:
+          paidTimeUnit.id === 1
+            ? evaluateFinalTime(newValues.time_paid, usesDay)
+            : newValues.time_paid,
+        price_paid: finalPrice,
+        payment_expire_date: expirationDate,
+        date: dateSelectedToStart,
+        created_by: parseInt(localStorage.getItem("id"), 10),
+      })
+
+      success = createPartnerPayment.status === 200
+    } else {
+      const updatePartnerPayment = await editPartnerPaymentAction({
+        ...initialPayment,
+        time_paid: usesDay
+          ? initialPayment.time_paid + paidTime - 1
+          : initialPayment.time_paid + paidTime,
+        date: today,
+        created_by: parseInt(localStorage.getItem("id"), 10),
+      })
+      success = updatePartnerPayment.status === 200
+    }
+
+    const newPartnerInfo = { ...partnerInfo }
+    if (partnerInfo.free_pass === 0 && paidTimeUnit.id === 2) {
+      newPartnerInfo.free_pass = 1
+    }
+    if (partnerInfo.free_pass === 1 && paidTimeUnit.id === 1) {
+      newPartnerInfo.free_pass = 0
+    }
+
+    const editPartnerData = await editPartnerAction(newPartnerInfo)
+    success = editPartnerData.status === 200
+
+    if (partnerInfo.email !== "") {
+      const itemName =
+        paidTimeUnit.id === 1
+          ? `${financesTexts.day}`
+          : `${financesTexts.month}`
+
+      const emailBody = {
+        recipients: partnerInfo.email,
+        subject: "Información de compra",
+        item: `${comboCondition ? 1 : paidTime} x ${itemName}`,
+        url: `https://calendar.google.com/calendar/render?action=TEMPLATE&dates=${expirationDate.slice(
+          6,
+          10,
+        )}${expirationDate.slice(3, 5)}${expirationDate.slice(
+          0,
+          2,
+        )}%2F${expirationDate.slice(6, 10)}${expirationDate.slice(
+          3,
+          5,
+        )}${expirationDate.slice(0, 2)}&details=Tu%20compra%20de%20%20${
+          comboCondition ? 1 : paidTime
+        }%20x%20${itemName}%20vence%20hoy%21&location=https%3A%2F%2Fwww.google.com%2Fmaps%2Fplace%2FV_Once_Escalada%2F%40-34.6118186%2C-58.4122726%2C17z%2Fdata%3D%213m1%214b1%214m5%213m4%211s0x95bccb0a038ffc5d%3A0xa8cd4418a36f0576%218m2%213d-34.6118186%214d-58.4100786&text=Vencimiento%20de%20pago`,
+        expDate: expirationDate,
+      }
+      const sendMail = await expireDateReminderEmail(emailBody)
+      success = sendMail.status === 200
+    }
+    // }
 
     if (success) {
       setModalSuccess({
